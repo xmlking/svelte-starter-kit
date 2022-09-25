@@ -44,7 +44,7 @@
 		"eslint-config-prettier": "8.5.0",
 		"eslint-plugin-svelte3": "4.0.0",
 		"flowbite": "1.5.3",
-		"flowbite-svelte": "0.26.22",
+		"flowbite-svelte": "0.27.1",
 		"jsdom": "20.0.0",
 		"msw": "0.47.3",
 		"postcss": "8.4.16",
