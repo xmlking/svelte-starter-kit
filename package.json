@@ -25,7 +25,7 @@
 		"@neodrag/svelte": "1.2.4",
 		"@popperjs/core": "2.11.6",
 		"@sveltejs/adapter-auto": "1.0.0-next.82",
-		"@sveltejs/adapter-node": "1.0.0-next.97",
+		"@sveltejs/adapter-node": "1.0.0-next.98",
 		"@sveltejs/adapter-static": "1.0.0-next.44",
 		"@sveltejs/kit": "1.0.0-next.513",
 		"@tailwindcss/aspect-ratio": "0.4.2",
