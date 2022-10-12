@@ -72,7 +72,7 @@
 	},
 	"optionalDependencies": {
 		"@playwright-testing-library/test": "4.5.0",
-		"@playwright/test": "1.27.0",
+		"@playwright/test": "1.27.1",
 		"@vitest/ui": "0.24.1",
 		"playwright-testing-library": "4.5.0"
 	},
