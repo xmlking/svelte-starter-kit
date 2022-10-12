@@ -18,7 +18,7 @@
 		"format": "prettier --write ."
 	},
 	"devDependencies": {
-		"@faker-js/faker": "7.5.0",
+		"@faker-js/faker": "7.6.0",
 		"@felte/reporter-svelte": "1.1.4",
 		"@felte/validator-zod": "1.0.12",
 		"@floating-ui/dom": "1.0.2",
