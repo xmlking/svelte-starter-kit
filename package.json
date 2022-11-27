@@ -83,7 +83,7 @@
 		"zod": "3.19.1"
 	},
 	"optionalDependencies": {
-		"@playwright/test": "1.28.0",
+		"@playwright/test": "1.28.1",
 		"@vitest/ui": "0.25.3"
 	},
 	"type": "module",
