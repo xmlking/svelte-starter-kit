@@ -76,7 +76,7 @@
 		"prettier-plugin-tailwindcss": "0.2.0",
 		"svelecte": "3.12.0",
 		"svelte": "3.53.1",
-		"svelte-check": "2.10.0",
+		"svelte-check": "2.10.2",
 		"svelte-headless-table": "0.15.3",
 		"svelte-heros-v2": "0.2.4",
 		"svelte-preprocess": "4.10.7",
