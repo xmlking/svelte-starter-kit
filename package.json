@@ -89,7 +89,7 @@
 	},
 	"optionalDependencies": {
 		"@playwright/test": "1.28.1",
-		"@vitest/ui": "0.25.7"
+		"@vitest/ui": "0.25.8"
 	},
 	"type": "module",
 	"dependencies": {
