@@ -61,7 +61,7 @@
 		"flowbite-svelte": "0.28.11",
 		"graphql": "16.6.0",
 		"houdini": "0.17.14",
-		"houdini-svelte": "0.17.14",
+		"houdini-svelte": "0.18.3",
 		"js-cookie": "3.0.1",
 		"jsdom": "20.0.3",
 		"jsonwebtoken": "8.5.1",
