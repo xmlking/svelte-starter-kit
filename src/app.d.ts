@@ -2,18 +2,13 @@
 // for information about these interfaces
 // and what to do when importing types
 declare namespace App {
-	type User = import('./lib/models/types/user').User;
-	interface Locals {
-		user: User; // User | null; ??
-		token: string;
-	}
-	// interface PageData {}
 	interface Error {
 		message: string; // this property is always required, to provide a sensible fallback
 		context?: Record<string, any>;
 	}
+	// interface Locals {}
+	// interface PageData {}
 	// interface Platform {}
-	// interface Session {}
 }
 
 interface Window {

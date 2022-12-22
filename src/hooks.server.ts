@@ -1,7 +1,7 @@
 import { PUBLIC_CONFY_SENTRY_DSN } from '$env/static/public';
 
 import { dev } from '$app/environment';
-import { guard, setUser } from '$lib/middleware';
+import { authjs } from '$lib/server/middleware';
 import { Logger } from '$lib/utils';
 import * as Sentry from '@sentry/svelte';
 import { BrowserTracing } from '@sentry/tracing';
@@ -48,9 +48,9 @@ if (PUBLIC_CONFY_SENTRY_DSN) {
 
 // Invoked for each endpoint called and initially for SSR router
 // export const handle = sequence(setUser, guard, houdini, logger);
-export const handle = sequence(setUser);
+export const handle = sequence(authjs);
 
-export const handleServerError: HandleServerError = ({ error, event }) => {
+export const handleServerError = (({ error, event }) => {
 	console.error('hooks:server:handleServerError:', error);
 	Sentry.setExtra('event', event);
 	Sentry.captureException(error);
@@ -59,15 +59,16 @@ export const handleServerError: HandleServerError = ({ error, event }) => {
 		message: err.message ?? 'Whoops!',
 		context: err.context
 	};
-};
+}) satisfies HandleServerError;
 
-export const handleFetch: HandleFetch = async ({ event, request, fetch }) => {
+export const handleFetch = (async ({ event, request, fetch }) => {
 	console.log('hooks.server.ts, HandleFetch:');
 	const { locals } = event;
 
 	if (request.url.startsWith('https://graph.microsoft.com')) {
-		if (locals.token) {
-			request.headers.set('Authorization', `Bearer ${locals.token}`);
+		const { token } = await locals.getSession();
+		if (token) {
+			request.headers.set('Authorization', `Bearer ${token}`);
 		}
 	}
 	/*
@@ -80,4 +81,4 @@ export const handleFetch: HandleFetch = async ({ event, request, fetch }) => {
 	}
 	*/
 	return fetch(request);
-};
+}) satisfies HandleFetch;

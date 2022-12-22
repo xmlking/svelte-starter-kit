@@ -245,6 +245,12 @@ npm i -D oidc-client-ts
 npm i -D jwks-rsa jsonwebtoken
 ```
 
+(or) With [AuthJS](https://authjs.dev/reference/sveltekit) for SvelteKit
+
+```shell
+npm i -D @auth/core @auth/sveltekit
+```
+
 #### Cookies
 
 Set/Get/Remove cookies in browser (for server-side svelte already provide utils)
