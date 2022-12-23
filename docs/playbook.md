@@ -71,7 +71,7 @@ determining the polyfills you need based on your targeted browsers or runtime en
 Read: [Use Future CSS Today](https://joyofcode.xyz/using-future-css-in-svelte) and Watch: [video](https://www.youtube.com/watch?v=eqwtoaP-0pk)
 
 ```shell
-pnpm add -D postcss-preset-env
+pnpm add -D postcss-preset-env -w
 ```
 
 Add `postcssPresetEnv` plugin for `postcss` and include it in [postcss.config.cjs](../postcss.config.cjs).
@@ -100,7 +100,7 @@ Other optional UI Components
 I will be using both **flowbite** and **daisyui** for UI Components
 
 ```shell
-pnpm add -D daisyui
+pnpm add -D daisyui -w
 ```
 
 Then add daisyUI to your **tailwind.config.js** files:
@@ -115,7 +115,7 @@ const config = {
 #### skeleton
 
 ```shell
-pnpm add -D @skeletonlabs/skeleton
+pnpm add -D @skeletonlabs/skeleton -w
 ```
 
 And follow **skeleton** specific sveltekit [changes](https://www.skeleton.dev/guides/frameworks/sveltekit)
@@ -138,7 +138,7 @@ Lets add [prettier-plugin-tailwindcss](https://github.com/tailwindlabs/prettier-
 To work around this, `prettier-plugin-tailwindcss` **must** be loaded last, meaning Prettier auto-loading needs to be disabled. You can do this by setting the `pluginSearchDirs` option to `false` and then listing each of your Prettier plugins in the plugins array:
 
 ```shell
-pnpm add -D prettier-plugin-tailwindcss
+pnpm add -D prettier-plugin-tailwindcss -w
 ```
 
 ```shell
@@ -171,14 +171,14 @@ Added [Dockerfile](../Dockerfile) and GitHub [actions](../.github/workflows).
 
 ```shell
 # table library for Svelte
-pnpm add -D svelte-headless-table
-#pnpm add -D @tanstack/svelte-table
+pnpm add -D svelte-headless-table -w
+#pnpm add -D @tanstack/svelte-table -w
 # form library for Svelte
-pnpm add -D felte @felte/reporter-svelte @felte/validator-zod zod
+pnpm add -D felte @felte/reporter-svelte @felte/validator-zod zod -w
 # make any element draggable
-pnpm add -D @neodrag/svelte
+pnpm add -D @neodrag/svelte -w
 # to fetch, cache and update data
-pnpm add -D @tanstack/svelte-query
+pnpm add -D @tanstack/svelte-query -w
 ```
 
 ### Optional
@@ -186,7 +186,7 @@ pnpm add -D @tanstack/svelte-query
 #### Markdown CMS
 
 ```shell
-pnpx svelte-add@latest mdsvex
+pnpx svelte-add@latest mdsvex -w
 ```
 
 #### Time Distance
@@ -194,7 +194,7 @@ pnpx svelte-add@latest mdsvex
 [svelte-time-distance](https://github.com/joshnuss/svelte-time-distance) Display time distances in a human readable format.
 
 ```shell
-pnpm add -D svelte-time-distance date-fns
+pnpm add -D svelte-time-distance date-fns -w
 ```
 
 #### Error Tracking
@@ -202,7 +202,7 @@ pnpm add -D svelte-time-distance date-fns
 Sentry helps track errors in code.
 
 ```shell
-pnpm add -D @sentry/svelte @sentry/tracing
+pnpm add -D @sentry/svelte @sentry/tracing -w
 ```
 
 #### GraphQL
@@ -212,7 +212,7 @@ pnpm add -D @sentry/svelte @sentry/tracing
 use [houdini](https://www.houdinigraphql.com/) as GraphQL Client. [example](https://github.com/hygraph/hygraph-examples/tree/master/with-houdini)
 
 ```shell
-pnpm add -D houdini
+pnpm add -D houdini -w
 
 # pnpx houdini init
 pnpx houdini init --headers "x-hasura-admin-secret"="<HASURA_GRAPHQL_ADMIN_SECRET>"
@@ -224,24 +224,25 @@ pnpx houdini generate --pull-schema
 (Or) Apollo Client. [example](https://github.com/rodneylab/sveltekit-graphql-github)
 
 ```shell
-pnpm add -D @apollo/client graphql graphql-tag
+npm i -D @apollo/client graphql graphql-tag
 ```
 
 (Or) [URQL](https://formidable.com/open-source/urql/docs/basics/svelte/). [example](https://github.com/hygraph/hygraph-examples/tree/master/with-sveltekit-and-urql)
 
 ```shell
-pnpm add -D @urql/svelte graphql
+pnpm add -D @urql/svelte graphql -w
 # TypeScript integration (optional)
 # https://formidable.com/open-source/urql/docs/basics/typescript-integration/
-pnpm add -D @graphql-codegen/cli @graphql-codegen/client-preset
+pnpm add -D @graphql-codegen/cli @graphql-codegen/client-preset -w
 ```
 
 #### OpenID Connect
 
-With [AuthJS](https://authjs.dev/reference/sveltekit) for SvelteKit
+Usage example [softrig-workshop-templates](https://github.com/urrang/softrig-workshop-templates/tree/main/svelte)
 
 ```shell
-pnpm add -D @auth/core @auth/sveltekit -w
+pnpm add -D oidc-client-ts -w
+pnpm add -D jwks-rsa jsonwebtoken -w
 ```
 
 #### Cookies
@@ -249,7 +250,7 @@ pnpm add -D @auth/core @auth/sveltekit -w
 Set/Get/Remove cookies in browser (for server-side svelte already provide utils)
 
 ```shell
-pnpm add -D js-cookie
+pnpm add -D js-cookie -w
 ```
 
 #### Forms
@@ -257,5 +258,5 @@ pnpm add -D js-cookie
 Custom form elements
 
 ```shell
-pnpm add -D svelecte
+pnpm add -D svelecte -w
 ```
