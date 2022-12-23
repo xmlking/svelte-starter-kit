@@ -30,12 +30,12 @@ For examples checkout [Svelte Component Test Recipes](https://github.com/davipon
 
 ```shell
 # optional
-npm i -O @vitest/ui
+pnpm i -O @vitest/ui -w
 ```
 
 ```shell
 # install supported browsers
-npx playwright install
+pnpx playwright install
 ```
 
 ### Styling
@@ -46,10 +46,10 @@ Follow [SvelteKit integration](https://tailwindcss.com/docs/guides/sveltekit) gu
 Add and configure tailwindcss via [svelte-add](https://github.com/svelte-add/tailwindcss)
 
 ```shell
-npx svelte-add@latest tailwindcss  --typography --daisyui
+pnpx svelte-add@latest tailwindcss  --typography --daisyui
 # NOTE: tailwindcss's forms plugin and daisyui wont work together
 # also add other tailwind plugins and include them in `tailwind.config.cjs`
-pnpm add -D @tailwindcss/aspect-ratio @tailwindcss/line-clamp @tailwindcss/container-queries
+pnpm add -D @tailwindcss/aspect-ratio @tailwindcss/line-clamp @tailwindcss/container-queries -w
 ```
 
 Install JetBrain's [postcss](https://plugins.jetbrains.com/plugin/8578-postcss) plugin  
@@ -60,7 +60,7 @@ Rename any files in your repo, with file extension `postcss` to `pcss`
 Also add `cssnano` plugin for `postcss` and include it in [postcss.config.cjs](../postcss.config.cjs) for production env.
 
 ```shell
-pnpm add -D cssnano
+pnpm add -D cssnano -w
 ```
 
 #### PostCSS Preset Env
@@ -186,7 +186,7 @@ pnpm add -D @tanstack/svelte-query
 #### Markdown CMS
 
 ```shell
-npx svelte-add@latest mdsvex
+pnpx svelte-add@latest mdsvex
 ```
 
 #### Time Distance
@@ -214,11 +214,11 @@ use [houdini](https://www.houdinigraphql.com/) as GraphQL Client. [example](http
 ```shell
 pnpm add -D houdini
 
-# npx houdini init
-npx houdini init --headers "x-hasura-admin-secret"="<HASURA_GRAPHQL_ADMIN_SECRET>"
+# pnpx houdini init
+pnpx houdini init --headers "x-hasura-admin-secret"="<HASURA_GRAPHQL_ADMIN_SECRET>"
 
 # If you have updated your schema on the server, you can pull down the most recent schema
-npx houdini generate --pull-schema
+pnpx houdini generate --pull-schema
 ```
 
 (Or) Apollo Client. [example](https://github.com/rodneylab/sveltekit-graphql-github)
@@ -241,7 +241,7 @@ pnpm add -D @graphql-codegen/cli @graphql-codegen/client-preset
 With [AuthJS](https://authjs.dev/reference/sveltekit) for SvelteKit
 
 ```shell
-pnpm add -D @auth/core @auth/sveltekit
+pnpm add -D @auth/core @auth/sveltekit -w
 ```
 
 #### Cookies

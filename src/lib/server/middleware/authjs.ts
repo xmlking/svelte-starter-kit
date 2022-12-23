@@ -10,7 +10,7 @@ import {
 import AzureAD from '@auth/core/providers/azure-ad';
 import GitHub from '@auth/core/providers/github';
 import Google from '@auth/core/providers/google';
-import SvelteKitAuth from '@auth/sveltekit';
+import { SvelteKitAuth } from '@auth/sveltekit';
 import type { Handle } from '@sveltejs/kit';
 
 // TODO: https://hasura.io/learn/graphql/hasura-authentication/integrations/nextjs-auth/

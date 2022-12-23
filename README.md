@@ -40,7 +40,7 @@ cd ~/Developer/Work/SPA
 git clone https://github.com/xmlking/svelte-starter-kit.git
 cd /svelte-starter-kit && pnpm i
 # playwright is required for end-to-end testing
-npx playwright install
+pnpx playwright install
 ```
 
 ### Environment Variables
@@ -76,8 +76,7 @@ PUBLIC_CONFY_API_ENDPOINT=api.mycompany.com:443 pnpm dev
 To update the packages to their latest versions in `package.json`
 
 ```shell
-ncu -u
-npm i
+pnpm up --latest
 ```
 
 ## Testing
@@ -94,10 +93,10 @@ pnpm test:ui
 pnpm test:coverage
 
 # updating Snapshots
-npx vitest -u
+pnpx vitest -u
 
 # test specific folder
-npx vitest run src/lib/utils
+pnpx vitest run src/lib/utils
 ```
 
 ### E2E Tests
