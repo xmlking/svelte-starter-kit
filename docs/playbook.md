@@ -10,10 +10,10 @@ Show how this repo is setup via step-by-step guild
 npm create svelte@latest svelte-starter-kit
 # select `yes` for TypeScript, ESLint, Prettier, Playwright and Vitest
 cd svelte-starter-kit
-npm install
+pnpm i
 cd it init && git add -A
 git commit -m "chore(root): first commit"
-npm run dev -- --open
+pnpm dev -- --open
 ```
 
 In this Playbook, we will be using [svelte-add](https://github.com/svelte-add/svelte-add) to easily add and integrate 3rd party tools to this Svelte App.
@@ -49,7 +49,7 @@ Add and configure tailwindcss via [svelte-add](https://github.com/svelte-add/tai
 npx svelte-add@latest tailwindcss  --typography --daisyui
 # NOTE: tailwindcss's forms plugin and daisyui wont work together
 # also add other tailwind plugins and include them in `tailwind.config.cjs`
-npm i -D @tailwindcss/aspect-ratio @tailwindcss/line-clamp @tailwindcss/container-queries
+pnpm add -D @tailwindcss/aspect-ratio @tailwindcss/line-clamp @tailwindcss/container-queries
 ```
 
 Install JetBrain's [postcss](https://plugins.jetbrains.com/plugin/8578-postcss) plugin  
@@ -60,7 +60,7 @@ Rename any files in your repo, with file extension `postcss` to `pcss`
 Also add `cssnano` plugin for `postcss` and include it in [postcss.config.cjs](../postcss.config.cjs) for production env.
 
 ```shell
-npm i -D cssnano
+pnpm add -D cssnano
 ```
 
 #### PostCSS Preset Env
@@ -71,7 +71,7 @@ determining the polyfills you need based on your targeted browsers or runtime en
 Read: [Use Future CSS Today](https://joyofcode.xyz/using-future-css-in-svelte) and Watch: [video](https://www.youtube.com/watch?v=eqwtoaP-0pk)
 
 ```shell
-npm i -D postcss-preset-env
+pnpm add -D postcss-preset-env
 ```
 
 Add `postcssPresetEnv` plugin for `postcss` and include it in [postcss.config.cjs](../postcss.config.cjs).
@@ -86,9 +86,9 @@ We will be using [heroicons](https://heroicons.com/) via [svelte-heros-v2](https
 Use [clsx](https://github.com/lukeed/clsx) in place of [classnames](https://github.com/JedWatson/classnames) utility lib for constructing _className_ strings conditionally.
 
 ```shell
-npm i -D flowbite flowbite-svelte
-npm i -D svelte-heros-v2
-npm i -D clsx
+pnpm add -D flowbite flowbite-svelte
+pnpm add -D svelte-heros-v2
+pnpm add -D clsx
 ```
 
 Other optional UI Components
@@ -100,7 +100,7 @@ Other optional UI Components
 I will be using both **flowbite** and **daisyui** for UI Components
 
 ```shell
-npm i -D daisyui
+pnpm add -D daisyui
 ```
 
 Then add daisyUI to your **tailwind.config.js** files:
@@ -115,7 +115,7 @@ const config = {
 #### skeleton
 
 ```shell
-npm i -D @skeletonlabs/skeleton
+pnpm add -D @skeletonlabs/skeleton
 ```
 
 And follow **skeleton** specific sveltekit [changes](https://www.skeleton.dev/guides/frameworks/sveltekit)
@@ -138,7 +138,7 @@ Lets add [prettier-plugin-tailwindcss](https://github.com/tailwindlabs/prettier-
 To work around this, `prettier-plugin-tailwindcss` **must** be loaded last, meaning Prettier auto-loading needs to be disabled. You can do this by setting the `pluginSearchDirs` option to `false` and then listing each of your Prettier plugins in the plugins array:
 
 ```shell
-npm i -D prettier-plugin-tailwindcss
+pnpm add -D prettier-plugin-tailwindcss
 ```
 
 ```shell
@@ -171,14 +171,14 @@ Added [Dockerfile](../Dockerfile) and GitHub [actions](../.github/workflows).
 
 ```shell
 # table library for Svelte
-npm i -D svelte-headless-table
-#npm i -D @tanstack/svelte-table
+pnpm add -D svelte-headless-table
+#pnpm add -D @tanstack/svelte-table
 # form library for Svelte
-npm i -D felte @felte/reporter-svelte @felte/validator-zod zod
+pnpm add -D felte @felte/reporter-svelte @felte/validator-zod zod
 # make any element draggable
-npm i -D @neodrag/svelte
+pnpm add -D @neodrag/svelte
 # to fetch, cache and update data
-npm i -D @tanstack/svelte-query
+pnpm add -D @tanstack/svelte-query
 ```
 
 ### Optional
@@ -194,7 +194,7 @@ npx svelte-add@latest mdsvex
 [svelte-time-distance](https://github.com/joshnuss/svelte-time-distance) Display time distances in a human readable format.
 
 ```shell
-npm i -D svelte-time-distance date-fns
+pnpm add -D svelte-time-distance date-fns
 ```
 
 #### Error Tracking
@@ -202,7 +202,7 @@ npm i -D svelte-time-distance date-fns
 Sentry helps track errors in code.
 
 ```shell
-npm i -D @sentry/svelte @sentry/tracing
+pnpm add -D @sentry/svelte @sentry/tracing
 ```
 
 #### GraphQL
@@ -212,7 +212,7 @@ npm i -D @sentry/svelte @sentry/tracing
 use [houdini](https://www.houdinigraphql.com/) as GraphQL Client. [example](https://github.com/hygraph/hygraph-examples/tree/master/with-houdini)
 
 ```shell
-npm i -D houdini
+pnpm add -D houdini
 
 # npx houdini init
 npx houdini init --headers "x-hasura-admin-secret"="<HASURA_GRAPHQL_ADMIN_SECRET>"
@@ -224,16 +224,16 @@ npx houdini generate --pull-schema
 (Or) Apollo Client. [example](https://github.com/rodneylab/sveltekit-graphql-github)
 
 ```shell
-npm i -D @apollo/client graphql graphql-tag
+pnpm add -D @apollo/client graphql graphql-tag
 ```
 
 (Or) [URQL](https://formidable.com/open-source/urql/docs/basics/svelte/). [example](https://github.com/hygraph/hygraph-examples/tree/master/with-sveltekit-and-urql)
 
 ```shell
-npm i -D @urql/svelte graphql
+pnpm add -D @urql/svelte graphql
 # TypeScript integration (optional)
 # https://formidable.com/open-source/urql/docs/basics/typescript-integration/
-npm install -D @graphql-codegen/cli @graphql-codegen/client-preset
+pnpm add -D @graphql-codegen/cli @graphql-codegen/client-preset
 ```
 
 #### OpenID Connect
@@ -241,7 +241,7 @@ npm install -D @graphql-codegen/cli @graphql-codegen/client-preset
 With [AuthJS](https://authjs.dev/reference/sveltekit) for SvelteKit
 
 ```shell
-npm i -D @auth/core @auth/sveltekit
+pnpm add -D @auth/core @auth/sveltekit
 ```
 
 #### Cookies
@@ -249,7 +249,7 @@ npm i -D @auth/core @auth/sveltekit
 Set/Get/Remove cookies in browser (for server-side svelte already provide utils)
 
 ```shell
-npm i -D js-cookie
+pnpm add -D js-cookie
 ```
 
 #### Forms
@@ -257,5 +257,5 @@ npm i -D js-cookie
 Custom form elements
 
 ```shell
-npm i -D svelecte
+pnpm add -D svelecte
 ```

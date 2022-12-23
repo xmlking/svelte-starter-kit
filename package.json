@@ -6,8 +6,8 @@
 		"dev": "vite dev",
 		"dev:debug": "DEBUG=jwks vite dev",
 		"build": "vite build",
-		"build:node": "cross-env ADAPTER=node npm run build",
-		"build:static": "cross-env ADAPTER=static npm run build",
+		"build:node": "cross-env ADAPTER=node pnpm build",
+		"build:static": "cross-env ADAPTER=static pnpm build",
 		"preview": "vite preview",
 		"test": "vitest",
 		"test:ui": "vitest --ui",
@@ -16,7 +16,8 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --check . && eslint .",
-		"format": "prettier --write ."
+		"format": "prettier --write .",
+		"preinstall": "npx only-allow pnpm"
 	},
 	"devDependencies": {
 		"@auth/core": "^0.1.4",

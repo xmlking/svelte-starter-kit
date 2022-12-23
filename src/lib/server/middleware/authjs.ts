@@ -13,6 +13,8 @@ import Google from '@auth/core/providers/google';
 import SvelteKitAuth from '@auth/sveltekit';
 import type { Handle } from '@sveltejs/kit';
 
+// TODO: https://hasura.io/learn/graphql/hasura-authentication/integrations/nextjs-auth/
+
 export const authjs = SvelteKitAuth({
 	providers: [
 		Google({
@@ -23,7 +25,7 @@ export const authjs = SvelteKitAuth({
 		AzureAD({
 			clientId: AZURE_AD_CLIENT_ID,
 			clientSecret: AZURE_AD_CLIENT_SECRET,
-			tenantId: AZURE_AD_TENANT_ID,
+			tenantId: AZURE_AD_TENANT_ID
 			// HINT: https://github.com/nextauthjs/next-auth/issues/6138
 			// token: `https://login.microsoftonline.com/${AZURE_AD_TENANT_ID}/oauth2/v2.0/token`,
 			// userinfo: 'https://graph.microsoft.com/oidc/userinfo',
