@@ -238,14 +238,7 @@ npm install -D @graphql-codegen/cli @graphql-codegen/client-preset
 
 #### OpenID Connect
 
-Usage example [softrig-workshop-templates](https://github.com/urrang/softrig-workshop-templates/tree/main/svelte)
-
-```shell
-npm i -D oidc-client-ts
-npm i -D jwks-rsa jsonwebtoken
-```
-
-(or) With [AuthJS](https://authjs.dev/reference/sveltekit) for SvelteKit
+With [AuthJS](https://authjs.dev/reference/sveltekit) for SvelteKit
 
 ```shell
 npm i -D @auth/core @auth/sveltekit
