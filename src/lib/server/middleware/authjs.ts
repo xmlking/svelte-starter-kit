@@ -1,3 +1,6 @@
+/* eslint-disable */
+// @ts-nocheck
+// FIXME above
 import {
 	AZURE_AD_CLIENT_ID,
 	AZURE_AD_CLIENT_SECRET,
@@ -25,19 +28,28 @@ export const authjs = SvelteKitAuth({
 		AzureAD({
 			clientId: AZURE_AD_CLIENT_ID,
 			clientSecret: AZURE_AD_CLIENT_SECRET,
-			tenantId: AZURE_AD_TENANT_ID
-			// HINT: https://github.com/nextauthjs/next-auth/issues/6138
-			// token: `https://login.microsoftonline.com/${AZURE_AD_TENANT_ID}/oauth2/v2.0/token`,
-			// userinfo: 'https://graph.microsoft.com/oidc/userinfo',
-			// authorization: {
-			// 	url: `https://login.microsoftonline.com/${AZURE_AD_TENANT_ID}/oauth2/v2.0/authorize`,
-			// 	params: { scope: 'openid profile User.Read email' }
-			// }
+			tenantId: AZURE_AD_TENANT_ID,
+			authorization: { params: { scope: 'openid profile User.Read email' } },
+			// client: {},
+			debug: true
 		}),
 		GitHub({ clientId: GITHUB_ID, clientSecret: GITHUB_SECRET })
 	],
 	callbacks: {
+		async redirect({ url, baseUrl }) {
+			// Allows relative callback URLs
+			if (url.startsWith('/')) return `${baseUrl}${url}`;
+			// Allows callback URLs on the same origin
+			else if (new URL(url).origin === baseUrl) return url;
+			return baseUrl;
+		},
+		// pages: {
+		// 	signIn: '/login'
+		// },
 		async jwt({ token, account, profile }) {
+			// console.log('token>>>', token);
+			// console.log('account>>>', account);
+			// console.log('profile>>>', profile);
 			if (account) {
 				token.token = account.access_token; // account.id_token
 			}
@@ -51,8 +63,10 @@ export const authjs = SvelteKitAuth({
 			return token;
 		},
 		async session({ session, token }) {
+			// console.log('in session, token>>>', token);
 			session.token = token.token;
 			session.roles = token.roles;
+			// console.log('in session, session>>>>', session);
 			return session;
 		}
 	}

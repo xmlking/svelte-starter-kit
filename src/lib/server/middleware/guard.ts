@@ -12,12 +12,12 @@ export const guard = (async ({ event, resolve }) => {
 	// get user roles
 	// check if role has access to target route
 
-	const { token, user, roles } = await locals.getSession();
+	const { user, roles } = (await locals.getSession()) ?? {};
 	AuthLogger.debug('guard:locals.user', user);
 
 	if (event.url.pathname.startsWith('/dashboard')) {
 		if (!user) {
-			throw redirect(303, `${event.url.origin}/login`);
+			throw redirect(303, `${event.url.origin}/auth/signin?callbackUrl=/dashboard`);
 		}
 		if (event.url.pathname.startsWith('/dashboard/admin')) {
 			if (!roles?.includes('Policy.Write')) {
