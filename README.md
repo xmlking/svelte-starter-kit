@@ -120,10 +120,6 @@ To create a production version of your app:
 
 ```shell
 pnpm build -r
-# build for hybrid rendering on nodejs runtime
-pnpm build:node  -r
-# build for static rendering on nginx runtime
-pnpm build:static  -r
 # run build
 node build
 ```
