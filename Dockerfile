@@ -43,7 +43,7 @@ RUN pnpm install -r --offline --no-optional --ignore-scripts --unsafe-perm
 COPY . .
 
 # build SvelteKit app
-RUN pnpm build:node
+RUN pnpm build
 
 ############################################################
 ### stage_runtime

@@ -1,6 +1,4 @@
-import adapter from '@sveltejs/adapter-auto';
-import nodeAdapter from '@sveltejs/adapter-node';
-import staticAdapter from '@sveltejs/adapter-static';
+import adapter from '@sveltejs/adapter-node';
 // import preprocess from 'svelte-preprocess';
 import { vitePreprocess } from '@sveltejs/kit/vite';
 
@@ -11,7 +9,7 @@ const config = {
 	preprocess: vitePreprocess(),
 
 	kit: {
-		adapter: getAdapter(),
+		adapter: adapter(),
 
 		// When hosting SPA on GitHub Pages
 		// paths: {
@@ -27,21 +25,3 @@ const config = {
 };
 
 export default config;
-
-function getAdapter() {
-	switch (process.env.ADAPTER) {
-		case 'node':
-			return nodeAdapter({
-				// envPrefix: 'CONFY_'
-				// Can overwrite at runtime: `HOST=127.0.0.1 PORT=4000 ORIGIN=https://my.site node build`
-				// default: HOST=0.0.0.0 PORT=3000
-			});
-		case 'static':
-			return staticAdapter({
-				fallback: 'index.html' // 404.html,
-				// trailingSlash: 'always'
-			});
-		default:
-			return adapter();
-	}
-}
