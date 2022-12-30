@@ -20,7 +20,6 @@ const [gitTag, gitDate] = (
 	JSON.stringify(v.value?.stdout.trim())
 );
 
-
 const config: UserConfig = {
 	plugins: [
 		houdini(),
