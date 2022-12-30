@@ -72,33 +72,86 @@ docker compose down -v
 To apply all the Migrations present in the `migrations/` directory and the Metadata present in the `metadata/` directory on a new, "fresh" database (i.e., docker compose down -v):
 
 ```shell
-hasura deploy --endpoint <http://localhost:8080>  --admin-secret myadminsecretkey
+hasura deploy --endpoint http://localhost:8080  --admin-secret myadminsecretkey
 ```
 
 open <http://localhost:8080/console> and try out a query
 
 Sample Query:
 
-```graphql
+```gql
 query MyQuery {
-	customer {
-		email
-		first_name
-		id
-		ip_address
-		last_name
-		phone
-		username
-		orders {
-			customer_id
-			discount_price
-			id
-			order_date
-			product
-			purchase_price
-			transaction_id
-		}
-	}
+  customer {
+    email
+    first_name
+    id
+    ip_address
+    last_name
+    phone
+    username
+    orders {
+      customer_id
+      discount_price
+      id
+      order_date
+      product
+      purchase_price
+      transaction_id
+    }
+  }
+}
+```
+
+```gql
+query MyQuery {
+  countries(filter: {continent: {eq: "AS"}}) {
+    code
+    capital
+    name
+    continent {
+      name
+      code
+    }
+  }
+}
+```
+
+```gql
+query MyQuery {
+  searchRestrooms(arg1: {city: "Riverside"}) {
+    accessible
+    approved
+    changing_table
+    city
+    comment
+    country
+    created_at
+    directions
+    downvote
+    edit_id
+    id
+    latitude
+    longitude
+    name
+    state
+    street
+    unisex
+    updated_at
+    upvote
+  }
+}
+```
+
+```gql
+query MyQuery {
+  listUniversities(arg1: {name: "middle"}) {
+    alpha_two_code
+    country
+    domains
+    name
+    stateprovince
+    web_pages
+  }
 }
 ```
 
