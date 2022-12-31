@@ -267,3 +267,43 @@ pnpm add -D svelecte -w
 ```shell
 pnpm add -D  @vite-pwa/sveltekit vite-plugin-pwa workbox-window
 ```
+
+#### Enable https (optional)
+
+**Step 1:** install `mkcert` and initialize RootCA
+
+```shell
+brew install mkcert
+mkcert -install # sudo is needed
+# this will create root CA cert into: `mkcert -CAROOT` output
+mkcert -CAROOT
+```
+
+**Step 2:** Configure **vite** to start with **https**
+
+```shell
+pnpm add -D  vite-plugin-mkcert
+```
+
+Update `vite.config.ts`
+
+```ts
+# vite.config.ts
+
+import mkcert from 'vite-plugin-mkcert';
+
+const config: UserConfig = {
+ server: {
+  https: true
+ },
+ plugins: [
+  mkcert(),
+ ]
+};
+
+export default config;
+```
+
+When server started for the first time with `pnpm dev`, it will create `dev.key` and `dev.pem` in `~/.vite-plugin-mkcert/certs`
+
+know issues: <https://github.com/sveltejs/kit/issues/4362>

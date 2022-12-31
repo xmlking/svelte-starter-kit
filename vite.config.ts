@@ -41,7 +41,6 @@ const config: UserConfig = {
 				'safari-pinned-tab.svg'
 			],
 			manifest: {
-				$schema: 'https://json.schemastore.org/web-manifest-combined.json',
 				name: 'svelte-starter-kit',
 				short_name: 'Svelte Starter Kit',
 				description: 'Svelte starter template project',
