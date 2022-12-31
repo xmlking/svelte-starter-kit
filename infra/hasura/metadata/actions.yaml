@@ -1,6 +1,46 @@
-actions: []
+actions:
+  - name: listUniversities
+    definition:
+      kind: ""
+      handler: http://universities.hipolabs.com
+      request_transform:
+        method: GET
+        query_params:
+          country: '{{$body.input?.arg1.country}}'
+          name: '{{$body.input?.arg1.name ?? "middle"}}'
+        request_headers:
+          add_headers: {}
+          remove_headers:
+            - content-type
+        template_engine: Kriti
+        url: '{{$base_url}}/search'
+        version: 2
+    comment: Universities API
+  - name: searchRestrooms
+    definition:
+      kind: ""
+      handler: https://www.refugerestrooms.org/api/v1
+      request_transform:
+        method: GET
+        query_params:
+          offset: '{{$body.input?.arg1.offset ?? 0}}'
+          page: '{{$body.input?.arg1.page ?? 1}}'
+          per_page: '{{$body.input?.arg1.limit ?? 10}}'
+          query: '{{$body.input?.arg1.city}}'
+        request_headers:
+          add_headers: {}
+          remove_headers:
+            - content-type
+        template_engine: Kriti
+        url: '{{$base_url}}/restrooms/search'
+        version: 2
+    comment: Restrooms API
 custom_types:
   enums: []
-  input_objects: []
-  objects: []
+  input_objects:
+    - name: SearchRestroomsInput
+    - name: ListUniversitiesInput
+  objects:
+    - name: SearchRestroomsOutput
+    - name: ListUniversitiesOutput
   scalars: []
