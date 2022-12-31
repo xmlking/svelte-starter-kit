@@ -126,7 +126,12 @@
 	////////// tailwindCSS //////////
 	"tailwindCSS.emmetCompletions": true,
 	////////// eslint //////////
-	"eslint.validate": ["javascript", "typescript", "svelte", "yaml"],
+	"eslint.runtime": "node",
+	"eslint.options": {
+		"extensions": [".js", ".jsx", ".md", ".mdx", ".ts", ".tsx"]
+	},
+	"eslint.validate": ["svelte", "yaml", "markdown", "mdx", "javascript", "javascriptreact", "typescript", "typescriptreact"],
+
 	////////// Proto //////////
 	"clang-format.style": "google",
 	"protoc": {
