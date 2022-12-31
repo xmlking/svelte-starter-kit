@@ -66,6 +66,7 @@ export const authjs = SvelteKitAuth({
 			// console.log('in session, token>>>', token);
 			session.token = token.token;
 			session.roles = token.roles;
+			// session.user.roles = token.roles;
 			// console.log('in session, session>>>>', session);
 			return session;
 		}

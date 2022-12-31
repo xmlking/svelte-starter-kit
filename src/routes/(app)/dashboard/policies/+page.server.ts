@@ -1,8 +1,10 @@
+import { env as dynPriEnv } from '$env/dynamic/private';
 import { env as dynPubEnv } from '$env/dynamic/public';
 import { CachePolicy, DeletePolicyStore, order_by, SearchPoliciesStore } from '$houdini';
 import type { AccountDeleteResult } from '$lib/models/schema';
 import { Logger } from '$lib/utils';
 import { getAppError, isAppError, isHttpError } from '$lib/utils/errors';
+import { getToken } from '@auth/core/jwt';
 import * as Sentry from '@sentry/svelte';
 import { error, fail } from '@sveltejs/kit';
 
@@ -20,8 +22,11 @@ const query = searchPoliciesStore.artifact.raw;
 const delete_mutation = new DeletePolicyStore().artifact.raw;
 
 export const load = (async (event) => {
-	const { url, setHeaders, parent } = event;
+	const { url, setHeaders, parent, request } = event;
 	await parent(); // HINT: to make sure use session is valid
+
+	const token = await getToken({ req: request, secret: dynPriEnv.AUTH_SECRET, raw: true });
+	console.log('token>>>', token); // FIXME: always return null
 
 	const limit = parseInt(url.searchParams.get('limit') ?? '');
 	const offset = parseInt(url.searchParams.get('offset') ?? '');
