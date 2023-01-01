@@ -29,9 +29,8 @@ export const authjs = SvelteKitAuth({
 			clientId: AZURE_AD_CLIENT_ID,
 			clientSecret: AZURE_AD_CLIENT_SECRET,
 			tenantId: AZURE_AD_TENANT_ID,
-			authorization: { params: { scope: 'openid profile User.Read email' } },
+			authorization: { params: { scope: 'openid profile User.Read email' } }
 			// client: {},
-			debug: true
 		}),
 		GitHub({ clientId: GITHUB_ID, clientSecret: GITHUB_SECRET })
 	],

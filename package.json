@@ -100,6 +100,9 @@
 	"pnpm": {
 		"overrides": {
 			"@auth/core": "latest"
+		},
+		"patchedDependencies": {
+			"@auth/core@0.2.4": "patches/@auth__core@0.2.4.patch"
 		}
 	},
 	"repository": {
