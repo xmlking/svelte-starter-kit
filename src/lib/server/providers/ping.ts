@@ -17,17 +17,13 @@ export interface PingProfile extends Record<string, any> {
 }
 
 export default function Ping<P extends PingProfile>(options: OAuthUserConfig<P> & { issuer: string; acr_values: string }): OAuthConfig<P> {
-	const { issuer, acr_values, ...rest } = options;
-
+	const { acr_values, ...rest } = options;
 	return {
 		id: 'ping',
 		name: 'Ping ID',
 		type: 'oidc',
-		token: `${issuer}/as/token.oauth2`,
-		userinfo: `${issuer}/idp/userinfo.openid`,
 		authorization: {
-			url: `${issuer}/as/authorization.oauth2`,
-			params: { scope: 'profile openid email address phone', acr_values }
+			params: { scope: 'profile openid email address phone', acr_values, ...rest.authorization?.params }
 		},
 		profile(profile: PingProfile) {
 			return {

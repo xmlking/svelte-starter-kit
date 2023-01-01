@@ -81,7 +81,7 @@
 				<DropdownItem><a href="/dashboard/settings">Settings</a></DropdownItem>
 				<DropdownDivider />
 				<DropdownItem>
-					<a href="/auth/signout">Sign Out</a>
+					<a href="/auth/signout?callbackUrl=/blog">Sign Out</a>
 				</DropdownItem>
 			</Dropdown>
 		</div>
