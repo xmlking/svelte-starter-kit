@@ -25,6 +25,8 @@ export const load = (async (event) => {
 	const { url, setHeaders, parent, request } = event;
 	await parent(); // HINT: to make sure use session is valid
 
+	// event.setHeaders({ authorization: '' });
+	// const token = await getToken({req: { cookies: event.cookies, headers: event.request.headers },secret: dynPriEnv.AUTH_SECRET,raw: true});
 	const token = await getToken({ req: request, secret: dynPriEnv.AUTH_SECRET, raw: true });
 	console.log('token>>>', token); // FIXME: always return null
 
