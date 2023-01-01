@@ -50,6 +50,7 @@ hasura deploy --endpoint http://another-server-instance.hasura.app  --admin-secr
 # NOTE:
 # if you get error: "permission denied to create extension \"hstore\"", Run `create extension hstore;` in hasura console
 # if you get error: "must be owner of extension hstore",  Run `alter role nhost_hasura with superuser;` in hasura console
+# if you get error: "x509: certificate signed by unknown authority", add `--insecure-skip-tls-verify` flag to above command
 
 #  Check the status of Migrations
 hasura migrate status   --database-name postgresdb

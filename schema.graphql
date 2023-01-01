@@ -28,6 +28,36 @@ input Boolean_comparison_exp {
   _nin: [Boolean!]
 }
 
+type Continent {
+  code: ID!
+  countries: [Country!]!
+  name: String!
+}
+
+input ContinentFilterInput {
+  code: StringQueryOperatorInput
+}
+
+type Country {
+  capital: String
+  code: ID!
+  continent: Continent!
+  currency: String
+  emoji: String!
+  emojiU: String!
+  languages: [Language!]!
+  name: String!
+  native: String!
+  phone: String!
+  states: [State!]!
+}
+
+input CountryFilterInput {
+  code: StringQueryOperatorInput
+  continent: StringQueryOperatorInput
+  currency: StringQueryOperatorInput
+}
+
 """
 Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'.
 """
@@ -41,6 +71,75 @@ input Int_comparison_exp {
   _lte: Int
   _neq: Int
   _nin: [Int!]
+}
+
+type Language {
+  code: ID!
+  name: String
+  native: String
+  rtl: Boolean!
+}
+
+input LanguageFilterInput {
+  code: StringQueryOperatorInput
+}
+
+input ListUniversitiesInput {
+  country: String
+  name: String
+}
+
+type ListUniversitiesOutput {
+  alpha_two_code: String
+  country: String
+  domains: [String]
+  name: String
+  stateprovince: String
+  web_pages: [String]
+}
+
+input SearchRestroomsInput {
+  city: String
+  limit: Int
+  offset: Int
+  page: Int
+}
+
+type SearchRestroomsOutput {
+  accessible: Boolean
+  approved: Boolean
+  changing_table: Boolean
+  city: String
+  comment: String
+  country: String
+  created_at: String
+  directions: String
+  downvote: Int
+  edit_id: Int
+  id: Int
+  latitude: Float
+  longitude: Float
+  name: String
+  state: String
+  street: String
+  unisex: Boolean
+  updated_at: String
+  upvote: Int
+}
+
+type State {
+  code: String
+  country: Country!
+  name: String!
+}
+
+input StringQueryOperatorInput {
+  eq: String
+  glob: String
+  in: [String]
+  ne: String
+  nin: [String]
+  regex: String
 }
 
 """
@@ -94,6 +193,17 @@ input String_comparison_exp {
 
   """does the column match the given SQL regular expression"""
   _similar: String
+}
+
+scalar _Any
+
+union _Entity = Continent | Country | Language
+
+type _Service {
+  """
+  The sdl representing the federated service capabilities. Includes federation directives, removes federation types, and includes rest of full schema after schema directives have been applied
+  """
+  sdl: String
 }
 
 scalar _text
@@ -1119,6 +1229,13 @@ input order_variance_order_by {
 }
 
 type query_root {
+  _entities(representations: [_Any!]!): [_Entity]!
+  _service: _Service!
+  continent(code: ID!): Continent
+  continents(filter: ContinentFilterInput): [Continent!]!
+  countries(filter: CountryFilterInput): [Country!]!
+  country(code: ID!): Country
+
   """
   fetch data from the table: "customer"
   """
@@ -1161,6 +1278,11 @@ type query_root {
 
   """fetch data from the table: "customer" using primary key columns"""
   customer_by_pk(id: Int!): customer
+  language(code: ID!): Language
+  languages(filter: LanguageFilterInput): [Language!]!
+
+  """Universities API"""
+  listUniversities(arg1: ListUniversitiesInput!): [ListUniversitiesOutput]
 
   """
   fetch data from the table: "order"
@@ -1204,6 +1326,9 @@ type query_root {
 
   """fetch data from the table: "order" using primary key columns"""
   order_by_pk(id: Int!): order
+
+  """Restrooms API"""
+  searchRestrooms(arg1: SearchRestroomsInput!): [SearchRestroomsOutput]
 
   """
   fetch data from the table: "tz_policies"

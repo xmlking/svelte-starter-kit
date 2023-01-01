@@ -1,52 +1,27 @@
 diff --git a/lib/providers.js b/lib/providers.js
-index 8ee0dbc9c2295851f57f3dfdd702b243de386df3..fcabb9bc519ac41c51cfc387e031dcd231db9653 100644
+index 8ee0dbc9c2295851f57f3dfdd702b243de386df3..8d98ad58271a6633a722fbca27b872715bc48124 100644
 --- a/lib/providers.js
 +++ b/lib/providers.js
-@@ -3,7 +3,7 @@ import { merge } from "./utils/merge.js";
-  * Adds `signinUrl` and `callbackUrl` to each provider
-  * and deep merge user-defined options.
-  */
--export default function parseProviders(params) {
-+export default function parseProviders1(params) {
-     const { url, providerId } = params;
-     const providers = params.providers.map((provider) => {
-         const { options: userOptions, ...defaults } = provider;
-@@ -27,10 +27,10 @@ function normalizeOAuth(c) {
-         return {};
+@@ -28,7 +28,7 @@ function normalizeOAuth(c) {
      if (c.issuer)
          c.wellKnown ?? (c.wellKnown = `${c.issuer}/.well-known/openid-configuration`);
-+	if (c.authorization?.params) {
-+		c.authorization.params.scope ??=  "openid profile email"
-+	}
      const authorization = normalizeEndpoint(c.authorization, c.issuer);
 -    if (authorization && !authorization.url?.searchParams.has("scope")) {
--        authorization.url.searchParams.set("scope", "openid profile email");
--    }
++    if (authorization?.url?.searchParams.has("scope") === false) {
+         authorization.url.searchParams.set("scope", "openid profile email");
+     }
      const token = normalizeEndpoint(c.token, c.issuer);
-     const userinfo = normalizeEndpoint(c.userinfo, c.issuer);
-     return {
-@@ -51,11 +51,15 @@ function defaultProfile(profile) {
+@@ -51,11 +51,11 @@ function defaultProfile(profile) {
      };
  }
  function normalizeEndpoint(e, issuer) {
 -    if (!e || issuer)
 -        return;
-+    // if (!e || issuer)
-+	if (!e)
-+        return e;
++    if (!e) return e;
      if (typeof e === "string") {
          return { url: new URL(e) };
      }
-+	if (!e.url)
-+		return e;
-+
++    if (!e.url) return e;
      // If v.url is undefined, it's because the provider config
      // assumes that we will use the issuer endpoint.
      // The existence of either v.url or provider.issuer is checked in
-@@ -65,5 +69,6 @@ function normalizeEndpoint(e, issuer) {
-     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-     for (const k in e.params)
-         url.searchParams.set(k, e.params[k]);
-+
-     return { ...e, url };
- }
