@@ -39,6 +39,7 @@ Awesome **SvelteKit** Links
 ## Templates
 
 - [Svelte Sirens](https://github.com/Svelte-Sirens/svelte-sirens)
+- [Usagizmo turbo Monorepo](https://github.com/usagizmo/webapp-template)
 
 ## Performance
 

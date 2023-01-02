@@ -74,7 +74,7 @@ pnpm dev:debug
 
 # run with a custom inline config
 # inline environment variables has higher precedence than ones loaded from .env and .env.local files
-PUBLIC_CONFY_API_ENDPOINT=api.mycompany.com:443 pnpm dev
+PUBLIC_GRAPHQL_ENDPOINT=api.mycompany.com:443 pnpm dev
 ````
 
 ## Maintenance
@@ -128,7 +128,7 @@ Run from the local build directory:
 
 ```shell
 NODE_ENV=production \
-PUBLIC_CONFY_API_ENDPOINT=api.mycompany.com:443 \
+PUBLIC_GRAPHQL_ENDPOINT=api.mycompany.com:443 \
 node build
 
 # (optional) pass ORIGIN when using `adapter-node` build

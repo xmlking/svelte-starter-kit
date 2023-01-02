@@ -1,3 +1,4 @@
+import { env as dynPriEnv } from '$env/dynamic/private';
 import { env as dynPubEnv } from '$env/dynamic/public';
 import { accountCreateSchema, accountUpdateSchema, type Account, type AccountSaveResult } from '$lib/models/schema';
 import { getAppError, isAppError, isHttpError, isRedirect } from '$lib/utils/errors';
@@ -9,8 +10,8 @@ import crypto from 'node:crypto';
 import { ZodError } from 'zod';
 import type { Actions, PageServerLoad } from './$types';
 
-assert.ok(dynPubEnv.PUBLIC_CONFY_API_ENDPOINT, 'PUBLIC_CONFY_API_ENDPOINT not configered');
-assert.ok(dynPubEnv.PUBLIC_CONFY_API_TOKEN, 'PUBLIC_CONFY_API_TOKEN not configered');
+assert.ok(dynPubEnv.PUBLIC_GRAPHQL_ENDPOINT, 'PUBLIC_GRAPHQL_ENDPOINT not configered');
+assert.ok(dynPriEnv.HASURA_GRAPHQL_ADMIN_SECRET, 'HASURA_GRAPHQL_ADMIN_SECRET not configered');
 
 const getById = `
 query GetByID($id: uuid!) {
@@ -114,11 +115,11 @@ export const load = (async ({ params, locals, parent }) => {
 	const variables = { id };
 
 	try {
-		const resp = await fetch(dynPubEnv.PUBLIC_CONFY_API_ENDPOINT, {
+		const resp = await fetch(dynPubEnv.PUBLIC_GRAPHQL_ENDPOINT, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				'x-hasura-admin-secret': dynPubEnv.PUBLIC_CONFY_API_TOKEN,
+				'x-hasura-admin-secret': dynPriEnv.HASURA_GRAPHQL_ADMIN_SECRET,
 				Authorization: `Bearer ${token}`
 			},
 			body: JSON.stringify({
@@ -190,11 +191,11 @@ export const actions = {
 				const variables = { data: jsonPayload };
 				console.log('variables', variables);
 
-				const resp = await fetch(dynPubEnv.PUBLIC_CONFY_API_ENDPOINT, {
+				const resp = await fetch(dynPubEnv.PUBLIC_GRAPHQL_ENDPOINT, {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
-						'x-hasura-admin-secret': dynPubEnv.PUBLIC_CONFY_API_TOKEN,
+						'x-hasura-admin-secret': dynPriEnv.HASURA_GRAPHQL_ADMIN_SECRET,
 						Authorization: `Bearer ${token}`
 					},
 					body: JSON.stringify({
@@ -232,11 +233,11 @@ export const actions = {
 				const variables = { id, data: jsonPayload };
 				console.log('variables', variables);
 
-				const resp = await fetch(dynPubEnv.PUBLIC_CONFY_API_ENDPOINT, {
+				const resp = await fetch(dynPubEnv.PUBLIC_GRAPHQL_ENDPOINT, {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
-						'x-hasura-admin-secret': dynPubEnv.PUBLIC_CONFY_API_TOKEN,
+						'x-hasura-admin-secret': dynPriEnv.HASURA_GRAPHQL_ADMIN_SECRET,
 						Authorization: `Bearer ${token}`
 					},
 					body: JSON.stringify({

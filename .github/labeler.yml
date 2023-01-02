@@ -1,9 +1,12 @@
 app:
   - src/routes/(app)/**/*
   - change-notes/**/*app*
-marketing:
-  - src/routes/(marketing)/**/*
-  - change-notes/**/*marketing*
+home:
+  - src/routes/(home)/**/*
+  - change-notes/**/*home*
+playground:
+  - src/routes/(play)/**/*
+  - change-notes/**/*playground*
 documentation:
   - '**/*.md'
   - docs/**/*

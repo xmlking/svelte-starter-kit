@@ -19,6 +19,7 @@ Ref: https://joyofcode.xyz/sveltekit-google-analytics
 
 	$: {
 		if (typeof gtag !== 'undefined') {
+			// eslint-disable-next-line no-undef
 			gtag('config', MEASUREMENT_ID, {
 				page_title: document.title,
 				page_path: $page.url.pathname

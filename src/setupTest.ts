@@ -22,9 +22,15 @@ vi.mock('$app/environment', (): typeof environment => ({
 
 // Mock SvelteKit runtime module $app/navigation
 vi.mock('$app/navigation', (): typeof navigation => ({
-	afterNavigate: () => {},
-	beforeNavigate: () => {},
-	disableScrollHandling: () => {},
+	afterNavigate: () => {
+		return;
+	},
+	beforeNavigate: () => {
+		return;
+	},
+	disableScrollHandling: () => {
+		return;
+	},
 	goto: () => Promise.resolve(),
 	invalidate: () => Promise.resolve(),
 	invalidateAll: () => Promise.resolve(),

@@ -11,8 +11,8 @@ import { error, fail } from '@sveltejs/kit';
 import assert from 'node:assert';
 import type { Actions, PageServerLoad } from './$types';
 
-assert.ok(dynPubEnv.PUBLIC_CONFY_API_ENDPOINT, 'PUBLIC_CONFY_API_ENDPOINT not configered');
-assert.ok(dynPubEnv.PUBLIC_CONFY_API_TOKEN, 'PUBLIC_CONFY_API_TOKEN not configered');
+assert.ok(dynPubEnv.PUBLIC_GRAPHQL_ENDPOINT, 'PUBLIC_GRAPHQL_ENDPOINT not configered');
+assert.ok(dynPriEnv.HASURA_GRAPHQL_ADMIN_SECRET, 'HASURA_GRAPHQL_ADMIN_SECRET not configered');
 
 const log = new Logger('policies.server');
 
@@ -46,11 +46,11 @@ export const load = (async (event) => {
 
 	try {
 		/*
-		const resp = await fetch(dynPubEnv.PUBLIC_CONFY_API_ENDPOINT, {
+		const resp = await fetch(dynPubEnv.PUBLIC_GRAPHQL_ENDPOINT, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				'x-hasura-admin-secret': dynPubEnv.PUBLIC_CONFY_API_TOKEN
+				'x-hasura-admin-secret': dynPriEnv.HASURA_GRAPHQL_ADMIN_SECRET
 			},
 			body: JSON.stringify({
 				query,
@@ -111,11 +111,11 @@ export const actions = {
 		const operationName = 'DeletePolicy';
 
 		try {
-			const resp = await fetch(dynPubEnv.PUBLIC_CONFY_API_ENDPOINT, {
+			const resp = await fetch(dynPubEnv.PUBLIC_GRAPHQL_ENDPOINT, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
-					'x-hasura-admin-secret': dynPubEnv.PUBLIC_CONFY_API_TOKEN
+					'x-hasura-admin-secret': dynPriEnv.HASURA_GRAPHQL_ADMIN_SECRET
 				},
 				body: JSON.stringify({
 					query: delete_mutation,

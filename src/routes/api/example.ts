@@ -17,8 +17,8 @@ export const fetchPosts = async (): Promise<Post> => {
 if (import.meta.vitest) {
 	const { it, expect } = import.meta.vitest;
 
-	it.runIf(dynPubEnv.PUBLIC_CONFY_API_TOKEN)('only run if secrets enabled', () => {
-		console.log('PUBLIC_CONFY_API_TOKEN is provided');
+	it.runIf(dynPubEnv.PUBLIC_GRAPHQL_ENDPOINT)('only run if secrets enabled', () => {
+		console.log('PUBLIC_GRAPHQL_ENDPOINT is provided');
 	});
 
 	it('Test fetchPosts', async () => {
