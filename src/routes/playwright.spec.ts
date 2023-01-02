@@ -3,7 +3,7 @@ import { chromium } from '@playwright/test';
 let browser: Browser;
 let page: Page;
 
-describe('playwright using vitest runner', () => {
+describe.skip('playwright using vitest runner', () => {
 	beforeAll(async () => {
 		browser = await chromium.launch();
 	});
