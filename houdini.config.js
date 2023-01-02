@@ -9,9 +9,9 @@ const defaultMarshall = {
 
 /** @type {import('houdini').ConfigFile} */
 const config = {
-	apiUrl: 'env:PUBLIC_CONFY_API_ENDPOINT',
+	apiUrl: 'env:HASURA_GRAPHQL_ENDPOINT' + '/v1/graphql',
 	schemaPollHeaders: {
-		'x-hasura-admin-secret': 'env:PUBLIC_CONFY_API_TOKEN'
+		'x-hasura-admin-secret': 'env:HASURA_GRAPHQL_ADMIN_SECRET'
 	},
 
 	plugins: {

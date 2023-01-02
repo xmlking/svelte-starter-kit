@@ -231,7 +231,7 @@
 			"'": '&#x27;',
 			'/': '&#x2F;'
 		};
-		return ('' + string).replace(/[&<>"'\/]/g, (match) => htmlEscapes[match]);
+		return ('' + string).replace(/[&<>"'/]/g, (match) => htmlEscapes[match]);
 	}
 
 	function buildMatchMarkup(search, value) {

@@ -67,6 +67,7 @@
 		<NavLi data-sveltekit-preload-data="" href="/dashboard/accounts" active={path == '/dashboard/accounts'}>Accounts</NavLi>
 		<NavLi data-sveltekit-preload-data="" href="/dashboard/policies" active={path == '/dashboard/policies'}>Policies</NavLi>
 		<NavLi href="/dashboard/users" active={path == '/dashboard/users'}>Users</NavLi>
+		<NavLi data-sveltekit-preload-data="" href="/play" active={path == '/play'}>Playground</NavLi>
 	</NavUl>
 
 	{#if user}

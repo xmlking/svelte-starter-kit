@@ -214,19 +214,13 @@ pnpm add -D @sentry/svelte @sentry/tracing -w
 use [houdini](https://www.houdinigraphql.com/) as GraphQL Client. [example](https://github.com/hygraph/hygraph-examples/tree/master/with-houdini)
 
 ```shell
-pnpm add -D houdini -w
+pnpm add -D houdini graphql-ws
 
 # pnpx houdini init
 pnpx houdini init --headers "x-hasura-admin-secret"="<HASURA_GRAPHQL_ADMIN_SECRET>"
 
 # If you have updated your schema on the server, you can pull down the most recent schema
 pnpx houdini generate --pull-schema
-```
-
-(Or) Apollo Client. [example](https://github.com/rodneylab/sveltekit-graphql-github)
-
-```shell
-npm i -D @apollo/client graphql graphql-tag
 ```
 
 (Or) [URQL](https://formidable.com/open-source/urql/docs/basics/svelte/). [example](https://github.com/hygraph/hygraph-examples/tree/master/with-sveltekit-and-urql)

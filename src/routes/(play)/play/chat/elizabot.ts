@@ -77,7 +77,8 @@ function processInput(message: string): string {
  * Removes all the punctuation in the given message.
  */
 function removePunctuation(message: string): string {
-	return message.replace(/[.,\/#!?$%\^&\*;:{}=\-_`~()]/g, '');
+	// return message.replace(/[.,\/#!?$%\^&\*;:{}=\-_`~()]/g, '');
+	return message.replace(/[.,/#!?$%^&*;:{}=\-_`~()]/g, '');
 }
 
 /**

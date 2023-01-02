@@ -82,77 +82,93 @@ Sample Query:
 
 ```gql
 query MyQuery {
-  customer {
-    email
-    first_name
-    id
-    ip_address
-    last_name
-    phone
-    username
-    orders {
-      customer_id
-      discount_price
-      id
-      order_date
-      product
-      purchase_price
-      transaction_id
-    }
-  }
+	customer {
+		email
+		first_name
+		id
+		ip_address
+		last_name
+		phone
+		username
+		orders {
+			customer_id
+			discount_price
+			id
+			order_date
+			product
+			purchase_price
+			transaction_id
+		}
+	}
 }
 ```
 
 ```gql
 query MyQuery {
-  countries(filter: {continent: {eq: "AS"}}) {
-    code
-    capital
-    name
-    continent {
-      name
-      code
-    }
-  }
+	countries(filter: { continent: { eq: "AS" } }) {
+		code
+		capital
+		name
+		continent {
+			name
+			code
+		}
+	}
 }
 ```
 
 ```gql
 query MyQuery {
-  searchRestrooms(arg1: {city: "Riverside"}) {
-    accessible
-    approved
-    changing_table
-    city
-    comment
-    country
-    created_at
-    directions
-    downvote
-    edit_id
-    id
-    latitude
-    longitude
-    name
-    state
-    street
-    unisex
-    updated_at
-    upvote
-  }
+	searchRestrooms(arg1: { city: "Riverside" }) {
+		accessible
+		approved
+		changing_table
+		city
+		comment
+		country
+		created_at
+		directions
+		downvote
+		edit_id
+		id
+		latitude
+		longitude
+		name
+		state
+		street
+		unisex
+		updated_at
+		upvote
+	}
 }
 ```
 
 ```gql
 query MyQuery {
-  listUniversities(arg1: {name: "middle"}) {
-    alpha_two_code
-    country
-    domains
-    name
-    stateprovince
-    web_pages
-  }
+	listUniversities(arg1: { name: "middle" }) {
+		alpha_two_code
+		country
+		domains
+		name
+		stateprovince
+		web_pages
+	}
+}
+```
+
+## Configuration
+
+Using `claims_map` to map JWT token to hasura claims:
+
+```json
+{
+	"type": "RS512",
+	"key": "-----BEGIN PUBLIC KEY-----\nMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDdlatRjRjogo3WojgGHFHYLugd\nUWAY9iR3fy4arWNA1KoS8kVw33cJibXr8bvwUAUparCwlvdbH6dvEOfou0/gCFQs\nHUfQrSDv+MuSUMAe8jzKE4qW+jK+xQU9a03GUnKHkkle+Q0pX/g6jXZ7r1/xAK5D\no2kQ+X5xK9cipRgEKwIDAQAB\n-----END PUBLIC KEY-----\n",
+	"claims_map": {
+		"x-hasura-allowed-roles": { "path": "$.hasura.all_roles" },
+		"x-hasura-default-role": { "path": "$.hasura.all_roles[0]", "default": "user" },
+		"x-hasura-user-id": { "path": "$.user.id", "default": "ujdh739kd" }
+	}
 }
 ```
 
