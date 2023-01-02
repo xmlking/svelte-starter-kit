@@ -11,6 +11,7 @@
 !/postcss.config.cjs
 !/src
 !/static
+!/patches
 !/config
 !/tsconfig.json
 !/vite.config.ts

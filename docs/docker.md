@@ -17,7 +17,7 @@ Build and publish docker image to ghcr.io
 
 ```shell
 #VERSION=$(git describe --tags || echo "HEAD")
-VERSION=v0.1.0
+VERSION=v0.4.0
 BUILD_TIME=$(date +%FT%T%Z)
 REGISTRY=ghcr.io
 #REGISTRY=us-west1-docker.pkg.dev/<project_id>/docker
