@@ -9,14 +9,14 @@ ENV TINI_VERSION v0.19.0
 ARG TARGETPLATFORM
 # translating Docker's TARGETPLATFORM into tini download names
 RUN case ${TARGETPLATFORM} in \
-		"linux/amd64")  TINI_ARCH=amd64  ;; \
-		"linux/arm64")  TINI_ARCH=arm64  ;; \
-		"linux/arm/v7") TINI_ARCH=armhf  ;; \
-		"linux/arm/v6") TINI_ARCH=armel  ;; \
-		"linux/386")    TINI_ARCH=i386   ;; \
-    esac \
-    && wget -q https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-static-${TINI_ARCH} -O /tini \
-    && chmod +x /tini
+	"linux/amd64")  TINI_ARCH=amd64  ;; \
+	"linux/arm64")  TINI_ARCH=arm64  ;; \
+	"linux/arm/v7") TINI_ARCH=armhf  ;; \
+	"linux/arm/v6") TINI_ARCH=armel  ;; \
+	"linux/386")    TINI_ARCH=i386   ;; \
+	esac \
+	&& wget -q https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-static-${TINI_ARCH} -O /tini \
+	&& chmod +x /tini
 
 ############################################################
 ### stage_build
@@ -36,6 +36,7 @@ ARG BUILD_REVISION
 WORKDIR /app
 
 # clean install all dependencies (except optional)
+COPY ./patches/ ./patches/
 COPY .npmrc package.json pnpm-lock.yaml ./
 RUN pnpm fetch --no-optional --ignore-scripts --unsafe-perm
 RUN pnpm install -r --offline --no-optional --ignore-scripts --unsafe-perm
@@ -57,6 +58,7 @@ RUN corepack enable; corepack prepare pnpm@7.19.0 --activate
 WORKDIR /app
 
 # clean install dependencies, no devDependencies, no prepare script
+COPY ./patches/ ./patches/
 COPY .npmrc package.json pnpm-lock.yaml ./
 RUN pnpm fetch --prod --unsafe-perm --ignore-scripts --unsafe-perm
 RUN pnpm install -r --offline --prod
