@@ -4,6 +4,23 @@
 @graphqlUserToken =  'get me from OAuth flow'
 ###
 
+### Pull Schema
+# @name pullSchema
+POST  {{graphqlEndpoint}}
+Content-Type: application/json
+x-hasura-admin-secret: {{graphqlAdminToken}}
+X-REQUEST-TYPE: GraphQL
+
+{
+  __schema {
+    queryType {
+      fields {
+        name
+      }
+    }
+  }
+}
+
 ### list all active policies
 # @name listPolicies
 POST  {{graphqlEndpoint}}
