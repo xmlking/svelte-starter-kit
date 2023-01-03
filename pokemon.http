@@ -1,0 +1,31 @@
+### Pull Schema
+# @name pullSchema
+POST https://beta.pokeapi.co/graphql/v1beta
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+
+{
+  __schema {
+    queryType {
+      fields {
+        name
+      }
+    }
+  }
+}
+
+### list pokemon
+# @name ListPoki
+POST https://beta.pokeapi.co/graphql/v1beta
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+
+{
+  gen1_species: pokemon_v2_pokemonspecies(
+    where: { pokemon_v2_generation: { name: { _eq: "generation-i" } } }
+    order_by: { id: asc }
+  ) {
+    name
+    id
+  }
+}

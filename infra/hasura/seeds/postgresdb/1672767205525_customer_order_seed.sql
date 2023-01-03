@@ -1,6 +1,4 @@
-SET standard_conforming_strings = off;
 SET check_function_bodies = false;
-SET escape_string_warning = off;
 INSERT INTO public.customer (id, first_name, last_name, email, phone, username, ip_address) VALUES (1, 'Daisy', 'Syme', 'dsyme0@hp.com', '+20 (915) 874-5336', 'dsyme0', '42.14.173.181');
 INSERT INTO public.customer (id, first_name, last_name, email, phone, username, ip_address) VALUES (2, 'Berny', 'Linford', 'blinford1@odnoklassniki.ru', '+55 (659) 852-4292', 'blinford1', '84.112.166.217');
 INSERT INTO public.customer (id, first_name, last_name, email, phone, username, ip_address) VALUES (3, 'Krystal', 'Fretwell', 'kfretwell2@fda.gov', '+358 (577) 234-5107', 'kfretwell2', '16.230.140.234');

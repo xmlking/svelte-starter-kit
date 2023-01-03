@@ -16,6 +16,8 @@ go install github.com/hasura/graphql-engine/cli/cmd/hasura@latest
 
 ### Usage
 
+NOTE: You can pass `--endpoint <hasura_endpoint> --admin-secret <admin-secret> command-line args for all _Hasura CLI_ commands
+
 ```shell
 # Create a directory to store migrations (with endpoint and admin secret configured):
 # hasura init <my-project> --endpoint https://my-graphql-engine.com --admin-secret adminsecretkey
@@ -30,19 +32,12 @@ hasura console
 # Export metadata and save it in migrations/metadata.yaml file:
 hasura metadata export
 
-# Show changes between server metadata and the exported metadata file:
-hasura metadata diff
-# Reload all the metadata information from database:
-hasura metadata reload
-# Apply Hasura Metadata
-hasura metadata apply
-
 # Create a new seed by exporting data from tables already present in the database:
 hasura seed create tz_policies_seed --database-name postgresdb --from-table tz_policies
 # Export data from multiple tables:
 hasura seed create customer_order_seed --database-name postgresdb --from-table customer --from-table order
 # Apply only a particular file:
-hasura seed apply --file 1670797452175_customer_order_seed.sql --database-name postgresdb
+hasura seed apply --file 1672767205525_customer_order_seed.sql --database-name postgresdb
 
 # To apply all the Migrations present in the `migrations/` directory and the Metadata present in the `metadata/` directory on a new, "fresh",
 # instance of the Hasura Server at http://another-server-instance.hasura.app:
@@ -54,6 +49,13 @@ hasura deploy --endpoint http://another-server-instance.hasura.app  --admin-secr
 
 #  Check the status of Migrations
 hasura migrate status   --database-name postgresdb
+
+# Show changes between server metadata and the exported metadata file:
+hasura metadata diff
+# Reload all the metadata information from database:
+hasura metadata reload
+# Apply Hasura Metadata
+hasura metadata apply
 ```
 
 ## Local Hasura
