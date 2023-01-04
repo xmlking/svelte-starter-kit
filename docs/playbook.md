@@ -213,14 +213,17 @@ pnpm add -D @sentry/svelte @sentry/tracing -w
 
 use [houdini](https://www.houdinigraphql.com/) as GraphQL Client. [example](https://github.com/hygraph/hygraph-examples/tree/master/with-houdini)
 
+**houdini cli** [docs](https://www.houdinigraphql.com/api/cli)
+
 ```shell
 pnpm add -D houdini graphql-ws
 
 # pnpx houdini init
-pnpx houdini init --headers "x-hasura-admin-secret"="<HASURA_GRAPHQL_ADMIN_SECRET>"
+pnpx houdini init --headers "x-hasura-admin-secret=<HASURA_GRAPHQL_ADMIN_SECRET>"
 
-# If you have updated your schema on the server, you can pull down the most recent schema
-pnpx houdini generate --pull-schema
+# To updated your local schema with latest from the graphql server, run:
+# HINT: you may have to hardcode `apiUrl` in `houdini.config.js` temporarily to run this command
+node_modules/.bin/houdini pull-schema -h "x-hasura-admin-secret=<HASURA_GRAPHQL_ADMIN_SECRET>"
 ```
 
 (Or) [URQL](https://formidable.com/open-source/urql/docs/basics/svelte/). [example](https://github.com/hygraph/hygraph-examples/tree/master/with-sveltekit-and-urql)
