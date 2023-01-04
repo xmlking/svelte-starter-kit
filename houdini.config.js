@@ -16,10 +16,10 @@ const config = {
 
 	plugins: {
 		'houdini-svelte': {
-			client: './src/lib/graphql/client'
+			client: './src/lib/graphql/client',
+			quietQueryErrors: true
 		}
 	},
-	quietQueryErrors: true,
 	scalars: {
 		DateTime: {
 			// the corresponding typescript type
