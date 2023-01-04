@@ -1,7 +1,8 @@
 <script lang="ts">
-	import { draggable } from '@neodrag/svelte';
-	import { afterUpdate, beforeUpdate } from 'svelte';
-	import * as eliza from './elizabot';
+  	import { draggable } from '@neodrag/svelte';
+  	import { Badge, Card, Hr, Input } from "flowbite-svelte";
+  	import { afterUpdate, beforeUpdate } from 'svelte';
+  	import * as eliza from './elizabot';
 
 	let div: HTMLElement;
 	let autoscroll: boolean;
@@ -55,20 +56,19 @@
 	<meta name="description" content="Eliza Chat" />
 </svelte:head>
 
-<div use:draggable={{ axis: 'both', bounds: 'parent' }} class=" h-96 w-full max-w-sm rounded-lg border border-gray-200 bg-white p-4 shadow-md dark:border-gray-700 dark:bg-gray-800 sm:p-6 md:p-8">
-	<div class="chat">
-		<h1>Eliza</h1>
-
-		<div class="scrollable" bind:this={div}>
-			{#each comments as comment}
-				<article class={comment.author}>
-					<span>{comment.text}</span>
-				</article>
-			{/each}
-		</div>
-
-		<input on:keydown={handleKeydown} type="text" placeholder="Type here" class="input-bordered input-primary input w-full max-w-xs" />
-	</div>
+<div class="max-w-sm" use:draggable={{ axis: 'both', bounds: 'parent' }}>
+	<Card padding="lg" class="h-96 chat">
+			<div class="flex justify-between"><h3 class="text-xl font-medium text-gray-900 dark:text-white p-0">Eliza Chat</h3><Badge large={true} color="pink">Drag Me</Badge></div>
+			<Hr class="my-8" height="h-px" />
+			<div class="scrollable" bind:this={div}>
+				{#each comments as comment}
+					<article class={comment.author}>
+						<span>{comment.text}</span>
+					</article>
+				{/each}
+			</div>
+			<Input on:keydown={handleKeydown} type="text" placeholder="Type here" color='green' size="lg" />
+	</Card>
 </div>
 
 <style>
@@ -81,7 +81,7 @@
 
 	.scrollable {
 		flex: 1 1 auto;
-		border-top: 1px solid #eee;
+		/* border-top: 1px solid #eee; */
 		margin: 0 0 0.5em 0;
 		overflow-y: auto;
 	}
