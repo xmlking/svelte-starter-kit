@@ -9,7 +9,7 @@
 <button class="btn" on:click={() => ListPolicies2.loadNextPage()}>load more</button>
 <button class="btn-accent btn" on:click={() => ListPolicies2.fetch({ policy: CachePolicy.NetworkOnly })}>refetch</button>
 
-{#if $ListPolicies2.isFetching}
+{#if $ListPolicies2.fetching}
 	Loading...
 {:else}
 	<details>
@@ -28,11 +28,11 @@
     errors: {JSON.stringify($ListPolicies2.errors, null, 2)}
 </pre>
 <pre>
-    isFetching: {JSON.stringify($ListPolicies2.isFetching, null, 2)}
+    fetching: {JSON.stringify($ListPolicies2.fetching, null, 2)}
 </pre>
 <pre>
     partial: {JSON.stringify($ListPolicies2.partial, null, 2)}
-  	</pre>
+</pre>
 <pre>
     variables: {JSON.stringify($ListPolicies2.variables, null, 2)}
 </pre>

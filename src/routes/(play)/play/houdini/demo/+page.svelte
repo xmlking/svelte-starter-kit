@@ -30,7 +30,7 @@
 <button class="btn" on:click={() => allOrders.loadNextPage()}>load more</button>
 <button class="btn-accent btn" on:click={() => allOrders.fetch({ policy: CachePolicy.NetworkOnly })}>refetch</button>
 <br />
-<span>isFetching: {$allOrders.isFetching}</span>
+<span>fetching: {$allOrders.fetching}</span>
 {#each $allOrders.data.customer as customer}
 	<p> Customer: {customer.first_name} {customer.last_name} <span>Order Count: {customer.orders.length}</span></p>
 	<!-- <pre>{JSON.stringify(customer, null, 2)}</pre> -->

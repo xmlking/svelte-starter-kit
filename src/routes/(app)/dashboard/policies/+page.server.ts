@@ -1,7 +1,6 @@
 import { env as dynPriEnv } from '$env/dynamic/private';
 import { env as dynPubEnv } from '$env/dynamic/public';
 import { CachePolicy, DeletePolicyStore, order_by, SearchPoliciesStore } from '$houdini';
-import type { AccountDeleteResult } from '$lib/models/schema';
 import { Logger } from '$lib/utils';
 import { getAppError, isAppError, isHttpError } from '$lib/utils/errors';
 import { getToken } from '@auth/core/jwt';
@@ -16,10 +15,11 @@ assert.ok(dynPriEnv.HASURA_GRAPHQL_ADMIN_SECRET, 'HASURA_GRAPHQL_ADMIN_SECRET no
 
 const log = new Logger('policies.server');
 
-const searchPoliciesStore = new SearchPoliciesStore();
-const query = searchPoliciesStore.artifact.raw;
+// const query = searchPoliciesStore.artifact.raw;
+// const delete_mutation = new DeletePolicyStore().artifact.raw;
 
-const delete_mutation = new DeletePolicyStore().artifact.raw;
+const searchPoliciesStore = new SearchPoliciesStore();
+const deletePolicyStore = new DeletePolicyStore();
 
 export const load = (async (event) => {
 	const { url, setHeaders, parent, request } = event;
@@ -28,7 +28,7 @@ export const load = (async (event) => {
 	// event.setHeaders({ authorization: '' });
 	// const token = await getToken({req: { cookies: event.cookies, headers: event.request.headers },secret: dynPriEnv.AUTH_SECRET,raw: true});
 	const token = await getToken({ req: request, secret: dynPriEnv.AUTH_SECRET, raw: true });
-	console.log('token>>>', token); // FIXME: always return null
+	log.info('token>>>', token); // FIXME: always return null
 
 	const limit = parseInt(url.searchParams.get('limit') ?? '');
 	const offset = parseInt(url.searchParams.get('offset') ?? '');
@@ -45,39 +45,19 @@ export const load = (async (event) => {
 	// const operationName = 'SearchPolicies';
 
 	try {
-		/*
-		const resp = await fetch(dynPubEnv.PUBLIC_GRAPHQL_ENDPOINT, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				'x-hasura-admin-secret': dynPriEnv.HASURA_GRAPHQL_ADMIN_SECRET
-			},
-			body: JSON.stringify({
-				query,
-				variables,
-				operationName
-			})
-		});
-		if (!resp.ok) throw error(resp.status, resp.statusText);
-
-		const { errors, data } = await resp.json();
-		if (errors) return { loadErrors: errors }; // return invalid(400, {loadErrors: errors });
-		*/
-		//----
 		const { errors, data } = await searchPoliciesStore.fetch({
 			event,
 			blocking: true,
 			policy: CachePolicy.CacheAndNetwork,
+			metadata: { token: 'token from session' },
 			variables
 		});
-		console.log('errors', errors);
-		if (errors) return { loadErrors: errors };
+
+		if (errors) return { loadErrors: errors }; // return invalid(400, {loadErrors: errors });
 		if (!data) return { loadErrors: [{ message: 'data null' }] };
-		//----
 
 		const count = data.counts?.aggregate?.count;
-		//const policies: Account[] = data.tz_policies; // FIXME use Account model
-		const policies = data.tz_policies; // FIXME use Account model
+		const policies = data.tz_policies;
 
 		// TIXME: tune: This page will have cache for 5min
 		// setHeaders({
@@ -91,7 +71,6 @@ export const load = (async (event) => {
 		Sentry.captureException(err);
 
 		if (isHttpError(err)) {
-			console.log('in isHttpError', err);
 			throw error(err.status, err.body);
 		}
 		if (isAppError(err)) {
@@ -104,31 +83,16 @@ export const load = (async (event) => {
 export const actions = {
 	delete: async ({ request }) => {
 		const formData = await request.formData();
-		const id = formData.get('id');
-		console.log(id);
-
+		const id = formData.get('id')?.toString();
+		if (!id) return fail(400, { id: 'id is required' });
 		const variables = { id };
-		const operationName = 'DeletePolicy';
 
 		try {
-			const resp = await fetch(dynPubEnv.PUBLIC_GRAPHQL_ENDPOINT, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					'x-hasura-admin-secret': dynPriEnv.HASURA_GRAPHQL_ADMIN_SECRET
-				},
-				body: JSON.stringify({
-					query: delete_mutation,
-					variables,
-					operationName
-				})
+			const data = await deletePolicyStore.mutate(variables, {
+				metadata: { token: 'token from session' }
 			});
-			if (!resp.ok) throw error(resp.status, resp.statusText);
 
-			const { errors, data } = await resp.json();
-			if (errors) return fail(400, { actionErrors: errors });
-
-			const actionResult: AccountDeleteResult = data.delete_tz_policies_by_pk;
+			const actionResult = data.delete_tz_policies_by_pk;
 			if (!actionResult) return fail(400, { actionErrors: [{ message: 'Not Found' }] });
 
 			return {
@@ -139,6 +103,9 @@ export const actions = {
 			Sentry.setContext('source', { code: 'policy.delete' });
 			Sentry.captureException(err);
 
+			if (isHttpError(err)) {
+				throw error(err.status, err.body);
+			}
 			if (isAppError(err)) {
 				throw error(500, err);
 			}
