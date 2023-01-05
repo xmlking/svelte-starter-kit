@@ -15,7 +15,7 @@ const config = {
 		// Then purge CSS files to minimise CSS in production
 		!dev &&
 			cssnano({
-				preset: 'default'
+				preset: ['default', { discardComments: { removeAll: true } }]
 			}),
 		// Use Future CSS Today
 		postcssPresetEnv({

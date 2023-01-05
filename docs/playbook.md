@@ -222,8 +222,8 @@ pnpm add -D houdini graphql-ws
 pnpx houdini init --headers "x-hasura-admin-secret=<HASURA_GRAPHQL_ADMIN_SECRET>"
 
 # To updated your local schema with latest from the graphql server, run:
-# HINT: you may have to hardcode `apiUrl` in `houdini.config.js` temporarily to run this command
-node_modules/.bin/houdini pull-schema -h "x-hasura-admin-secret=<HASURA_GRAPHQL_ADMIN_SECRET>"
+# HINT: it will use  `apiUrl` amd `schemaPollHeaders` in `houdini.config.js`
+node_modules/.bin/houdini pull-schema
 ```
 
 (Or) [URQL](https://formidable.com/open-source/urql/docs/basics/svelte/). [example](https://github.com/hygraph/hygraph-examples/tree/master/with-sveltekit-and-urql)
