@@ -29,15 +29,13 @@ hasura version
 ## open console
 hasura console
 
-# Export metadata and save it in migrations/metadata.yaml file:
-hasura metadata export
-
 # Create a new seed by exporting data from tables already present in the database:
 hasura seed create tz_policies_seed --database-name postgresdb --from-table tz_policies
 # Export data from multiple tables:
 hasura seed create customer_order_seed --database-name postgresdb --from-table customer --from-table order
 # Apply only a particular file:
 hasura seed apply --file 1672767205525_customer_order_seed.sql --database-name postgresdb
+hasura seed apply --file 1672767180588_tz_policies_seed.sql --database-name postgresdb
 
 # To apply all the Migrations present in the `migrations/` directory and the Metadata present in the `metadata/` directory on a new, "fresh",
 # instance of the Hasura Server at http://another-server-instance.hasura.app:
@@ -50,9 +48,11 @@ hasura deploy --endpoint http://another-server-instance.hasura.app  --admin-secr
 #  Check the status of Migrations
 hasura migrate status   --database-name postgresdb
 
+# Export Hasura GraphQL Engine metadata from the database
+hasura metadata export
 # Show changes between server metadata and the exported metadata file:
 hasura metadata diff
-# Reload all the metadata information from database:
+# Reload Hasura GraphQL Engine metadata on the database.
 hasura metadata reload
 # Apply Hasura Metadata
 hasura metadata apply
@@ -76,6 +76,8 @@ To apply all the Migrations present in the `migrations/` directory and the Metad
 
 ```shell
 hasura deploy --endpoint http://localhost:8080  --admin-secret myadminsecretkey
+hasura seed apply --file 1672767205525_customer_order_seed.sql --database-name postgresdb --endpoint http://localhost:8080  --admin-secret myadminsecretkey
+hasura seed apply --file 1672767180588_tz_policies_seed.sql --database-name postgresdb --endpoint http://localhost:8080  --admin-secret myadminsecretkey
 ```
 
 open <http://localhost:8080/console> and try out a query
