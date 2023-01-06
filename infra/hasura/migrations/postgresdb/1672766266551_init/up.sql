@@ -1,9 +1,5 @@
 SET check_function_bodies = false;
 SET TIME ZONE 'UTC';
-CREATE EXTENSION IF NOT EXISTS hstore WITH SCHEMA public;
-COMMENT ON EXTENSION hstore IS 'data type for storing sets of (key, value) pairs';
-CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
-COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
 CREATE FUNCTION public.set_current_timestamp_updated_at() RETURNS trigger
     LANGUAGE plpgsql
     AS $$

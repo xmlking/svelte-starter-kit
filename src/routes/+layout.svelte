@@ -1,4 +1,7 @@
 <script lang="ts">
+	import { dev } from '$app/environment';
+	import { PUBLIC_GOOGLE_ANALYTICS_TARGET_ID } from '$env/static/public';
+	import { Analytics } from '$lib/components';
 	import { Toasts } from '$lib/components/toast';
 	import '../app.pcss';
 
@@ -35,6 +38,10 @@
 <svelte:head>
     {@html webManifest}
 </svelte:head>
+
+{#if !dev && PUBLIC_GOOGLE_ANALYTICS_TARGET_ID}
+	<Analytics TARGET_ID={PUBLIC_GOOGLE_ANALYTICS_TARGET_ID} />
+{/if}
 
 <Toasts placement="bottom-right" />
 
