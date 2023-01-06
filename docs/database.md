@@ -24,8 +24,8 @@ brew link --force libpq
 
 ## Setup
 
-For your self-hosted *production* environment, you need to secure database.  
-For local dev *postgres* database running in docker compose, these steps are not needed.
+For your self-hosted _production_ environment, you need to secure database.  
+For local dev _postgres_ database running in docker compose, these steps are not needed.
 
 SSH to **db host**
 
