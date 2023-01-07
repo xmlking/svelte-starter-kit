@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Footer1 } from '$lib/blocks/footer';
-	import { Header1 } from '$lib/blocks/header';
+	import { StickyHeader } from '$lib/blocks/header';
 	import { DarkMode } from '$lib/components';
 
 	// HINT: added `right-4 top-4` to original `btnClass`
@@ -10,7 +10,8 @@
 <div class="flex min-h-screen flex-col">
 	<DarkMode {btnClass} />
 
-	<Header1 />
+	<!-- <Header1 /> -->
+	<StickyHeader />
 
 	<slot />
 	<Footer1 />
