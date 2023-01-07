@@ -93,7 +93,7 @@ export const actions = {
 			});
 
 			const actionResult = data.delete_tz_policies_by_pk;
-			if (!actionResult) return fail(400, { actionErrors: [{ message: 'Not Found' }] });
+			if (!actionResult) return fail(400, { actionErrors: [{ message: 'data null' }] });
 
 			return {
 				actionResult

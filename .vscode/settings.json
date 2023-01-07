@@ -31,6 +31,7 @@
 	"editor.tabCompletion": "on",
 	"editor.tabSize": 2,
 	"editor.wordWrap": "off",
+	"editor.linkedEditing": true,
 	// To make tailwindcss-intellisense work in .svelte files
 	"editor.quickSuggestions": {
 		"comments": false,

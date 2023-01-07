@@ -210,7 +210,7 @@ export const actions = {
 
 				console.log('data', data);
 				actionResult = data.insert_tz_policies_one;
-				if (!actionResult) return fail(400, { actionErrors: [{ message: 'Not Found' }] });
+				if (!actionResult) return fail(400, { actionErrors: [{ message: 'data null' }] });
 
 				return { actionResult };
 				// throw redirect(303, '/dashboard/policies');
@@ -252,7 +252,7 @@ export const actions = {
 
 				console.log('data', data);
 				actionResult = data.update_tz_policies_by_pk;
-				if (!actionResult) return fail(400, { actionErrors: [{ message: 'Not Found' }] });
+				if (!actionResult) return fail(400, { actionErrors: [{ message: 'data null' }] });
 
 				return { actionResult };
 			}
