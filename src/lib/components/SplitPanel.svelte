@@ -66,7 +66,7 @@
 	 */
 	function drag(node, callback) {
 		/** @param {MouseEvent} event */
-		const mousedown = (event) => {
+		const mousedown = (event: MouseEvent) => {
 			if (event.button !== 0) return;
 
 			event.preventDefault();
@@ -99,7 +99,7 @@
 	 */
 	function touchDrag(node, callback) {
 		/** @param {TouchEvent} event */
-		const touchdown = (event) => {
+		const touchdown = (event: TouchEvent) => {
 			if (event.targetTouches.length > 1) return;
 
 			event.preventDefault();

@@ -12,7 +12,7 @@ if (!dev) {
 }
 
 // Initialize the Sentry SDK here
-if (PUBLIC_CONFY_SENTRY_DSN) {
+if (!dev && PUBLIC_CONFY_SENTRY_DSN) {
 	Sentry.init({
 		dsn: PUBLIC_CONFY_SENTRY_DSN,
 		release: __APP_VERSION__,

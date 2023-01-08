@@ -68,7 +68,7 @@ mutation UpdatePolicy($id: uuid!, $data: tz_policies_set_input!) {
 }
 `;
 
-export const load = (async ({ params, locals, parent }) => {
+export const load = (async ({ params, locals, fetch, parent }) => {
 	const {
 		session: {
 			token,
@@ -153,7 +153,7 @@ export const load = (async ({ params, locals, parent }) => {
 }) satisfies PageServerLoad;
 
 export const actions = {
-	save: async ({ params, request, locals }) => {
+	save: async ({ params, request, locals, fetch }) => {
 		const {
 			token,
 			user: { email }

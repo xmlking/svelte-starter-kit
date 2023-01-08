@@ -19,7 +19,7 @@
 
 	function handleKeydown(event: KeyboardEvent) {
 		if (event.key === 'Enter') {
-			const text = event.target.value;
+			const text =(event.target as HTMLButtonElement).value;
 			if (!text) return;
 
 			comments = comments.concat({
@@ -27,7 +27,7 @@
 				text
 			});
 
-			event.target.value = '';
+			(event.target as HTMLButtonElement).value = '';
 
 			const reply = eliza.answer(text);
 

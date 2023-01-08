@@ -8,7 +8,8 @@
 	 import { onMount } from 'svelte';
 	 import { pwaInfo } from 'virtual:pwa-info';
 
-	let ReloadPrompt
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	let ReloadPrompt: any
 	onMount(async () => {
 		if (pwaInfo) {
 			const { registerSW } = await import('virtual:pwa-register')
@@ -40,7 +41,7 @@
 </svelte:head>
 
 {#if !dev && PUBLIC_GOOGLE_ANALYTICS_TARGET_ID}
-	<Analytics TARGET_ID={PUBLIC_GOOGLE_ANALYTICS_TARGET_ID} />
+	<Analytics gid={PUBLIC_GOOGLE_ANALYTICS_TARGET_ID} />
 {/if}
 
 <Toasts placement="bottom-right" />

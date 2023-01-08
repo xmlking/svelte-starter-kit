@@ -2,7 +2,7 @@
 	import { enhance } from '$app/forms';
 	import { goto } from '$app/navigation';
 	import { ErrorMessage, Errors, FloatingLabelField, Tags } from '$lib/components';
-	// import {default as TagInput } from '$lib/components/TagInput.svelte';
+// import {default as TagInput } from '$lib/components/TagInput.svelte';
 	import { DateInput } from '$lib/components/form';
 	import { addToast, ToastLevel } from '$lib/components/toast';
 	import type { Account } from '$lib/models/schema';
@@ -74,8 +74,9 @@
 	onMount(async () => {
 		annos = annos + ' ';
 	});
-	async function handleAnnotationsChange(event) {
-		const newVal = event.target.value;
+	async function handleAnnotationsChange(event: Event) {
+		const target = event?.target as HTMLInputElement;
+		const newVal = target.value;
 		console.log('handleAnnotationsChange, newVal.....', newVal);
 		if (newVal) {
 			try {
