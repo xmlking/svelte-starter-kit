@@ -30,7 +30,7 @@ process.on('SIGTERM', function () {
 // Read: https://github.com/sveltejs/kit/blob/master/documentation/docs/07-hooks.md
 
 // Initialize the Sentry SDK here
-if (PUBLIC_CONFY_SENTRY_DSN) {
+if (!dev && PUBLIC_CONFY_SENTRY_DSN) {
 	Sentry.init({
 		dsn: PUBLIC_CONFY_SENTRY_DSN,
 		release: __APP_VERSION__,
@@ -62,7 +62,7 @@ export const handleServerError = (({ error, event }) => {
 }) satisfies HandleServerError;
 
 export const handleFetch = (async ({ event, request, fetch }) => {
-	console.log('hooks.server.ts, HandleFetch:');
+	console.log(`hooks.server.ts, HandleFetch: pageUrl: ${event.url}`);
 	const { locals } = event;
 	if (request.url.startsWith('https://graph.microsoft.com')) {
 		const { token } = (await locals.getSession()) ?? {};
