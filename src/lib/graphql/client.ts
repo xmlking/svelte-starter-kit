@@ -10,6 +10,7 @@ const adminSecret = dynPubEnv.PUBLIC_API_TOKEN ?? '';
 
 // For Query & Mutation
 async function fetchQuery({ fetch, text = '', variables = {}, metadata, session }: RequestHandlerArgs) {
+	// metadata usage example
 	if (metadata) console.log('metadata', metadata);
 
 	const token = session?.user?.token;

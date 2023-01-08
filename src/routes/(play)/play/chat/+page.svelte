@@ -56,7 +56,7 @@
 	<meta name="description" content="Eliza Chat" />
 </svelte:head>
 
-<div class="max-w-sm" use:draggable={{ axis: 'both', bounds: 'parent' }}>
+<div class="max-w-sm" use:draggable={{ axis: 'both', bounds: 'parent', handle: '.handle' }}>
 	<Card padding="lg" class="h-96 chat">
 			<div class="flex justify-between"><h3 class="text-xl font-medium text-gray-900 dark:text-white p-0">Eliza Chat</h3><Badge large={true} color="pink">Drag Me</Badge></div>
 			<Hr class="my-8" height="h-px" />
@@ -72,6 +72,11 @@
 </div>
 
 <style>
+	.handle {
+		cursor: move; /* fallback if grab cursor is unsupported */
+		cursor: grab;
+	}
+
 	.chat {
 		display: flex;
 		flex-direction: column;
