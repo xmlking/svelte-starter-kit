@@ -9,7 +9,7 @@ Ref: https://joyofcode.xyz/sveltekit-google-analytics
 </script>
 
 {#if !dev && PUBLIC_GOOGLE_ANALYTICS_TARGET_ID}
-	<Analytics TARGET_ID={PUBLIC_GOOGLE_ANALYTICS_TARGET_ID} />
+	<Analytics gid={PUBLIC_GOOGLE_ANALYTICS_TARGET_ID} />
 {/if}
 
 <slot />
@@ -17,14 +17,14 @@ Ref: https://joyofcode.xyz/sveltekit-google-analytics
 <script lang="ts">
 	import { page } from '$app/stores';
 
-	export let TARGET_ID: string;
+	export let gid: string;
 
-	const src = `https://www.googletagmanager.com/gtag/js?id=${TARGET_ID}`;
+	const src = `https://www.googletagmanager.com/gtag/js?id=${gid}`;
 
 	$: {
 		if (typeof gtag !== 'undefined') {
 			// eslint-disable-next-line no-undef
-			gtag('config', TARGET_ID, {
+			gtag('config', gid, {
 				page_title: document.title,
 				page_path: $page.url.pathname
 			});
@@ -35,7 +35,7 @@ Ref: https://joyofcode.xyz/sveltekit-google-analytics
 <svelte:head>
 	<!-- Global site tag (gtag.js) - Google Analytics -->
 	<script async {src}></script>
-	<script {TARGET_ID}>
+	<script data-gid={gid}>
 		window.dataLayer = window.dataLayer || [];
 
 		function gtag() {
@@ -43,6 +43,6 @@ Ref: https://joyofcode.xyz/sveltekit-google-analytics
 		}
 
 		gtag('js', new Date());
-		gtag('config',  document.currentScript.getAttribute('TARGET_ID'), { send_page_view: false });
+		gtag('config',  document.currentScript.getAttribute('data-gid'), { send_page_view: false });
 	</script>
 </svelte:head>
