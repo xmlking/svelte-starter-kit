@@ -34,7 +34,7 @@
 		"@skeletonlabs/skeleton": "0.86.9",
 		"@sveltejs/adapter-auto": "1.0.0",
 		"@sveltejs/adapter-node": "1.0.0",
-		"@sveltejs/kit": "1.0.1",
+		"@sveltejs/kit": "1.0.7",
 		"@sveltejs/package": "1.0.1",
 		"@tailwindcss/aspect-ratio": "0.4.2",
 		"@tailwindcss/container-queries": "0.1.0",
