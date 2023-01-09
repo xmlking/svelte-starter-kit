@@ -49,7 +49,7 @@ export const load = (async (event) => {
 			event,
 			blocking: true,
 			policy: CachePolicy.CacheAndNetwork,
-			metadata: { token: 'token from session' },
+			metadata: { backendToken: 'token from TokenJar' },
 			variables
 		});
 
@@ -81,7 +81,7 @@ export const load = (async (event) => {
 }) satisfies PageServerLoad;
 
 export const actions = {
-	delete: async ({ request }) => {
+	delete: async ({ request, fetch }) => {
 		const formData = await request.formData();
 		const id = formData.get('id')?.toString();
 		if (!id) return fail(400, { id: 'id is required' });
@@ -89,7 +89,9 @@ export const actions = {
 
 		try {
 			const data = await deletePolicyStore.mutate(variables, {
-				metadata: { token: 'token from session' }
+				metadata: { backendToken: 'token from tokenStore' },
+				fetch
+				// optimisticResponse: {}
 			});
 
 			const actionResult = data.delete_tz_policies_by_pk;
