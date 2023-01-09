@@ -3,7 +3,8 @@ import { env as dynPubEnv } from '$env/dynamic/public';
 import { CachePolicy, DeletePolicyStore, order_by, SearchPoliciesStore } from '$houdini';
 import { Logger } from '$lib/utils';
 import { getAppError, isAppError, isHttpError } from '$lib/utils/errors';
-import { getToken } from '@auth/core/jwt';
+// import { getToken } from '@auth/core/jwt';
+import { getToken } from '$lib/server/middleware/authjs-helper';
 import * as Sentry from '@sentry/svelte';
 import { error, fail } from '@sveltejs/kit';
 
@@ -22,13 +23,14 @@ const searchPoliciesStore = new SearchPoliciesStore();
 const deletePolicyStore = new DeletePolicyStore();
 
 export const load = (async (event) => {
-	const { url, setHeaders, parent, request } = event;
+	const { url, setHeaders, parent, request, cookies } = event;
 	await parent(); // HINT: to make sure use session is valid
 
-	// event.setHeaders({ authorization: '' });
+	// FIXME: always return null
 	// const token = await getToken({req: { cookies: event.cookies, headers: event.request.headers },secret: dynPriEnv.AUTH_SECRET,raw: true});
-	const token = await getToken({ req: request, secret: dynPriEnv.AUTH_SECRET, raw: true });
-	log.info('token>>>', token); // FIXME: always return null
+	// const token = await getToken({ req: request, secret: dynPriEnv.AUTH_SECRET, raw: true });
+	const token = await getToken(cookies);
+	log.info('token>>>', token);
 
 	const limit = parseInt(url.searchParams.get('limit') ?? '');
 	const offset = parseInt(url.searchParams.get('offset') ?? '');
