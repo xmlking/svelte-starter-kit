@@ -1,10 +1,11 @@
-import { COOKIE_ACCESS_TOKEN_KEY, getCookie } from '$lib/utils/cookies';
+import { env as dynPriEnv } from '$env/dynamic/private';
+import { getToken } from '@auth/core/jwt';
 import type { RequestHandler } from './$types';
 
 // Ref: https://github.com/WayneMorganUK/discord_auth/tree/0b7364d24263b479ce2292a218f98a2a5c4786d2/src/routes/api
 
-export const GET = (async ({ cookies }) => {
-	const token = getCookie(cookies, COOKIE_ACCESS_TOKEN_KEY);
+export const GET = (async ({ request, fetch }) => {
+	const token = await getToken({ req: request, secret: dynPriEnv.AUTH_SECRET, raw: true });
 	const res = await fetch('https://graph.microsoft.com/v1.0/me/photos/48x48/$value', {
 		headers: {
 			Authorization: `Bearer ${token}`,

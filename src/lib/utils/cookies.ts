@@ -1,10 +1,6 @@
 // import { encrypt } from '$lib/utils';
 import { dev } from '$app/environment';
 import type { Cookies } from '@sveltejs/kit';
-export const COOKIE_ACCESS_TOKEN_KEY = 'sb:access_token';
-export const COOKIE_ID_TOKEN_KEY = 'sb:id_token';
-export const COOKIE_REFRESH_TOKEN_KEY = 'sb:refresh_token';
-export const COOKIE_USER_KEY = 'sb:user';
 
 export function setCookie(cookies: Cookies, name: string, value: string, expiresIn = 0) {
 	cookies.set(name, value, {
