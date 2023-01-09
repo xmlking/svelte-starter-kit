@@ -1,6 +1,7 @@
 import { PUBLIC_CONFY_SENTRY_DSN } from '$env/static/public';
 
 import { dev } from '$app/environment';
+import { TokenJar } from '$lib/server/backend/TokenJar';
 import { authjs, guard } from '$lib/server/middleware';
 import { Logger } from '$lib/utils';
 import * as Sentry from '@sentry/svelte';
@@ -46,6 +47,20 @@ if (!dev && PUBLIC_CONFY_SENTRY_DSN) {
 	});
 }
 
+// Initialize TokenJar
+TokenJar.init([
+	// {
+	// 	endpoint: dynPriEnv.MY_BACKEND_ENDPOINT ?? '',
+	// 	authConfig: {
+	// 		auth_endpoint: dynPriEnv.MY_BACKEND_AUTH_ENDPOINT ?? '',
+	// 		client_id: dynPriEnv.MY_BACKEND_AUTH_CLIENT_ID ?? '',
+	// 		client_secret: dynPriEnv.MY_BACKEND_AUTH_CLIENT_SECRET ?? '',
+	// 		grant_type: dynPriEnv.MY_BACKEND_AUTH_CLIENT_GRANT_TYPE ?? '',
+	// 		scope: dynPriEnv.MY_BACKEND_AUTH_CLIENT_SCOPE
+	// 	}
+	// }
+]);
+
 // Invoked for each endpoint called and initially for SSR router
 // export const handle = sequence(setUser, guard, houdini, logger);
 export const handle = sequence(authjs, guard);
@@ -62,15 +77,17 @@ export const handleServerError = (({ error, event }) => {
 }) satisfies HandleServerError;
 
 export const handleFetch = (async ({ event, request, fetch }) => {
-	console.log(`hooks.server.ts, HandleFetch: pageUrl: ${event.url}`);
-	const { locals } = event;
-	if (request.url.startsWith('https://graph.microsoft.com')) {
-		const { token } = (await locals.getSession()) ?? {};
-		if (token) {
-			request.headers.set('Authorization', `Bearer ${token}`);
-		}
+	console.log('hooks.server.ts, HandleFetch: pageUrl:', event.url.toString());
+
+	const token = TokenJar.getToken(request.url);
+	if (token) {
+		console.debug('hooks.server.ts, HandleFetch: adding token for:', request.url);
+		request.headers.set('Authorization', `Bearer ${token}`);
 	}
 	/*
+	if (request.url.startsWith('https://graph.microsoft.com')) {
+		request.headers.set('Authorization', `Bearer ${microsoft_token}`);
+	}
 	if (request.url.startsWith('https://api.yourapp.com/')) {
 		// clone the original request, but change the URL
 		request = new Request(
