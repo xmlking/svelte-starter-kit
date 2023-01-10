@@ -3,8 +3,8 @@ import { AuthClient } from './AuthClient';
 /**
  * USAGE: in hooks.server.ts, add:
  *
- * // Initialize TokenJar
- * TokenJar.init([
+ * // Initialize TokenVault
+ * TokenVault.init([
  *	{
  *		endpoint: dynPriEnv.MY_BACKEND_ENDPOINT,
  *		authConfig: {
@@ -20,14 +20,14 @@ import { AuthClient } from './AuthClient';
  *
  * // Inject token for egress fetch calls
  * export const handleFetch = (async ({ event, request, fetch }) => {
- * 	const token = TokenJar.getToken(request.url);
+ * 	const token = TokenVault.getToken(request.url);
  * 	if (token) {
  * 		request.headers.set('Authorization', `Bearer ${token}`);
  * 	}
  * 	return fetch(request);
  * }) satisfies HandleFetch;
  */
-export class TokenJar {
+export class TokenVault {
 	public static tokenMap: { [endpoint: string]: AuthClient } = {};
 
 	/**
