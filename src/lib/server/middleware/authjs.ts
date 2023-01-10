@@ -4,6 +4,7 @@ import GitHub from '@auth/core/providers/github';
 import Google from '@auth/core/providers/google';
 import { SvelteKitAuth } from '@auth/sveltekit';
 import type { Handle } from '@sveltejs/kit';
+import assert from 'node:assert';
 
 const AZURE_AD_CLIENT_ID = dynPriEnv.AZURE_AD_CLIENT_ID;
 const AZURE_AD_CLIENT_SECRET = dynPriEnv.AZURE_AD_CLIENT_SECRET;
@@ -12,6 +13,16 @@ const GITHUB_ID = dynPriEnv.GITHUB_ID;
 const GITHUB_SECRET = dynPriEnv.GITHUB_SECRET;
 const GOOGLE_ID = dynPriEnv.GOOGLE_ID;
 const GOOGLE_SECRET = dynPriEnv.GOOGLE_SECRET;
+
+assert.ok(AZURE_AD_CLIENT_ID, 'AZURE_AD_CLIENT_ID not configered');
+assert.ok(AZURE_AD_CLIENT_SECRET, 'AZURE_AD_CLIENT_SECRET not configered');
+assert.ok(AZURE_AD_TENANT_ID, 'AZURE_AD_TENANT_ID not configered');
+assert.ok(GITHUB_ID, 'GITHUB_ID not configered');
+assert.ok(GITHUB_SECRET, 'GITHUB_SECRET not configered');
+assert.ok(GOOGLE_ID, 'GOOGLE_ID not configered');
+assert.ok(GOOGLE_SECRET, 'GOOGLE_SECRET not configered');
+
+//  assert(typeof AZURE_AD_CLIENT_ID === 'string');
 
 // TODO: https://hasura.io/learn/graphql/hasura-authentication/integrations/nextjs-auth/
 
