@@ -69,6 +69,15 @@ export const stringToMap = ifNonEmptyString((arg) => new Map(Object.entries(JSON
 export const mapToString = (arg: Map<string, string>) => Array.from(arg, ([k, v]) => `"${k}"=>"${v}"`).join(',');
 export const stringToJSON = ifNonEmptyString((arg) => JSON.parse(arg));
 
+/**
+ * https://twitter.com/jjenzz/status/1612531220780294174?s=20&t=VYqGsLYl_9H-CSenMZ-hCg
+ */
+export const empty2Undefined = z.literal('').transform(() => undefined);
+export const empty2Null = z.literal('').transform(() => null);
+export function asOptionalField<T extends z.ZodTypeAny>(schema: T) {
+	return schema.optional().or(empty2Undefined);
+}
+
 // in-source testing
 if (import.meta.vitest) {
 	const { it, expect } = import.meta.vitest;

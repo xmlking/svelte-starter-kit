@@ -106,6 +106,8 @@ pnpx vitest -u
 
 # test specific folder
 pnpx vitest run src/lib/utils
+(or)
+./node_modules/.bin/vitest run src/lib/utils
 ```
 
 ### E2E Tests

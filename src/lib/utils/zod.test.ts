@@ -1,6 +1,6 @@
 import { afterAll, beforeAll } from 'vitest';
 import { z } from 'zod';
-import { emptyToNull, stringToMap } from './zod.utils';
+import { asOptionalField, emptyToNull, stringToMap } from './zod.utils';
 
 describe('Test zod validations', () => {
 	beforeAll(async () => {
@@ -23,6 +23,10 @@ describe('Test zod validations', () => {
 		const valid_to2 = '';
 		const emptySchema = z.preprocess(emptyToNull, z.string().datetime({ offset: true }).nullish());
 		expect(emptySchema.parse(valid_to2)).toStrictEqual(null);
+
+		const valid_to3 = '';
+		const emptyDTSchema = asOptionalField(z.string().datetime({ offset: true }));
+		expect(emptyDTSchema.parse(valid_to3)).toStrictEqual(undefined);
 	});
 	it('should correctly convert stringified JSON object to Map', () => {
 		const annotations = `{"key1": "value1", "key2": "value2"}`;
