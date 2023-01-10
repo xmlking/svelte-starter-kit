@@ -1,7 +1,7 @@
 import { PUBLIC_CONFY_SENTRY_DSN } from '$env/static/public';
 
 import { dev } from '$app/environment';
-import { TokenJar } from '$lib/server/backend/TokenJar';
+import { TokenVault } from '$lib/server/backend/TokenVault';
 import { authjs, guard } from '$lib/server/middleware';
 import { Logger } from '$lib/utils';
 import * as Sentry from '@sentry/svelte';
@@ -47,8 +47,8 @@ if (!dev && PUBLIC_CONFY_SENTRY_DSN) {
 	});
 }
 
-// Initialize TokenJar
-TokenJar.init([
+// Initialize TokenVault
+TokenVault.init([
 	// {
 	// 	endpoint: dynPriEnv.MY_BACKEND_ENDPOINT ?? '',
 	// 	authConfig: {
@@ -79,7 +79,7 @@ export const handleServerError = (({ error, event }) => {
 export const handleFetch = (async ({ event, request, fetch }) => {
 	console.log('hooks.server.ts, HandleFetch: pageUrl:', event.url.toString());
 
-	const token = TokenJar.getToken(request.url);
+	const token = TokenVault.getToken(request.url);
 	if (token) {
 		console.debug('hooks.server.ts, HandleFetch: adding token for:', request.url);
 		request.headers.set('Authorization', `Bearer ${token}`);

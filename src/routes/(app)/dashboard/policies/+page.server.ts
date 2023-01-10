@@ -50,7 +50,7 @@ export const load = (async (event) => {
 			event,
 			blocking: true,
 			policy: CachePolicy.CacheAndNetwork,
-			metadata: { backendToken: 'token from TokenJar' },
+			metadata: { backendToken: 'token from TokenVault' },
 			variables
 		});
 
