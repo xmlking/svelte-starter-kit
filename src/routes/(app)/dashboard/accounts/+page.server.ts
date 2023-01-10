@@ -1,5 +1,5 @@
+import { getAppError, isAppError } from '$lib/errors';
 import type { Account } from '$lib/models/types/accounts';
-import { getAppError, isAppError } from '$lib/utils/errors';
 import { createData } from '$mocks/data/accounts';
 import { error, fail } from '@sveltejs/kit';
 import { ZodError } from 'zod';

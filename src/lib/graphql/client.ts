@@ -5,8 +5,8 @@ import { HoudiniClient } from '$houdini';
 import { createClient as createWSClient } from 'graphql-ws';
 
 const url = dynPubEnv.PUBLIC_GRAPHQL_ENDPOINT;
-// FIXME: remove PUBLIC_API_TOKEN
-const adminSecret = dynPubEnv.PUBLIC_API_TOKEN ?? '';
+// FIXME: remove PUBLIC_GRAPHQL_TOKEN
+const adminSecret = dynPubEnv.PUBLIC_GRAPHQL_TOKEN ?? '';
 
 // For Query & Mutation
 async function fetchQuery({ fetch, text = '', variables = {}, metadata, session }: RequestHandlerArgs) {

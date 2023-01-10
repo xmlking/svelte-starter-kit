@@ -1,4 +1,4 @@
-import { getAppError, isAppError } from '$lib/utils/errors';
+import { getAppError, isAppError } from '$lib/errors';
 import { createRandomAccount } from '$mocks/data/accounts';
 import { error, fail } from '@sveltejs/kit';
 import { ZodError } from 'zod';
