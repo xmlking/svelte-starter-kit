@@ -1,3 +1,7 @@
+/**
+ * New Errors
+ */
+export { ErrorBase, NotFoundError, ResponseError } from './errors';
 export { getHttpCode } from './grpc2http';
 export { isHttpError, type HttpError } from './http.error';
 

@@ -11,7 +11,7 @@ const defaultMarshall = {
 const config = {
 	apiUrl: 'env:PUBLIC_GRAPHQL_ENDPOINT',
 	schemaPollHeaders: {
-		'x-hasura-admin-secret': 'env:HASURA_GRAPHQL_ADMIN_SECRET'
+		'x-hasura-admin-secret': 'env:PUBLIC_GRAPHQL_TOKEN'
 	},
 
 	plugins: {

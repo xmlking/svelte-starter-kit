@@ -1,8 +1,7 @@
-import { env as dynPriEnv } from '$env/dynamic/private';
 import { env as dynPubEnv } from '$env/dynamic/public';
 import { CachePolicy, DeletePolicyStore, order_by, SearchPoliciesStore } from '$houdini';
+import { getAppError, isAppError, isHttpError } from '$lib/errors';
 import { Logger } from '$lib/utils';
-import { getAppError, isAppError, isHttpError } from '$lib/utils/errors';
 // import { getToken } from '@auth/core/jwt';
 import { getToken } from '$lib/server/middleware/authjs-helper';
 import * as Sentry from '@sentry/svelte';
@@ -12,7 +11,7 @@ import assert from 'node:assert';
 import type { Actions, PageServerLoad } from './$types';
 
 assert.ok(dynPubEnv.PUBLIC_GRAPHQL_ENDPOINT, 'PUBLIC_GRAPHQL_ENDPOINT not configered');
-assert.ok(dynPriEnv.HASURA_GRAPHQL_ADMIN_SECRET, 'HASURA_GRAPHQL_ADMIN_SECRET not configered');
+assert.ok(dynPubEnv.PUBLIC_GRAPHQL_TOKEN, 'PUBLIC_GRAPHQL_TOKEN not configered');
 
 const log = new Logger('policies.server');
 
