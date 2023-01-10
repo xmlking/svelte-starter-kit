@@ -1,6 +1,3 @@
-/* eslint-disable */
-// @ts-nocheck
-// FIXME above
 import { env as dynPriEnv } from '$env/dynamic/private';
 import AzureAD from '@auth/core/providers/azure-ad';
 import GitHub from '@auth/core/providers/github';
@@ -20,11 +17,13 @@ const GOOGLE_SECRET = dynPriEnv.GOOGLE_SECRET;
 
 export const authjs = SvelteKitAuth({
 	providers: [
+		//@ts-expect-error issue https://github.com/nextauthjs/next-auth/issues/6174
 		Google({
 			clientId: GOOGLE_ID,
 			clientSecret: GOOGLE_SECRET,
 			authorization: { params: { prompt: 'consent' } }
 		}),
+		//@ts-expect-error issue https://github.com/nextauthjs/next-auth/issues/6174
 		AzureAD({
 			clientId: AZURE_AD_CLIENT_ID,
 			clientSecret: AZURE_AD_CLIENT_SECRET,
@@ -32,6 +31,7 @@ export const authjs = SvelteKitAuth({
 			authorization: { params: { scope: 'openid profile User.Read email' } }
 			// client: {},
 		}),
+		//@ts-expect-error issue https://github.com/nextauthjs/next-auth/issues/6174
 		GitHub({ clientId: GITHUB_ID, clientSecret: GITHUB_SECRET })
 	],
 	callbacks: {
