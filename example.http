@@ -5,20 +5,23 @@
 ###
 
 ### Pull Schema
-# @name pullSchema
+# @name IntrospectionQuery
 POST  {{graphqlEndpoint}}
 Content-Type: application/json
 x-hasura-admin-secret: {{graphqlAdminToken}}
 X-REQUEST-TYPE: GraphQL
 
-{
-  __schema {
-    queryType {
-      fields {
-        name
-      }
-    }
-  }
+query IntrospectionQuery {
+	__schema {
+		queryType { name }
+		mutationType { name }
+		subscriptionType { name }
+		directives {
+			name
+			description
+			locations
+		}
+	}
 }
 
 ### list all active policies

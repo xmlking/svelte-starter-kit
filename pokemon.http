@@ -1,17 +1,20 @@
 ### Pull Schema
-# @name pullSchema
+# @name IntrospectionQuery
 POST https://beta.pokeapi.co/graphql/v1beta
 Content-Type: application/json
 X-REQUEST-TYPE: GraphQL
 
-{
-  __schema {
-    queryType {
-      fields {
-        name
-      }
-    }
-  }
+query IntrospectionQuery {
+	__schema {
+		queryType { name }
+		mutationType { name }
+		subscriptionType { name }
+		directives {
+			name
+			description
+			locations
+		}
+	}
 }
 
 ### list pokemon
