@@ -24,7 +24,7 @@
 		"@auth/core": "0.2.5",
 		"@auth/sveltekit": "0.1.12",
 		"@faker-js/faker": "7.6.0",
-		"@felte/reporter-svelte": "1.1.4",
+		"@felte/reporter-svelte": "1.1.5",
 		"@felte/validator-zod": "1.0.12",
 		"@neoconfetti/svelte": "1.0.0",
 		"@neodrag/svelte": "2.0.1",
