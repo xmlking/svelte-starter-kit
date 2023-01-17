@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { goto } from '$app/navigation';
-	import { ErrorMessage, Errors, FloatingLabelField, Tags } from '$lib/components';
+	import { ErrorMessage, FloatingLabelField, GraphQLError, Tags } from '$lib/components';
 // import {default as TagInput } from '$lib/components/TagInput.svelte';
 	import { DateInput } from '$lib/components/form';
 	import { addToast, ToastLevel } from '$lib/components/toast';
-	import type { Account } from '$lib/models/schema';
-	import { accountClientSchema } from '$lib/models/schema';
+	import type { Policy } from '$lib/models/schema';
+	import { policyClientSchema } from '$lib/models/schema';
 	import { validator } from '@felte/validator-zod';
 	import { createForm } from 'felte';
 	import { Breadcrumb, BreadcrumbItem, Button, ButtonGroup, FloatingLabelInput, Spinner } from 'flowbite-svelte';
@@ -15,24 +15,17 @@
 	import type { ActionData, PageData } from './$types';
 
 	export let form: ActionData;
-	let { actionResult, actionErrors, formErrors, fieldErrors } = form || {};
-	$: if (form) ({ actionResult, actionErrors, formErrors, fieldErrors } = form);
+	let { actionResult, actionError, formErrors, fieldErrors } = form || {};
+	$: if (form) ({ actionResult, actionError, formErrors, fieldErrors } = form);
 	$: if (actionResult) {
-		addToast({ message: `${actionResult?.display_name} saved`, dismissible: true, duration: 10000, type: ToastLevel.Info });
+		addToast({ message: `${actionResult.display_name} saved`, dismissible: true, duration: 10000, type: ToastLevel.Info });
 		goto('/dashboard/policies');
 	}
-	$: if (actionErrors) addToast({ message: actionErrors[0].message, dismissible: true, duration: 10000, type: ToastLevel.Error });
-
-	$: console.log('actionResultresult', actionResult);
-	$: console.log('actionErrors', actionErrors);
-	$: console.log('formErrors', formErrors);
-	$: console.log('fieldErrors', fieldErrors);
+	$: if (actionError) addToast({ message: actionError.message, dismissible: true, duration: 10000, type: ToastLevel.Error });
 
 	export let data: PageData;
-	let { policy, loadErrors } = data;
-	$: ({ policy, loadErrors } = data);
-	$: if (loadErrors) console.log('details: loadErrors', loadErrors);
-	$: if (policy) console.log('$policy>>>', policy);
+	let { policy, loadError } = data;
+	$: ({ policy, loadError } = data);
 	let editMode = policy?.id != '00000000-0000-0000-0000-000000000000';
 
 	async function goBack() {
@@ -40,8 +33,8 @@
 	}
 
 	// Felte
-	// const schema = editMode ? accountBaseSchema : accountCreateBaseSchema
-	const schema = accountClientSchema;
+	// const schema = editMode ? policyBaseSchema : policyCreateBaseSchema
+	const schema = policyClientSchema;
 	const {
 		form: fForm,
 		data: fData,
@@ -54,8 +47,8 @@
 		unsetField,
 		setErrors,
 		setIsDirty
-	} = createForm<Account>({
-		initialValues: policy,
+	} = createForm<Policy>({
+		initialValues: policy ?? {},
 		extend: validator({ schema }),
 		// this is dummy submit method for felte, sveltekit's `Form Action` really submit the form.
 		onSubmit: async (values, context) => {
@@ -156,7 +149,7 @@
 	<BreadcrumbItem>Edit Policy</BreadcrumbItem>
 </Breadcrumb>
 
-<Errors errors={loadErrors} />
+<GraphQLError error={loadError} />
 
 <form class="space-y-6" method="POST" action="?/save" use:fForm use:enhance>
 	{#if policy}
