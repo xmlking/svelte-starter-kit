@@ -1,30 +1,30 @@
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
 // and what to do when importing types
-declare namespace App {
-	interface Window {
-		dataLayer: IArguments[];
-		gtag(type: string, ...args: any[]): void;
-	}
+declare global {
+	namespace App {
+		import { DefaultSession } from '@auth/core/types';
+		interface UserSession extends DefaultSession {
+			token: string;
+			rules: string[];
+		}
+		interface Error {
+			message: string; // this property is always required, to provide a sensible fallback
+			context?: Record<string, any>;
+		}
 
-	import { DefaultSession } from '@auth/core/types';
-	interface UserSession extends DefaultSession {
-		token: string;
-		rules: string[];
+		interface Locals {
+			session: UserSession;
+			getSession(): Promise<UserSession | null>;
+		}
+		interface PageData {
+			session: UserSession | null;
+		}
+		// interface Platform {}
 	}
-	interface Error {
-		message: string; // this property is always required, to provide a sensible fallback
-		context?: Record<string, any>;
-	}
-	interface Locals {
-		session: UserSession;
-		getSession(): Promise<UserSession | null>;
-	}
-	interface PageData {
-		session: UserSession | null;
-	}
-	// interface Platform {}
 }
+
+export {};
 
 // App version from package.json
 declare const __APP_VERSION__: string;

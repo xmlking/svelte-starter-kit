@@ -2,7 +2,7 @@ import { PUBLIC_CONFY_SENTRY_DSN } from '$env/static/public';
 
 import { dev } from '$app/environment';
 import { TokenVault } from '$lib/server/backend/TokenVault';
-import { authjs, guard } from '$lib/server/middleware';
+import { authjs, guard, houdini } from '$lib/server/middleware';
 import { Logger } from '$lib/utils';
 import * as Sentry from '@sentry/svelte';
 import { BrowserTracing } from '@sentry/tracing';
@@ -63,7 +63,7 @@ TokenVault.init([
 
 // Invoked for each endpoint called and initially for SSR router
 // export const handle = sequence(setUser, guard, houdini, logger);
-export const handle = sequence(authjs, guard);
+export const handle = sequence(authjs, guard, houdini);
 
 export const handleServerError = (({ error, event }) => {
 	console.error('hooks:server:handleServerError:', error);
