@@ -1,3 +1,4 @@
+import { building } from '$app/environment';
 import { env as dynPubEnv } from '$env/dynamic/public';
 import { CachePolicy, CreatePolicyStore, GetPolicyStore, UpdatePolicyStore } from '$houdini';
 import { handleActionErrors, handleLoadErrors, PolicyError } from '$lib/errors';
@@ -13,9 +14,10 @@ import crypto from 'node:crypto';
 import { ZodError } from 'zod';
 import type { Actions, PageServerLoad } from './$types';
 
-assert.ok(dynPubEnv.PUBLIC_GRAPHQL_ENDPOINT, 'PUBLIC_GRAPHQL_ENDPOINT not configered');
-assert.ok(dynPubEnv.PUBLIC_GRAPHQL_TOKEN, 'PUBLIC_GRAPHQL_TOKEN not configered');
-
+if (!building) {
+	assert.ok(dynPubEnv.PUBLIC_GRAPHQL_ENDPOINT, 'PUBLIC_GRAPHQL_ENDPOINT not configured');
+	assert.ok(dynPubEnv.PUBLIC_GRAPHQL_TOKEN, 'PUBLIC_GRAPHQL_TOKEN not configured');
+}
 const log = new Logger('policy.details.server');
 
 const getPolicyStore = new GetPolicyStore();

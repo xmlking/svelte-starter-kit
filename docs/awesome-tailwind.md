@@ -21,6 +21,10 @@ Awesome **Tailwind CSS** Links
 - [Preline Blocks]([preline](https://preline.co/examples.html)
 - [hyperui](https://www.hyperui.dev/)
 
+## Dashboards
+
+- [Flowbite Admin Dashboard](https://github.com/themesberg/flowbite-admin-dashboard)
+
 ## Guides
 
 - [Best free tailwind CSS libraries for 2023](https://medium.com/frontendweb/top-19-best-free-tailwind-css-libraries-kits-for-2023-8dfb478d4d0f)

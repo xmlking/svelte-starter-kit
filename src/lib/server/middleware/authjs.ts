@@ -14,13 +14,13 @@ const GITHUB_SECRET = dynPriEnv.GITHUB_SECRET;
 const GOOGLE_ID = dynPriEnv.GOOGLE_ID;
 const GOOGLE_SECRET = dynPriEnv.GOOGLE_SECRET;
 
-assert.ok(AZURE_AD_CLIENT_ID, 'AZURE_AD_CLIENT_ID not configered');
-assert.ok(AZURE_AD_CLIENT_SECRET, 'AZURE_AD_CLIENT_SECRET not configered');
-assert.ok(AZURE_AD_TENANT_ID, 'AZURE_AD_TENANT_ID not configered');
-assert.ok(GITHUB_ID, 'GITHUB_ID not configered');
-assert.ok(GITHUB_SECRET, 'GITHUB_SECRET not configered');
-assert.ok(GOOGLE_ID, 'GOOGLE_ID not configered');
-assert.ok(GOOGLE_SECRET, 'GOOGLE_SECRET not configered');
+assert.ok(AZURE_AD_CLIENT_ID, 'AZURE_AD_CLIENT_ID not configured');
+assert.ok(AZURE_AD_CLIENT_SECRET, 'AZURE_AD_CLIENT_SECRET not configured');
+assert.ok(AZURE_AD_TENANT_ID, 'AZURE_AD_TENANT_ID not configured');
+assert.ok(GITHUB_ID, 'GITHUB_ID not configured');
+assert.ok(GITHUB_SECRET, 'GITHUB_SECRET not configured');
+assert.ok(GOOGLE_ID, 'GOOGLE_ID not configured');
+assert.ok(GOOGLE_SECRET, 'GOOGLE_SECRET not configured');
 
 //  assert(typeof AZURE_AD_CLIENT_ID === 'string');
 
