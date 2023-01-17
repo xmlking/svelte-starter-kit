@@ -1,3 +1,4 @@
+import { ResponseError } from '$lib/errors';
 import type { OAuth2TokenRequest, OAuth2TokenResponse } from '$lib/models/types/auth';
 
 export class AuthClient {
@@ -12,12 +13,14 @@ export class AuthClient {
 	constructor(endpoint: string, payload: OAuth2TokenRequest) {
 		this.#endpoint = endpoint;
 		this.#payload = new URLSearchParams({ ...payload }).toString();
-		try {
-			this.getAccessToken();
-		} catch (e) {
-			console.error('cannot get token for:', endpoint);
-			console.error(e, (e as Error).stack);
-		}
+		(async () => {
+			try {
+				await this.getAccessToken();
+			} catch (e) {
+				console.error('cannot get token for:', endpoint);
+				console.error(e, (e as Error).stack);
+			}
+		})();
 	}
 
 	private async getAccessToken() {
@@ -27,10 +30,10 @@ export class AuthClient {
 			body: this.#payload
 		});
 
-		if (!resp.ok) throw { code: resp.status, message: resp.statusText };
+		if (!resp.ok) throw new ResponseError('AuthClient: Bad AccessToken response', resp);
 		const response: OAuth2TokenResponse = await resp.json();
 		const { access_token, expires_in } = response;
-		console.info('storking token for backend:', this.#endpoint, expires_in);
+		console.info('storing token for backend:', this.#endpoint, expires_in);
 		this.#access_token = access_token;
 		this.#expires_at = Date.now() + expires_in * 1000;
 

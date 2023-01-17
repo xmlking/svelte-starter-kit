@@ -13,7 +13,7 @@ const config = {
 	schemaPollHeaders: {
 		'x-hasura-admin-secret': 'env:PUBLIC_GRAPHQL_TOKEN'
 	},
-
+	schemaPollInterval: 0, //  only pull the schema when you first run `pnpm dev`
 	plugins: {
 		'houdini-svelte': {
 			client: './src/lib/graphql/client',

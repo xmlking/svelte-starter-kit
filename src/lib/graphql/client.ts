@@ -11,15 +11,19 @@ const adminSecret = dynPubEnv.PUBLIC_GRAPHQL_TOKEN ?? '';
 // For Query & Mutation
 async function fetchQuery({ fetch, text = '', variables = {}, metadata, session }: RequestHandlerArgs) {
 	// metadata usage example
-	if (metadata) console.log('metadata', metadata);
+	if (metadata) {
+		console.log('metadata', metadata);
+	}
 
-	const token = session?.user?.token;
+	const token = session?.token;
+	const backendToken = metadata?.backendToken;
 
 	const result = await fetch(url, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
 			...(token ? { Authorization: `Bearer ${token}` } : {}),
+			...(backendToken ? { backendToken } : {}),
 			'X-Hasura-Admin-Secret': adminSecret // FIXME: remove me
 		},
 		body: JSON.stringify({

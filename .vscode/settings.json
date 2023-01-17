@@ -105,12 +105,11 @@
 	"cSpell.enabledLanguageIds": ["asciidoc", "css", "go", "html", "javascript", "json", "markdown", "plaintext", "python", "rust", "scss", "text", "typescript", "typescriptreact", "yml", "proto3", "svelte"],
 	// This is a whitelist of words that we think we spell just fine.
 	"cSpell.userWords": ["grpc", "log", "proto", "protobuf", "timeout"],
-	"cSpell.ignorePaths": ["node_modules", "**/node_modules", "**/node_modules/**", ".git", "*rc"],
+	"cSpell.ignorePaths": ["node_modules", "**/node_modules", "**/node_modules/**", ".git"],
 
 	////////// svelte //////////
 	"svelte.enable-ts-plugin": true,
 	"svelte.plugin.svelte.format.config.svelteStrictMode": true,
-	"svelte.plugin.svelte.useNewTransformation": true,
 	"svelte.plugin.svelte.defaultScriptLanguage": "ts",
 	"svelte.plugin.svelte.compilerWarnings": {
 		// "css-unused-selector": "ignore",
@@ -124,11 +123,13 @@
 	////////// tailwindCSS //////////
 	"tailwindCSS.emmetCompletions": true,
 	////////// eslint //////////
+	"eslint.packageManager": "pnpm",
 	"eslint.runtime": "node",
 	"eslint.options": {
 		"extensions": [".js", ".jsx", ".md", ".mdx", ".ts", ".tsx"]
 	},
-	"eslint.validate": ["svelte", "yaml", "markdown", "mdx", "javascript", "javascriptreact", "typescript", "typescriptreact"],
+	"eslint.probe": ["javascript", "javascriptreact", "typescript", "typescriptreact", "html", "vue", "markdown", "svelte", "yaml", "mdx"],
+	"eslint.validate": ["javascript", "javascriptreact", "svelte"],
 
 	////////// Proto //////////
 	"clang-format.style": "google",

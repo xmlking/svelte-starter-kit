@@ -34,4 +34,6 @@
 {#each $allOrders.data.customer as customer}
 	<p> Customer: {customer.first_name} {customer.last_name} <span>Order Count: {customer.orders.length}</span></p>
 	<!-- <pre>{JSON.stringify(customer, null, 2)}</pre> -->
+{:else}
+  <p>No items</p>
 {/each}

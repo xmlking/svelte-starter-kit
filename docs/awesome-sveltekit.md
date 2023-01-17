@@ -29,6 +29,7 @@ Awesome **SvelteKit** Links
 ## Utilities
 
 - [Time Distance](https://github.com/joshnuss/svelte-time-distance) - Display time distances in a human-readable format.
+- [svelte-action-balancer](https://svelte-action-balancer.netlify.app/) - A Simple Svelte Action That Makes Titles More Readable
 
 ## Testing
 
@@ -52,6 +53,10 @@ Awesome **SvelteKit** Links
 - [prettier-plugin-tailwindcss](https://github.com/tailwindlabs/prettier-plugin-tailwindcss)
   - A [Prettier](https://prettier.io/) plugin for Tailwind CSS v3.0+ that automatically sorts classes based
     on [our recommended class order](https://tailwindcss.com/blog/automatic-class-sorting-with-prettier#how-classes-are-sorted)
+
+## Samples
+
+- [Zod Validation](https://twitter.com/BHolmesDev/status/1581627163098632194?s=20&t=O-vh5nFKUjCOyTTBnaRwQA)
 
 ## FQA
 
