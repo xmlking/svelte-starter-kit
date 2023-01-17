@@ -98,7 +98,13 @@
 	const { filterValue } = pluginStates.tableFilter;
 
 	async function search() {
-		await goto(`/dashboard/accounts?firstName=${firstName}&lastName=${lastName}&limit=${limit}`);
+		// TIP: https://twitter.com/Steve8708/status/1612907638957932544?s=20&t=d7yZ7w-fhsLtTiPc5FxYQA
+		const url = new URL('/dashboard/accounts')
+		url.searchParams.set('firstName', firstName)
+		url.searchParams.set('lastName', lastName)
+		url.searchParams.set('limit', limit)
+		await goto(url.toString())
+		// await goto(`/dashboard/accounts?firstName=${firstName}&lastName=${lastName}&limit=${limit}`);
 	}
 </script>
 

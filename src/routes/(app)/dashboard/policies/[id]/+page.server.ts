@@ -1,74 +1,29 @@
-import { env as dynPriEnv } from '$env/dynamic/private';
 import { env as dynPubEnv } from '$env/dynamic/public';
-import { accountCreateSchema, accountUpdateSchema, type Account, type AccountSaveResult } from '$lib/models/schema';
-import { getAppError, isAppError, isHttpError, isRedirect } from '$lib/utils/errors';
-import { arrayToString, mapToString, removeEmpty, replaceEmptyWithNull, uuidSchema } from '$lib/utils/zod.utils';
+import { CachePolicy, CreatePolicyStore, GetPolicyStore, UpdatePolicyStore } from '$houdini';
+import { handleActionErrors, handleLoadErrors, PolicyError } from '$lib/errors';
+import { policyCreateSchema, policyUpdateSchema, type Policy, type PolicySaveResult } from '$lib/models/schema';
+import { Logger } from '$lib/utils';
+import { arrayToString, mapToString, uuidSchema } from '$lib/utils/zod.utils';
+import { zfd } from '$lib/zodfd';
 import * as Sentry from '@sentry/svelte';
-import { error, fail, redirect } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
+import type { GraphQLError } from 'graphql';
 import assert from 'node:assert';
 import crypto from 'node:crypto';
 import { ZodError } from 'zod';
 import type { Actions, PageServerLoad } from './$types';
 
 assert.ok(dynPubEnv.PUBLIC_GRAPHQL_ENDPOINT, 'PUBLIC_GRAPHQL_ENDPOINT not configered');
-assert.ok(dynPriEnv.HASURA_GRAPHQL_ADMIN_SECRET, 'HASURA_GRAPHQL_ADMIN_SECRET not configered');
+assert.ok(dynPubEnv.PUBLIC_GRAPHQL_TOKEN, 'PUBLIC_GRAPHQL_TOKEN not configered');
 
-const getById = `
-query GetByID($id: uuid!) {
-  tz_policies_by_pk(id: $id) {
-    id
-    display_name
-    description
-    tags
-    annotations
-    disabled
-    template
-    created_at
-    created_by
-    updated_at
-    updated_by
-    deleted_at
-    valid_from
-    valid_to
-    subject_display_name
-    subject_domain
-    subject_id
-    subject_secondary_id
-    subject_type
-    source_address
-    source_port
-    destination_address
-    destination_port
-    protocol
-    action
-    direction
-    app_id
-    weight
-  }
-}
-`;
+const log = new Logger('policy.details.server');
 
-const create = `
-mutation CreatePolicy($data: tz_policies_insert_input!) {
-  insert_tz_policies_one(object: $data) {
-    id
-	display_name,
-	updated_at
-  }
-}
-`;
+const getPolicyStore = new GetPolicyStore();
+const createPolicyStore = new CreatePolicyStore();
+const updatePolicyStore = new UpdatePolicyStore();
 
-const update = `
-mutation UpdatePolicy($id: uuid!, $data: tz_policies_set_input!) {
-  update_tz_policies_by_pk(pk_columns: { id: $id }, _set: $data) {
-    id
-	display_name,
-	updated_at
-  }
-}
-`;
-
-export const load = (async ({ params, locals, fetch, parent }) => {
+export const load = (async (event) => {
+	const { params, locals, fetch, parent } = event;
 	const {
 		session: {
 			token,
@@ -82,7 +37,7 @@ export const load = (async ({ params, locals, fetch, parent }) => {
 
 	const { id } = params;
 	if (id == '00000000-0000-0000-0000-000000000000') {
-		const policy: Account = {
+		const policy: Policy = {
 			id: '00000000-0000-0000-0000-000000000000',
 			display_name: '',
 			// tags: ['tz', 'us'],
@@ -112,45 +67,30 @@ export const load = (async ({ params, locals, fetch, parent }) => {
 		return { policy };
 	}
 
-	const variables = { id };
-
 	try {
-		const resp = await fetch(dynPubEnv.PUBLIC_GRAPHQL_ENDPOINT, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				'x-hasura-admin-secret': dynPriEnv.HASURA_GRAPHQL_ADMIN_SECRET,
-				Authorization: `Bearer ${token}`
-			},
-			body: JSON.stringify({
-				query: getById,
-				variables
-			})
+		const variables = { id };
+
+		const { errors, data } = await getPolicyStore.fetch({
+			event,
+			blocking: true,
+			policy: CachePolicy.CacheAndNetwork,
+			metadata: { backendToken: 'token from TokenVault' },
+			variables
 		});
-		if (!resp.ok) throw error(resp.status, resp.statusText);
 
-		const { errors, data } = await resp.json();
-		if (errors) return { loadErrors: errors };
-
-		const policy: Account = data.tz_policies_by_pk;
-		if (!policy) return { loadErrors: [{ message: 'Not Found' }] };
-		console.log('policy>>>>>>', policy);
-
-		return { policy };
+		const policy = data?.tz_policies_by_pk;
+		const loadError = errors?.[0] as GraphQLError;
+		return { loadError, policy };
 	} catch (err) {
 		console.error('account:actions:load:error:', err);
 		Sentry.setContext('source', { code: 'account' });
 		Sentry.captureException(err);
-
-		if (isHttpError(err)) {
-			throw error(err.status, err.body);
-		}
-		if (isAppError(err)) {
-			throw error(500, err);
-		}
-		throw error(500, getAppError(err));
+		handleLoadErrors(err);
 	}
 }) satisfies PageServerLoad;
+
+const createSchema = zfd.formData(policyCreateSchema, { empty: 'strip' });
+const updateSchema = zfd.formData(policyUpdateSchema, { empty: 'null' });
 
 export const actions = {
 	save: async ({ params, request, locals, fetch }) => {
@@ -162,26 +102,22 @@ export const actions = {
 		if (!email) {
 			throw redirect(307, '/auth/signin');
 		}
-
-		const formData: Record<string, unknown> = Object.fromEntries(await request.formData());
+		const formData = await request.formData();
 
 		try {
-			let actionResult: AccountSaveResult;
+			let actionResult: PolicySaveResult;
 			const id = uuidSchema.parse(params.id);
 
 			// CREATE
 			if (id == '00000000-0000-0000-0000-000000000000') {
-				console.log('in CREATE');
+				log.debug('CREATE action formData:', formData);
 
-				// remove empty fields for CREATE caction
-				console.log('CREATE action formData:', formData);
-				removeEmpty(formData);
-				console.log('CREATE action cleanFormData:', formData);
+				formData.set('id', crypto.randomUUID());
+				formData.set('created_by', email);
+				formData.set('updated_by', email);
+				const payload = createSchema.parse(formData);
+				log.debug('CREATE action payload:', payload);
 
-				formData.id = crypto.randomUUID();
-				formData.created_by = email;
-				formData.updated_by = email;
-				const payload = accountCreateSchema.parse(formData);
 				const jsonPayload = {
 					...payload,
 					...(payload.tags && { tags: arrayToString(payload.tags) }),
@@ -189,28 +125,15 @@ export const actions = {
 				};
 
 				const variables = { data: jsonPayload };
-				console.log('variables', variables);
+				log.debug('CREATE action variables:', variables);
 
-				const resp = await fetch(dynPubEnv.PUBLIC_GRAPHQL_ENDPOINT, {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-						'x-hasura-admin-secret': dynPriEnv.HASURA_GRAPHQL_ADMIN_SECRET,
-						Authorization: `Bearer ${token}`
-					},
-					body: JSON.stringify({
-						query: create,
-						variables
-					})
+				//const { errors, data } = await createPolicyStore.mutate(variables, {
+				const data = await createPolicyStore.mutate(variables, {
+					metadata: { backendToken: 'token from tokenStore' },
+					fetch
 				});
-				if (!resp.ok) throw error(resp.status, resp.statusText);
 
-				const { errors, data } = await resp.json();
-				if (errors) return fail(400, { actionErrors: errors });
-
-				console.log('data', data);
-				actionResult = data.insert_tz_policies_one;
-				if (!actionResult) return fail(400, { actionErrors: [{ message: 'data null' }] });
+				const actionResult = data.insert_tz_policies_one;
 
 				return { actionResult };
 				// throw redirect(303, '/dashboard/policies');
@@ -218,12 +141,11 @@ export const actions = {
 
 			// UPDATE
 			else {
-				console.log('in UPDATE', formData);
-				formData.updated_by = email;
-				replaceEmptyWithNull(formData);
-				console.log('UPDATE action cleanFormData:', formData);
-				const payload = accountUpdateSchema.parse(formData);
-				console.log('in UPDATE payload', payload);
+				log.debug('UPDATE action formData:', formData);
+				formData.set('updated_by', email);
+				const payload = updateSchema.parse(formData);
+				log.debug('UPDATE action payload:', payload);
+
 				const jsonPayload = {
 					...payload,
 					...(payload.tags && { tags: arrayToString(payload.tags) }),
@@ -231,43 +153,35 @@ export const actions = {
 				};
 
 				const variables = { id, data: jsonPayload };
-				console.log('variables', variables);
+				log.debug('UPDATE action variables:', variables);
 
-				const resp = await fetch(dynPubEnv.PUBLIC_GRAPHQL_ENDPOINT, {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-						'x-hasura-admin-secret': dynPriEnv.HASURA_GRAPHQL_ADMIN_SECRET,
-						Authorization: `Bearer ${token}`
-					},
-					body: JSON.stringify({
-						query: update,
-						variables
-					})
+				//const { errors, data } = await updatePolicyStore.mutate(variables, {
+				const data = await updatePolicyStore.mutate(variables, {
+					metadata: { backendToken: 'token from tokenStore' },
+					fetch
 				});
-				if (!resp.ok) throw error(resp.status, resp.statusText);
 
-				const { errors, data } = await resp.json();
-				if (errors) return fail(400, { actionErrors: errors });
-
-				console.log('data', data);
-				actionResult = data.update_tz_policies_by_pk;
-				if (!actionResult) return fail(400, { actionErrors: [{ message: 'data null' }] });
+				const actionResult = data.update_tz_policies_by_pk;
 
 				return { actionResult };
+				// throw redirect(303, '/dashboard/policies');
 			}
 		} catch (err) {
-			console.log('account:actions:save:error', err);
-			if (isRedirect(err)) {
-				if (err.status < 310) throw err;
-			} else if (err instanceof ZodError) {
+			console.error('policy:actions:save:error:', err);
+			Sentry.setContext('source', { code: 'policy.save' });
+			Sentry.captureException(err);
+
+			if (err instanceof ZodError) {
 				const { formErrors, fieldErrors } = err.flatten();
-				console.log('account:actions:save:error', err.flatten());
 				return fail(400, { formErrors, fieldErrors });
-			} else if (isAppError(err)) {
-				throw error(500, err);
+			} else if (Array.isArray(err)) {
+				// err[0] is GraphQLError
+				// TODO: wrap GraphQLError at source as PolicyError<CREATE_POLICY_ERROR> and catch here.
+				const delErr = new PolicyError('CREATE_POLICY_ERROR', 'create policy api error', err[0] as GraphQLError);
+				return fail(400, { actionError: delErr.toJSON() });
+			} else {
+				return handleActionErrors(err);
 			}
-			throw error(500, getAppError(err));
 		}
 	}
 } satisfies Actions;

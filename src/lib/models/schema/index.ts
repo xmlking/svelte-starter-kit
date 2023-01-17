@@ -1,1 +1,1 @@
-export * from './account.schema';
+export * from './policy.schema';

@@ -2,7 +2,7 @@
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import { Delete, Errors, Link } from '$lib/components';
+	import { Delete, ErrorMessage, GraphQLError, Link } from '$lib/components';
 	import { addToast, ToastLevel } from '$lib/components/toast';
 	import { Button, ButtonGroup, Input, InputAddon, Navbar, NavBrand, Select } from 'flowbite-svelte';
 	import { createRender, createTable, Render, Subscribe } from 'svelte-headless-table';
@@ -13,13 +13,11 @@
 	import type { ActionData, PageData } from './$types';
 
 	export let form: ActionData;
-	let { actionResult, actionErrors } = form || {};
-	$: if (form) ({ actionResult, actionErrors } = form);
-	$: if (actionResult) addToast({ message: `${actionResult?.display_name} deleted`, dismissible: true, duration: 10000, type: ToastLevel.Info });
-	$: if (actionErrors) addToast({ message: actionErrors[0].message, dismissible: true, duration: 10000, type: ToastLevel.Error });
+	$: if (form?.actionResult) addToast({ message: `${form.actionResult.display_name} deleted`, dismissible: true, duration: 10000, type: ToastLevel.Info });
+	$: if (form?.actionError) addToast({ message: form.actionError.message, dismissible: true, duration: 10000, type: ToastLevel.Error });
 
 	export let data: PageData;
-	$: ({ count, policies, loadErrors } = data);
+	$: ({ count, policies, loadError, formErrors, fieldErrors } = data);
 	$: policyStore.set(policies ?? []);
 	$: console.log('count:', count);
 
@@ -109,9 +107,10 @@
 	const { pageIndex, pageCount, pageSize, hasNextPage, hasPreviousPage } = pluginStates.page;
 
 	// Search Table
-	let name = $page.url.searchParams.get('name') ?? '';
-	let subType = $page.url.searchParams.get('subType') ?? '';
+	let display_name = $page.url.searchParams.get('display_name') ?? '';
+	let subject_type = $page.url.searchParams.get('subject_type') ?? '';
 	let limit = $page.url.searchParams.get('limit') ?? '50';
+	let offset = $page.url.searchParams.get('offset') ?? '0';
 	let limits = [
 		{ value: '5', name: '5' },
 		{ value: '10', name: '10' },
@@ -131,7 +130,14 @@
 
 	async function onSearch() {
 		if (browser) {
-			await goto(`/dashboard/policies?name=${name}&subType=${subType}&limit=${limit}`, { replaceState: true, keepFocus: true });
+			const url = new URL(location.href)
+			url.searchParams.set('display_name', display_name)
+			url.searchParams.set('subject_type', subject_type)
+			url.searchParams.set('limit', limit)
+			url.searchParams.set('offset', offset)
+			await goto(url.toString(), { replaceState: true, keepFocus: true });
+
+			// await goto(`/dashboard/policies?name=${name}&subType=${subType}&limit=${limit}`, { replaceState: true, keepFocus: true });
 		}
 	}
 </script>
@@ -141,36 +147,40 @@
 	<meta name="description" content="accounts" />
 </svelte:head>
 
-<Errors errors={loadErrors} />
+<GraphQLError error={loadError} />
 
-{#if policies}
 	<form method="GET">
-		<Navbar let:hidden let:toggle border={true} rounded={true}>
+		<Navbar border={true} rounded={true}>
 			<NavBrand>
 				<ShieldCheck />
 				<span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white"> Policies </span>
 			</NavBrand>
 			<ButtonGroup class="w-1/2">
-				<Select class="w-auto !rounded-r-none" items={subTypeOptions} bind:value={subType} placeholder="Select Type" />
+				<Select class="w-auto !rounded-r-none" items={subTypeOptions} bind:value={subject_type} placeholder="Select Type" />
 				<InputAddon class="!bg-gray-50 !px-2 dark:!bg-gray-500">
-					{#if subType == 'subject_type_group'}
+					{#if subject_type == 'subject_type_group'}
 						<UserGroup />
-					{:else if subType == 'subject_type_service_account'}
+					{:else if subject_type == 'subject_type_service_account'}
 						<UserCircle />
-					{:else if subType == 'subject_type_device'}
+					{:else if subject_type == 'subject_type_device'}
 						<DevicePhoneMobile />
 					{:else}
 						<User />
 					{/if}
 				</InputAddon>
-				<Input bind:value={name} class="input !rounded-none focus:outline-none" placeholder="Display Name" />
+				<Input bind:value={display_name} class="input !rounded-none focus:outline-none" placeholder="Display Name" />
 				<Select class="w-16 !rounded-none border-l-0" items={limits} bind:value={limit} />
 				<Button color="dark" on:click={onSearch} class="!p-2.5"><MagnifyingGlass size="20" /></Button>
 			</ButtonGroup>
 			<a class="btn" href="/dashboard/policies/00000000-0000-0000-0000-000000000000">Add Policy</a>
 		</Navbar>
+		<ErrorMessage error={fieldErrors?.subject_type?.[0]} />
+		<ErrorMessage error={fieldErrors?.display_name?.[0]} />
+		<ErrorMessage error={fieldErrors?.limit?.[0]} />
+		<ErrorMessage error={fieldErrors?.offset?.[0]} />
 	</form>
 
+{#if policies}
 	<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
 		<div class="flex items-center justify-between p-4">
 			<!-- search text -->

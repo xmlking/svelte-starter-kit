@@ -19,7 +19,7 @@ export function ifNonEmptyString(fn: (value: string) => unknown): (value: unknow
 			return value;
 		}
 
-		if (value === '') {
+		if (value.trim() === '') {
 			// return undefined;
 			return null;
 		}
@@ -28,19 +28,6 @@ export function ifNonEmptyString(fn: (value: string) => unknown): (value: unknow
 	};
 }
 
-export function removeEmpty(obj) {
-	Object.entries(obj).forEach(
-		([key, val]) => (val && typeof val === 'object' && removeEmpty(val)) || ((val === null || val === '') && delete obj[key])
-	);
-	return obj;
-}
-
-export function replaceEmptyWithNull(obj) {
-	Object.entries(obj).forEach(
-		([key, val]) => (val && typeof val === 'object' && replaceEmptyWithNull(val)) || (val === '' && (obj[key] = null))
-	);
-	return obj;
-}
 /**
  * schemas
  */
@@ -71,11 +58,12 @@ export const stringToJSON = ifNonEmptyString((arg) => JSON.parse(arg));
 
 /**
  * https://twitter.com/jjenzz/status/1612531220780294174?s=20&t=VYqGsLYl_9H-CSenMZ-hCg
+ * Usage:  email: asOptionalField(z.string().email())
  */
-export const empty2Undefined = z.literal('').transform(() => undefined);
-export const empty2Null = z.literal('').transform(() => null);
+export const emptyStringToUndefined = z.literal('').transform(() => undefined);
+export const emptyStringToNull = z.literal('').transform(() => null);
 export function asOptionalField<T extends z.ZodTypeAny>(schema: T) {
-	return schema.optional().or(empty2Undefined);
+	return schema.optional().or(emptyStringToUndefined);
 }
 
 // in-source testing

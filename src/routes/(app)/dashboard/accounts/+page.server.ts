@@ -1,7 +1,7 @@
 import { getAppError, isAppError } from '$lib/errors';
 import type { Account } from '$lib/models/types/accounts';
 import { createData } from '$mocks/data/accounts';
-import { error, fail } from '@sveltejs/kit';
+import { error } from '@sveltejs/kit';
 import { ZodError } from 'zod';
 import type { PageServerLoad } from './$types';
 
@@ -12,12 +12,12 @@ export const load = (async ({ url }) => {
 
 	try {
 		const accounts: Account[] = createData(100);
-		if (!accounts?.length) throw { code: 404, message: 'not found' };
+		if (!accounts?.length) throw error(404, { message: 'not found' });
 		return { accounts };
 	} catch (err) {
 		// err as App.Error
 		if (err instanceof ZodError) {
-			throw fail(400, {
+			throw error(400, {
 				message: 'Invalid request.',
 				context: err.flatten().fieldErrors
 			});

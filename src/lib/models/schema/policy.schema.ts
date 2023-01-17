@@ -11,7 +11,7 @@ function checkValidDates(ctx: z.RefinementCtx, valid_from: string | undefined | 
 	}
 }
 
-export const accountClientSchema = z
+export const policyClientSchema = z
 	.object({
 		display_name: z.string().trim().min(4).max(256),
 		description: z.string().trim().max(256).nullish(),
@@ -38,7 +38,7 @@ export const accountClientSchema = z
 	})
 	.superRefine((data, ctx) => checkValidDates(ctx, data.valid_from, data.valid_to));
 
-export const accountBaseSchema = z.object({
+export const policyBaseSchema = z.object({
 	display_name: z.string().trim().min(4).max(256),
 	description: z.string().trim().max(256).nullish(),
 	tags: z.preprocess(stringToArray, z.array(z.string().trim().min(2)).nullish()),
@@ -58,7 +58,7 @@ export const accountBaseSchema = z.object({
 	weight: z.coerce.number().min(0).max(2000).catch(1000)
 });
 
-export const accountCreateBaseSchema = accountBaseSchema.extend({
+export const policyCreateBaseSchema = policyBaseSchema.extend({
 	id: z.string().trim().uuid(),
 	subject_display_name: z.string().trim(),
 	subject_domain: z.string().trim(),
@@ -71,7 +71,7 @@ export const accountCreateBaseSchema = accountBaseSchema.extend({
 /**
  * system generated data
  */
-const accountExtraSchema = z.object({
+const policyExtraSchema = z.object({
 	created_at: z.string().datetime({ offset: true }),
 	created_by: z.string(),
 	updated_at: z.string().datetime({ offset: true }),
@@ -80,9 +80,19 @@ const accountExtraSchema = z.object({
 });
 
 /**
+ * for search time validation
+ */
+export const policySearchSchema = z.object({
+	limit: z.coerce.number().min(1).max(100).default(10),
+	offset: z.coerce.number().min(0).default(0),
+	subject_type: z.enum(['subject_type_user', 'subject_type_group', 'subject_type_device', 'subject_type_service_account']).optional(),
+	display_name: z.string().trim().min(4).max(256).optional()
+});
+
+/**
  * for update time validation
  */
-export const accountUpdateSchema = accountBaseSchema
+export const policyUpdateSchema = policyBaseSchema
 	.extend({
 		updated_by: z.string()
 	})
@@ -91,7 +101,7 @@ export const accountUpdateSchema = accountBaseSchema
 /**
  * for create time validation
  */
-export const accountCreateSchema = accountCreateBaseSchema
+export const policyCreateSchema = policyCreateBaseSchema
 	.extend({
 		created_by: z.string(),
 		updated_by: z.string().optional()
@@ -99,32 +109,23 @@ export const accountCreateSchema = accountCreateBaseSchema
 	.superRefine((data, ctx) => checkValidDates(ctx, data.valid_from, data.valid_to));
 
 /**
+ * for delete time validation
+ */
+export const policyDeleteSchema = z.object({
+	id: z.string().trim().uuid()
+});
+
+/**
  * for API return value validation and to extract the inferred type
  */
-export const accountSchema = accountCreateBaseSchema.merge(accountExtraSchema);
+export const policySchema = policyCreateBaseSchema.merge(policyExtraSchema);
 
-export type Account = z.infer<typeof accountSchema>;
+export type Policy = z.infer<typeof policySchema>;
 
-export const accountSaveResultSchema = z.object({
+export const policySaveResultSchema = z.object({
 	id: z.string().trim().uuid(),
 	display_name: z.string().trim(),
 	updated_at: z.string().datetime({ offset: true })
 });
 
-export type AccountSaveResult = z.infer<typeof accountSaveResultSchema>;
-
-export const accountDeleteResultSchema = z.object({
-	display_name: z.string().trim()
-});
-
-export type AccountDeleteResult = z.infer<typeof accountDeleteResultSchema>;
-
-export interface RpcErrors {
-	errors: {
-		extensions: {
-			path: string;
-			code: string;
-		};
-		message: string;
-	}[];
-}
+export type PolicySaveResult = z.infer<typeof policySaveResultSchema>;
