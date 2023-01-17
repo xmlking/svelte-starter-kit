@@ -5,6 +5,7 @@ import { Logger } from '$lib/utils';
 import { fail } from '@sveltejs/kit';
 import { ZodError } from 'zod';
 // import { getToken } from '@auth/core/jwt';
+import { building } from '$app/environment';
 import { policyDeleteSchema, policySearchSchema } from '$lib/models/schema';
 import { zfd } from '$lib/zodfd';
 import * as Sentry from '@sentry/svelte';
@@ -12,9 +13,10 @@ import type { GraphQLError } from 'graphql';
 import assert from 'node:assert';
 import type { Actions, PageServerLoad } from './$types';
 
-assert.ok(dynPubEnv.PUBLIC_GRAPHQL_ENDPOINT, 'PUBLIC_GRAPHQL_ENDPOINT not configered');
-assert.ok(dynPubEnv.PUBLIC_GRAPHQL_TOKEN, 'PUBLIC_GRAPHQL_TOKEN not configered');
-
+if (!building) {
+	assert.ok(dynPubEnv.PUBLIC_GRAPHQL_ENDPOINT, 'PUBLIC_GRAPHQL_ENDPOINT not configured');
+	assert.ok(dynPubEnv.PUBLIC_GRAPHQL_TOKEN, 'PUBLIC_GRAPHQL_TOKEN not configured');
+}
 const log = new Logger('policies.server');
 
 const searchPoliciesStore = new SearchPoliciesStore();
