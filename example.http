@@ -13,7 +13,12 @@ X-REQUEST-TYPE: GraphQL
 
 query IntrospectionQuery {
 	__schema {
-		queryType { name }
+		queryType {
+			fields {
+				name
+				description
+			}
+		}
 		mutationType { name }
 		subscriptionType { name }
 		directives {
