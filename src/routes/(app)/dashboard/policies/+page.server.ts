@@ -37,7 +37,6 @@ export const load = (async (event) => {
 		const orderBy = [{ updated_at: order_by.desc_nulls_first }];
 		const where = {
 			deleted_at: { _is_null: true },
-			subject_type: { _eq: subject_type },
 			...(subject_type ? { subject_type: { _eq: subject_type } } : {}),
 			...(display_name ? { display_name: { _like: `%${display_name}%` } } : {})
 		};
