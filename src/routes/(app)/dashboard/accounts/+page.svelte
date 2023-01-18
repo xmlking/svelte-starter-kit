@@ -88,6 +88,8 @@
 	let firstName = $page.url.searchParams.get('firstName') ?? '*';
 	let lastName = $page.url.searchParams.get('lastName') ?? '*';
 	let limit = $page.url.searchParams.get('limit') ?? '50';
+	let offset = $page.url.searchParams.get('offset') ?? '0';
+
 	let limits = [
 		{ value: '5', name: '5' },
 		{ value: '10', name: '10' },
@@ -97,14 +99,14 @@
 	];
 	const { filterValue } = pluginStates.tableFilter;
 
-	async function search() {
+	async function onSearch() {
 		// TIP: https://twitter.com/Steve8708/status/1612907638957932544?s=20&t=d7yZ7w-fhsLtTiPc5FxYQA
-		const url = new URL('/dashboard/accounts')
+		const url = new URL(location.href)
 		url.searchParams.set('firstName', firstName)
 		url.searchParams.set('lastName', lastName)
 		url.searchParams.set('limit', limit)
-		await goto(url.toString())
-		// await goto(`/dashboard/accounts?firstName=${firstName}&lastName=${lastName}&limit=${limit}`);
+		url.searchParams.set('offset', offset)
+		await goto(url.toString(), { replaceState: true, keepFocus: true, noScroll: true });
 	}
 </script>
 
@@ -142,7 +144,7 @@
 		<Select class="pl-10" items={limits} bind:value={limit} />
 	</div>
 
-	<Button on:click={search}>Search</Button>
+	<Button on:click={onSearch}>Search</Button>
 </Navbar>
 
 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">

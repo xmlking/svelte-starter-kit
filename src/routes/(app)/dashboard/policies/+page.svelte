@@ -1,10 +1,8 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
-	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { Delete, ErrorMessage, GraphQLError, Link } from '$lib/components';
 	import { addToast, ToastLevel } from '$lib/components/toast';
-	import { Button, ButtonGroup, Input, InputAddon, Navbar, NavBrand, Select } from 'flowbite-svelte';
+	import { Breadcrumb, BreadcrumbItem, Button, ButtonGroup, Input, InputAddon, Navbar, NavBrand, Select } from 'flowbite-svelte';
 	import { createRender, createTable, Render, Subscribe } from 'svelte-headless-table';
 	import { addPagination, addSortBy, addTableFilter } from 'svelte-headless-table/plugins';
 	import { ChevronDown, ChevronUp, DevicePhoneMobile, MagnifyingGlass, ShieldCheck, User, UserCircle, UserGroup } from 'svelte-heros-v2';
@@ -111,6 +109,7 @@
 	let subject_type = $page.url.searchParams.get('subject_type') ?? '';
 	let limit = $page.url.searchParams.get('limit') ?? '50';
 	let offset = $page.url.searchParams.get('offset') ?? '0';
+
 	let limits = [
 		{ value: '5', name: '5' },
 		{ value: '10', name: '10' },
@@ -127,19 +126,6 @@
 	];
 
 	const { filterValue } = pluginStates.tableFilter;
-
-	async function onSearch() {
-		if (browser) {
-			const url = new URL(location.href)
-			url.searchParams.set('display_name', display_name)
-			url.searchParams.set('subject_type', subject_type)
-			url.searchParams.set('limit', limit)
-			url.searchParams.set('offset', offset)
-			await goto(url.toString(), { replaceState: true, keepFocus: true });
-
-			// await goto(`/dashboard/policies?name=${name}&subType=${subType}&limit=${limit}`, { replaceState: true, keepFocus: true });
-		}
-	}
 </script>
 
 <svelte:head>
@@ -147,16 +133,22 @@
 	<meta name="description" content="accounts" />
 </svelte:head>
 
+<Breadcrumb aria-label="Default breadcrumb example" class="mb-6">
+	<BreadcrumbItem href="/dashboard" home>Home</BreadcrumbItem>
+	<BreadcrumbItem href="/dashboard/policies">Policy</BreadcrumbItem>
+	<BreadcrumbItem>Search Policies</BreadcrumbItem>
+</Breadcrumb>
+
 <GraphQLError error={loadError} />
 
-	<form method="GET">
+	<form data-sveltekit-noscroll>
 		<Navbar border={true} rounded={true}>
 			<NavBrand>
 				<ShieldCheck />
 				<span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white"> Policies </span>
 			</NavBrand>
 			<ButtonGroup class="w-1/2">
-				<Select class="w-auto !rounded-r-none" items={subTypeOptions} bind:value={subject_type} placeholder="Select Type" />
+				<Select name="subject_type" class="w-auto !rounded-r-none" items={subTypeOptions} value={subject_type} placeholder="Select Type" />
 				<InputAddon class="!bg-gray-50 !px-2 dark:!bg-gray-500">
 					{#if subject_type == 'subject_type_group'}
 						<UserGroup />
@@ -168,9 +160,10 @@
 						<User />
 					{/if}
 				</InputAddon>
-				<Input bind:value={display_name} class="input !rounded-none focus:outline-none" placeholder="Display Name" />
-				<Select class="w-16 !rounded-none border-l-0" items={limits} bind:value={limit} />
-				<Button color="dark" on:click={onSearch} class="!p-2.5"><MagnifyingGlass size="20" /></Button>
+				<Input name="display_name" value={display_name} autofocus class="input !rounded-none focus:outline-none" placeholder="Display Name" />
+				<Select name="limit" items={limits} value={limit} class="w-16 !rounded-none border-l-0" />
+				<input name="offset" value={offset} type="hidden" />
+				<Button type="submit" color="dark"  class="!p-2.5"><MagnifyingGlass size="20" /></Button>
 			</ButtonGroup>
 			<a class="btn" href="/dashboard/policies/00000000-0000-0000-0000-000000000000">Add Policy</a>
 		</Navbar>
