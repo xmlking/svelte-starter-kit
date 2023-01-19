@@ -22,13 +22,13 @@ declare global {
 		}
 		// interface Platform {}
 	}
+
+	// App version from package.json
+	declare const __APP_VERSION__: string;
+	// Git commit tag or hash
+	declare const __GIT_TAG__: string;
+	// Date of last commit
+	declare const __GIT_DATE__: string;
 }
 
 export {};
-
-// App version from package.json
-declare const __APP_VERSION__: string;
-// Git commit tag or hash
-declare const __GIT_TAG__: string;
-// Date of last commit
-declare const __GIT_DATE__: string;

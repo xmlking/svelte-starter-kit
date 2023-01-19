@@ -32,7 +32,7 @@ For examples checkout [Svelte Component Test Recipes](https://github.com/davipon
 
 ```shell
 # optional
-pnpm i -O @vitest/ui -w
+pnpm i -O @vitest/ui
 ```
 
 ```shell
@@ -51,7 +51,7 @@ Add and configure tailwindcss via [svelte-add](https://github.com/svelte-add/tai
 pnpx svelte-add@latest tailwindcss  --typography --daisyui
 # NOTE: tailwindcss's forms plugin and daisyui wont work together
 # also add other tailwind plugins and include them in `tailwind.config.cjs`
-pnpm add -D @tailwindcss/aspect-ratio @tailwindcss/line-clamp @tailwindcss/container-queries -w
+pnpm add -D @tailwindcss/aspect-ratio @tailwindcss/line-clamp @tailwindcss/container-queries
 ```
 
 Install JetBrain's [postcss](https://plugins.jetbrains.com/plugin/8578-postcss) plugin  
@@ -62,7 +62,7 @@ Rename any files in your repo, with file extension `postcss` to `pcss`
 Also add `cssnano` plugin for `postcss` and include it in [postcss.config.cjs](../postcss.config.cjs) for production env.
 
 ```shell
-pnpm add -D cssnano -w
+pnpm add -D cssnano
 ```
 
 #### PostCSS Preset Env
@@ -73,7 +73,7 @@ determining the polyfills you need based on your targeted browsers or runtime en
 Read: [Use Future CSS Today](https://joyofcode.xyz/using-future-css-in-svelte) and Watch: [video](https://www.youtube.com/watch?v=eqwtoaP-0pk)
 
 ```shell
-pnpm add -D postcss-preset-env -w
+pnpm add -D postcss-preset-env
 ```
 
 Add `postcssPresetEnv` plugin for `postcss` and include it in [postcss.config.cjs](../postcss.config.cjs).
@@ -102,7 +102,7 @@ Other optional UI Components
 I will be using both **flowbite** and **daisyui** for UI Components
 
 ```shell
-pnpm add -D daisyui -w
+pnpm add -D daisyui
 ```
 
 Then add daisyUI to your **tailwind.config.js** files:
@@ -117,7 +117,7 @@ const config = {
 #### skeleton
 
 ```shell
-pnpm add -D @skeletonlabs/skeleton -w
+pnpm add -D @skeletonlabs/skeleton
 ```
 
 And follow **skeleton** specific sveltekit [changes](https://www.skeleton.dev/guides/frameworks/sveltekit)
@@ -140,7 +140,7 @@ Lets add [prettier-plugin-tailwindcss](https://github.com/tailwindlabs/prettier-
 To work around this, `prettier-plugin-tailwindcss` **must** be loaded last, meaning Prettier auto-loading needs to be disabled. You can do this by setting the `pluginSearchDirs` option to `false` and then listing each of your Prettier plugins in the plugins array:
 
 ```shell
-pnpm add -D prettier-plugin-tailwindcss -w
+pnpm add -D prettier-plugin-tailwindcss
 ```
 
 ```shell
@@ -173,14 +173,14 @@ Added [Dockerfile](../Dockerfile) and GitHub [actions](../.github/workflows).
 
 ```shell
 # table library for Svelte
-pnpm add -D svelte-headless-table -w
-#pnpm add -D @tanstack/svelte-table -w
+pnpm add -D svelte-headless-table
+#pnpm add -D @tanstack/svelte-table
 # form library for Svelte
 pnpm add -D felte @felte/reporter-svelte @felte/validator-zod zod zod-form-data
 # make any element draggable
-pnpm add -D @neodrag/svelte -w
+pnpm add -D @neodrag/svelte
 # to fetch, cache and update data
-pnpm add -D @tanstack/svelte-query -w
+pnpm add -D @tanstack/svelte-query
 ```
 
 ### Optional
@@ -188,7 +188,7 @@ pnpm add -D @tanstack/svelte-query -w
 #### Markdown CMS
 
 ```shell
-pnpx svelte-add@latest mdsvex -w
+pnpx svelte-add@latest mdsvex
 ```
 
 #### Time Distance
@@ -196,7 +196,7 @@ pnpx svelte-add@latest mdsvex -w
 [svelte-time-distance](https://github.com/joshnuss/svelte-time-distance) Display time distances in a human readable format.
 
 ```shell
-pnpm add -D svelte-time-distance date-fns -w
+pnpm add -D svelte-time-distance date-fns
 ```
 
 #### Error Tracking
@@ -204,7 +204,7 @@ pnpm add -D svelte-time-distance date-fns -w
 Sentry helps track errors in code.
 
 ```shell
-pnpm add -D @sentry/svelte @sentry/tracing -w
+pnpm add -D @sentry/svelte @sentry/node @sentry/tracing
 ```
 
 #### GraphQL
@@ -229,7 +229,7 @@ node_modules/.bin/houdini pull-schema
 (Or) [URQL](https://formidable.com/open-source/urql/docs/basics/svelte/). [example](https://github.com/hygraph/hygraph-examples/tree/master/with-sveltekit-and-urql)
 
 ```shell
-pnpm add -D @urql/svelte graphql -w
+pnpm add -D @urql/svelte graphql
 # TypeScript integration (optional)
 # https://formidable.com/open-source/urql/docs/basics/typescript-integration/
 pnpm add -D @graphql-codegen/cli @graphql-codegen/client-preset -w
@@ -248,7 +248,7 @@ pnpm add @auth/core @auth/sveltekit
 Set/Get/Remove cookies in browser (for server-side svelte already provide utils)
 
 ```shell
-pnpm add -D js-cookie -w
+pnpm add -D js-cookie
 ```
 
 #### Forms
@@ -256,7 +256,7 @@ pnpm add -D js-cookie -w
 Custom form elements
 
 ```shell
-pnpm add -D svelecte -w
+pnpm add -D svelecte
 ```
 
 #### Progressive Web Apps (PWA)

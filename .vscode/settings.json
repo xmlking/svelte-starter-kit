@@ -11,6 +11,7 @@
 	"conventionalCommits.scopes": ["workspace", "actions", "lint", "deps", "docs", "policy", "provider"],
 	////////// Editor //////////
 	"editor.autoIndent": "full",
+	"editor.lineHeight": 2,
 	"editor.codeActionsOnSave": {
 		"source.organizeImports": true,
 		"source.fixAll": true
@@ -55,7 +56,7 @@
 	"workbench.editor.labelFormat": "short",
 	////////// File settings //////////
 	"files.autoSave": "afterDelay",
-	"files.autoSaveDelay": 60000,
+	"files.autoSaveDelay": 6000,
 	"files.exclude": {
 		"**/.git": true,
 		"**/.DS_Store": true,
