@@ -1,6 +1,5 @@
-import { PUBLIC_CONFY_SENTRY_DSN } from '$env/static/public';
-// import * as Sentry from '@sentry/browser';
 import { dev } from '$app/environment';
+import { PUBLIC_CONFY_SENTRY_DSN } from '$env/static/public';
 import { Logger } from '$lib/utils';
 import * as Sentry from '@sentry/svelte';
 import { BrowserTracing } from '@sentry/tracing';
@@ -26,6 +25,8 @@ if (!dev && PUBLIC_CONFY_SENTRY_DSN) {
 		// We recommend adjusting this value in production
 		tracesSampleRate: 1.0
 	});
+
+	// Sentry.setTag('svelteKit', 'browser');
 }
 
 export const handleClientError = (({ error, event }) => {

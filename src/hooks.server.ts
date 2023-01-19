@@ -4,8 +4,7 @@ import { dev } from '$app/environment';
 import { TokenVault } from '$lib/server/backend/TokenVault';
 import { authjs, guard, houdini } from '$lib/server/middleware';
 import { Logger } from '$lib/utils';
-import * as Sentry from '@sentry/svelte';
-import { BrowserTracing } from '@sentry/tracing';
+import * as Sentry from '@sentry/node';
 import type { HandleFetch, HandleServerError } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 /**
@@ -38,13 +37,16 @@ if (!dev && PUBLIC_CONFY_SENTRY_DSN) {
 		initialScope: {
 			tags: { source: 'server' }
 		},
-		integrations: [new BrowserTracing()],
+		// Add the Http integration for tracing
+		integrations: [new Sentry.Integrations.Http()],
 
 		// Set tracesSampleRate to 1.0 to capture 100%
 		// of transactions for performance monitoring.
 		// We recommend adjusting this value in production
 		tracesSampleRate: 1.0
 	});
+
+	// Sentry.setTag('svelteKit', 'server');
 }
 
 // Initialize TokenVault
