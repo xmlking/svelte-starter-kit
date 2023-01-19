@@ -70,14 +70,22 @@ docker compose down
 docker compose down -v
 ```
 
-### Apply Migrations
+### Apply Metadata
 
-To apply all the Migrations present in the `migrations/` directory and the Metadata present in the `metadata/` directory on a new, "fresh" database (i.e., docker compose down -v):
+To apply all the **Metadata** and **Migrations** present in the `infra/hasura` directory to a new, "fresh" database (i.e., docker compose down -v):
 
 ```shell
 hasura deploy --endpoint http://localhost:8080  --admin-secret myadminsecretkey
 hasura seed apply --file 1672767205525_customer_order_seed.sql --database-name postgresdb --endpoint http://localhost:8080  --admin-secret myadminsecretkey
 hasura seed apply --file 1672767180588_tz_policies_seed.sql --database-name postgresdb --endpoint http://localhost:8080  --admin-secret myadminsecretkey
+```
+
+### Export Metadata
+
+To export **Metadata** and **Migrations** from your local Hasura to `infra/hasura` directory, for sharing with the team:
+
+```shell
+hasura metadata export --endpoint http://localhost:8080 --admin-secret myadminsecretkey
 ```
 
 open <http://localhost:8080/console> and try out a query

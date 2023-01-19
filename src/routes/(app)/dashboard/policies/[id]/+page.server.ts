@@ -2,7 +2,7 @@ import { building } from '$app/environment';
 import { env as dynPubEnv } from '$env/dynamic/public';
 import { CachePolicy, CreatePolicyStore, GetPolicyStore, UpdatePolicyStore } from '$houdini';
 import { handleActionErrors, handleLoadErrors, PolicyError } from '$lib/errors';
-import { policyCreateSchema, policyUpdateSchema, type Policy, type PolicySaveResult } from '$lib/models/schema';
+import { policyCreateSchema, policyUpdateSchema, type Policy } from '$lib/models/schema';
 import { Logger } from '$lib/utils';
 import { arrayToString, mapToString, uuidSchema } from '$lib/utils/zod.utils';
 import { zfd } from '$lib/zodfd';
@@ -25,7 +25,7 @@ const createPolicyStore = new CreatePolicyStore();
 const updatePolicyStore = new UpdatePolicyStore();
 
 export const load = (async (event) => {
-	const { params, locals, fetch, parent } = event;
+	const { params, parent } = event;
 	const {
 		session: {
 			token,
@@ -107,7 +107,6 @@ export const actions = {
 		const formData = await request.formData();
 
 		try {
-			let actionResult: PolicySaveResult;
 			const id = uuidSchema.parse(params.id);
 
 			// CREATE
