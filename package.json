@@ -93,7 +93,7 @@
 	},
 	"optionalDependencies": {
 		"@playwright/test": "1.29.2",
-		"@vitest/ui": "0.27.2"
+		"@vitest/ui": "0.27.3"
 	},
 	"packageManager": "pnpm@7.25.0",
 	"engines": {
