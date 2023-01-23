@@ -7,12 +7,12 @@ insert_permissions:
       check:
         _and:
           - created_by:
-              _eq: X-Hasura-User-Id
+              _eq: x-hasura-user-id
           - subject_domain:
-              _eq: X-Hasura-Org-Id
+              _eq: x-hasura-org-id
       set:
-        created_by: X-Hasura-User-Id
-        subject_domain: X-Hasura-Org-Id
+        created_by: x-hasura-user-id
+        subject_domain: x-hasura-org-id
       columns:
         - tags
         - disabled
@@ -47,12 +47,12 @@ insert_permissions:
       check:
         _and:
           - created_by:
-              _eq: X-Hasura-User-Id
+              _eq: x-hasura-user-id
           - subject_domain:
-              _eq: X-Hasura-Org-Id
+              _eq: x-hasura-org-id
       set:
-        created_by: X-Hasura-User-Id
-        subject_domain: X-Hasura-Org-Id
+        created_by: x-hasura-user-id
+        subject_domain: x-hasura-org-id
       columns:
         - tags
         - disabled
@@ -86,8 +86,8 @@ insert_permissions:
     permission:
       check: {}
       set:
-        created_by: X-Hasura-User-Id
-        subject_domain: X-Hasura-Org-Id
+        created_by: x-hasura-user-id
+        subject_domain: x-hasura-org-id
       columns:
         - tags
         - disabled
@@ -151,7 +151,7 @@ select_permissions:
         - id
       filter:
         subject_domain:
-          _eq: X-Hasura-Org-Id
+          _eq: x-hasura-org-id
       allow_aggregations: true
   - role: moderator
     permission:
@@ -186,7 +186,7 @@ select_permissions:
         - id
       filter:
         subject_domain:
-          _eq: X-Hasura-Org-Id
+          _eq: x-hasura-org-id
       allow_aggregations: true
   - role: supervisor
     permission:
@@ -254,7 +254,7 @@ select_permissions:
         - id
       filter:
         subject_domain:
-          _eq: X-Hasura-Org-Id
+          _eq: x-hasura-org-id
       allow_aggregations: true
 update_permissions:
   - role: editor
@@ -291,13 +291,13 @@ update_permissions:
       filter:
         _and:
           - created_by:
-              _eq: X-Hasura-User-Id
+              _eq: x-hasura-user-id
           - subject_domain:
-              _eq: X-Hasura-Org-Id
+              _eq: x-hasura-org-id
       check: {}
       set:
-        subject_domain: X-Hasura-Org-Id
-        updated_by: X-Hasura-User-Id
+        subject_domain: x-hasura-org-id
+        updated_by: x-hasura-user-id
   - role: moderator
     permission:
       columns:
@@ -331,11 +331,11 @@ update_permissions:
         - id
       filter:
         subject_domain:
-          _eq: X-Hasura-Org-Id
+          _eq: x-hasura-org-id
       check: null
       set:
-        subject_domain: X-Hasura-Org-Id
-        updated_by: X-Hasura-User-Id
+        subject_domain: x-hasura-org-id
+        updated_by: x-hasura-user-id
   - role: supervisor
     permission:
       columns:
@@ -370,22 +370,22 @@ update_permissions:
       filter: {}
       check: {}
       set:
-        subject_domain: X-Hasura-Org-Id
-        updated_by: X-Hasura-User-Id
+        subject_domain: x-hasura-org-id
+        updated_by: x-hasura-user-id
 delete_permissions:
   - role: editor
     permission:
       filter:
         _and:
           - created_by:
-              _eq: X-Hasura-User-Id
+              _eq: x-hasura-user-id
           - subject_domain:
-              _eq: X-Hasura-Org-Id
+              _eq: x-hasura-org-id
   - role: moderator
     permission:
       filter:
         subject_domain:
-          _eq: X-Hasura-Org-Id
+          _eq: x-hasura-org-id
   - role: supervisor
     permission:
       filter: {}

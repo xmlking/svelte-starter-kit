@@ -25,8 +25,8 @@ async function fetchQuery({ fetch, text = '', variables = {}, metadata, session 
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
-			...(token ? { Authorization: `Bearer ${token}` } : { 'X-Hasura-Admin-Secret': adminSecret }), // FIXME: remove adminSecret
-			'X-Hasura-Role': 'editor',
+			...(token ? { Authorization: `Bearer ${token}` } : { 'x-hasura-admin-secret': adminSecret }), // FIXME: remove adminSecret
+			'x-hasura-role': 'editor',
 			...(backendToken ? { backendToken } : {})
 		},
 		body: JSON.stringify({

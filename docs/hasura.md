@@ -43,7 +43,7 @@ hasura seed apply --file 1672767180588_tz_policies_seed.sql --database-name post
 
 # To apply all the Migrations present in the `migrations/` directory and the Metadata present in the `metadata/` directory on a new, "fresh",
 # instance of the Hasura Server at http://another-server-instance.hasura.app:
-hasura deploy --endpoint http://another-server-instance.hasura.app  --admin-secret <admin-secret>
+hasura deploy --endpoint https://dsysnjrgygjipcilpkca.hasura.us-east-1.nhost.run  --admin-secret <admin-secret>
 # NOTE:
 # if you get error: "permission denied to create extension \"hstore\"", Run `create extension hstore;` in hasura console
 # if you get error: "must be owner of extension hstore",  Run `alter role nhost_hasura with superuser;` in hasura console
@@ -79,6 +79,9 @@ docker compose down -v
 To apply all the **Metadata** and **Migrations** present in the `infra/hasura` directory to a new, "fresh" database (i.e., docker compose down -v):
 
 ```shell
+# only apply metadata
+hasura metadata apply --endpoint http://localhost:8080  --admin-secret myadminsecretkey
+# apply metadata and DB Migrations
 hasura deploy --endpoint http://localhost:8080  --admin-secret myadminsecretkey
 hasura seed apply --file 1672767205525_customer_order_seed.sql --database-name postgresdb --endpoint http://localhost:8080  --admin-secret myadminsecretkey
 hasura seed apply --file 1672767180588_tz_policies_seed.sql --database-name postgresdb --endpoint http://localhost:8080  --admin-secret myadminsecretkey
