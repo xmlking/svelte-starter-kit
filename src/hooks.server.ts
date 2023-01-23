@@ -1,9 +1,9 @@
-import { PUBLIC_CONFY_SENTRY_DSN } from '$env/static/public';
-
 import { dev } from '$app/environment';
 import { TokenVault } from '$lib/server/backend/TokenVault';
 import { authjs, guard, houdini } from '$lib/server/middleware';
 import { Logger } from '$lib/utils';
+import envPub from '$lib/variables/variables';
+// import envPri from '$lib/variables/variables.server';
 import * as Sentry from '@sentry/node';
 import type { HandleFetch, HandleServerError } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
@@ -30,9 +30,9 @@ process.on('SIGTERM', function () {
 // Read: https://github.com/sveltejs/kit/blob/master/documentation/docs/07-hooks.md
 
 // Initialize the Sentry SDK here
-if (!dev && PUBLIC_CONFY_SENTRY_DSN) {
+if (!dev && envPub.PUBLIC_SENTRY_DSN) {
 	Sentry.init({
-		dsn: PUBLIC_CONFY_SENTRY_DSN,
+		dsn: envPub.PUBLIC_SENTRY_DSN,
 		release: __APP_VERSION__,
 		initialScope: {
 			tags: { source: 'server' }
@@ -52,13 +52,13 @@ if (!dev && PUBLIC_CONFY_SENTRY_DSN) {
 // Initialize TokenVault
 TokenVault.init([
 	// {
-	// 	endpoint: dynPriEnv.MY_BACKEND_ENDPOINT ?? '',
+	// 	endpoint: envPri.MY_BACKEND_ENDPOINT ?? '',
 	// 	authConfig: {
-	// 		auth_endpoint: dynPriEnv.MY_BACKEND_AUTH_ENDPOINT ?? '',
-	// 		client_id: dynPriEnv.MY_BACKEND_AUTH_CLIENT_ID ?? '',
-	// 		client_secret: dynPriEnv.MY_BACKEND_AUTH_CLIENT_SECRET ?? '',
-	// 		grant_type: dynPriEnv.MY_BACKEND_AUTH_CLIENT_GRANT_TYPE ?? '',
-	// 		scope: dynPriEnv.MY_BACKEND_AUTH_CLIENT_SCOPE
+	// 		auth_endpoint: envPri.MY_BACKEND_AUTH_ENDPOINT ?? '',
+	// 		client_id: envPri.MY_BACKEND_AUTH_CLIENT_ID ?? '',
+	// 		client_secret: envPri.MY_BACKEND_AUTH_CLIENT_SECRET ?? '',
+	// 		grant_type: envPri.MY_BACKEND_AUTH_CLIENT_GRANT_TYPE ?? '',
+	// 		scope: envPri.MY_BACKEND_AUTH_CLIENT_SCOPE
 	// 	}
 	// }
 ]);

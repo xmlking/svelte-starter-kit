@@ -46,6 +46,3 @@ export class Logger {
 		}
 	};
 }
-
-export const AuthLogger = new Logger('middleware:auth');
-export const RequestLogger = new Logger('middleware:request');
