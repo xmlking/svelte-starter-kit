@@ -1,3 +1,391 @@
 table:
   name: tz_policies
   schema: public
+insert_permissions:
+  - role: editor
+    permission:
+      check:
+        _and:
+          - created_by:
+              _eq: X-Hasura-User-Id
+          - subject_domain:
+              _eq: X-Hasura-Org-Id
+      set:
+        created_by: X-Hasura-User-Id
+        subject_domain: X-Hasura-Org-Id
+      columns:
+        - tags
+        - disabled
+        - template
+        - action
+        - app_id
+        - created_by
+        - description
+        - destination_address
+        - destination_port
+        - direction
+        - display_name
+        - protocol
+        - source_address
+        - source_port
+        - subject_display_name
+        - subject_domain
+        - subject_id
+        - subject_secondary_id
+        - subject_type
+        - updated_by
+        - weight
+        - created_at
+        - deleted_at
+        - updated_at
+        - valid_from
+        - valid_to
+        - annotations
+        - id
+  - role: moderator
+    permission:
+      check:
+        _and:
+          - created_by:
+              _eq: X-Hasura-User-Id
+          - subject_domain:
+              _eq: X-Hasura-Org-Id
+      set:
+        created_by: X-Hasura-User-Id
+        subject_domain: X-Hasura-Org-Id
+      columns:
+        - tags
+        - disabled
+        - template
+        - action
+        - app_id
+        - created_by
+        - description
+        - destination_address
+        - destination_port
+        - direction
+        - display_name
+        - protocol
+        - source_address
+        - source_port
+        - subject_display_name
+        - subject_domain
+        - subject_id
+        - subject_secondary_id
+        - subject_type
+        - updated_by
+        - weight
+        - created_at
+        - deleted_at
+        - updated_at
+        - valid_from
+        - valid_to
+        - annotations
+        - id
+  - role: supervisor
+    permission:
+      check: {}
+      set:
+        created_by: X-Hasura-User-Id
+        subject_domain: X-Hasura-Org-Id
+      columns:
+        - tags
+        - disabled
+        - template
+        - action
+        - app_id
+        - created_by
+        - description
+        - destination_address
+        - destination_port
+        - direction
+        - display_name
+        - protocol
+        - source_address
+        - source_port
+        - subject_display_name
+        - subject_domain
+        - subject_id
+        - subject_secondary_id
+        - subject_type
+        - updated_by
+        - weight
+        - created_at
+        - deleted_at
+        - updated_at
+        - valid_from
+        - valid_to
+        - annotations
+        - id
+select_permissions:
+  - role: editor
+    permission:
+      columns:
+        - tags
+        - disabled
+        - template
+        - action
+        - app_id
+        - created_by
+        - description
+        - destination_address
+        - destination_port
+        - direction
+        - display_name
+        - protocol
+        - source_address
+        - source_port
+        - subject_display_name
+        - subject_domain
+        - subject_id
+        - subject_secondary_id
+        - subject_type
+        - updated_by
+        - weight
+        - created_at
+        - deleted_at
+        - updated_at
+        - valid_from
+        - valid_to
+        - annotations
+        - id
+      filter:
+        subject_domain:
+          _eq: X-Hasura-Org-Id
+      allow_aggregations: true
+  - role: moderator
+    permission:
+      columns:
+        - tags
+        - disabled
+        - template
+        - action
+        - app_id
+        - created_by
+        - description
+        - destination_address
+        - destination_port
+        - direction
+        - display_name
+        - protocol
+        - source_address
+        - source_port
+        - subject_display_name
+        - subject_domain
+        - subject_id
+        - subject_secondary_id
+        - subject_type
+        - updated_by
+        - weight
+        - created_at
+        - deleted_at
+        - updated_at
+        - valid_from
+        - valid_to
+        - annotations
+        - id
+      filter:
+        subject_domain:
+          _eq: X-Hasura-Org-Id
+      allow_aggregations: true
+  - role: supervisor
+    permission:
+      columns:
+        - tags
+        - disabled
+        - template
+        - action
+        - app_id
+        - created_by
+        - description
+        - destination_address
+        - destination_port
+        - direction
+        - display_name
+        - protocol
+        - source_address
+        - source_port
+        - subject_display_name
+        - subject_domain
+        - subject_id
+        - subject_secondary_id
+        - subject_type
+        - updated_by
+        - weight
+        - created_at
+        - deleted_at
+        - updated_at
+        - valid_from
+        - valid_to
+        - annotations
+        - id
+      filter: {}
+      allow_aggregations: true
+  - role: viewer
+    permission:
+      columns:
+        - tags
+        - disabled
+        - template
+        - action
+        - app_id
+        - created_by
+        - description
+        - destination_address
+        - destination_port
+        - direction
+        - display_name
+        - protocol
+        - source_address
+        - source_port
+        - subject_display_name
+        - subject_domain
+        - subject_id
+        - subject_secondary_id
+        - subject_type
+        - updated_by
+        - weight
+        - created_at
+        - deleted_at
+        - updated_at
+        - valid_from
+        - valid_to
+        - annotations
+        - id
+      filter:
+        subject_domain:
+          _eq: X-Hasura-Org-Id
+      allow_aggregations: true
+update_permissions:
+  - role: editor
+    permission:
+      columns:
+        - tags
+        - disabled
+        - template
+        - action
+        - app_id
+        - created_by
+        - description
+        - destination_address
+        - destination_port
+        - direction
+        - display_name
+        - protocol
+        - source_address
+        - source_port
+        - subject_display_name
+        - subject_domain
+        - subject_id
+        - subject_secondary_id
+        - subject_type
+        - updated_by
+        - weight
+        - created_at
+        - deleted_at
+        - updated_at
+        - valid_from
+        - valid_to
+        - annotations
+        - id
+      filter:
+        _and:
+          - created_by:
+              _eq: X-Hasura-User-Id
+          - subject_domain:
+              _eq: X-Hasura-Org-Id
+      check: {}
+      set:
+        subject_domain: X-Hasura-Org-Id
+        updated_by: X-Hasura-User-Id
+  - role: moderator
+    permission:
+      columns:
+        - tags
+        - disabled
+        - template
+        - action
+        - app_id
+        - created_by
+        - description
+        - destination_address
+        - destination_port
+        - direction
+        - display_name
+        - protocol
+        - source_address
+        - source_port
+        - subject_display_name
+        - subject_domain
+        - subject_id
+        - subject_secondary_id
+        - subject_type
+        - updated_by
+        - weight
+        - created_at
+        - deleted_at
+        - updated_at
+        - valid_from
+        - valid_to
+        - annotations
+        - id
+      filter:
+        subject_domain:
+          _eq: X-Hasura-Org-Id
+      check: null
+      set:
+        subject_domain: X-Hasura-Org-Id
+        updated_by: X-Hasura-User-Id
+  - role: supervisor
+    permission:
+      columns:
+        - tags
+        - disabled
+        - template
+        - action
+        - app_id
+        - created_by
+        - description
+        - destination_address
+        - destination_port
+        - direction
+        - display_name
+        - protocol
+        - source_address
+        - source_port
+        - subject_display_name
+        - subject_domain
+        - subject_id
+        - subject_secondary_id
+        - subject_type
+        - updated_by
+        - weight
+        - created_at
+        - deleted_at
+        - updated_at
+        - valid_from
+        - valid_to
+        - annotations
+        - id
+      filter: {}
+      check: {}
+      set:
+        subject_domain: X-Hasura-Org-Id
+        updated_by: X-Hasura-User-Id
+delete_permissions:
+  - role: editor
+    permission:
+      filter:
+        _and:
+          - created_by:
+              _eq: X-Hasura-User-Id
+          - subject_domain:
+              _eq: X-Hasura-Org-Id
+  - role: moderator
+    permission:
+      filter:
+        subject_domain:
+          _eq: X-Hasura-Org-Id
+  - role: supervisor
+    permission:
+      filter: {}

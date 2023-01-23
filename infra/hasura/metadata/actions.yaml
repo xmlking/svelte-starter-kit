@@ -15,6 +15,11 @@ actions:
         template_engine: Kriti
         url: '{{$base_url}}/search'
         version: 2
+    permissions:
+      - role: viewer
+      - role: supervisor
+      - role: moderator
+      - role: editor
     comment: Universities API
   - name: searchRestrooms
     definition:
@@ -34,6 +39,11 @@ actions:
         template_engine: Kriti
         url: '{{$base_url}}/restrooms/search'
         version: 2
+    permissions:
+      - role: viewer
+      - role: supervisor
+      - role: moderator
+      - role: editor
     comment: Restrooms API
 custom_types:
   enums: []
