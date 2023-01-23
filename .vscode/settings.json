@@ -105,7 +105,7 @@
 	// This is the default list of filetypes to spell check except with proto3 added.
 	"cSpell.enabledLanguageIds": ["asciidoc", "css", "go", "html", "javascript", "json", "markdown", "plaintext", "python", "rust", "scss", "text", "typescript", "typescriptreact", "yml", "proto3", "svelte"],
 	// This is a whitelist of words that we think we spell just fine.
-	"cSpell.userWords": ["grpc", "log", "proto", "protobuf", "timeout"],
+	"cSpell.words": ["grpc", "log", "proto", "protobuf", "timeout", "hasura"],
 	"cSpell.ignorePaths": ["node_modules", "**/node_modules", "**/node_modules/**", ".git"],
 
 	////////// svelte //////////

@@ -4,6 +4,10 @@ GraphQL APIs with Hasura
 
 ![Hasura GraphQL Engine architecture](https://raw.githubusercontent.com/hasura/graphql-engine/master/assets/hasura-arch.svg)
 
+## TODO
+
+- [ ] Add **Authentication** and **Object Storage** for Hasura using [Hasura Backend Plus](https://nhost.github.io/hasura-backend-plus/) container
+
 ## hasura-cli
 
 ### Install
@@ -188,3 +192,4 @@ Using `claims_map` to map JWT token to hasura claims:
 
 - Sample metadata <https://github.com/hasura/template-gallery/tree/main/postgres>-
 - Hasura and AuthJS [intigration](https://hasura.io/learn/graphql/hasura-authentication/integrations/nextjs-auth/)
+- [Hasura Backend Plus](https://nhost.github.io/hasura-backend-plus/)

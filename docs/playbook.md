@@ -240,7 +240,11 @@ pnpm add -D @graphql-codegen/cli @graphql-codegen/client-preset -w
 Use [Auth.js](https://authjs.dev/) for Authentication
 
 ```shell
-pnpm add @auth/core @auth/sveltekit
+pnpm add  -D @auth/core @auth/sveltekit
+# for custom encode and decode JWT
+pnpm add  -D jsonwebtoken  @types/jsonwebtoken
+# Hasura Auth.js Adopter
+pnpm add  -D next-auth-hasura-adapter
 ```
 
 #### Cookies
