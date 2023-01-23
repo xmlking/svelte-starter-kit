@@ -1,10 +1,11 @@
 import { building } from '$app/environment';
-import { AuthLogger } from '$lib/utils';
+import { Logger } from '$lib/utils';
 import { redirect, type Handle } from '@sveltejs/kit';
 /**
  * Protect the route
  * It shoud be the last middleware
  */
+const log = new Logger('middleware:guard');
 export const guard = (async ({ event, resolve }) => {
 	// skip auth logic on build to prevent infinite redirection in production mode
 	// FIXME: https://github.com/nextauthjs/next-auth/discussions/6186
@@ -17,7 +18,7 @@ export const guard = (async ({ event, resolve }) => {
 	// check if role has access to target route
 
 	const { user, roles } = (await locals.getSession()) ?? {};
-	AuthLogger.debug('guard:locals.user', user);
+	log.debug('guard:locals.user', user);
 
 	if (event.url.pathname.startsWith('/dashboard')) {
 		if (!user) {

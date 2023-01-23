@@ -1,6 +1,6 @@
 import { dev } from '$app/environment';
-import { PUBLIC_CONFY_SENTRY_DSN } from '$env/static/public';
 import { Logger } from '$lib/utils';
+import envPub from '$lib/variables/variables';
 import * as Sentry from '@sentry/svelte';
 import { BrowserTracing } from '@sentry/tracing';
 import type { HandleClientError } from '@sveltejs/kit';
@@ -11,9 +11,9 @@ if (!dev) {
 }
 
 // Initialize the Sentry SDK here
-if (!dev && PUBLIC_CONFY_SENTRY_DSN) {
+if (!dev && envPub.PUBLIC_SENTRY_DSN) {
 	Sentry.init({
-		dsn: PUBLIC_CONFY_SENTRY_DSN,
+		dsn: envPub.PUBLIC_SENTRY_DSN,
 		release: __APP_VERSION__,
 		initialScope: {
 			tags: { source: 'client' }

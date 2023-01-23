@@ -1,12 +1,15 @@
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
 // and what to do when importing types
+import { DefaultSession } from '@auth/core/types';
 declare global {
 	namespace App {
-		import { DefaultSession } from '@auth/core/types';
-		interface UserSession extends DefaultSession {
+		interface Session {
+			user?: {
+				id?: string;
+			} & DefaultSession['user'];
 			token: string;
-			rules: string[];
+			rules?: string[];
 		}
 		interface Error {
 			message: string; // this property is always required, to provide a sensible fallback
@@ -14,13 +17,16 @@ declare global {
 		}
 
 		interface Locals {
-			session: UserSession;
-			getSession(): Promise<UserSession | null>;
+			session: Session;
+			getSession(): Promise<Session | null>;
 		}
 		interface PageData {
-			session: UserSession | null;
+			session: Session | null;
 		}
 		// interface Platform {}
+		interface Metadata {
+			backendToken?: string | null;
+		}
 	}
 
 	// App version from package.json
