@@ -30,6 +30,7 @@ Awesome **Tailwind CSS** Links
 - [Best free tailwind CSS libraries for 2023](https://medium.com/frontendweb/top-19-best-free-tailwind-css-libraries-kits-for-2023-8dfb478d4d0f)
 - [6 Tips for Tailwind CSS Development](https://jfelix.info/blog/6-tips-for-tailwind-css-development-with-resources)
 - [Collection of Tailwind Components](https://github.com/unlight/tailwind-components)
+- [Beautiful CSS box-shadow examples](https://getcssscan.com/css-box-shadow-examples)
 - [storyblok-that-speakers](https://github.com/bradgarropy/jqq-demos/tree/main/storyblok-that-speakers#visual-editing) showcase [responsive grid](https://github.com/bradgarropy/jqq-demos/blob/main/storyblok-that-speakers/my-app/src/routes/speakers/%2Bpage.svelte#L17-L20)
 - Rendering different views for **Mobile** and **Desktop**:
 
