@@ -4,90 +4,71 @@ table:
 insert_permissions:
   - role: editor
     permission:
-      check:
-        _and:
-          - created_by:
-              _eq: x-hasura-user-id
-          - subject_domain:
-              _eq: x-hasura-org-id
+      check: {}
       set:
         created_by: x-hasura-user-id
         subject_domain: x-hasura-org-id
+        updated_by: x-hasura-user-id
       columns:
-        - tags
-        - disabled
-        - template
         - action
+        - annotations
         - app_id
-        - created_by
         - description
         - destination_address
         - destination_port
         - direction
+        - disabled
         - display_name
+        - id
         - protocol
         - source_address
         - source_port
         - subject_display_name
-        - subject_domain
         - subject_id
         - subject_secondary_id
         - subject_type
-        - updated_by
-        - weight
-        - created_at
-        - deleted_at
-        - updated_at
+        - tags
+        - template
         - valid_from
         - valid_to
-        - annotations
-        - id
+        - weight
   - role: moderator
     permission:
-      check:
-        _and:
-          - created_by:
-              _eq: x-hasura-user-id
-          - subject_domain:
-              _eq: x-hasura-org-id
+      check: {}
       set:
         created_by: x-hasura-user-id
         subject_domain: x-hasura-org-id
+        updated_by: x-hasura-user-id
       columns:
-        - tags
-        - disabled
-        - template
         - action
+        - annotations
         - app_id
-        - created_by
         - description
         - destination_address
         - destination_port
         - direction
+        - disabled
         - display_name
+        - id
         - protocol
         - source_address
         - source_port
         - subject_display_name
-        - subject_domain
         - subject_id
         - subject_secondary_id
         - subject_type
-        - updated_by
-        - weight
-        - created_at
-        - deleted_at
-        - updated_at
+        - tags
+        - template
         - valid_from
         - valid_to
-        - annotations
-        - id
+        - weight
   - role: supervisor
     permission:
       check: {}
       set:
         created_by: x-hasura-user-id
         subject_domain: x-hasura-org-id
+        updated_by: x-hasura-user-id
       columns:
         - tags
         - disabled
@@ -260,34 +241,23 @@ update_permissions:
   - role: editor
     permission:
       columns:
-        - tags
-        - disabled
-        - template
         - action
+        - annotations
         - app_id
-        - created_by
+        - deleted_at
         - description
         - destination_address
         - destination_port
         - direction
+        - disabled
         - display_name
         - protocol
         - source_address
         - source_port
-        - subject_display_name
-        - subject_domain
-        - subject_id
-        - subject_secondary_id
-        - subject_type
-        - updated_by
-        - weight
-        - created_at
-        - deleted_at
-        - updated_at
+        - tags
         - valid_from
         - valid_to
-        - annotations
-        - id
+        - weight
       filter:
         _and:
           - created_by:
@@ -301,72 +271,57 @@ update_permissions:
   - role: moderator
     permission:
       columns:
-        - tags
-        - disabled
-        - template
         - action
+        - annotations
         - app_id
-        - created_by
+        - deleted_at
         - description
         - destination_address
         - destination_port
         - direction
+        - disabled
         - display_name
         - protocol
         - source_address
         - source_port
-        - subject_display_name
-        - subject_domain
-        - subject_id
-        - subject_secondary_id
-        - subject_type
-        - updated_by
-        - weight
-        - created_at
-        - deleted_at
-        - updated_at
+        - tags
         - valid_from
         - valid_to
-        - annotations
-        - id
+        - weight
       filter:
         subject_domain:
           _eq: x-hasura-org-id
-      check: null
+      check: {}
       set:
         subject_domain: x-hasura-org-id
         updated_by: x-hasura-user-id
   - role: supervisor
     permission:
       columns:
-        - tags
-        - disabled
-        - template
         - action
+        - annotations
         - app_id
+        - created_at
         - created_by
+        - deleted_at
         - description
         - destination_address
         - destination_port
         - direction
+        - disabled
         - display_name
         - protocol
         - source_address
         - source_port
         - subject_display_name
-        - subject_domain
         - subject_id
         - subject_secondary_id
         - subject_type
-        - updated_by
-        - weight
-        - created_at
-        - deleted_at
-        - updated_at
+        - tags
+        - template
         - valid_from
         - valid_to
-        - annotations
-        - id
+        - weight
       filter: {}
       check: {}
       set:
