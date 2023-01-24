@@ -8,8 +8,8 @@ declare global {
 			user?: {
 				id?: string;
 			} & DefaultSession['user'];
-			token: string;
-			rules?: string[];
+			token?: string;
+			roles?: string[];
 		}
 		interface Error {
 			message: string; // this property is always required, to provide a sensible fallback
@@ -17,7 +17,7 @@ declare global {
 		}
 
 		interface Locals {
-			session: Session;
+			// session: Session;
 			getSession(): Promise<Session | null>;
 		}
 		interface PageData {

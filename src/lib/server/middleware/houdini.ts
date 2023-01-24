@@ -19,7 +19,7 @@ export const houdini = (async ({ event, resolve }) => {
 	// const token = await getToken({ req: request, secret: dynPriEnv.AUTH_SECRET, raw: true });
 	// const token = await getToken(cookies);
 	// const token = await getToken(cookies, true); // raw = true
-	log.debug('in houdini middleware.......', token);
+	log.debug('setting token......', token);
 	if (token) setSession(event, { token });
 	const response = await resolve(event);
 	return response;
