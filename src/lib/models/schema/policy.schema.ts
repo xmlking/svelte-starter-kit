@@ -1,4 +1,4 @@
-import { emptyToNull, stringToArray, stringToJSON, stringToMap } from '$lib/utils/zod.utils';
+import { emptyToNull } from '$lib/utils/zod.utils';
 import { z } from 'zod';
 
 function checkValidDates(ctx: z.RefinementCtx, valid_from: string | undefined | null, valid_to: string | undefined | null) {
@@ -16,10 +16,10 @@ export const policyClientSchema = z
 		display_name: z.string().trim().min(4).max(256),
 		description: z.string().trim().max(256).nullish(),
 		// tags: z.preprocess(stringToArray, z.array(z.string().trim().min(2)).optional()),
-		// annotations: z.preprocess(stringToJSON, z.record(z.string().trim().min(3), z.string().trim().min(3)).optional()),
 		tags: z.string().trim().min(2).array().nullish(),
-		annotations: z.preprocess(stringToJSON, z.record(z.string().trim().min(3), z.string().trim().min(3)).nullish()),
-		// annotations: z.preprocess(stringToMap, z.map(z.string().trim().min(3), z.string().trim().min(3))).nullish(), // nullish() = optional().nullable()
+		// annotations: z.preprocess(stringToJSON, z.record(z.string().trim().min(3), z.string().trim().min(3)).nullish()),
+		// annotations: z.preprocess(stringToMap, z.map(z.string().trim().min(3), z.string().trim().min(3))).nullish(),
+		annotations: z.string().trim().nullish(), // TODO: validate map string
 		disabled: z.boolean().optional().default(false),
 		template: z.boolean().optional().default(false),
 		// valid_from: z.string().datetime({ offset: true }).nullish().catch(null),
@@ -41,9 +41,15 @@ export const policyClientSchema = z
 export const policyBaseSchema = z.object({
 	display_name: z.string().trim().min(4).max(256),
 	description: z.string().trim().max(256).nullish(),
-	tags: z.preprocess(stringToArray, z.array(z.string().trim().min(2)).nullish()),
+	// TODO: validate comma separated string /^\w(\s*,?\s*\w)*$/
+	tags: z
+		.string()
+		.trim()
+		.regex(/^\w+(,\w+)*$/)
+		.nullish(),
 	// annotations: z.preprocess(stringToJSON, z.record(z.string().trim().min(3), z.string().trim().min(3)).nullish()),
-	annotations: z.preprocess(stringToMap, z.map(z.string().trim().min(3), z.string().trim().min(3)).nullish()),
+	// annotations: z.preprocess(stringToMap, z.map(z.string().trim().min(3), z.string().trim().min(3)).nullish()),
+	annotations: z.string().trim().nullish(), // TODO: validate map string
 	disabled: z.coerce.boolean().optional().default(false),
 	valid_from: z.string().datetime({ offset: true }).nullish().catch(null),
 	valid_to: z.string().datetime({ offset: true }).nullish().catch(null),
@@ -111,11 +117,3 @@ export const policyDeleteSchema = z.object({
 export const policySchema = policyCreateBaseSchema.merge(policyExtraSchema);
 
 export type Policy = z.infer<typeof policySchema>;
-
-export const policySaveResultSchema = z.object({
-	id: z.string().trim().uuid(),
-	display_name: z.string().trim(),
-	updated_at: z.string().datetime({ offset: true })
-});
-
-export type PolicySaveResult = z.infer<typeof policySaveResultSchema>;

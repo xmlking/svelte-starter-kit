@@ -1,8 +1,9 @@
-import { CachePolicy, CreatePolicyStore, GetPolicyStore, UpdatePolicyStore, type tz_policies_insert_input } from '$houdini';
+import type { tz_policies_insert_input } from '$houdini';
+import { CachePolicy, CreatePolicyStore, GetPolicyStore, UpdatePolicyStore } from '$houdini';
 import { handleActionErrors, handleLoadErrors, PolicyError } from '$lib/errors';
 import { policyCreateSchema, policyUpdateSchema } from '$lib/models/schema';
 import { Logger } from '$lib/utils';
-import { arrayToString, mapToString, uuidSchema } from '$lib/utils/zod.utils';
+import { uuidSchema } from '$lib/utils/zod.utils';
 import envPub from '$lib/variables/variables';
 import { zfd } from '$lib/zodfd';
 import * as Sentry from '@sentry/svelte';
@@ -109,8 +110,7 @@ export const actions = {
 
 				const jsonPayload = {
 					...payload,
-					...(payload.tags && { tags: arrayToString(payload.tags) }),
-					...(payload.annotations && { annotations: mapToString(payload.annotations) })
+					...(payload.tags && { tags: `{${payload.tags}}` })
 				};
 
 				const variables = { data: jsonPayload };
@@ -136,8 +136,7 @@ export const actions = {
 
 				const jsonPayload = {
 					...payload,
-					...(payload.tags && { tags: arrayToString(payload.tags) }),
-					...(payload.annotations && { annotations: mapToString(payload.annotations) })
+					...(payload.tags && { tags: `{${payload.tags}}` })
 				};
 
 				const variables = { id, data: jsonPayload };
