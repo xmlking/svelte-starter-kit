@@ -42,7 +42,7 @@ services:
       -c ssl_key_file=/etc/ssl/private/ssl-cert-snakeoil.key
 
   hasura:
-    image: hasura/graphql-engine:v2.16.1
+    image: hasura/graphql-engine:v2.17.0
     ports:
       - '8080:8080'
     depends_on:
@@ -64,11 +64,13 @@ services:
       # HASURA_GRAPHQL_CONSOLE_ASSETS_DIR: /srv/console-assets
       ## uncomment next line to set an admin secret
       HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
-      #   HASURA_GRAPHQL_JWT_SECRET: '{"type":"RS512", "jwk_url": "https://www.googleapis.com/oauth2/v3/certs"}'
+      # HASURA_GRAPHQL_JWT_SECRET: '{"type":"RS512", "jwk_url": "https://www.googleapis.com/oauth2/v3/certs"}'
       HASURA_GRAPHQL_JWT_SECRET: '{ "type": "HS256", "key": "1084d8d404126d641c232604aa27bc756921c07a5869c6de6cfd0c6c455de0fe" }'
       HASURA_GRAPHQL_CORS_DOMAIN: '*'
       HASURA_GRAPHQL_ENABLE_REMOTE_SCHEMA_PERMISSIONS: 'true'
-      HASURA_GRAPHQL_ENABLE_ALLOWLIST: 'true'
+      ## enable allowList only for prod if required
+      # HASURA_GRAPHQL_ENABLE_ALLOWLIST: 'true'
+      HASURA_GRAPHQL_ENABLE_TELEMETRY: 'false'
 
 volumes:
   db_data:

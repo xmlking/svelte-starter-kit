@@ -1,7 +1,7 @@
 import { building } from '$app/environment';
+import { setSession } from '$houdini';
 import type { Handle } from '@sveltejs/kit';
 // import { getToken } from '@auth/core/jwt';
-import { setSession } from '$houdini';
 // import { getToken } from '$lib/server/middleware/authjs-helper';
 import { Logger } from '$lib/utils';
 
