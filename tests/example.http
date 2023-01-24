@@ -33,7 +33,7 @@ x-hasura-admin-secret: {{graphqlAdminToken}}
 # Authorization: Bearer {{graphqlUserToken}}
 x-hasura-role: editor
 x-hasura-org-id: chinthagunta.com
-x-hasura-user-id: sumo@chintagunta.com
+x-hasura-user-id: sumo@chinthagunta.com
 X-REQUEST-TYPE: GraphQL
 
 query ListPolicies(
@@ -97,7 +97,7 @@ Content-Type: application/json
 x-hasura-admin-secret: {{graphqlAdminToken}}
 x-hasura-role: editor
 x-hasura-org-id: chinthagunta.com
-x-hasura-user-id: sumo@chintagunta.com
+x-hasura-user-id: sumo@chinthagunta.com
 X-REQUEST-TYPE: GraphQL
 
 query SearchPolicies(
@@ -167,7 +167,7 @@ Content-Type: application/json
 x-hasura-admin-secret: {{graphqlAdminToken}}
 x-hasura-role: editor
 x-hasura-org-id: chinthagunta.com
-x-hasura-user-id: sumo@chintagunta.com
+x-hasura-user-id: sumo@chinthagunta.com
 X-REQUEST-TYPE: GraphQL
 
 query GetPolicy($id: uuid!) {
@@ -216,7 +216,7 @@ Content-Type: application/json
 x-hasura-admin-secret: {{graphqlAdminToken}}
 x-hasura-role: editor
 x-hasura-org-id: chinthagunta.com
-x-hasura-user-id: sumo@chintagunta.com
+x-hasura-user-id: sumo@chinthagunta.com
 X-REQUEST-TYPE: GraphQL
 
 mutation UpdatePolicy($id: uuid!, $data: tz_policies_set_input!) {
@@ -244,7 +244,7 @@ Content-Type: application/json
 x-hasura-admin-secret: {{graphqlAdminToken}}
 x-hasura-role: editor
 x-hasura-org-id: chinthagunta.com
-x-hasura-user-id: sumo@chintagunta.com
+x-hasura-user-id: sumo@chinthagunta.com
 X-REQUEST-TYPE: GraphQL
 
 mutation CreatePolicy($data: tz_policies_insert_input!) {
@@ -263,7 +263,7 @@ mutation CreatePolicy($data: tz_policies_insert_input!) {
     "tags":"{tz,us}",
     "annotations":"\"sumo\"=>\"demo\"",
     "subject_id":"6e9bf365-8c09-4dd9-b9b2-83f6ab315618",
-    "subject_secondary_id":"sumo@chintagunta.com",
+    "subject_secondary_id":"sumo@chinthagunta.com",
     "subject_display_name":"sumanth chinthagunta",
     "subject_type":"subject_type_user",
     "source_address":"0.0.0.0",
@@ -287,7 +287,7 @@ Content-Type: application/json
 x-hasura-admin-secret: {{graphqlAdminToken}}
 x-hasura-role: editor
 x-hasura-org-id: chinthagunta.com
-x-hasura-user-id: sumo@chintagunta.com
+x-hasura-user-id: sumo@chinthagunta.com
 X-REQUEST-TYPE: GraphQL
 
 mutation DeletePolicy($id:uuid!) {
