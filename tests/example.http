@@ -30,7 +30,10 @@ query IntrospectionQuery {
 POST  {{graphqlEndpoint}}
 Content-Type: application/json
 x-hasura-admin-secret: {{graphqlAdminToken}}
-Authorization: Bearer {{graphqlUserToken}}
+# Authorization: Bearer {{graphqlUserToken}}
+x-hasura-role: editor
+x-hasura-org-id: chinthagunta.com
+x-hasura-user-id: sumo@chintagunta.com
 X-REQUEST-TYPE: GraphQL
 
 query ListPolicies(
@@ -92,6 +95,9 @@ query ListPolicies(
 POST  {{graphqlEndpoint}}
 Content-Type: application/json
 x-hasura-admin-secret: {{graphqlAdminToken}}
+x-hasura-role: editor
+x-hasura-org-id: chinthagunta.com
+x-hasura-user-id: sumo@chintagunta.com
 X-REQUEST-TYPE: GraphQL
 
 query SearchPolicies(
@@ -159,6 +165,9 @@ query SearchPolicies(
 POST  {{graphqlEndpoint}}
 Content-Type: application/json
 x-hasura-admin-secret: {{graphqlAdminToken}}
+x-hasura-role: editor
+x-hasura-org-id: chinthagunta.com
+x-hasura-user-id: sumo@chintagunta.com
 X-REQUEST-TYPE: GraphQL
 
 query GetPolicy($id: uuid!) {
@@ -200,10 +209,14 @@ query GetPolicy($id: uuid!) {
 }
 
 ### update policiy by ID
+# subject_domain = x-hasura-org-id 	updated_by = x-hasura-user-id
 # @name updatePolicy
 POST  {{graphqlEndpoint}}
 Content-Type: application/json
 x-hasura-admin-secret: {{graphqlAdminToken}}
+x-hasura-role: editor
+x-hasura-org-id: chinthagunta.com
+x-hasura-user-id: sumo@chintagunta.com
 X-REQUEST-TYPE: GraphQL
 
 mutation UpdatePolicy($id: uuid!, $data: tz_policies_set_input!) {
@@ -217,7 +230,6 @@ mutation UpdatePolicy($id: uuid!, $data: tz_policies_set_input!) {
 {
   "id":"{{firstPoliciyId}}",
   "data":{
-    "updated_by":"demo@gmail.com",
 	"description":"user 1 policy v2",
     "tags":"{tz,us}",
     "annotations":"\"sumo\"=>\"demo1\""
@@ -225,10 +237,14 @@ mutation UpdatePolicy($id: uuid!, $data: tz_policies_set_input!) {
 }
 
 ### create new policiy
+# subject_domain = x-hasura-org-id 	created_by = x-hasura-user-id
 # @name createPolicy
 POST  {{graphqlEndpoint}}
 Content-Type: application/json
 x-hasura-admin-secret: {{graphqlAdminToken}}
+x-hasura-role: editor
+x-hasura-org-id: chinthagunta.com
+x-hasura-user-id: sumo@chintagunta.com
 X-REQUEST-TYPE: GraphQL
 
 mutation CreatePolicy($data: tz_policies_insert_input!) {
@@ -250,14 +266,11 @@ mutation CreatePolicy($data: tz_policies_insert_input!) {
     "subject_secondary_id":"sumo@chintagunta.com",
     "subject_display_name":"sumanth chinthagunta",
     "subject_type":"subject_type_user",
-    "subject_domain":"chintagunta.com",
     "source_address":"0.0.0.0",
     "source_port":"5000",
     "destination_address":"1.1.1.1",
     "destination_port":"443",
     "app_id":"myapp.exe",
-	"created_by":"sumo@gmail.com",
-    "updated_by":"sumo@gmail.com",
     "valid_from":"{{$datetime rfc1123|iso8601 [offset option]}}"
   }
 }
@@ -267,10 +280,14 @@ mutation CreatePolicy($data: tz_policies_insert_input!) {
 ###
 
 ### delete policiy
+# if null returned, either ID is not found or this user don't have permissions to delete
 # @name deletePolicy
 POST  {{graphqlEndpoint}}
 Content-Type: application/json
 x-hasura-admin-secret: {{graphqlAdminToken}}
+x-hasura-role: editor
+x-hasura-org-id: chinthagunta.com
+x-hasura-user-id: sumo@chintagunta.com
 X-REQUEST-TYPE: GraphQL
 
 mutation DeletePolicy($id:uuid!) {

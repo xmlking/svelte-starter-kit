@@ -1,23 +1,17 @@
-import { building } from '$app/environment';
-import { env as dynPubEnv } from '$env/dynamic/public';
-import { CachePolicy, CreatePolicyStore, GetPolicyStore, UpdatePolicyStore } from '$houdini';
+import { CachePolicy, CreatePolicyStore, GetPolicyStore, UpdatePolicyStore, type tz_policies_insert_input } from '$houdini';
 import { handleActionErrors, handleLoadErrors, PolicyError } from '$lib/errors';
-import { policyCreateSchema, policyUpdateSchema, type Policy } from '$lib/models/schema';
+import { policyCreateSchema, policyUpdateSchema } from '$lib/models/schema';
 import { Logger } from '$lib/utils';
 import { arrayToString, mapToString, uuidSchema } from '$lib/utils/zod.utils';
+import envPub from '$lib/variables/variables';
 import { zfd } from '$lib/zodfd';
 import * as Sentry from '@sentry/svelte';
 import { fail, redirect } from '@sveltejs/kit';
 import type { GraphQLError } from 'graphql';
-import assert from 'node:assert';
 import crypto from 'node:crypto';
 import { ZodError } from 'zod';
 import type { Actions, PageServerLoad } from './$types';
 
-if (!building) {
-	assert.ok(dynPubEnv.PUBLIC_GRAPHQL_ENDPOINT, 'PUBLIC_GRAPHQL_ENDPOINT not configured');
-	assert.ok(dynPubEnv.PUBLIC_GRAPHQL_TOKEN, 'PUBLIC_GRAPHQL_TOKEN not configured');
-}
 const log = new Logger('policy.details.server');
 
 const getPolicyStore = new GetPolicyStore();
@@ -34,12 +28,12 @@ export const load = (async (event) => {
 	} = await parent();
 
 	if (!email) {
-		throw redirect(307, '/auth/signin');
+		throw redirect(307, '/auth/signin?callbackUrl=/dashboard/policy');
 	}
 
 	const { id } = params;
 	if (id == '00000000-0000-0000-0000-000000000000') {
-		const policy: Policy = {
+		const policy: tz_policies_insert_input = {
 			id: '00000000-0000-0000-0000-000000000000',
 			display_name: '',
 			// tags: ['tz', 'us'],
@@ -50,7 +44,7 @@ export const load = (async (event) => {
 			subject_type: 'subject_type_user',
 			subject_secondary_id: 'sumo@chintagunta.com',
 			subject_display_name: '',
-			subject_domain: 'chinthagunta.com',
+			subject_domain: envPub.PUBLIC_TENANT_ID,
 			disabled: false,
 			template: false,
 			source_address: '',
@@ -60,11 +54,7 @@ export const load = (async (event) => {
 			protocol: 'Any',
 			action: 'action_block',
 			direction: 'direction_egress',
-			weight: 2000,
-			created_at: new Date().toISOString(),
-			created_by: email,
-			updated_at: new Date().toISOString(),
-			updated_by: email
+			weight: 2000
 		};
 		return { policy };
 	}
@@ -102,7 +92,7 @@ export const actions = {
 		} = await locals.getSession();
 
 		if (!email) {
-			throw redirect(307, '/auth/signin');
+			throw redirect(307, '/auth/signin?callbackUrl=/dashboard/policy');
 		}
 		const formData = await request.formData();
 
@@ -114,8 +104,6 @@ export const actions = {
 				log.debug('CREATE action formData:', formData);
 
 				formData.set('id', crypto.randomUUID());
-				formData.set('created_by', email);
-				formData.set('updated_by', email);
 				const payload = createSchema.parse(formData);
 				log.debug('CREATE action payload:', payload);
 
@@ -143,7 +131,6 @@ export const actions = {
 			// UPDATE
 			else {
 				log.debug('UPDATE action formData:', formData);
-				formData.set('updated_by', email);
 				const payload = updateSchema.parse(formData);
 				log.debug('UPDATE action payload:', payload);
 

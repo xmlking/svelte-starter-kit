@@ -1,22 +1,15 @@
-import { env as dynPubEnv } from '$env/dynamic/public';
 import { CachePolicy, DeletePolicyStore, order_by, SearchPoliciesStore } from '$houdini';
 import { handleActionErrors, handleLoadErrors, NotFoundError, PolicyError } from '$lib/errors';
 import { Logger } from '$lib/utils';
 import { fail } from '@sveltejs/kit';
 import { ZodError } from 'zod';
 // import { getToken } from '@auth/core/jwt';
-import { building } from '$app/environment';
 import { policyDeleteSchema, policySearchSchema } from '$lib/models/schema';
 import { zfd } from '$lib/zodfd';
 import * as Sentry from '@sentry/svelte';
 import type { GraphQLError } from 'graphql';
-import assert from 'node:assert';
 import type { Actions, PageServerLoad } from './$types';
 
-if (!building) {
-	assert.ok(dynPubEnv.PUBLIC_GRAPHQL_ENDPOINT, 'PUBLIC_GRAPHQL_ENDPOINT not configured');
-	assert.ok(dynPubEnv.PUBLIC_GRAPHQL_TOKEN, 'PUBLIC_GRAPHQL_TOKEN not configured');
-}
 const log = new Logger('policies.server');
 
 const searchPoliciesStore = new SearchPoliciesStore();
@@ -100,7 +93,7 @@ export const actions = {
 			});
 
 			const actionResult = data.delete_tz_policies_by_pk;
-			if (!actionResult) throw new NotFoundError('policy not found');
+			if (!actionResult) throw new NotFoundError('policy not found or user not authorized to delete');
 
 			return {
 				actionResult

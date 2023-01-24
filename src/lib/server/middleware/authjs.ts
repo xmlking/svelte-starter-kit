@@ -1,5 +1,6 @@
 import { dev } from '$app/environment';
 import { Logger } from '$lib/utils';
+import envPub from '$lib/variables/variables';
 import envPri from '$lib/variables/variables.server';
 import AzureAD from '@auth/core/providers/azure-ad';
 import GitHub from '@auth/core/providers/github';
@@ -66,7 +67,7 @@ export const authjs = SvelteKitAuth({
 					'https://hasura.io/jwt/claims': {
 						'x-hasura-allowed-roles': ['viewer', 'editor', 'moderator', 'supervisor'], // user.roles,
 						'x-hasura-default-role': 'viewer', // user.roles[0],
-						'x-hasura-org-id': 'chinthagunta.com',
+						'x-hasura-org-id': envPub.PUBLIC_TENANT_ID,
 						'x-hasura-user-id': token.email // token.sub
 					}
 				};
