@@ -191,8 +191,25 @@ Using `claims_map` to map JWT token to hasura claims:
 }
 ```
 
+## Gotchas
+
+### Allow List
+
+![Allow List](./images/allow-list.png)
+
+- **In development instances:** During development or in dev instances, disable the Allow List (default setting) to enable complete access to the GraphQL schema.
+  Add/remove operations in the [Allow List](https://hasura.io/docs/latest/security/allow-list/) and then export the Metadata for version-control (so you can apply it to other instances).
+- **In CI/CD instances:** Enable the Allow List for testing.
+- **In production instances:** Enabling the Allow List is highly recommended when running the GraphQL Engine in production. i.e., `HASURA_GRAPHQL_ENABLE_ALLOWLIST: 'true'`
+
+Use plugin [@graphql-codegen/hasura-allow-list](https://npmjs.com/package/@graphql-codegen/hasura-allow-list) that automates the creation of the "AllowList" based on the GraphQL Queries found in your front-end code.
+
+> [Role-based Allow List](https://hasura.io/docs/latest/security/allow-list/#role-based-allow-list) only available on **Hasura Cloud** or **Hasura Enterprise Edition**
+
 ## Reference
 
 - Sample metadata <https://github.com/hasura/template-gallery/tree/main/postgres>-
 - Hasura and AuthJS [intigration](https://hasura.io/learn/graphql/hasura-authentication/integrations/nextjs-auth/)
 - [Hasura Backend Plus](https://nhost.github.io/hasura-backend-plus/)
+- [GraphQL Security in Production with Automated Allow Lists](https://hasura.io/blog/graphql-security-in-production-with-hasura-automated-allow-lists/)
+- Hasura [Production Checklist](https://hasura.io/docs/latest/deployment/production-checklist/)
