@@ -27,7 +27,7 @@
 	const user = session?.user;
 
 	onMount(async () => {
-		if (user) user.image ??= await getAzureProfilePicture(session.token);
+		// if (user) user.image ??= await getAzureProfilePicture(session.token);
 	});
 
 	// console.log('session>>>', session);
