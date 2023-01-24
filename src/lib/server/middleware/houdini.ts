@@ -1,3 +1,4 @@
+import { building } from '$app/environment';
 import type { Handle } from '@sveltejs/kit';
 // import { getToken } from '@auth/core/jwt';
 import { setSession } from '$houdini';
@@ -6,6 +7,10 @@ import { Logger } from '$lib/utils';
 
 const log = new Logger('middleware:houdini');
 export const houdini = (async ({ event, resolve }) => {
+	// skip auth logic on build to prevent infinite redirection in production mode
+	// FIXME: https://github.com/nextauthjs/next-auth/discussions/6186
+	if (building) return await resolve(event);
+
 	const { locals, cookies } = event;
 	const { token } = (await locals.getSession()) ?? {};
 
