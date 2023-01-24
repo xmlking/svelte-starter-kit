@@ -43,7 +43,7 @@ export const load = (async (event) => {
 			valid_to: null,
 			subject_id: '6e9bf365-8c09-4dd9-b9b2-83f6ab315618',
 			subject_type: 'subject_type_user',
-			subject_secondary_id: 'sumo@chintagunta.com',
+			subject_secondary_id: 'sumo@chinthagunta.com',
 			subject_display_name: '',
 			subject_domain: envPub.PUBLIC_TENANT_ID,
 			disabled: false,
