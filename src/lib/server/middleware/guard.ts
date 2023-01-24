@@ -13,12 +13,12 @@ export const guard = (async ({ event, resolve }) => {
 
 	const { locals } = event;
 	// TODO:
-	// check if user present
+	// check if user present in houdini middleware
 	// get user roles
 	// check if role has access to target route
 
 	const { user, roles } = (await locals.getSession()) ?? {};
-	log.debug('guard:locals.user', user);
+	log.debug('user roles-->', roles);
 
 	if (event.url.pathname.startsWith('/dashboard')) {
 		if (!user) {

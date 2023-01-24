@@ -18,17 +18,14 @@ const log = new Logger('policy.details.server');
 const getPolicyStore = new GetPolicyStore();
 const createPolicyStore = new CreatePolicyStore();
 const updatePolicyStore = new UpdatePolicyStore();
-
+/**
+ * loaders
+ */
 export const load = (async (event) => {
 	const { params, parent } = event;
-	const {
-		session: {
-			token,
-			user: { email }
-		}
-	} = await parent();
+	const { session } = await parent();
 
-	if (!email) {
+	if (session?.user == undefined) {
 		throw redirect(307, '/auth/signin?callbackUrl=/dashboard/policy');
 	}
 
@@ -82,22 +79,21 @@ export const load = (async (event) => {
 	}
 }) satisfies PageServerLoad;
 
+/**
+ * actions
+ */
 const createSchema = zfd.formData(policyCreateSchema, { empty: 'strip' });
 const updateSchema = zfd.formData(policyUpdateSchema, { empty: 'null' });
 
 export const actions = {
 	save: async ({ params, request, locals, fetch }) => {
-		const {
-			token,
-			user: { email }
-		} = await locals.getSession();
-
-		if (!email) {
+		const session = await locals.getSession();
+		if (session?.user == undefined) {
 			throw redirect(307, '/auth/signin?callbackUrl=/dashboard/policy');
 		}
-		const formData = await request.formData();
 
 		try {
+			const formData = await request.formData();
 			const id = uuidSchema.parse(params.id);
 
 			// CREATE

@@ -41,6 +41,6 @@
 	</div>
 
 	<!-- <div>
-	<pre>{JSON.stringify($page.data.session, null, 4)}</pre>
-</div> -->
+		<pre>{JSON.stringify($page.data.session, null, 4)}</pre>
+	</div> -->
 {/if}

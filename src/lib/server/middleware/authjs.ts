@@ -8,6 +8,7 @@ import Google from '@auth/core/providers/google';
 import { SvelteKitAuth } from '@auth/sveltekit';
 import type { Handle } from '@sveltejs/kit';
 import * as jsonwebtoken from 'jsonwebtoken';
+import { appRoles } from './role-mapper';
 // import { HasuraAdapter } from 'next-auth-hasura-adapter';
 
 // TODO: https://hasura.io/learn/graphql/hasura-authentication/integrations/nextjs-auth/
@@ -60,13 +61,12 @@ export const authjs = SvelteKitAuth({
 			if (isSignIn) {
 				log.debug('in isSignIn');
 				token.email ??= profile.upn;
-				token.roles ??= profile.roles;
+				token.roles ??= appRoles(profile.roles);
 
 				const hasuraToken = {
-					//  role can be temporarily or permanently applied to a user to give the user bulk permissions for a task.
 					'https://hasura.io/jwt/claims': {
-						'x-hasura-allowed-roles': ['viewer', 'editor', 'moderator', 'supervisor'], // user.roles,
-						'x-hasura-default-role': 'viewer', // user.roles[0],
+						'x-hasura-allowed-roles': token.roles,
+						'x-hasura-default-role': 'viewer',
 						'x-hasura-org-id': envPub.PUBLIC_TENANT_ID,
 						'x-hasura-user-id': token.email // token.sub
 					}
