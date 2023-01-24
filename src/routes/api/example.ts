@@ -1,4 +1,4 @@
-import { env as dynPubEnv } from '$env/dynamic/public';
+import envPub from '$lib/variables/variables';
 import fetch from 'cross-fetch';
 
 interface Post {
@@ -17,7 +17,7 @@ export const fetchPosts = async (): Promise<Post> => {
 if (import.meta.vitest) {
 	const { it, expect } = import.meta.vitest;
 
-	it.runIf(dynPubEnv.PUBLIC_GRAPHQL_ENDPOINT)('only run if secrets enabled', () => {
+	it.runIf(envPub.PUBLIC_GRAPHQL_ENDPOINT)('only run if secrets enabled', () => {
 		console.log('PUBLIC_GRAPHQL_ENDPOINT is provided');
 	});
 

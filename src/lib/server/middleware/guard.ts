@@ -22,6 +22,7 @@ export const guard = (async ({ event, resolve }) => {
 
 	if (event.url.pathname.startsWith('/dashboard')) {
 		if (!user) {
+			// FIXME: redirect from middleware may cause recursion
 			throw redirect(303, `${event.url.origin}/auth/signin?callbackUrl=/dashboard`);
 		}
 		if (event.url.pathname.startsWith('/dashboard/admin')) {

@@ -61,7 +61,6 @@ export const policyBaseSchema = z.object({
 export const policyCreateBaseSchema = policyBaseSchema.extend({
 	id: z.string().trim().uuid(),
 	subject_display_name: z.string().trim(),
-	subject_domain: z.string().trim(),
 	subject_id: z.string().trim(),
 	subject_secondary_id: z.string().trim(),
 	subject_type: z.enum(['subject_type_user', 'subject_type_group', 'subject_type_device', 'subject_type_service_account']),
@@ -92,21 +91,12 @@ export const policySearchSchema = z.object({
 /**
  * for update time validation
  */
-export const policyUpdateSchema = policyBaseSchema
-	.extend({
-		updated_by: z.string()
-	})
-	.superRefine((data, ctx) => checkValidDates(ctx, data.valid_from, data.valid_to));
+export const policyUpdateSchema = policyBaseSchema.superRefine((data, ctx) => checkValidDates(ctx, data.valid_from, data.valid_to));
 
 /**
  * for create time validation
  */
-export const policyCreateSchema = policyCreateBaseSchema
-	.extend({
-		created_by: z.string(),
-		updated_by: z.string().optional()
-	})
-	.superRefine((data, ctx) => checkValidDates(ctx, data.valid_from, data.valid_to));
+export const policyCreateSchema = policyCreateBaseSchema.superRefine((data, ctx) => checkValidDates(ctx, data.valid_from, data.valid_to));
 
 /**
  * for delete time validation

@@ -190,7 +190,7 @@
 				<FloatingLabelField name="subject_secondary_id" style="outlined" label="Subject Secondary ID" error={fieldErrors?.subject_secondary_id?.[0] || $fErrors?.subject_secondary_id?.[0]} disabled={editMode} />
 			</div>
 			<div>
-				<FloatingLabelField name="subject_domain" style="outlined" label="Subject domain" error={fieldErrors?.subject_domain?.[0] || $fErrors?.subject_domain?.[0]} disabled={editMode} />
+				<FloatingLabelField name="subject_domain" style="outlined" label="Subject domain" error={fieldErrors?.subject_domain?.[0] || $fErrors?.subject_domain?.[0]} disabled={true} />
 			</div>
 			<div class="col-span-3">
 				<FloatingLabelField name="source_address" style="outlined" label="Source address" error={fieldErrors?.source_address?.[0] || $fErrors?.source_address?.[0]} />
@@ -288,8 +288,7 @@
 </form>
 
 <!-- debug -->
-{@debug isValid, fData, fErrors}
-
+<!-- {@debug isValid, fData, fErrors} -->
 <!--
 <pre class="p-4">$isValid: {$isValid}</pre>
 <pre class="p-4">$fData: {JSON.stringify($fData, null, 4)}</pre>

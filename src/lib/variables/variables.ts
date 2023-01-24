@@ -1,3 +1,4 @@
+import { building } from '$app/environment';
 import { env as dynPubEnv } from '$env/dynamic/public';
 import * as statPubEnv from '$env/static/public';
 import { z } from 'zod';
@@ -8,10 +9,10 @@ import { z } from 'zod';
 
 const schema = z.object({
 	// Add your public env variables here
-	PUBLIC_BASE_URL: z.string().regex(new RegExp('^\\S*$'), {
+	PUBLIC_BASE_URL: z.string().url().regex(new RegExp('^\\S*$'), {
 		message: 'No spaces allowed'
 	}),
-	PUBLIC_GRAPHQL_ENDPOINT: z.string().regex(new RegExp('^\\S*$'), {
+	PUBLIC_GRAPHQL_ENDPOINT: z.string().url().regex(new RegExp('^\\S*$'), {
 		message: 'No spaces allowed'
 	}),
 	PUBLIC_GRAPHQL_TOKEN: z.string().regex(new RegExp('^\\S*$'), {
@@ -20,11 +21,17 @@ const schema = z.object({
 	PUBLIC_GOOGLE_ANALYTICS_TARGET_ID: z.string().regex(new RegExp('^\\S*$'), {
 		message: 'No spaces allowed'
 	}),
-	PUBLIC_SENTRY_DSN: z.string().regex(new RegExp('^\\S*$'), {
+	PUBLIC_SENTRY_DSN: z.string().url().regex(new RegExp('^\\S*$'), {
+		message: 'No spaces allowed'
+	}),
+	PUBLIC_TENANT_ID: z.string().regex(new RegExp('^\\S*$'), {
 		message: 'No spaces allowed'
 	})
 });
 
+if (!building) {
+	console.log('not building, TODO: do not process.exit(1)');
+}
 const parsed = schema.safeParse({ ...statPubEnv, ...dynPubEnv });
 
 if (!parsed.success) {

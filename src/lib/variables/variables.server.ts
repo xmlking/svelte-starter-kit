@@ -12,7 +12,7 @@ const schema = z.object({
 	AUTH_SECRET: z.string().regex(new RegExp('^\\S*$'), {
 		message: 'No spaces allowed'
 	}),
-	NEXTAUTH_URL: z.string().regex(new RegExp('^\\S*$'), {
+	NEXTAUTH_URL: z.string().url().regex(new RegExp('^\\S*$'), {
 		message: 'No spaces allowed'
 	}),
 	VERCEL: z.coerce.boolean(),
@@ -40,7 +40,7 @@ const schema = z.object({
 });
 
 if (!building) {
-	console.log('not building');
+	console.log('not building, TODO: do not process.exit(1)');
 }
 const parsed = schema.safeParse({ ...statPriEnv, ...dynPriEnv });
 
