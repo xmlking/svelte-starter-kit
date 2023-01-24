@@ -3,14 +3,14 @@
 	import { goto } from '$app/navigation';
 	import { ErrorMessage, FloatingLabelField, GraphQLError, Tags } from '$lib/components';
 // import {default as TagInput } from '$lib/components/TagInput.svelte';
+	import type { tz_policies_insert_input } from '$houdini';
 	import { DateInput } from '$lib/components/form';
 	import { addToast, ToastLevel } from '$lib/components/toast';
-	import type { Policy } from '$lib/models/schema';
 	import { policyClientSchema } from '$lib/models/schema';
 	import { validator } from '@felte/validator-zod';
 	import { createForm } from 'felte';
-	import { Breadcrumb, BreadcrumbItem, Button, ButtonGroup, FloatingLabelInput, Spinner } from 'flowbite-svelte';
-	import { onMount, tick } from 'svelte';
+	import { Breadcrumb, BreadcrumbItem, Button, ButtonGroup, Spinner } from 'flowbite-svelte';
+	import { tick } from 'svelte';
 	import { AdjustmentsHorizontal, ArrowLeft, CloudArrowDown } from 'svelte-heros-v2';
 	import type { ActionData, PageData } from './$types';
 
@@ -43,11 +43,7 @@
 		isDirty,
 		isValid,
 		reset,
-		setFields,
-		unsetField,
-		setErrors,
-		setIsDirty
-	} = createForm<Policy>({
+	} = createForm<tz_policies_insert_input>({
 		initialValues: policy ?? {},
 		extend: validator({ schema }),
 		// this is dummy submit method for felte, sveltekit's `Form Action` really submit the form.
@@ -58,33 +54,6 @@
 		}
 	});
 	console.log('fData', $fData);
-
-	let annos = $fData.annotations ? JSON.stringify($fData.annotations) : '';
-	$: annos = $fData.annotations ? JSON.stringify($fData.annotations) : '';
-
-	// FIXME: to trigger tick !
-	unsetField('annotations');
-	onMount(async () => {
-		annos = annos + ' ';
-	});
-	async function handleAnnotationsChange(event: Event) {
-		const target = event?.target as HTMLInputElement;
-		const newVal = target.value;
-		console.log('handleAnnotationsChange, newVal.....', newVal);
-		if (newVal) {
-			try {
-				setFields('annotations', JSON.parse(newVal), true);
-				annos = newVal;
-			} catch (e) {
-				console.log(e);
-				setErrors('annotations', 'Not a valid JSON');
-			}
-		} else {
-			unsetField('annotations');
-		}
-		setIsDirty(true);
-		await tick();
-	}
 
 	//Form
 	let subjectTypeOptions = [
@@ -167,9 +136,7 @@
 				<ErrorMessage id="tags_help" error={fieldErrors?.tags?.[0] || $fErrors?.tags?.[0]} />
 			</div>
 			<div class="col-span-3">
-				<FloatingLabelInput value={annos} on:change={handleAnnotationsChange} style="outlined" class="input-bordered input" color={fieldErrors?.annotations?.[0] || JSON.stringify($fErrors?.annotations?.[0]) ? 'red' : null} aria-describedby="annotations_help" label="Annotations" />
-				<input data-felte-ignore type="hidden" name="annotations" value={annos} />
-				<ErrorMessage id="annotations_help" error={fieldErrors?.annotations?.[0] || JSON.stringify($fErrors?.annotations?.[0])} />
+				<FloatingLabelField name="annotations" style="outlined" label="Annotations" error={fieldErrors?.annotations?.[0] || $fErrors?.annotations?.[0]} />
 			</div>
 
 			<div class="col-span-2">
