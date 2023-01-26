@@ -1,13 +1,18 @@
 type Query {
-  listUniversities(
+  ListUniversities(
     arg1: ListUniversitiesInput!
   ): [ListUniversitiesOutput]
 }
 
 type Query {
-  searchRestrooms(
+  SearchRestrooms(
     arg1: SearchRestroomsInput!
   ): [SearchRestroomsOutput]
+}
+
+input ListUniversitiesInput {
+  country: String
+  name: String
 }
 
 input SearchRestroomsInput {
@@ -17,9 +22,14 @@ input SearchRestroomsInput {
   city: String
 }
 
-input ListUniversitiesInput {
+
+type ListUniversitiesOutput {
+  alpha_two_code: String
   country: String
+  domains: [String]
   name: String
+  stateprovince: String
+  web_pages: [String]
 }
 
 type SearchRestroomsOutput {
@@ -43,13 +53,3 @@ type SearchRestroomsOutput {
   updated_at: String
   upvote: Int
 }
-
-type ListUniversitiesOutput {
-  alpha_two_code: String
-  country: String
-  domains: [String]
-  name: String
-  stateprovince: String
-  web_pages: [String]
-}
-

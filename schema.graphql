@@ -1233,6 +1233,11 @@ input order_variance_order_by {
 }
 
 type query_root {
+  """Universities API"""
+  ListUniversities(arg1: ListUniversitiesInput!): [ListUniversitiesOutput]
+
+  """Restrooms API"""
+  SearchRestrooms(arg1: SearchRestroomsInput!): [SearchRestroomsOutput]
   _entities(representations: [_Any!]!): [_Entity]!
   _service: _Service!
   continent(code: ID!): Continent
@@ -1285,9 +1290,6 @@ type query_root {
   language(code: ID!): Language
   languages(filter: LanguageFilterInput): [Language!]!
 
-  """Universities API"""
-  listUniversities(arg1: ListUniversitiesInput!): [ListUniversitiesOutput]
-
   """
   fetch data from the table: "order"
   """
@@ -1330,9 +1332,6 @@ type query_root {
 
   """fetch data from the table: "order" using primary key columns"""
   order_by_pk(id: Int!): order
-
-  """Restrooms API"""
-  searchRestrooms(arg1: SearchRestroomsInput!): [SearchRestroomsOutput]
 
   """
   fetch data from the table: "tz_policies"

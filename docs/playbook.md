@@ -243,8 +243,8 @@ Use [Auth.js](https://authjs.dev/) for Authentication
 
 ```shell
 pnpm add  -D @auth/core @auth/sveltekit
-# for custom encode and decode JWT. 
-# pnpm add jsonwebtoken 
+# for custom encode and decode JWT.
+# pnpm add jsonwebtoken
 # pnpm add -D @types/jsonwebtoken
 # https://github.com/auth0/node-jsonwebtoken/issues/655
 pnpm add jsonwebtoken-esm

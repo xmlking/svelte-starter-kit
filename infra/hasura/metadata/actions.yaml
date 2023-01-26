@@ -1,5 +1,5 @@
 actions:
-  - name: listUniversities
+  - name: ListUniversities
     definition:
       kind: ""
       handler: http://universities.hipolabs.com
@@ -21,7 +21,7 @@ actions:
       - role: moderator
       - role: editor
     comment: Universities API
-  - name: searchRestrooms
+  - name: SearchRestrooms
     definition:
       kind: ""
       handler: https://www.refugerestrooms.org/api/v1
@@ -48,8 +48,8 @@ actions:
 custom_types:
   enums: []
   input_objects:
-    - name: SearchRestroomsInput
     - name: ListUniversitiesInput
+    - name: SearchRestroomsInput
   objects:
     - name: SearchRestroomsOutput
     - name: ListUniversitiesOutput
