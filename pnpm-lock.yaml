@@ -54,7 +54,7 @@ specifiers:
   houdini-svelte: 0.20.3
   js-cookie: 3.0.1
   jsdom: 21.1.0
-  jsonwebtoken-esm: ^1.0.3
+  jsonwebtoken-esm: 1.0.3
   msw: 1.0.0
   postcss: 8.4.21
   postcss-preset-env: 8.0.0
