@@ -4,7 +4,9 @@ import { authjs, guard, houdini } from '$lib/server/middleware';
 import { Logger } from '$lib/utils';
 import envPub from '$lib/variables/variables';
 // import envPri from '$lib/variables/variables.server';
-import * as Sentry from '@sentry/node';
+// import * as Sentry from '@sentry/node';
+import * as Sentry from '@sentry/svelte';
+import { BrowserTracing } from '@sentry/tracing';
 import type { HandleFetch, HandleServerError } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 /**
@@ -37,8 +39,9 @@ if (!dev && envPub.PUBLIC_SENTRY_DSN) {
 		initialScope: {
 			tags: { source: 'server' }
 		},
-		// Add the Http integration for tracing
-		integrations: [new Sentry.Integrations.Http()],
+		// FIXME: https://github.com/getsentry/sentry-javascript/discussions/5838#discussioncomment-4789893
+		// integrations: [new Sentry.Integrations.Http()],
+		integrations: [new BrowserTracing()],
 
 		// Set tracesSampleRate to 1.0 to capture 100%
 		// of transactions for performance monitoring.
