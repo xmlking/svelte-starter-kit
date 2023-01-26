@@ -30,6 +30,8 @@ Awesome **SvelteKit** Links
 
 - [Time Distance](https://github.com/joshnuss/svelte-time-distance) - Display time distances in a human-readable format.
 - [svelte-action-balancer](https://svelte-action-balancer.netlify.app/) - A Simple Svelte Action That Makes Titles More Readable
+- [svelte-put](https://github.com/vnphanquang/svelte-put) - A set of useful svelte **transitions**, **actions** and **components** to put in your projects
+- [svelte-body](https://github.com/ghostdevv/svelte-body) - Currently in SvelteKit, applying styles per page to the body doesn't work. `svelte-body` handles that for you!
 
 ## Testing
 

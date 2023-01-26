@@ -64,7 +64,7 @@ export const load = (async (event) => {
 			event,
 			blocking: true,
 			policy: CachePolicy.CacheAndNetwork,
-			metadata: { backendToken: 'token from TokenVault' },
+			metadata: { backendToken: 'token from TokenVault', useRole: 'editor' },
 			variables
 		});
 
@@ -114,7 +114,7 @@ export const actions = {
 
 				//const { errors, data } = await createPolicyStore.mutate(variables, {
 				const data = await createPolicyStore.mutate(variables, {
-					metadata: { backendToken: 'token from tokenStore' },
+					metadata: { backendToken: 'token from TokenVault', useRole: 'editor' },
 					fetch
 				});
 
@@ -140,7 +140,7 @@ export const actions = {
 
 				//const { errors, data } = await updatePolicyStore.mutate(variables, {
 				const data = await updatePolicyStore.mutate(variables, {
-					metadata: { backendToken: 'token from tokenStore' },
+					metadata: { backendToken: 'token from TokenVault', useRole: 'editor' },
 					fetch
 				});
 

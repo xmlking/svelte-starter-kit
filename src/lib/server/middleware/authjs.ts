@@ -7,7 +7,7 @@ import GitHub from '@auth/core/providers/github';
 import Google from '@auth/core/providers/google';
 import { SvelteKitAuth } from '@auth/sveltekit';
 import type { Handle } from '@sveltejs/kit';
-import * as jsonwebtoken from 'jsonwebtoken';
+import { sign } from 'jsonwebtoken-esm';
 import { appRoles } from './role-mapper';
 // import { HasuraAdapter } from 'next-auth-hasura-adapter';
 
@@ -61,7 +61,7 @@ export const authjs = SvelteKitAuth({
 			if (isSignIn) {
 				log.debug('in isSignIn');
 				token.email ??= profile.upn;
-				token.roles ??= appRoles(profile.roles);
+				token.roles ??= appRoles(profile.roles ?? profile.groups);
 
 				const hasuraToken = {
 					'https://hasura.io/jwt/claims': {
@@ -71,7 +71,7 @@ export const authjs = SvelteKitAuth({
 						'x-hasura-user-id': token.email // token.sub
 					}
 				};
-				token.token = jsonwebtoken.sign(hasuraToken, envPri.AUTH_SECRET, {
+				token.token = sign(hasuraToken, envPri.AUTH_SECRET, {
 					algorithm: 'HS256',
 					issuer: 'svelte-starter-kit',
 					expiresIn: account?.expires_in

@@ -7,5 +7,5 @@
 export function appRoles(groups: string[]) {
 	// TODO: map groups/roles to subset of ['viewer', 'editor', 'moderator', 'supervisor'] app roles
 	// console.debug('appRoles: got groups--->', groups);
-	return groups ? ['viewer', 'editor', 'moderator'] : ['viewer'];
+	return groups ? ['viewer', 'editor', 'moderator'] : ['viewer', 'editor'];
 }

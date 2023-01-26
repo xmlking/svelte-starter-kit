@@ -86,7 +86,7 @@ export const actions = {
 			const variables = { id };
 
 			const { errors, data } = await deletePolicyStore.mutate(variables, {
-				metadata: { backendToken: 'token from tokenStore' },
+				metadata: { backendToken: 'token from TokenVault' },
 				fetch
 			});
 
