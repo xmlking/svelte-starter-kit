@@ -22,7 +22,6 @@ input SearchRestroomsInput {
   city: String
 }
 
-
 type ListUniversitiesOutput {
   alpha_two_code: String
   country: String
@@ -53,3 +52,4 @@ type SearchRestroomsOutput {
   updated_at: String
   upvote: Int
 }
+
