@@ -20,6 +20,7 @@ async function fetchQuery({ fetch, text = '', variables = {}, metadata, session 
 
 	const token = session?.token;
 	const backendToken = metadata?.backendToken;
+	const useRole = metadata?.useRole;
 
 	const result = await fetch(url, {
 		method: 'POST',
@@ -27,6 +28,7 @@ async function fetchQuery({ fetch, text = '', variables = {}, metadata, session 
 			'Content-Type': 'application/json',
 			...(token ? { Authorization: `Bearer ${token}` } : { 'x-hasura-admin-secret': adminSecret }), // FIXME: remove adminSecret
 			'x-hasura-role': 'editor',
+			...(useRole ? { 'x-hasura-role': useRole } : {}),
 			...(backendToken ? { backendToken } : {})
 		},
 		body: JSON.stringify({

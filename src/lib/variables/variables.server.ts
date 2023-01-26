@@ -15,6 +15,7 @@ const schema = z.object({
 	NEXTAUTH_URL: z.string().url().regex(new RegExp('^\\S*$'), {
 		message: 'No spaces allowed'
 	}),
+	AUTH_TRUST_HOST: z.coerce.boolean().default(true),
 	VERCEL: z.coerce.boolean(),
 	AZURE_AD_CLIENT_ID: z.string().regex(new RegExp('^\\S*$'), {
 		message: 'No spaces allowed'

@@ -26,6 +26,7 @@ declare global {
 		// interface Platform {}
 		interface Metadata {
 			backendToken?: string | null;
+			useRole?: string | null;
 		}
 	}
 
@@ -38,3 +39,4 @@ declare global {
 }
 
 export {};
+

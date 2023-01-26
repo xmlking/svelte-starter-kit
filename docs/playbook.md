@@ -239,10 +239,16 @@ pnpm add -D @graphql-codegen/cli @graphql-codegen/client-preset -w
 
 Use [Auth.js](https://authjs.dev/) for Authentication
 
+> TODO: try [jose](https://github.com/panva/jose) as alternative to jsonwebtoken ?
+
 ```shell
 pnpm add  -D @auth/core @auth/sveltekit
-# for custom encode and decode JWT
-pnpm add  -D jsonwebtoken  @types/jsonwebtoken
+# for custom encode and decode JWT. 
+# pnpm add jsonwebtoken 
+# pnpm add -D @types/jsonwebtoken
+# https://github.com/auth0/node-jsonwebtoken/issues/655
+pnpm add jsonwebtoken-esm
+
 # Hasura Auth.js Adopter
 pnpm add  -D next-auth-hasura-adapter
 ```
