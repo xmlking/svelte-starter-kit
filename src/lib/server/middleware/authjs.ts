@@ -5,8 +5,10 @@ import envPri from '$lib/variables/variables.server';
 import AzureAD from '@auth/core/providers/azure-ad';
 import GitHub from '@auth/core/providers/github';
 import Google from '@auth/core/providers/google';
+import type { Profile } from '@auth/core/types';
 import { SvelteKitAuth } from '@auth/sveltekit';
 import type { Handle } from '@sveltejs/kit';
+import type { Provider } from '@auth/core/providers';
 import { sign } from 'jsonwebtoken-esm';
 import { appRoles } from './role-mapper';
 // import { HasuraAdapter } from 'next-auth-hasura-adapter';
@@ -23,22 +25,19 @@ export const authjs = SvelteKitAuth({
 	// 	adminSecret: HASURA_GRAPHQL_ADMIN_SECRET
 	// }),
 	providers: [
-		//@ts-expect-error issue https://github.com/nextauthjs/next-auth/issues/6174
 		Google({
 			clientId: envPri.GOOGLE_ID,
 			clientSecret: envPri.GOOGLE_SECRET,
 			authorization: { params: { prompt: 'consent' } }
-		}),
-		//@ts-expect-error issue https://github.com/nextauthjs/next-auth/issues/6174
+		}) as Provider<Profile>,
 		AzureAD({
 			clientId: envPri.AZURE_AD_CLIENT_ID,
 			clientSecret: envPri.AZURE_AD_CLIENT_SECRET,
 			tenantId: envPri.AZURE_AD_TENANT_ID,
 			authorization: { params: { scope: 'openid profile User.Read email' } }
 			// client: {},
-		}),
-		//@ts-expect-error issue https://github.com/nextauthjs/next-auth/issues/6174
-		GitHub({ clientId: envPri.GITHUB_ID, clientSecret: envPri.GITHUB_SECRET })
+		}) as Provider<Profile>,
+		GitHub({ clientId: envPri.GITHUB_ID, clientSecret: envPri.GITHUB_SECRET }) as Provider<Profile>
 	],
 	callbacks: {
 		async redirect({ url, baseUrl }) {
