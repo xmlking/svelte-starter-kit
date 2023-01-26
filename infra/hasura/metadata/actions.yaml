@@ -51,6 +51,6 @@ custom_types:
     - name: ListUniversitiesInput
     - name: SearchRestroomsInput
   objects:
-    - name: SearchRestroomsOutput
     - name: ListUniversitiesOutput
+    - name: SearchRestroomsOutput
   scalars: []
