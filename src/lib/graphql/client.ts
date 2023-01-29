@@ -1,50 +1,65 @@
 import { browser } from '$app/environment';
-import type { RequestHandlerArgs } from '$houdini';
-import { HoudiniClient } from '$houdini';
+import { HoudiniClient, type ClientPlugin } from '$houdini';
+import { Logger } from '$lib/utils';
 import envPub from '$lib/variables/variables';
+
+import { subscriptionPlugin } from '$houdini/plugins';
 import { createClient as createWSClient } from 'graphql-ws';
 
-const url = envPub.PUBLIC_GRAPHQL_ENDPOINT;
-// FIXME: remove PUBLIC_GRAPHQL_TOKEN
-const adminSecret = envPub.PUBLIC_GRAPHQL_TOKEN;
+const url = `${envPub.PUBLIC_HASURA_GRAPHQL_ENDPOINT}/v1/graphql`;
 
-// For Query & Mutation
-async function fetchQuery({ fetch, text = '', variables = {}, metadata, session }: RequestHandlerArgs) {
-	// metadata usage example
-	if (metadata) {
-		console.log('metadata...', metadata);
+const log = new Logger('houdini.client');
+
+// in order to verify that we send metadata, we need something that will log the metadata after
+const logMetadata: ClientPlugin = () => ({
+	end(ctx, { resolve, value }) {
+		if (ctx.metadata?.logResult === true) {
+			log.info(JSON.stringify(value));
+		}
+
+		resolve(ctx);
 	}
-	if (session) {
-		console.log('session...', session);
-	}
+});
+const subClient: ClientPlugin = subscriptionPlugin(({ session }) =>
+	createWSClient({
+		url: url.replace(/^https?/, 'wss').replace(/^http?/, 'ws'),
+		connectionParams: () => {
+			return {
+				headers: {
+					Authorization: `Bearer ${session?.token}`
+				}
+			};
+		}
+	})
+);
 
-	const token = session?.token;
-	const backendToken = metadata?.backendToken;
-	const useRole = metadata?.useRole;
+const subClient2 = browser ? subClient : null;
 
-	const result = await fetch(url, {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-			...(token ? { Authorization: `Bearer ${token}` } : { 'x-hasura-admin-secret': adminSecret }), // FIXME: remove adminSecret
-			'x-hasura-role': 'editor',
-			...(useRole ? { 'x-hasura-role': useRole } : {}),
-			...(backendToken ? { backendToken } : {})
-		},
-		body: JSON.stringify({
-			query: text,
-			variables
-		})
-	});
-	return await result.json();
-}
+// Export the Houdini client
+export default new HoudiniClient({
+	url,
+	fetchParams({ session, metadata }) {
+		if (metadata) {
+			log.debug('metadata...', metadata);
+		}
+		if (session) {
+			log.debug('session...', session);
+		}
+		const token = session?.token;
+		const backendToken = metadata?.backendToken;
+		const useRole = metadata?.useRole;
 
-// For subscription (client only)
-const socketClient = browser
-	? // @ts-expect-error - for using new
-	  new createWSClient({
-			url: url.replace(/^https?/, 'wss').replace(/^http?/, 'ws')
-	  })
-	: null;
-
-export default new HoudiniClient(fetchQuery, socketClient);
+		return {
+			headers: {
+				...(token ? { Authorization: `Bearer ${token}` } : {}),
+				...(useRole ? { 'x-hasura-role': useRole } : { 'x-hasura-role': 'editor' }),
+				...(backendToken ? { backendToken } : {})
+			}
+		};
+	},
+	// throwOnError: {
+	// 	operations: ['all'],
+	// 	error: (errors) => error(500, errors.map((error) => error.message).join('. ') + '.')
+	// },
+	plugins: [logMetadata, subClient]
+});

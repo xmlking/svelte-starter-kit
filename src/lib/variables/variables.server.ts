@@ -1,4 +1,3 @@
-import { building } from '$app/environment';
 import { env as dynPriEnv } from '$env/dynamic/private';
 import * as statPriEnv from '$env/static/private';
 import { z } from 'zod';
@@ -9,6 +8,9 @@ import { z } from 'zod';
 
 const schema = z.object({
 	// Add your private env variables here
+	HASURA_GRAPHQL_ENDPOINT: z.string().url().regex(new RegExp('^\\S*$'), {
+		message: 'No spaces allowed'
+	}),
 	AUTH_SECRET: z.string().regex(new RegExp('^\\S*$'), {
 		message: 'No spaces allowed'
 	}),
@@ -40,12 +42,10 @@ const schema = z.object({
 	})
 });
 
-if (!building) {
-	console.log('not building, TODO: do not process.exit(1)');
-}
 const parsed = schema.safeParse({ ...statPriEnv, ...dynPriEnv });
 
 if (!parsed.success) {
+	// TODO: check is `building` and skip `exit` if missing environment variables?
 	console.error('❌ Invalid environment variables:', JSON.stringify(parsed.error.format(), null, 4));
 	process.exit(1);
 }

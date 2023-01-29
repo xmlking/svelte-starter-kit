@@ -25,6 +25,7 @@ declare global {
 		}
 		// interface Platform {}
 		interface Metadata {
+			logResult?: boolean | null;
 			backendToken?: string | null;
 			useRole?: string | null;
 		}

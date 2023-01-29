@@ -1,4 +1,3 @@
-import { building } from '$app/environment';
 import { env as dynPubEnv } from '$env/dynamic/public';
 import * as statPubEnv from '$env/static/public';
 import { z } from 'zod';
@@ -12,10 +11,7 @@ const schema = z.object({
 	PUBLIC_BASE_URL: z.string().url().regex(new RegExp('^\\S*$'), {
 		message: 'No spaces allowed'
 	}),
-	PUBLIC_GRAPHQL_ENDPOINT: z.string().url().regex(new RegExp('^\\S*$'), {
-		message: 'No spaces allowed'
-	}),
-	PUBLIC_GRAPHQL_TOKEN: z.string().regex(new RegExp('^\\S*$'), {
+	PUBLIC_HASURA_GRAPHQL_ENDPOINT: z.string().url().regex(new RegExp('^\\S*$'), {
 		message: 'No spaces allowed'
 	}),
 	PUBLIC_GOOGLE_ANALYTICS_TARGET_ID: z.string().regex(new RegExp('^\\S*$'), {
@@ -29,12 +25,10 @@ const schema = z.object({
 	})
 });
 
-if (!building) {
-	console.log('not building, TODO: do not process.exit(1)');
-}
 const parsed = schema.safeParse({ ...statPubEnv, ...dynPubEnv });
 
 if (!parsed.success) {
+	// TODO: check is `building` and skip `exit` if missing environment variables?
 	console.error('❌ Invalid environment variables:', JSON.stringify(parsed.error.format(), null, 4));
 	process.exit(1);
 }

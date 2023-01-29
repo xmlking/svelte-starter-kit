@@ -1,6 +1,6 @@
 import type { tz_policies_insert_input } from '$houdini';
 import { CachePolicy, CreatePolicyStore, GetPolicyStore, UpdatePolicyStore } from '$houdini';
-import { handleActionErrors, handleLoadErrors, PolicyError } from '$lib/errors';
+import { handleActionErrors, handleLoadErrors, NotFoundError, PolicyError } from '$lib/errors';
 import { policyCreateSchema, policyUpdateSchema } from '$lib/models/schema';
 import { Logger } from '$lib/utils';
 import { uuidSchema } from '$lib/utils/zod.utils';
@@ -86,7 +86,8 @@ const createSchema = zfd.formData(policyCreateSchema, { empty: 'strip' });
 const updateSchema = zfd.formData(policyUpdateSchema, { empty: 'null' });
 
 export const actions = {
-	save: async ({ params, request, locals, fetch }) => {
+	save: async (event) => {
+		const { params, request, locals } = event;
 		const session = await locals.getSession();
 		if (session?.user == undefined) {
 			throw redirect(307, '/auth/signin?callbackUrl=/dashboard/policy');
@@ -115,7 +116,7 @@ export const actions = {
 				//const { errors, data } = await createPolicyStore.mutate(variables, {
 				const data = await createPolicyStore.mutate(variables, {
 					metadata: { backendToken: 'token from TokenVault', useRole: 'editor' },
-					fetch
+					event
 				});
 
 				const actionResult = data.insert_tz_policies_one;
@@ -140,11 +141,12 @@ export const actions = {
 
 				//const { errors, data } = await updatePolicyStore.mutate(variables, {
 				const data = await updatePolicyStore.mutate(variables, {
-					metadata: { backendToken: 'token from TokenVault', useRole: 'editor' },
-					fetch
+					metadata: { backendToken: 'token from TokenVault', useRole: 'editor', logResult: true },
+					event
 				});
 
 				const actionResult = data.update_tz_policies_by_pk;
+				if (!actionResult) throw new NotFoundError('user not authorized to update');
 
 				return { actionResult };
 				// throw redirect(303, '/dashboard/policies');
