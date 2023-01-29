@@ -12,8 +12,8 @@ services:
       ORIGIN: http://localhost:3000
       NEXTAUTH_URL: http://localhost:3000
       AUTH_TRUST_HOST: true
-      PUBLIC_GRAPHQL_ENDPOINT: http://0.0.0.0:8080/v1/graphql
-      PUBLIC_GRAPHQL_TOKEN: myadminsecretkey
+      PUBLIC_HASURA_GRAPHQL_ENDPOINT: http://0.0.0.0:8080
+      HASURA_GRAPHQL_ENDPOINT: http://0.0.0.0:8080
     env_file:
       - .env
     ports:

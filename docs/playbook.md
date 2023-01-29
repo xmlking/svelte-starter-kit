@@ -247,7 +247,7 @@ pnpm add  -D @auth/core @auth/sveltekit
 # pnpm add jsonwebtoken
 # pnpm add -D @types/jsonwebtoken
 # https://github.com/auth0/node-jsonwebtoken/issues/655
-pnpm add jsonwebtoken-esm
+pnpm add jose
 
 # Hasura Auth.js Adopter
 pnpm add  -D next-auth-hasura-adapter

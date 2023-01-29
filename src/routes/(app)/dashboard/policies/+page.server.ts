@@ -79,7 +79,8 @@ export const load = (async (event) => {
 const deleteSchema = zfd.formData(policyDeleteSchema);
 
 export const actions = {
-	delete: async ({ request, fetch }) => {
+	delete: async (event) => {
+		const { request } = event;
 		try {
 			const formData = await request.formData();
 			const { id } = deleteSchema.parse(formData);
@@ -89,11 +90,11 @@ export const actions = {
 			//const { errors, data } = await deletePolicyStore.mutate(variables, {
 			const data = await deletePolicyStore.mutate(variables, {
 				metadata: { backendToken: 'token from TokenVault', useRole: 'editor' },
-				fetch
+				event
 			});
 
 			const actionResult = data.delete_tz_policies_by_pk;
-			if (!actionResult) throw new NotFoundError('policy not found or user not authorized to delete');
+			if (!actionResult) throw new NotFoundError('user not authorized to delete');
 
 			return {
 				actionResult

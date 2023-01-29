@@ -8,7 +8,7 @@ import GitHub from '@auth/core/providers/github';
 import Google from '@auth/core/providers/google';
 import { SvelteKitAuth } from '@auth/sveltekit';
 import type { Handle } from '@sveltejs/kit';
-import { sign } from 'jsonwebtoken-esm';
+import { SignJWT } from 'jose';
 import { appRoles } from './role-mapper';
 // import { HasuraAdapter } from 'next-auth-hasura-adapter';
 
@@ -17,6 +17,10 @@ import { appRoles } from './role-mapper';
 // https://github.com/artizen-fund/artizen-frontend/blob/main/src/lib/apollo/apolloClient.ts
 
 const log = new Logger('middleware:auth');
+
+const secret = new TextEncoder().encode(envPri.AUTH_SECRET);
+const alg = 'HS256';
+
 export const authjs = SvelteKitAuth({
 	debug: dev,
 	// adapter: HasuraAdapter({
@@ -69,11 +73,14 @@ export const authjs = SvelteKitAuth({
 						'x-hasura-user-id': token.email // token.sub
 					}
 				};
-				token.token = sign(hasuraToken, envPri.AUTH_SECRET, {
-					algorithm: 'HS256',
-					issuer: 'svelte-starter-kit',
-					expiresIn: account?.expires_in
-				});
+				token.token = await new SignJWT(hasuraToken)
+					.setProtectedHeader({ alg })
+					.setIssuedAt()
+					.setIssuer('svelte-starter-kit')
+					.setAudience('hasura')
+					.setExpirationTime('2h') // TODO: account?.expires_in
+					.sign(secret);
+
 				// token.accessToken = account.access_token; // account.id_token
 
 				// FIXME: for Azure AD picture is base64 and it is too big to fit in cookie.
