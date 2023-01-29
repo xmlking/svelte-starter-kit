@@ -73,7 +73,7 @@
 		"jsonwebtoken-esm": "1.0.3",
 		"msw": "1.0.0",
 		"postcss": "8.4.21",
-		"postcss-preset-env": "8.0.0",
+		"postcss-preset-env": "8.0.1",
 		"prettier": "2.8.3",
 		"prettier-plugin-svelte": "2.9.0",
 		"prettier-plugin-tailwindcss": "0.2.2",
