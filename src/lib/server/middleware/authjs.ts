@@ -2,13 +2,12 @@ import { dev } from '$app/environment';
 import { Logger } from '$lib/utils';
 import envPub from '$lib/variables/variables';
 import envPri from '$lib/variables/variables.server';
+import type { Provider } from '@auth/core/providers';
 import AzureAD from '@auth/core/providers/azure-ad';
 import GitHub from '@auth/core/providers/github';
 import Google from '@auth/core/providers/google';
-import type { Profile } from '@auth/core/types';
 import { SvelteKitAuth } from '@auth/sveltekit';
 import type { Handle } from '@sveltejs/kit';
-import type { Provider } from '@auth/core/providers';
 import { sign } from 'jsonwebtoken-esm';
 import { appRoles } from './role-mapper';
 // import { HasuraAdapter } from 'next-auth-hasura-adapter';
@@ -29,16 +28,16 @@ export const authjs = SvelteKitAuth({
 			clientId: envPri.GOOGLE_ID,
 			clientSecret: envPri.GOOGLE_SECRET,
 			authorization: { params: { prompt: 'consent' } }
-		}) as Provider<Profile>,
+		}),
 		AzureAD({
 			clientId: envPri.AZURE_AD_CLIENT_ID,
 			clientSecret: envPri.AZURE_AD_CLIENT_SECRET,
 			tenantId: envPri.AZURE_AD_TENANT_ID,
 			authorization: { params: { scope: 'openid profile User.Read email' } }
 			// client: {},
-		}) as Provider<Profile>,
-		GitHub({ clientId: envPri.GITHUB_ID, clientSecret: envPri.GITHUB_SECRET }) as Provider<Profile>
-	],
+		}),
+		GitHub({ clientId: envPri.GITHUB_ID, clientSecret: envPri.GITHUB_SECRET })
+	] as Provider[],
 	callbacks: {
 		async redirect({ url, baseUrl }) {
 			// Allows relative callback URLs
