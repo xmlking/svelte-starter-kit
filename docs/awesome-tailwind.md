@@ -23,7 +23,7 @@ Awesome **Tailwind CSS** Links
 
 ## Dashboards
 
-- [Flowbite Admin Dashboard](https://github.com/themesberg/flowbite-admin-dashboard)
+- [Flowbite Admin Dashboard](https://github.com/themesberg/flowbite-admin-dashboard) and [Svelte version](https://github.com/themesberg/flowbite-svelte-admin-dashboard)
 
 ## Guides
 
