@@ -25,13 +25,14 @@
 	`);
 
 	$: console.log('$allOrders.data on load:', $allOrders.data);
+	$: customers =  $allOrders.data?.customer ?? []
 </script>
 
 <button class="btn" on:click={() => allOrders.loadNextPage()}>load more</button>
 <button class="btn-accent btn" on:click={() => allOrders.fetch({ policy: CachePolicy.NetworkOnly })}>refetch</button>
 <br />
 <span>fetching: {$allOrders.fetching}</span>
-{#each $allOrders.data.customer as customer}
+{#each customers as customer}
 	<p> Customer: {customer.first_name} {customer.last_name} <span>Order Count: {customer.orders.length}</span></p>
 	<!-- <pre>{JSON.stringify(customer, null, 2)}</pre> -->
 {:else}
