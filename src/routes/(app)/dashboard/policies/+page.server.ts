@@ -8,6 +8,7 @@ import { policyDeleteSchema, policySearchSchema } from '$lib/models/schema';
 import { zfd } from '$lib/zodfd';
 import * as Sentry from '@sentry/svelte';
 import type { GraphQLError } from 'graphql';
+import { get } from 'svelte/store';
 import type { Actions, PageServerLoad } from './$types';
 
 const log = new Logger('policies.server');
@@ -39,7 +40,7 @@ export const load = (async (event) => {
 			event,
 			blocking: true,
 			policy: CachePolicy.CacheAndNetwork,
-			metadata: { backendToken: 'token from TokenVault', useRole: 'editor' },
+			metadata: { backendToken: 'token from TokenVault', useRole: 'viewer', logResult: true },
 			variables
 		});
 
@@ -66,7 +67,7 @@ export const load = (async (event) => {
 			const { formErrors, fieldErrors } = err.flatten();
 			return { formErrors, fieldErrors };
 		} else if (err instanceof PolicyError && err.name === 'SEARCH_POLICY_ERROR') {
-			return { loadError: err.cause };
+			return { loadError: err.toJSON() };
 		} else {
 			handleLoadErrors(err);
 		}
@@ -89,12 +90,14 @@ export const actions = {
 
 			//const { errors, data } = await deletePolicyStore.mutate(variables, {
 			const data = await deletePolicyStore.mutate(variables, {
-				metadata: { backendToken: 'token from TokenVault', useRole: 'editor' },
+				metadata: { backendToken: 'token from TokenVault', logResult: true },
 				event
 			});
+			const { errors } = get(deletePolicyStore);
+			if (errors) throw new PolicyError('DELETE_POLICY_ERROR', 'delete policy api error', errors[0] as GraphQLError);
 
 			const actionResult = data.delete_tz_policies_by_pk;
-			if (!actionResult) throw new NotFoundError('user not authorized to delete');
+			if (!actionResult) throw new NotFoundError('data is null');
 
 			return {
 				actionResult
@@ -104,11 +107,8 @@ export const actions = {
 			Sentry.setContext('source', { code: 'policy.delete' });
 			Sentry.captureException(err);
 
-			// err[0] is GraphQLError
-			if (Array.isArray(err)) {
-				// TODO: wrap GraphQLError at source as PolicyError<DELETE_POLICY_ERROR> and catch here.
-				const delErr = new PolicyError('DELETE_POLICY_ERROR', 'delete policy api error', err[0] as GraphQLError);
-				return fail(400, { actionError: delErr.toJSON() });
+			if (err instanceof PolicyError && err.name === 'DELETE_POLICY_ERROR') {
+				return fail(400, { actionError: err.toJSON() });
 			} else {
 				return handleActionErrors(err);
 			}
