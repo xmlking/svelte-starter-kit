@@ -1,4 +1,3 @@
-import { browser } from '$app/environment';
 import { HoudiniClient, type ClientPlugin } from '$houdini';
 import { Logger } from '$lib/utils';
 import envPub from '$lib/variables/variables';
@@ -33,8 +32,6 @@ const subClient: ClientPlugin = subscriptionPlugin(({ session }) =>
 	})
 );
 
-const subClient2 = browser ? subClient : null;
-
 // Export the Houdini client
 export default new HoudiniClient({
 	url,
@@ -61,5 +58,6 @@ export default new HoudiniClient({
 	// 	operations: ['all'],
 	// 	error: (errors) => error(500, errors.map((error) => error.message).join('. ') + '.')
 	// },
+	// plugins: [logMetadata, ...(browser ? [subClient] : [])]
 	plugins: [logMetadata, subClient]
 });

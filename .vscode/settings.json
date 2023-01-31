@@ -6,6 +6,12 @@
 		"$houdini": true,
 		"build": true
 	},
+	"explorer.fileNesting.enabled": true,
+	"explorer.fileNesting.expand": false,
+	"explorer.fileNesting.patterns": {
+		"+layout.svelte": "+layout.ts,+layout.js,+layout.server.ts,+layout.server.js,+layout.gql",
+		"+page.svelte": "+page.ts,+page.js,+page.server.ts,+page.server.js,+page.gql"
+	},
 	////////// scm //////////
 	"scm.defaultViewMode": "tree",
 	"conventionalCommits.scopes": ["workspace", "actions", "lint", "deps", "docs", "policy", "provider"],
