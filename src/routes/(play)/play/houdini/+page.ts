@@ -1,6 +1,6 @@
 import { order_by } from '$houdini';
 import { error } from '@sveltejs/kit';
-import type { AfterLoadEvent, ListPolicies2Variables as Variables } from './$houdini';
+import type { AfterLoadEvent, ListPolicies2Variables as Variables, OnErrorEvent } from './$houdini';
 
 // TODO: no need for Variables function with v1.0.0
 export const _ListPolicies2Variables: Variables = ({ url }) => {
@@ -18,8 +18,8 @@ export const _ListPolicies2Variables: Variables = ({ url }) => {
 	};
 };
 
-export const _houdini_onError = (err) => {
-	console.log(err);
+export const _houdini_onError = ({ error, input }: OnErrorEvent) => {
+	console.log(error, input);
 	return {};
 };
 

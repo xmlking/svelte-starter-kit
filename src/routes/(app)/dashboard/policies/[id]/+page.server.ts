@@ -10,6 +10,7 @@ import * as Sentry from '@sentry/svelte';
 import { fail, redirect } from '@sveltejs/kit';
 import type { GraphQLError } from 'graphql';
 import crypto from 'node:crypto';
+import { get } from 'svelte/store';
 import { ZodError } from 'zod';
 import type { Actions, PageServerLoad } from './$types';
 
@@ -64,7 +65,7 @@ export const load = (async (event) => {
 			event,
 			blocking: true,
 			policy: CachePolicy.CacheAndNetwork,
-			metadata: { backendToken: 'token from TokenVault', useRole: 'editor' },
+			metadata: { backendToken: 'token from TokenVault', useRole: 'viewer', logResult: true },
 			variables
 		});
 
@@ -115,11 +116,14 @@ export const actions = {
 
 				//const { errors, data } = await createPolicyStore.mutate(variables, {
 				const data = await createPolicyStore.mutate(variables, {
-					metadata: { backendToken: 'token from TokenVault', useRole: 'editor' },
+					metadata: { backendToken: 'token from TokenVault', logResult: true },
 					event
 				});
+				const { errors } = get(createPolicyStore);
+				if (errors) throw new PolicyError('CREATE_POLICY_ERROR', 'create policy api error', errors[0] as GraphQLError);
 
 				const actionResult = data.insert_tz_policies_one;
+				if (!actionResult) throw new NotFoundError('data is null');
 
 				return { actionResult };
 				// throw redirect(303, '/dashboard/policies');
@@ -141,12 +145,14 @@ export const actions = {
 
 				//const { errors, data } = await updatePolicyStore.mutate(variables, {
 				const data = await updatePolicyStore.mutate(variables, {
-					metadata: { backendToken: 'token from TokenVault', useRole: 'editor', logResult: true },
+					metadata: { backendToken: 'token from TokenVault', logResult: true },
 					event
 				});
+				const { errors } = get(updatePolicyStore);
+				if (errors) throw new PolicyError('UPDATE_POLICY_ERROR', 'update policy api error', errors[0] as GraphQLError);
 
 				const actionResult = data.update_tz_policies_by_pk;
-				if (!actionResult) throw new NotFoundError('user not authorized to update');
+				if (!actionResult) throw new NotFoundError('data is null');
 
 				return { actionResult };
 				// throw redirect(303, '/dashboard/policies');
@@ -159,11 +165,8 @@ export const actions = {
 			if (err instanceof ZodError) {
 				const { formErrors, fieldErrors } = err.flatten();
 				return fail(400, { formErrors, fieldErrors });
-			} else if (Array.isArray(err)) {
-				// err[0] is GraphQLError
-				// TODO: wrap GraphQLError at source as PolicyError<CREATE_POLICY_ERROR> and catch here.
-				const delErr = new PolicyError('CREATE_POLICY_ERROR', 'create policy api error', err[0] as GraphQLError);
-				return fail(400, { actionError: delErr.toJSON() });
+			} else if (err instanceof PolicyError) {
+				return fail(400, { actionError: err.toJSON() });
 			} else {
 				return handleActionErrors(err);
 			}
