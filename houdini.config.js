@@ -17,6 +17,9 @@ const config = {
 		}
 	},
 	plugins: {
+		// 'houdini-plugin-svelte-global-stores': {
+		// 	generate: 'all'
+		// },
 		'houdini-svelte': {
 			client: './src/lib/graphql/client'
 		}
