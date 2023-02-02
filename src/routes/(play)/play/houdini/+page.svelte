@@ -3,7 +3,7 @@
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;
-	$: ({ computedValue, ListPolicies2 } = data);
+	$: ({ ListPolicies2 } = data);
 </script>
 
 <button class="btn" on:click={() => ListPolicies2.loadNextPage()}>load more</button>
@@ -19,7 +19,7 @@
   	</pre>
 	</details>
 {/if}
-{computedValue}
+
 <div>
 	created_at: {$ListPolicies2.data?.tz_policies?.[0].created_at} // if created_at is date type, use .toISOString() .toLocaleString()
 </div>

@@ -15,9 +15,8 @@
 	$: if (form?.actionError) addToast({ message: form.actionError.message, dismissible: true, duration: 10000, type: ToastLevel.Error });
 
 	export let data: PageData;
-	$: ({ count, policies, loadError, formErrors, fieldErrors } = data);
+	$: ({ policies, loadError, formErrors, fieldErrors } = data);
 	$: policyStore.set(policies ?? []);
-	$: console.log('count:', count);
 
 	const policyStore = writable(policies ?? []);
 	const table = createTable(policyStore, {
