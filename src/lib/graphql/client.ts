@@ -2,7 +2,8 @@ import { HoudiniClient, type ClientPlugin } from '$houdini';
 import { Logger } from '$lib/utils';
 import envPub from '$lib/variables/variables';
 
-import { subscriptionPlugin } from '$houdini/plugins';
+import { browser } from '$app/environment';
+import { subscription } from '$houdini/plugins';
 import { createClient as createWSClient } from 'graphql-ws';
 
 const url = `${envPub.PUBLIC_HASURA_GRAPHQL_ENDPOINT}/v1/graphql`;
@@ -19,7 +20,7 @@ const logMetadata: ClientPlugin = () => ({
 		resolve(ctx);
 	}
 });
-const subClient: ClientPlugin = subscriptionPlugin(({ session }) =>
+const subClient: ClientPlugin = subscription(({ session }) =>
 	createWSClient({
 		url: url.replace(/^https?/, 'wss').replace(/^http?/, 'ws'),
 		connectionParams: () => {
@@ -58,6 +59,5 @@ export default new HoudiniClient({
 	// 	operations: ['all'],
 	// 	error: (errors) => error(500, errors.map((error) => error.message).join('. ') + '.')
 	// },
-	// plugins: [logMetadata, ...(browser ? [subClient] : [])]
-	plugins: [logMetadata, subClient]
+	plugins: [subClient, ...(browser ? [logMetadata] : [])]
 });

@@ -1,9 +1,4 @@
 query ListPolicies2($limit: Int = 50, $offset: Int = 0, $orderBy: [tz_policies_order_by!] = [{ updated_at: desc_nulls_last }]) @cache(policy: CacheAndNetwork) @load {
-	counts: tz_policies_aggregate(where: { deleted_at: { _is_null: true } }) {
-		aggregate {
-			count
-		}
-	}
 	tz_policies(order_by: $orderBy, limit: $limit, offset: $offset, where: { deleted_at: { _is_null: true } }) @paginate {
 		...Policy_list_fields @mask_disable
 	}

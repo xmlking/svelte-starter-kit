@@ -10,7 +10,6 @@ import * as Sentry from '@sentry/svelte';
 import { fail, redirect } from '@sveltejs/kit';
 import type { GraphQLError } from 'graphql';
 import crypto from 'node:crypto';
-import { get } from 'svelte/store';
 import { ZodError } from 'zod';
 import type { Actions, PageServerLoad } from './$types';
 
@@ -114,15 +113,13 @@ export const actions = {
 				const variables = { data: jsonPayload };
 				log.debug('CREATE action variables:', variables);
 
-				//const { errors, data } = await createPolicyStore.mutate(variables, {
-				const data = await createPolicyStore.mutate(variables, {
+				const { errors, data } = await createPolicyStore.mutate(variables, {
 					metadata: { backendToken: 'token from TokenVault', logResult: true },
 					event
 				});
-				const { errors } = get(createPolicyStore);
 				if (errors) throw new PolicyError('CREATE_POLICY_ERROR', 'create policy api error', errors[0] as GraphQLError);
 
-				const actionResult = data.insert_tz_policies_one;
+				const actionResult = data?.insert_tz_policies_one;
 				if (!actionResult) throw new NotFoundError('data is null');
 
 				return { actionResult };
@@ -143,15 +140,13 @@ export const actions = {
 				const variables = { id, data: jsonPayload };
 				log.debug('UPDATE action variables:', variables);
 
-				//const { errors, data } = await updatePolicyStore.mutate(variables, {
-				const data = await updatePolicyStore.mutate(variables, {
+				const { errors, data } = await updatePolicyStore.mutate(variables, {
 					metadata: { backendToken: 'token from TokenVault', logResult: true },
 					event
 				});
-				const { errors } = get(updatePolicyStore);
 				if (errors) throw new PolicyError('UPDATE_POLICY_ERROR', 'update policy api error', errors[0] as GraphQLError);
 
-				const actionResult = data.update_tz_policies_by_pk;
+				const actionResult = data?.update_tz_policies_by_pk;
 				if (!actionResult) throw new NotFoundError('data is null');
 
 				return { actionResult };
