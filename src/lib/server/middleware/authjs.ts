@@ -73,12 +73,16 @@ export const authjs = SvelteKitAuth({
 						'x-hasura-user-id': token.email // token.sub
 					}
 				};
-				token.token = await new SignJWT(hasuraToken)
+				// `scp` or `scope` is required for Spring Security.
+				const scp = Array.isArray(token.roles) ? token.roles.join(' ') : undefined;
+				// TODO: use asymmetric keys for signing, so we can share public key with API providers
+				token.token = await new SignJWT({ ...hasuraToken, scp })
 					.setProtectedHeader({ alg })
 					.setIssuedAt()
+					.setSubject(token.email ?? '')
 					.setIssuer('svelte-starter-kit')
 					.setAudience('hasura')
-					.setExpirationTime('2h') // TODO: account?.expires_in
+					.setExpirationTime('24h') // TODO: account?.expires_in
 					.sign(secret);
 
 				// token.accessToken = account.access_token; // account.id_token
