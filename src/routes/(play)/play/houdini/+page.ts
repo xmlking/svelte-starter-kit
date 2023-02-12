@@ -22,4 +22,3 @@ export const _houdini_onError = ({ error, input }: OnErrorEvent) => {
 	console.log(error, input);
 	return {};
 };
-

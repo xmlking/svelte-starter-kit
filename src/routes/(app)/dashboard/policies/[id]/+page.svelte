@@ -8,6 +8,7 @@
 	import { addToast, ToastLevel } from '$lib/components/toast';
 	import { policyClientSchema } from '$lib/models/schema';
 	import { validator } from '@felte/validator-zod';
+	import type { Snapshot } from '@sveltejs/kit';
 	import { createForm } from 'felte';
 	import { Breadcrumb, BreadcrumbItem, Button, ButtonGroup, Spinner } from 'flowbite-svelte';
 	import { tick } from 'svelte';
@@ -27,6 +28,12 @@
 	let { policy, loadError } = data;
 	$: ({ policy, loadError } = data);
 	let editMode = policy?.id != '00000000-0000-0000-0000-000000000000';
+
+	// TODO: Snapshot helps to recover form state, if navigated without submitting
+	export const snapshot: Snapshot = {
+  		capture: () => 'hello',
+  		restore: (message) => console.log(message)
+	};
 
 	async function goBack() {
 		history.back();
