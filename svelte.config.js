@@ -9,7 +9,9 @@ const config = {
 	preprocess: vitePreprocess(),
 
 	kit: {
-		adapter: adapter(),
+		adapter: adapter({
+			polyfill: false
+		}),
 
 		// When hosting SPA on GitHub Pages
 		// paths: {
