@@ -1,7 +1,7 @@
 <script lang="ts">
+	import { default as Frame } from '$lib/components/utils/Frame.svelte';
 	import { clsx } from 'clsx';
-	import { default as CloseButton } from 'flowbite-svelte/utils/CloseButton.svelte';
-	import { default as Frame } from 'flowbite-svelte/utils/Frame.svelte';
+	import { CloseButton } from 'flowbite-svelte';
 	import { Check, ExclamationTriangle, HandRaised, InformationCircle } from 'svelte-heros-v2';
 	import { slide } from 'svelte/transition';
 	import { dismissToast, ToastLevel, toasts } from './store';
