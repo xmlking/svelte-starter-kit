@@ -116,6 +116,15 @@
 		{ value: '50', name: '50' },
 		{ value: '100', name: '100' }
 	];
+
+	let rows = [
+		{ value: 5, name: '5' },
+		{ value: 10, name: '10' },
+		{ value: 20, name: '20' },
+		{ value: 50, name: '50' },
+		{ value: 100, name: '100' }
+	];
+
 	const subTypeOptions = [
 		{ value: '', name: 'All' },
 		{ value: 'subject_type_user', name: 'User' },
@@ -140,37 +149,37 @@
 
 <GraphQLError error={loadError} />
 
-	<form data-sveltekit-noscroll>
-		<Navbar border={true} rounded={true}>
-			<NavBrand>
-				<ShieldCheck />
-				<span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white"> Policies </span>
-			</NavBrand>
-			<ButtonGroup class="w-1/2">
-				<Select name="subject_type" class="w-auto !rounded-r-none" items={subTypeOptions} value={subject_type} placeholder="Select Type" />
-				<InputAddon class="!bg-gray-50 !px-2 dark:!bg-gray-500">
-					{#if subject_type == 'subject_type_group'}
-						<UserGroup />
-					{:else if subject_type == 'subject_type_service_account'}
-						<UserCircle />
-					{:else if subject_type == 'subject_type_device'}
-						<DevicePhoneMobile />
-					{:else}
-						<User />
-					{/if}
-				</InputAddon>
-				<Input name="display_name" value={display_name} autofocus class="input !rounded-none focus:outline-none" placeholder="Display Name" />
-				<Select name="limit" items={limits} value={limit} class="w-16 !rounded-none border-l-0" />
-				<input name="offset" value={offset} type="hidden" />
-				<Button type="submit" color="dark"  class="!p-2.5"><MagnifyingGlass size="20" /></Button>
-			</ButtonGroup>
-			<a class="btn" href="/dashboard/policies/00000000-0000-0000-0000-000000000000">Add Policy</a>
-		</Navbar>
-		<ErrorMessage error={fieldErrors?.subject_type?.[0]} />
-		<ErrorMessage error={fieldErrors?.display_name?.[0]} />
-		<ErrorMessage error={fieldErrors?.limit?.[0]} />
-		<ErrorMessage error={fieldErrors?.offset?.[0]} />
-	</form>
+<form data-sveltekit-noscroll>
+	<Navbar border={true} rounded={true}>
+		<NavBrand>
+			<ShieldCheck />
+			<span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white"> Policies </span>
+		</NavBrand>
+		<ButtonGroup class="w-1/2">
+			<Select name="subject_type" class="w-auto !rounded-r-none" items={subTypeOptions} value={subject_type} placeholder="Select Type" />
+			<InputAddon class="!bg-gray-50 !px-2 dark:!bg-gray-500">
+				{#if subject_type == 'subject_type_group'}
+					<UserGroup />
+				{:else if subject_type == 'subject_type_service_account'}
+					<UserCircle />
+				{:else if subject_type == 'subject_type_device'}
+					<DevicePhoneMobile />
+				{:else}
+					<User />
+				{/if}
+			</InputAddon>
+			<Input name="display_name" value={display_name} autofocus class="input !rounded-none focus:outline-none" placeholder="Display Name" />
+			<Select name="limit" items={limits} value={limit} class="w-16 !rounded-none border-l-0" />
+			<input name="offset" value={offset} type="hidden" />
+			<Button type="submit" color="dark"  class="!p-2.5"><MagnifyingGlass size="20" /></Button>
+		</ButtonGroup>
+		<a class="btn" href="/dashboard/policies/00000000-0000-0000-0000-000000000000">Add Policy</a>
+	</Navbar>
+	<ErrorMessage error={fieldErrors?.subject_type?.[0]} />
+	<ErrorMessage error={fieldErrors?.display_name?.[0]} />
+	<ErrorMessage error={fieldErrors?.limit?.[0]} />
+	<ErrorMessage error={fieldErrors?.offset?.[0]} />
+</form>
 
 {#if policies}
 	<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -230,7 +239,7 @@
 		<nav class="flex items-center justify-between p-4" aria-label="Table navigation">
 			<span class="flex items-center text-sm text-gray-700 dark:text-gray-400">
 				<span class="pr-2">Rows ({$pageSize}): </span>
-				<Select items={limits} bind:value={$pageSize} size="sm" class="w-1/6 p-1 text-xs" />
+				<Select items={rows} bind:value={$pageSize} size="sm" class="w-1/6 p-1 text-xs" />
 				<span class="pl-4">
 					Showing <span class="font-semibold text-gray-900 dark:text-white">{$pageIndex + 1}</span>
 					out of <span class="font-semibold text-gray-900 dark:text-white">{$pageCount}</span> Pages

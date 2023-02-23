@@ -21,7 +21,7 @@
 	let hamburgerClass = 'text-gray-500 hover:text-gray-700 cursor-pointer border-none focus:outline-none dark:text-white hidden sm:block';
 </script>
 
-<Navbar let:hidden let:toggle fluid={false} border={false} {navClass}>
+<Navbar let:hidden let:toggle fluid={true} border={false} {navClass}>
 	<div class="flex items-center">
 		<Hamburger {hamburgerClass} />
 		<NavBrand href="/">
