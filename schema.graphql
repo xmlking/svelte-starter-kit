@@ -92,10 +92,10 @@ input ListUniversitiesInput {
 type ListUniversitiesOutput {
   alpha_two_code: String
   country: String
-  domains: [String]
+  domains: [String!]!
   name: String
   stateprovince: String
-  web_pages: [String]
+  web_pages: [String!]!
 }
 
 input SearchRestroomsInput {
@@ -542,6 +542,8 @@ input customer_updates {
 
   """sets the columns of the filtered rows to the given values"""
   _set: customer_set_input
+
+  """filter the rows which have to be updated"""
   where: customer_bool_exp!
 }
 
@@ -1183,6 +1185,8 @@ input order_updates {
 
   """sets the columns of the filtered rows to the given values"""
   _set: order_set_input
+
+  """filter the rows which have to be updated"""
   where: order_bool_exp!
 }
 
@@ -2109,6 +2113,8 @@ input tz_policies_updates {
 
   """sets the columns of the filtered rows to the given values"""
   _set: tz_policies_set_input
+
+  """filter the rows which have to be updated"""
   where: tz_policies_bool_exp!
 }
 

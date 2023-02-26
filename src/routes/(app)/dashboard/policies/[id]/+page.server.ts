@@ -1,5 +1,4 @@
-import type { tz_policies_insert_input } from '$houdini';
-import { CachePolicy, CreatePolicyStore, GetPolicyStore, UpdatePolicyStore } from '$houdini';
+import { CachePolicy, CreatePolicyStore, GetPolicyStore, UpdatePolicyStore, type tz_policies_insert_input } from '$houdini';
 import { handleActionErrors, handleLoadErrors, NotFoundError, PolicyError } from '$lib/errors';
 import { policyCreateSchema, policyUpdateSchema } from '$lib/models/schema';
 import { Logger } from '$lib/utils';
@@ -69,8 +68,20 @@ export const load = (async (event) => {
 		});
 
 		const policy = data?.tz_policies_by_pk;
+		if (!policy) throw new NotFoundError('policy not found');
 		const loadError = errors?.[0] as GraphQLError;
-		return { loadError, policy };
+
+		const { annotations, ...others } = policy;
+		const policy2: tz_policies_insert_input = {
+			...others,
+			...(annotations && {
+				annotations: Object.entries(annotations)
+					.map(([k, v]) => `"${k}" => "${v}"`)
+					.join(', ')
+			})
+		};
+
+		return { loadError, policy: policy2 };
 	} catch (err) {
 		console.error('account:actions:load:error:', err);
 		Sentry.setContext('source', { code: 'account' });

@@ -71,7 +71,7 @@ const config = {
 			...defaultMarshall
 		},
 		hstore: {
-			type: 'object',
+			type: 'string',
 			...defaultMarshall
 		},
 		jsonb: {

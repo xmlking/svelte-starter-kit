@@ -10,7 +10,7 @@
 	import { validator } from '@felte/validator-zod';
 	import type { Snapshot } from '@sveltejs/kit';
 	import { createForm } from 'felte';
-	import { Breadcrumb, BreadcrumbItem, Button, ButtonGroup, Spinner } from 'flowbite-svelte';
+	import { Breadcrumb, BreadcrumbItem, Button, ButtonGroup, Helper, Spinner } from 'flowbite-svelte';
 	import { tick } from 'svelte';
 	import { AdjustmentsHorizontal, ArrowLeft, CloudArrowDown } from 'svelte-heros-v2';
 	import type { ActionData, PageData } from './$types';
@@ -144,6 +144,7 @@
 			</div>
 			<div class="col-span-3">
 				<FloatingLabelField name="annotations" style="outlined" label="Annotations" error={fieldErrors?.annotations?.[0] || $fErrors?.annotations?.[0]} />
+				<Helper class='text-sm mt-2 italic'>Format: "key1" => "value1", "key2" => "value2"</Helper>
 			</div>
 
 			<div class="col-span-2">
