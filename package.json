@@ -21,7 +21,7 @@
 		"preinstall": "npx only-allow pnpm"
 	},
 	"devDependencies": {
-		"@auth/core": "0.4.0",
+		"@auth/core": "0.5.0",
 		"@auth/sveltekit": "0.2.1",
 		"@faker-js/faker": "7.6.0",
 		"@felte/reporter-svelte": "1.1.5",
