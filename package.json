@@ -71,7 +71,7 @@
 		"jose": "4.12.0",
 		"js-cookie": "3.0.1",
 		"jsdom": "21.1.0",
-		"msw": "1.0.1",
+		"msw": "1.1.0",
 		"postcss": "8.4.21",
 		"postcss-preset-env": "8.0.1",
 		"prettier": "2.8.4",
