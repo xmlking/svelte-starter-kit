@@ -44,6 +44,8 @@ hasura seed apply --file 1672767180588_tz_policies_seed.sql --database-name post
 # To apply all the Migrations present in the `migrations/` directory and the Metadata present in the `metadata/` directory on a new, "fresh",
 # instance of the Hasura Server at http://another-server-instance.hasura.app:
 hasura deploy --endpoint https://dsysnjrgygjipcilpkca.hasura.us-east-1.nhost.run  --admin-secret <admin-secret>
+# To apply only apply metadata
+hasura metadata apply --endpoint https://dsysnjrgygjipcilpkca.hasura.us-east-1.nhost.run  --admin-secret <admin-secret>
 # NOTE:
 # if you get error: "permission denied to create extension \"hstore\"", Run `create extension hstore;` in hasura console
 # if you get error: "must be owner of extension hstore",  Run `alter role nhost_hasura with superuser;` in hasura console

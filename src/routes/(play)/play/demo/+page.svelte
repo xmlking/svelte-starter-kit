@@ -1,5 +1,5 @@
 <script lang="ts">
-
+import thisPage from './+page.svelte?raw';
 </script>
 
 <svelte:head>
@@ -14,4 +14,9 @@
 	</h1>
 	<p class="font-bold mb-1">The Design is in the des...</p>
 	<p>Lorem ipsum dolor sit amet...</p>
+	<br/>
+	<h2>Demo Vite Raw Import</h2>
+	<div class="mockup-code text-primary-content">
+		<pre><code>{thisPage}</code></pre>
+	</div>
 </section>

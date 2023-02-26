@@ -25,10 +25,10 @@ input SearchRestroomsInput {
 type ListUniversitiesOutput {
   alpha_two_code: String
   country: String
-  domains: [String]
+  domains: [String!]!
   name: String
   stateprovince: String
-  web_pages: [String]
+  web_pages: [String!]!
 }
 
 type SearchRestroomsOutput {
