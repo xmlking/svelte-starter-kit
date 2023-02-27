@@ -40,11 +40,9 @@ const config = {
 
 		Decimal: {
 			type: 'number',
-
 			unmarshal(val) {
 				return new Number(val);
 			},
-
 			marshal(number) {
 				return number.toString();
 			}
@@ -52,25 +50,42 @@ const config = {
 
 		URL: {
 			type: 'URL',
-
 			unmarshal(val) {
 				return new URL(val);
 			},
-
 			marshal(url) {
 				return url.toString();
 			}
 		},
-
+		hstore: {
+			type: 'string',
+			unmarshal(val) {
+				return Object.entries(val)
+					.map(([k, v]) => `"${k}" => "${v}"`)
+					.join(', ');
+			},
+			marshal(val) {
+				return val;
+			}
+		},
+		// hstore: {
+		// 	type: 'Map',
+		// 	unmarshal(val) {
+		// 		console.log('in hstore unmarshal', val, typeof val);
+		// 		return new Map(Object.entries(val));
+		// 	},
+		// 	marshal(val) {
+		// 		console.log('in hstore marshal', val, typeof val);
+		// return Object.entries(JSON.parse(val))
+		// 	.map(([k, v]) => `"${k}" => "${v}"`)
+		// 	.join(', ');
+		// 	}
+		// },
 		uuid: {
 			type: 'string',
 			...defaultMarshall
 		},
 		_text: {
-			type: 'string',
-			...defaultMarshall
-		},
-		hstore: {
 			type: 'string',
 			...defaultMarshall
 		},
