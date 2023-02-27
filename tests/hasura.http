@@ -1,0 +1,82 @@
+###
+@graphqlEndpoint =  {{$dotenv HASURA_GRAPHQL_ENDPOINT}}/v1/graphql
+@graphqlAdminToken =  {{$dotenv HASURA_GRAPHQL_ADMIN_SECRET}}
+@graphqlUserToken =  'get me from OAuth flow'
+###
+
+### Pull Schema
+# @name IntrospectionQuery
+POST  {{graphqlEndpoint}}
+Content-Type: application/json
+x-hasura-admin-secret: {{graphqlAdminToken}}
+X-REQUEST-TYPE: GraphQL
+
+query IntrospectionQuery {
+	__schema {
+		types {
+			name
+			description
+		}
+		directives {
+			name
+			description
+			locations
+		}
+	}
+}
+
+### Search Restrooms
+# @name SearchRestrooms
+POST  {{graphqlEndpoint}}
+Content-Type: application/json
+x-hasura-admin-secret: {{graphqlAdminToken}}
+# Authorization: Bearer {{graphqlUserToken}}
+x-hasura-role: editor
+x-hasura-org-id: chinthagunta.com
+x-hasura-user-id: sumo@chinthagunta.com
+X-REQUEST-TYPE: GraphQL
+
+query MyQuery {
+	SearchRestrooms(arg1: { city: "Riverside" }) {
+		accessible
+		approved
+		changing_table
+		city
+		comment
+		country
+		created_at
+		directions
+		downvote
+		edit_id
+		id
+		latitude
+		longitude
+		name
+		state
+		street
+		unisex
+		updated_at
+		upvote
+	}
+}
+
+### ListUniversities
+# @name ListUniversities
+POST  {{graphqlEndpoint}}
+Content-Type: application/json
+x-hasura-admin-secret: {{graphqlAdminToken}}
+x-hasura-role: editor
+x-hasura-org-id: chinthagunta.com
+x-hasura-user-id: sumo@chinthagunta.com
+X-REQUEST-TYPE: GraphQL
+
+query MyQuery {
+	ListUniversities(arg1: { name: "middle" }) {
+		alpha_two_code
+		country
+		domains
+		name
+		stateprovince
+		web_pages
+	}
+}

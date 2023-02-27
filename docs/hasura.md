@@ -140,7 +140,7 @@ query MyQuery {
 
 ```gql
 query MyQuery {
-	searchRestrooms(arg1: { city: "Riverside" }) {
+	SearchRestrooms(arg1: { city: "Riverside" }) {
 		accessible
 		approved
 		changing_table
@@ -166,7 +166,7 @@ query MyQuery {
 
 ```gql
 query MyQuery {
-	listUniversities(arg1: { name: "middle" }) {
+	ListUniversities(arg1: { name: "middle" }) {
 		alpha_two_code
 		country
 		domains
