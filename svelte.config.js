@@ -2,6 +2,8 @@ import adapter from '@sveltejs/adapter-node';
 // import preprocess from 'svelte-preprocess';
 import { vitePreprocess } from '@sveltejs/kit/vite';
 
+const isProd = process.env.NODE_ENV === 'production';
+
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
 	// Consult https://kit.svelte.dev/docs/integrations#preprocessors
@@ -10,6 +12,7 @@ const config = {
 
 	kit: {
 		adapter: adapter({
+			// HINT: need nodejs > v19 runtime
 			polyfill: false
 		}),
 

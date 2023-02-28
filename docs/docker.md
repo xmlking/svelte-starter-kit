@@ -13,6 +13,17 @@ export GITHUB_PACKAGES_TOKEN=<ghp_XXX>
 echo $GITHUB_PACKAGES_TOKEN | docker login ghcr.io -u xmlking --password-stdin
 ```
 
+(Optional) Prefetch and cache base images to speedup docker builds
+
+```shell
+docker pull --platform linux/amd64 node:19
+docker pull --platform linux/arm64 node:19
+docker pull --platform linux/amd64 node:19-alpine
+docker pull --platform linux/arm64 node:19-alpine
+docker pull --platform linux/amd64 gcr.io/distroless/nodejs:19
+docker pull --platform linux/arm64 gcr.io/distroless/nodejs:19
+```
+
 Build and publish docker image to ghcr.io
 
 ```shell
