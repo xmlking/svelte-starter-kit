@@ -75,7 +75,8 @@ ENV NODE_ENV production
 
 WORKDIR /app
 COPY --from=tini /tini /tini
-ENTRYPOINT ["/tini", "-s", "--", "/nodejs/bin/node"]
+# ENTRYPOINT ["/tini", "-s", "--", "/nodejs/bin/node"]
+ENTRYPOINT ["/tini", "-s", "--", "/usr/bin/node"]
 COPY --from=build /app/build ./build
 #COPY --from=build /app/config ./config
 COPY --from=runtime /app/package.json ./package.json
