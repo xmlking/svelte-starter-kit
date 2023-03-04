@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { goto } from '$app/navigation';
-	import { ErrorMessage, FloatingLabelField, GraphQLError, Tags } from '$lib/components';
+	import { ErrorMessage, FloatingLabelField, Tags } from '$lib/components';
 // import {default as TagInput } from '$lib/components/TagInput.svelte';
 	import type { tz_policies_insert_input } from '$houdini';
 	import { DateInput } from '$lib/components/form';
@@ -125,7 +125,7 @@
 	<BreadcrumbItem>Edit Policy</BreadcrumbItem>
 </Breadcrumb>
 
-<GraphQLError error={loadError} />
+<ErrorMessage error={loadError?.message} />
 
 <form class="space-y-6" method="POST" action="?/save" use:fForm use:enhance>
 	{#if policy}

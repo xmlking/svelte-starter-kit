@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 
-test('Sign in with Auth0', async ({ page }) => {
+// Tip #3: debugging flaky tests
+test.only('Sign in with Auth0', async ({ page }) => {
 	// Go to NextAuth example app
 	await page.goto('https://next-auth-example.vercel.app');
 

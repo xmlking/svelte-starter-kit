@@ -9,6 +9,7 @@ Awesome **SvelteKit** Links
   - <https://svelte.dev/repl/c23b43904005457981e78ca5042f7dd4?version=3.29.7>
   - <https://github.com/happybeing/d3-fdg-svelte>
   - <https://github.com/jlefebure/redisgraph-navi/tree/master/src/client>
+  - [Autosize Textarea](https://github.com/ankurrsinghal/svelte-autoresize-textarea)
 
 - three.js
 
@@ -32,6 +33,12 @@ Awesome **SvelteKit** Links
 - [svelte-action-balancer](https://svelte-action-balancer.netlify.app/) - A Simple Svelte Action That Makes Titles More Readable
 - [svelte-put](https://github.com/vnphanquang/svelte-put) - A set of useful svelte **transitions**, **actions** and **components** to put in your projects
 - [svelte-body](https://github.com/ghostdevv/svelte-body) - Currently in SvelteKit, applying styles per page to the body doesn't work. `svelte-body` handles that for you!
+
+## GraphQL
+- GraphQL Client - [houdini](https://houdinigraphql.com/)
+  - Grafbase [live query plugin](https://github.com/grafbase/grafbase/tree/main/examples/sveltekit-houdini), [Getting started](https://grafbase.com/guides/getting-started-with-sveltekit-houdini-and-grafbase)
+- [GraphQL Mesh](https://the-guild.dev/graphql/mesh) Gateway
+  - [kit-mesh](https://github.com/jycouet/kit-mesh/blob/main/src/routes/api/%2Bserver.ts), [yoga-sveltekit](https://github.com/jycouet/graphql-yoga-sveltekit/blob/master/src/routes/api/graphql.ts)
 
 ## Testing
 
@@ -96,3 +103,4 @@ Add ORIGIN Env Varaible i.e., `ORIGIN=http://localhost:3000 node build/index.js`
 - <https://github.com/rocketlaunchr/awesome-svelte>
 - Huntabyte [YouTube](https://www.youtube.com/c/Huntabyte>) tutorials
 - <https://github.com/janosh/awesome-sveltekit>
+- Learn something new with GraphQL, every week - [graphql.wtf](https://graphql.wtf/)
