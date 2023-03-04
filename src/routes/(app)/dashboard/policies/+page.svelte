@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { Delete, ErrorMessage, GraphQLError, Link } from '$lib/components';
+	import { Delete, ErrorMessage, Link } from '$lib/components';
 	import { addToast, ToastLevel } from '$lib/components/toast';
 	import { Breadcrumb, BreadcrumbItem, Button, ButtonGroup, Input, InputAddon, Navbar, NavBrand, Select } from 'flowbite-svelte';
 	import { createRender, createTable, Render, Subscribe } from 'svelte-headless-table';
@@ -147,7 +147,7 @@
 	<BreadcrumbItem>Search Policies</BreadcrumbItem>
 </Breadcrumb>
 
-<GraphQLError error={loadError} />
+<ErrorMessage error={loadError?.message} />
 
 <form data-sveltekit-noscroll>
 	<Navbar border={true} rounded={true}>
