@@ -26,9 +26,9 @@ export const policyClientSchema = z
 		// valid_to: z.string().datetime({ offset: true }).nullish().catch(null),
 		valid_from: z.preprocess(emptyToNull, z.string().datetime({ offset: true }).nullish()),
 		valid_to: z.preprocess(emptyToNull, z.string().datetime({ offset: true }).nullish()),
-		source_address: z.string().trim().nullish(),
+		source_address: z.string().ip().nullish(),
 		source_port: z.string().trim().nullish(),
-		destination_address: z.string().trim().nullish(),
+		destination_address: z.string().ip().nullish(),
 		destination_port: z.string().trim().nullish(),
 		protocol: z.enum(['Any', 'IP', 'ICMP', 'IGMP', 'TCP', 'UDP', 'IPV6', 'ICMPV6', 'RM']),
 		action: z.enum(['action_permit', 'action_block']),
@@ -52,10 +52,15 @@ export const policyBaseSchema = z.object({
 	annotations: z.string().trim().nullish(), // TODO: validate map string
 	disabled: z.coerce.boolean().optional().default(false),
 	valid_from: z.string().datetime({ offset: true }).nullish().catch(null),
+	// valid_from: z.string().datetime({ offset: true }).nullish()
+	// 	.catch((ctx) => {
+	// 		ctx.error; // ZodError
+	// 		return null;
+	// 	}),
 	valid_to: z.string().datetime({ offset: true }).nullish().catch(null),
-	source_address: z.string().trim().nullish(),
+	source_address: z.string().ip().nullish(),
 	source_port: z.string().trim().nullish(),
-	destination_address: z.string().trim().nullish(),
+	destination_address: z.string().ip().nullish(),
 	destination_port: z.string().trim().nullish(),
 	protocol: z.enum(['Any', 'IP', 'ICMP', 'IGMP', 'TCP', 'UDP', 'IPV6', 'ICMPV6', 'RM']),
 	action: z.enum(['action_permit', 'action_block']),
