@@ -67,15 +67,19 @@ export const load = (async (event) => {
 			variables
 		});
 
+		if (errors) throw new PolicyError('GET_POLICY_ERROR', 'get policy api error', errors[0] as GraphQLError);
 		const policy = data?.tz_policies_by_pk;
 		if (!policy) throw new NotFoundError('policy not found');
-		const loadError = errors?.[0] as GraphQLError;
-		return { loadError, policy };
+		return { policy };
 	} catch (err) {
-		console.error('account:actions:load:error:', err);
-		Sentry.setContext('source', { code: 'account' });
+		log.error('policies:actions:load:error:', err);
+		Sentry.setContext('source', { code: 'policy' });
 		Sentry.captureException(err);
-		handleLoadErrors(err);
+		if (err instanceof PolicyError && err.name === 'GET_POLICY_ERROR') {
+			return { loadError: err.toJSON() };
+		} else {
+			handleLoadErrors(err);
+		}
 	}
 }) satisfies PageServerLoad;
 

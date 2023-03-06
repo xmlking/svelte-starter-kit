@@ -35,6 +35,7 @@ Awesome **SvelteKit** Links
 - [svelte-body](https://github.com/ghostdevv/svelte-body) - Currently in SvelteKit, applying styles per page to the body doesn't work. `svelte-body` handles that for you!
 
 ## GraphQL
+
 - GraphQL Client - [houdini](https://houdinigraphql.com/)
   - Grafbase [live query plugin](https://github.com/grafbase/grafbase/tree/main/examples/sveltekit-houdini), [Getting started](https://grafbase.com/guides/getting-started-with-sveltekit-houdini-and-grafbase)
 - [GraphQL Mesh](https://the-guild.dev/graphql/mesh) Gateway

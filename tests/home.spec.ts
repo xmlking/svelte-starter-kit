@@ -21,7 +21,7 @@ test.describe.serial('Home page', () => {
 		// create a locator
 		const aboutUs = page.getByText('About us');
 
-		  // ----> IMPORTANT!!! Check that it's visible 👀
+		// ----> IMPORTANT!!! Check that it's visible 👀
 		await expect(aboutUs).toBeVisible();
 
 		// Expect an attribute "to be strictly equal" to the value.
