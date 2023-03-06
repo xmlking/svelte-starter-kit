@@ -23,6 +23,7 @@ const alg = 'HS256';
 
 export const authjs = SvelteKitAuth({
 	debug: dev,
+	trustHost: true,
 	// adapter: HasuraAdapter({
 	// 	endpoint: HASURA_GRAPHQL_ENDPOINT,
 	// 	adminSecret: HASURA_GRAPHQL_ADMIN_SECRET

@@ -4,7 +4,7 @@
 	const toggle = () => {
 		sidebarOpen.update((n) => (n = !n));
 	};
-	export let hamburgerClass = 'text-gray-500 hover:text-gray-700 cursor-pointer border-none focus:outline-none dark:text-white';
+	export let hamburgerClass = 'text-gray-500 hover:text-gray-700 cursor-pointer border-none focus:outline-none dark:text-white hidden sm:block';
 </script>
 
 <button id="hamburgerBtn" class={hamburgerClass} class:open={$sidebarOpen} on:click={toggle} aria-label="Sidebar">

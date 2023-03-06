@@ -13,17 +13,11 @@
 				image?: string | null;
 		  }
 		| undefined;
-
-	// let navClass = ' border-gray-200 px-2 sm:px-4 py-2.5 bg-white dark:bg-gray-800'
-	// Added `bg-gray-50 dark:bg-gray-700` like sidebar and footer
-	let navClass = ' border-gray-200 px-2 sm:px-4 py-2.5 bg-gray-50 dark:bg-gray-700';
-	// added `hidden sm:block` to hide on small screens along with sidebar
-	let hamburgerClass = 'text-gray-500 hover:text-gray-700 cursor-pointer border-none focus:outline-none dark:text-white hidden sm:block';
 </script>
 
-<Navbar let:hidden let:toggle fluid={true} border={false} {navClass}>
+<Navbar let:hidden let:toggle fluid={true} border={false} color="light">
 	<div class="flex items-center">
-		<Hamburger {hamburgerClass} />
+		<Hamburger />
 		<NavBrand href="/">
 			<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="ml-3 mr-3 h-10 w-10 rounded-full bg-indigo-500 p-2 text-white" viewBox="0 0 24 24">
 				<path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />

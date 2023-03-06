@@ -216,6 +216,7 @@ use [houdini](https://www.houdinigraphql.com/) as GraphQL Client. [example](http
 **houdini cli** [docs](https://www.houdinigraphql.com/api/cli)
 
 Houdini Plugins
+
 - [live-queries](https://grafbase.com/docs/realtime/live-queries#houdini)
 
 ```shell
