@@ -1,3 +1,4 @@
+import dsv from '@rollup/plugin-dsv';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { SvelteKitPWA } from '@vite-pwa/sveltekit';
 import houdini from 'houdini/vite';
@@ -24,6 +25,7 @@ const config: UserConfig = {
 	plugins: [
 		houdini(),
 		sveltekit(),
+		dsv(),
 		SvelteKitPWA({
 			// adapterFallback: 'index.html',
 			base: '/',
