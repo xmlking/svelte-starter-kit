@@ -16,7 +16,13 @@ Awesome **SvelteKit** Links
   - [Threlte](https://threlte.xyz/) is a component library for Svelte to build and render `three.js` scenes declaratively and state-driven in Svelte apps.
 
 - Grid
+
   - [svelte-image-gallery](https://github.com/berkinakkaya/svelte-image-gallery)
+
+- Charts
+
+  - [pancake](https://pancake-charts.surge.sh/)
+  - [Layer Cake](https://layercake.graphics/) supports SSR, responsive graphics, full customizable layers for your graph.
 
 ## Animation
 
@@ -33,6 +39,8 @@ Awesome **SvelteKit** Links
 - [svelte-action-balancer](https://svelte-action-balancer.netlify.app/) - A Simple Svelte Action That Makes Titles More Readable
 - [svelte-put](https://github.com/vnphanquang/svelte-put) - A set of useful svelte **transitions**, **actions** and **components** to put in your projects
 - [svelte-body](https://github.com/ghostdevv/svelte-body) - Currently in SvelteKit, applying styles per page to the body doesn't work. `svelte-body` handles that for you!
+- [svelte-legos](https://github.com/ankurrsinghal/svelte-legos)[DEMO](https://svelte-legos.singhalankur.com)
+- [React Hooks in Svelte](<[auth.md](https://github.com/breadthe/react-hooks-in-svelte)>)
 
 ## GraphQL
 
@@ -47,10 +55,16 @@ Awesome **SvelteKit** Links
   - Svelte component test recipes using Vitest & Testing Library with TypeScript
 - [Test Svelte Component Using Vitest & Playwright](https://davipon.hashnode.dev/test-svelte-component-using-vitest-playwright)
 
-## Templates
+## Project Templates
 
 - [Svelte Sirens](https://github.com/Svelte-Sirens/svelte-sirens)
 - [Usagizmo turbo Monorepo](https://github.com/usagizmo/webapp-template)
+- [SvelteKit stack for enterprise](https://github.com/joysofcode/enterprise-stack)
+
+## Deployment
+
+- [SvelteKit on the edge](https://github.com/Rich-Harris/sveltekit-on-the-edge)
+  - A demo [SvelteKit](https://kit.svelte.dev/) app running on [Vercel Edge Functions](https://vercel.com/features/edge-functions), which run close to your users to enable dynamic server-side rendering at the speed of static content.
 
 ## Performance
 
