@@ -65,7 +65,19 @@ services:
       ## uncomment next line to set an admin secret
       HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
       # HASURA_GRAPHQL_JWT_SECRET: '{"type":"RS512", "jwk_url": "https://www.googleapis.com/oauth2/v3/certs"}'
-      HASURA_GRAPHQL_JWT_SECRET: '{ "type": "HS256", "key": "1084d8d404126d641c232604aa27bc756921c07a5869c6de6cfd0c6c455de0fe" }'
+      # HASURA_GRAPHQL_JWT_SECRET: '{ "type": "HS256", "key": "1084d8d404126d641c232604aa27bc756921c07a5869c6de6cfd0c6c455de0fe" }'
+      HASURA_GRAPHQL_JWT_SECRET: |
+        {
+          "type": "HS256",
+          "key": "1084d8d404126d641c232604aa27bc756921c07a5869c6de6cfd0c6c455de0fe",
+          "claims_map": {
+            "x-hasura-allowed-roles": { "path": "$.roles" },
+            "x-hasura-default-role": "viewer",
+            "x-hasura-user-id": { "path": "$.sub" },
+            "x-hasura-org-id":  { "path": "$.org", "default": "public" }
+          }
+        }
+      HASURA_GRAPHQL_UNAUTHORIZED_ROLE: anonymous
       HASURA_GRAPHQL_CORS_DOMAIN: '*'
       HASURA_GRAPHQL_ENABLE_REMOTE_SCHEMA_PERMISSIONS: 'true'
       ## enable allowList only for prod if required
