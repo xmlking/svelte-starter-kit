@@ -17,9 +17,13 @@ const config = {
 		}),
 
 		// When hosting SPA on GitHub Pages
-		// paths: {
-		//   base: dev ? '' : '/svelte-starter-kit',
-		// },
+		paths: {
+			// base: dev ? '' : '/hc360-ui',
+			// relative: false
+		},
+		output: {
+			preloadStrategy: 'preload-mjs'
+		},
 
 		// prerender: { entries: [] },
 		alias: {

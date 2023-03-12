@@ -2,10 +2,9 @@ import { getAppError, isAppError } from '$lib/errors';
 import { createRandomAccount } from '$mocks/data/accounts';
 import { error } from '@sveltejs/kit';
 import { ZodError } from 'zod';
-import type { PageServerLoad } from './$types';
 
-export const load = (async ({ params }) => {
-	const { id } = params;
+export async function load(event) {
+	const { id } = event.params;
 	const payload = { id };
 	try {
 		const account = createRandomAccount();
@@ -24,4 +23,4 @@ export const load = (async ({ params }) => {
 		}
 		throw error(500, getAppError(err));
 	}
-}) satisfies PageServerLoad;
+}

@@ -7,9 +7,8 @@
 	import { addPagination, addSortBy, addTableFilter } from 'svelte-headless-table/plugins';
 	import { ChevronDown, ChevronUp, MagnifyingGlassCircle, Users } from 'svelte-heros-v2';
 	import { writable } from 'svelte/store';
-	import type { PageData } from './$types';
 
-	export let data: PageData; // `data` props get initialized from page endpoint.
+	export let data; // `data` props get initialized from page endpoint.
 	let { accounts } = data; // we need this statement to access `results/total` values before component mounted.
 	$: ({ accounts } = data); // so `members` stays in sync when `data` changes
 	$: memberStore.set(accounts); // update store when data changed

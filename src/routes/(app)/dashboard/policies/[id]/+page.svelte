@@ -13,9 +13,8 @@
 	import { Breadcrumb, BreadcrumbItem, Button, ButtonGroup, Helper, Spinner } from 'flowbite-svelte';
 	import { tick } from 'svelte';
 	import { AdjustmentsHorizontal, ArrowLeft, CloudArrowDown } from 'svelte-heros-v2';
-	import type { ActionData, PageData } from './$types';
 
-	export let form: ActionData;
+	export let form;
 	let { actionResult, actionError, formErrors, fieldErrors } = form || {};
 	$: if (form) ({ actionResult, actionError, formErrors, fieldErrors } = form);
 	$: if (actionResult) {
@@ -24,7 +23,7 @@
 	}
 	$: if (actionError) addToast({ message: actionError.message, dismissible: true, duration: 10000, type: ToastLevel.Error });
 
-	export let data: PageData;
+	export let data;
 	let { policy, loadError } = data;
 	$: ({ policy, loadError } = data);
 	let editMode = policy?.id != '00000000-0000-0000-0000-000000000000';

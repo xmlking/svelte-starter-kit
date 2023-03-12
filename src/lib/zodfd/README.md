@@ -26,7 +26,6 @@ import { fail } from '@sveltejs/kit';
 import { policyDeleteSchema, policySearchSchema, policyCreateSchema, policyUpdateSchema } from '$lib/models/schema';
 import { zfd } from '$lib/zodfd';
 import type { GraphQLError } from 'graphql';
-import type { Actions, PageServerLoad } from './$types';
 
 const searchPoliciesStore = new SearchPoliciesStore();
 const deletePolicyStore = new DeletePolicyStore();
@@ -35,7 +34,7 @@ const updatePolicyStore = new UpdatePolicyStore();
 
 const searchSchema = zfd.formData(policySearchSchema, { empty: 'strip' });
 
-export const load = (async (event) => {
+export async function load(event) {
 	const { url, parent } = event;
 	try {
 		const { limit, offset, subject_type, display_name } = searchSchema.parse(url.searchParams);
@@ -53,7 +52,7 @@ export const load = (async (event) => {
 			event,
 			blocking: true,
 			policy: CachePolicy.CacheAndNetwork,
-			metadata: { backendToken: 'token from TokenVault' },
+			metadata: { backendToken: 'token from TokenVault', useRole: 'editor' },
 			variables
 		});
 
@@ -68,7 +67,7 @@ export const load = (async (event) => {
 	} catch (err) {
 		return handleLoadErrors(err);
 	}
-}) satisfies PageServerLoad;
+}
 
 /**
  * Actions
@@ -86,7 +85,7 @@ export const actions = {
 			const variables = { id };
 
 			const { errors, data } = await deletePolicyStore.mutate(variables, {
-				metadata: { backendToken: 'token from TokenVault' },
+				metadata: { backendToken: 'token from TokenVault', useRole: 'editor' },
 				fetch
 			});
 
@@ -142,6 +141,6 @@ export const actions = {
 			}
 		}
 	}
-} satisfies Actions;
+}
 
 ```

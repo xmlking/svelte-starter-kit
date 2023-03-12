@@ -1,12 +1,11 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { confetti } from '@neoconfetti/svelte';
-	import type { ActionData, PageData } from './$types';
 	import { reduced_motion } from './reduced-motion';
 
-	export let data: PageData;
+	export let data;
 
-	export let form: ActionData;
+	export let form;
 
 	/** Whether or not the user has won */
 	$: won = data.answers.at(-1) === 'xxxxx';

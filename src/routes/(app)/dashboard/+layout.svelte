@@ -3,9 +3,8 @@
 	import { SideMenu } from '$lib/blocks/side';
 	import { DarkMode } from '$lib/components';
 	import { onMount } from 'svelte';
-	import type { LayoutServerData } from './$types';
 
-	export let data: LayoutServerData;
+	export let data;
 
 	async function getAzureProfilePicture(access_token: string) {
 		const res = await fetch('https://graph.microsoft.com/v1.0/me/photos/48x48/$value', {

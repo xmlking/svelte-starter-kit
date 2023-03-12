@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	/**
 		Generates an SVG x-axis. This component is also configured to detect if your x-scale is an ordinal scale. If so, it will place the markers in the middle of the bandwidth.
 		@type {Boolean} [gridlines=true] - Extend lines from the ticks into the chart space

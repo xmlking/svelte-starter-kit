@@ -1,8 +1,7 @@
 import { fail } from '@sveltejs/kit';
 import { Game } from './game';
-import type { PageServerLoad, Actions } from './$types';
 
-export const load = (({ cookies }) => {
+export async function load({ cookies }) {
 	const game = new Game(cookies.get('sverdle'));
 
 	return {
@@ -22,7 +21,7 @@ export const load = (({ cookies }) => {
 		 */
 		answer: game.answers.length >= 6 ? game.answer : null
 	};
-}) satisfies PageServerLoad;
+}
 
 export const actions = {
 	/**
@@ -66,4 +65,4 @@ export const actions = {
 	restart: async ({ cookies }) => {
 		cookies.delete('sverdle');
 	}
-} satisfies Actions;
+};

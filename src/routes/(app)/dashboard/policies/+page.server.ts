@@ -8,7 +8,6 @@ import { policyDeleteSchema, policySearchSchema } from '$lib/models/schema';
 import { zfd } from '$lib/zodfd';
 import * as Sentry from '@sentry/svelte';
 import type { GraphQLError } from 'graphql';
-import type { Actions, PageServerLoad } from './$types';
 
 const log = new Logger('policies.server');
 
@@ -19,7 +18,7 @@ const searchSchema = zfd.formData(policySearchSchema, { empty: 'strip' });
 /**
  * Loader
  */
-export const load = (async (event) => {
+export async function load(event) {
 	const { url, parent } = event;
 	try {
 		await parent(); // HINT: to make sure use session is valid
@@ -66,7 +65,7 @@ export const load = (async (event) => {
 			handleLoadErrors(err);
 		}
 	}
-}) satisfies PageServerLoad;
+}
 
 /**
  * Actions
@@ -106,4 +105,4 @@ export const actions = {
 			}
 		}
 	}
-} satisfies Actions;
+};
