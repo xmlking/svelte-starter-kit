@@ -8,6 +8,7 @@ import GitHub from '@auth/core/providers/github';
 import Google from '@auth/core/providers/google';
 import { SvelteKitAuth } from '@auth/sveltekit';
 import type { Handle } from '@sveltejs/kit';
+import { SignJWT } from 'jose';
 import { appRoles } from './role-mapper';
 // import { HasuraAdapter } from 'next-auth-hasura-adapter';
 
@@ -16,6 +17,9 @@ import { appRoles } from './role-mapper';
 // https://github.com/artizen-fund/artizen-frontend/blob/main/src/lib/apollo/apolloClient.ts
 
 const log = new Logger('middleware:auth');
+
+const secret = new TextEncoder().encode(envPri.AUTH_SECRET);
+const alg = 'HS256';
 
 export const authjs = SvelteKitAuth({
 	debug: dev,
@@ -61,21 +65,38 @@ export const authjs = SvelteKitAuth({
 				log.debug('in isSignIn');
 				token.email ??= profile.upn;
 				token.roles ??= appRoles(profile.roles ?? profile.groups);
-				token.org = envPub.PUBLIC_TENANT_ID;
+
+				const hasuraToken = {
+					'https://hasura.io/jwt/claims': {
+						'x-hasura-allowed-roles': token.roles,
+						'x-hasura-default-role': 'viewer',
+						'x-hasura-org-id': envPub.PUBLIC_TENANT_ID,
+						'x-hasura-user-id': token.email // token.sub
+					}
+				};
 				// `scp` or `scope` is required for Spring Security.
 				const scp = Array.isArray(token.roles) ? token.roles.join(' ') : undefined;
-				token.scp = scp;
+				// TODO: use asymmetric keys for signing, so we can share public key with API providers
+				token.token = await new SignJWT({ ...hasuraToken, scp })
+					.setProtectedHeader({ alg })
+					.setIssuedAt()
+					.setSubject(token.email ?? '')
+					.setIssuer('svelte-starter-kit')
+					.setAudience('hasura')
+					.setExpirationTime('24h') // TODO: account?.expires_in
+					.sign(secret);
 
 				// token.accessToken = account.access_token; // account.id_token
 
 				// FIXME: for Azure AD picture is base64 and it is too big to fit in cookie.
 				// will through `431 Request Header Fields Too Large` unless we remove it.
-				if (token.picture?.startsWith('data:')) delete token.picture;
+				// if (token.picture?.startsWith('data:')) delete token.picture;
 			}
 			return token;
 		},
 		async session({ session, token }) {
 			// log.debug('in session, token, session>>>', token, session);
+			session.token = token.token;
 			session.roles = token.roles;
 			if (session.user) session.user.id ??= token.sub;
 			// log.debug('in session, session>>>>', session);
