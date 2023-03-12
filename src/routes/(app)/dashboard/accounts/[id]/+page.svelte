@@ -3,9 +3,8 @@
 	import { page } from '$app/stores';
 	import { Button, ButtonGroup } from 'flowbite-svelte';
 	import { AdjustmentsHorizontal, ArrowLeft } from 'svelte-heros-v2';
-	import type { PageData } from './$types';
 
-	export let data: PageData; // item: Account;
+	export let data;
 	const { account } = data;
 
 	async function goBack() {

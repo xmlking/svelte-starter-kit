@@ -8,13 +8,12 @@
 	import { ChevronDown, ChevronUp, DevicePhoneMobile, MagnifyingGlass, ShieldCheck, User, UserCircle, UserGroup } from 'svelte-heros-v2';
 	import { TimeDistance } from 'svelte-time-distance';
 	import { writable } from 'svelte/store';
-	import type { ActionData, PageData } from './$types';
 
-	export let form: ActionData;
+	export let form;
 	$: if (form?.actionResult) addToast({ message: `${form.actionResult.display_name} deleted`, dismissible: true, duration: 10000, type: ToastLevel.Info });
 	$: if (form?.actionError) addToast({ message: form.actionError.message, dismissible: true, duration: 10000, type: ToastLevel.Error });
 
-	export let data: PageData;
+	export let data;
 	$: ({ policies, loadError, formErrors, fieldErrors } = data);
 	$: policyStore.set(policies ?? []);
 

@@ -3,9 +3,8 @@ import type { Account } from '$lib/models/types/accounts';
 import { createData } from '$mocks/data/accounts';
 import { error } from '@sveltejs/kit';
 import { ZodError } from 'zod';
-import type { PageServerLoad } from './$types';
 
-export const load = (async ({ url }) => {
+export async function load({ url }) {
 	const firstName = url.searchParams.get('firstName') ?? encodeURIComponent('*');
 	const lastName = url.searchParams.get('lastName') ?? encodeURIComponent('*');
 	const limit = url.searchParams.get('limit') ?? '50';
@@ -26,4 +25,4 @@ export const load = (async ({ url }) => {
 		}
 		throw error(500, getAppError(err));
 	}
-}) satisfies PageServerLoad;
+}

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	/**
 		Generates an HTML y-axis.
 		@type {Boolean} [gridlines=true] - Extend lines from the ticks into the chart space

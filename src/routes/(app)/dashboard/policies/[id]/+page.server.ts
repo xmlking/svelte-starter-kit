@@ -10,7 +10,6 @@ import { fail, redirect } from '@sveltejs/kit';
 import type { GraphQLError } from 'graphql';
 import crypto from 'node:crypto';
 import { ZodError } from 'zod';
-import type { Actions, PageServerLoad } from './$types';
 
 const log = new Logger('policy.details.server');
 
@@ -20,7 +19,7 @@ const updatePolicyStore = new UpdatePolicyStore();
 /**
  * loaders
  */
-export const load = (async (event) => {
+export async function load(event) {
 	const { params, parent } = event;
 	const { session } = await parent();
 
@@ -81,7 +80,7 @@ export const load = (async (event) => {
 			handleLoadErrors(err);
 		}
 	}
-}) satisfies PageServerLoad;
+}
 
 /**
  * actions
@@ -171,4 +170,4 @@ export const actions = {
 			}
 		}
 	}
-} satisfies Actions;
+};
