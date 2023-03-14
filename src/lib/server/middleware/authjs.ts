@@ -82,4 +82,17 @@ export const authjs = SvelteKitAuth({
 			return session;
 		}
 	}
+	// // setup cross-subdomain sessionToken
+	// cookies: {
+	// 	sessionToken: {
+	// 		name: `${dev ? '' : '__Secure-'}next-auth.session-token`,
+	// 		options: {
+	// 			httpOnly: true,
+	// 			sameSite: 'lax',
+	// 			path: '/',
+	// 			domain: dev ? 'localhost' : '.chinthagunta.com',
+	// 			secure: !dev
+	// 		}
+	// 	}
+	// }
 }) satisfies Handle;
