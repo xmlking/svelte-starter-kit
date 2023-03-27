@@ -6,7 +6,7 @@ import { browser } from '$app/environment';
 import { subscription } from '$houdini/plugins';
 import { createClient as createWSClient } from 'graphql-ws';
 
-const url = `${envPub.PUBLIC_HASURA_GRAPHQL_ENDPOINT}/v1/graphql`;
+const url = envPub.PUBLIC_GRAPHQL_ENDPOINT;
 
 const log = new Logger('houdini.client');
 
@@ -22,7 +22,7 @@ const logMetadata: ClientPlugin = () => ({
 });
 const subClient: ClientPlugin = subscription(({ session }) =>
 	createWSClient({
-		url: url.replace(/^https?/, 'wss').replace(/^http?/, 'ws'),
+		url: url.replace('https://', 'wss://').replace('http://', 'ws://'),
 		connectionParams: () => {
 			return {
 				headers: {

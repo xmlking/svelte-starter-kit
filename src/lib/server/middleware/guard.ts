@@ -3,7 +3,7 @@ import { Logger } from '$lib/utils';
 import { redirect, type Handle } from '@sveltejs/kit';
 /**
  * Protect the route
- * It shoud be the last middleware
+ * It should be the last middleware
  */
 const log = new Logger('middleware:guard');
 export const guard = (async ({ event, resolve }) => {
@@ -17,13 +17,17 @@ export const guard = (async ({ event, resolve }) => {
 	// get user roles
 	// check if role has access to target route
 
-	const { user, roles } = (await locals.getSession()) ?? {};
-	log.debug('user roles-->', roles);
+	const { user, roles, expires } = (await locals.getSession()) ?? {};
+	log.debug('Session roles-->', roles);
 
 	if (event.url.pathname.startsWith('/dashboard')) {
 		if (!user) {
 			// FIXME: redirect from middleware may cause recursion
 			throw redirect(303, `${event.url.origin}/auth/signin?callbackUrl=/dashboard`);
+		}
+		if (expires && new Date(expires) < new Date()) {
+			log.debug('session expired at: ', expires);
+			throw redirect(303, `${event.url.origin}/auth/signout?callbackUrl=/blog`);
 		}
 		if (event.url.pathname.startsWith('/dashboard/admin')) {
 			if (!roles?.includes('Policy.Write')) {

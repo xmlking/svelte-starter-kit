@@ -4,6 +4,7 @@ import envPub from '$lib/variables/variables';
 import envPri from '$lib/variables/variables.server';
 import type { Provider } from '@auth/core/providers';
 import AzureAD from '@auth/core/providers/azure-ad';
+import CredentialsProvider from '@auth/core/providers/credentials';
 import GitHub from '@auth/core/providers/github';
 import Google from '@auth/core/providers/google';
 import { SvelteKitAuth } from '@auth/sveltekit';
@@ -25,6 +26,28 @@ export const authjs = SvelteKitAuth({
 	// 	adminSecret: HASURA_GRAPHQL_ADMIN_SECRET
 	// }),
 	providers: [
+		...(dev
+			? [
+					CredentialsProvider({
+						name: 'Dummy Account',
+						credentials: {
+							username: { label: 'Username', type: 'text', placeholder: 'type any username / password' },
+							password: { label: 'Password', type: 'password' },
+							domain: { label: 'Domain', type: 'select', value: envPub.PUBLIC_TENANT_ID }
+						},
+						async authorize(credentials, req) {
+							const user = {
+								id: '1',
+								name: 'Sumo Demo',
+								org: credentials.domain,
+								roles: ['moderator', 'tester'],
+								email: 'sumo@demo.com'
+							};
+							return user;
+						}
+					})
+			  ]
+			: []),
 		Google({
 			clientId: envPri.GOOGLE_ID,
 			clientSecret: envPri.GOOGLE_SECRET,
@@ -56,6 +79,8 @@ export const authjs = SvelteKitAuth({
 			// log.debug('account>>>', account);
 			// log.debug('profile>>>', profile);
 			// log.debug('isNewUser>>>', isNewUser);
+			// profile == undefined when login with CredentialsProvider
+			if (!profile && user) profile = { roles: user.roles, upn: user.id };
 			const isSignIn = !!(user && profile && account);
 			if (isSignIn) {
 				log.debug('in isSignIn');

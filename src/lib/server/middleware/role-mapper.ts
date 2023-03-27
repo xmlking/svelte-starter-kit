@@ -5,7 +5,9 @@
  * reduce number of app roles returned.
  */
 export function appRoles(groups: string[]) {
-	// TODO: map groups/roles to subset of ['viewer', 'editor', 'moderator', 'supervisor'] app roles
+	// TODO: map groups/roles to subset of ['viewer', 'editor', 'moderator', 'supervisor', 'tester'] app roles
 	// console.debug('appRoles: got groups--->', groups);
-	return groups ? ['viewer', 'editor', 'moderator'] : ['viewer', 'editor'];
+	const roles = groups ? ['viewer', 'editor', 'moderator'] : ['viewer', 'editor'];
+	if (groups?.includes('tester')) roles.push('tester');
+	return roles;
 }

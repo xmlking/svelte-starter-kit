@@ -8,6 +8,7 @@ declare global {
 			user?: {
 				id?: string;
 			} & DefaultSession['user'];
+			expires?: DefaultSession['expires'];
 			token?: string;
 			roles?: string[];
 		}

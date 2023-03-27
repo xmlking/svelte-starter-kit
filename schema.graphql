@@ -39,9 +39,11 @@ input ContinentFilterInput {
 }
 
 type Country {
+  awsRegion: String!
   capital: String
   code: ID!
   continent: Continent!
+  currencies: [String!]!
   currency: String
   emoji: String!
   emojiU: String!
@@ -49,6 +51,7 @@ type Country {
   name: String!
   native: String!
   phone: String!
+  phones: [String!]!
   states: [State!]!
 }
 
@@ -75,8 +78,8 @@ input Int_comparison_exp {
 
 type Language {
   code: ID!
-  name: String
-  native: String
+  name: String!
+  native: String!
   rtl: Boolean!
 }
 
@@ -135,10 +138,9 @@ type State {
 
 input StringQueryOperatorInput {
   eq: String
-  glob: String
-  in: [String]
+  in: [String!]
   ne: String
-  nin: [String]
+  nin: [String!]
   regex: String
 }
 
@@ -193,17 +195,6 @@ input String_comparison_exp {
 
   """does the column match the given SQL regular expression"""
   _similar: String
-}
-
-scalar _Any
-
-union _Entity = Continent | Country | Language
-
-type _Service {
-  """
-  The sdl representing the federated service capabilities. Includes federation directives, removes federation types, and includes rest of full schema after schema directives have been applied
-  """
-  sdl: String
 }
 
 scalar _text
@@ -1234,11 +1225,9 @@ type query_root {
 
   """Restrooms API"""
   SearchRestrooms(arg1: SearchRestroomsInput!): [SearchRestroomsOutput]
-  _entities(representations: [_Any!]!): [_Entity]!
-  _service: _Service!
   continent(code: ID!): Continent
-  continents(filter: ContinentFilterInput): [Continent!]!
-  countries(filter: CountryFilterInput): [Country!]!
+  continents(filter: ContinentFilterInput = {}): [Continent!]!
+  countries(filter: CountryFilterInput = {}): [Country!]!
   country(code: ID!): Country
 
   """
@@ -1284,7 +1273,7 @@ type query_root {
   """fetch data from the table: "customer" using primary key columns"""
   customer_by_pk(id: Int!): customer
   language(code: ID!): Language
-  languages(filter: LanguageFilterInput): [Language!]!
+  languages(filter: LanguageFilterInput = {}): [Language!]!
 
   """
   fetch data from the table: "order"

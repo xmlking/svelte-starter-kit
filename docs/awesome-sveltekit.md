@@ -42,6 +42,12 @@ Awesome **SvelteKit** Links
 - [svelte-legos](https://github.com/ankurrsinghal/svelte-legos)[DEMO](https://svelte-legos.singhalankur.com)
 - [React Hooks in Svelte](<[auth.md](https://github.com/breadthe/react-hooks-in-svelte)>)
 
+## Forms
+
+- [sveltekit-superforms](https://github.com/ciscoheat/sveltekit-superforms) - SvelteKit native form handing for backend and frontend.
+  - [Intro Video](https://www.youtube.com/watch?v=MiKzH3kcVfs)
+- [felte](https://felte.dev/) - An extensible form library for Svelte, Solid and React
+
 ## GraphQL
 
 - GraphQL Client - [houdini](https://houdinigraphql.com/)
