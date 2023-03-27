@@ -12,7 +12,8 @@
 		{ name: 'HyperUI', href: '/play/hyperui' },
 		{ name: 'panel', href: '/play/panel' },
 		{ name: 'sverdle', href: '/play/sverdle' },
-		{ name: 'metrics', href: '/play/metrics' }
+		{ name: 'metrics', href: '/play/metrics' },
+		{ name: 'sub', href: '/play/sub' }
 	];
 </script>
 
