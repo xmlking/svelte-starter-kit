@@ -26,7 +26,7 @@ FROM --platform=${BUILDPLATFORM} node:19 as build
 
 # install pnpm
 #RUN curl -fsSL https://get.pnpm.io/install.sh | sh -; node - add --global pnpm
-RUN corepack enable; corepack prepare pnpm@7.30.3 --activate
+RUN corepack enable; corepack prepare pnpm@8.1.0 --activate
 
 # build-args are used in vite.config.ts
 ARG BUILD_TIME
@@ -53,7 +53,7 @@ RUN pnpm build
 FROM --platform=${BUILDPLATFORM} node:19-alpine as runtime
 
 # install pnpm
-RUN corepack enable; corepack prepare pnpm@7.30.3 --activate
+RUN corepack enable; corepack prepare pnpm@8.1.0 --activate
 
 WORKDIR /app
 
@@ -77,10 +77,10 @@ WORKDIR /app
 COPY --from=tini /tini /tini
 # ENTRYPOINT ["/tini", "-s", "--", "/nodejs/bin/node"]
 ENTRYPOINT ["/tini", "-s", "--", "/usr/bin/node"]
-COPY --from=build /app/build ./build
-#COPY --from=build /app/config ./config
-COPY --from=runtime /app/package.json ./package.json
-COPY --from=runtime /app/node_modules ./node_modules
+COPY --from=build --chown=node:node /app/build ./build
+# COPY --from=build --chown=node:node /app/config ./config
+COPY --from=runtime --chown=node:node /app/package.json ./package.json
+COPY --from=runtime --chown=node:node /app/node_modules ./node_modules
 
 EXPOSE 3000
 #USER nonroot:nonroot
