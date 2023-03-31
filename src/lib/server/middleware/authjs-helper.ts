@@ -6,8 +6,9 @@ import { SignJWT } from 'jose';
 // FIXME: temp workaround. remove when fixed.
 // https://github.com/nextauthjs/next-auth/discussions/5595#discussioncomment-4628977
 
-const secureCookie = envPri.NEXTAUTH_URL?.startsWith('https://') ?? envPri.VERCEL;
-const cookieName = secureCookie ? '__Secure-next-auth.session-token' : 'next-auth.session-token';
+export const useSecureCookie = envPri.NEXTAUTH_URL?.startsWith('https://') ?? envPri.VERCEL;
+export const domain = new URL(envPri.NEXTAUTH_URL).hostname.replace(/^[^.]+\./g, '');
+export const cookieName = useSecureCookie ? '__Secure-next-auth.session-token' : 'next-auth.session-token';
 const secret = new TextEncoder().encode(envPri.AUTH_SECRET);
 const alg = 'HS256';
 
