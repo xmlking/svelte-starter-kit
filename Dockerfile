@@ -74,7 +74,7 @@ FROM cgr.dev/chainguard/node:19 as final
 ENV NODE_ENV production
 
 WORKDIR /app
-COPY --from=tini /tini /tini
+COPY --from=tini --chown=node:node /tini /tini
 # ENTRYPOINT ["/tini", "-s", "--", "/nodejs/bin/node"]
 ENTRYPOINT ["/tini", "-s", "--", "/usr/bin/node"]
 COPY --from=build --chown=node:node /app/build ./build
