@@ -76,7 +76,7 @@
 		"layercake": "7.3.4",
 		"msw": "1.2.1",
 		"postcss": "8.4.21",
-		"postcss-preset-env": "8.2.0",
+		"postcss-preset-env": "8.3.0",
 		"prettier": "2.8.7",
 		"prettier-plugin-svelte": "2.10.0",
 		"prettier-plugin-tailwindcss": "0.2.6",
