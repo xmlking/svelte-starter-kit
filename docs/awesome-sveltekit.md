@@ -6,9 +6,9 @@ Awesome **SvelteKit** Links
 
 - Force Graph examples with D3
 
-  - <https://svelte.dev/repl/c23b43904005457981e78ca5042f7dd4?version=3.29.7>
-  - <https://github.com/happybeing/d3-fdg-svelte>
-  - <https://github.com/jlefebure/redisgraph-navi/tree/master/src/client>
+  - [d3 Force Directed Graph demo](https://svelte.dev/repl/c23b43904005457981e78ca5042f7dd4?version=3.29.7)
+  - [d3-fdg-svelte](https://github.com/happybeing/d3-fdg-svelte)
+  - [redisgraph-navi](https://github.com/jlefebure/redisgraph-navi/tree/master/src/client)
   - [Autosize Textarea](https://github.com/ankurrsinghal/svelte-autoresize-textarea)
 
 - three.js
@@ -23,6 +23,9 @@ Awesome **SvelteKit** Links
 
   - [pancake](https://pancake-charts.surge.sh/)
   - [Layer Cake](https://layercake.graphics/) supports SSR, responsive graphics, full customizable layers for your graph.
+
+- Toast
+- [svelte-french-toast](https://svelte-french-toast.com/)
 
 ## Animation
 

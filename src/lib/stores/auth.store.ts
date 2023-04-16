@@ -1,3 +1,6 @@
+/**
+ * Use this store client-side only with onMount
+ */
 import { page } from '$app/stores';
 import { derived } from 'svelte/store';
 
