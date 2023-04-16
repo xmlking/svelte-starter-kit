@@ -28,7 +28,7 @@ by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create
 - [ ] Fonts and Image Optimization: edge caching, Lazy-loading images
 - [ ] SEO optimization
 - [x] **GraphQL:** [Houdini](https://www.houdinigraphql.com/) the disappearing GraphQL client for SvelteKit. and [nHost](https://nhost.io/) as BaaS
-- [x] **Forms:** schema definitions with `zod`. form _initialization/reset/validation/error reporting_ with ~~[felte](https://felte.dev/)~~ [sveltekit-superforms](https://github.com/ciscoheat/sveltekit-superforms)
+- [x] **Forms:** Form handling with [[superforms](https://superforms.vercel.app/), [source](https://github.com/ciscoheat/sveltekit-superforms)] and Validation with `zod`
 - [ ] **Error Handling:**
   - [x] Strongly Typed Error Handling with [generic errors](./src/lib/errors#readme)
   - [x] _FormData_ preprocessing with [zodfd](./src/lib/zodfd#readme)
