@@ -28,39 +28,6 @@ input Boolean_comparison_exp {
   _nin: [Boolean!]
 }
 
-type Continent {
-  code: ID!
-  countries: [Country!]!
-  name: String!
-}
-
-input ContinentFilterInput {
-  code: StringQueryOperatorInput
-}
-
-type Country {
-  awsRegion: String!
-  capital: String
-  code: ID!
-  continent: Continent!
-  currencies: [String!]!
-  currency: String
-  emoji: String!
-  emojiU: String!
-  languages: [Language!]!
-  name: String!
-  native: String!
-  phone: String!
-  phones: [String!]!
-  states: [State!]!
-}
-
-input CountryFilterInput {
-  code: StringQueryOperatorInput
-  continent: StringQueryOperatorInput
-  currency: StringQueryOperatorInput
-}
-
 """
 Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'.
 """
@@ -74,17 +41,6 @@ input Int_comparison_exp {
   _lte: Int
   _neq: Int
   _nin: [Int!]
-}
-
-type Language {
-  code: ID!
-  name: String!
-  native: String!
-  rtl: Boolean!
-}
-
-input LanguageFilterInput {
-  code: StringQueryOperatorInput
 }
 
 input ListUniversitiesInput {
@@ -128,20 +84,6 @@ type SearchRestroomsOutput {
   unisex: Boolean
   updated_at: String
   upvote: Int
-}
-
-type State {
-  code: String
-  country: Country!
-  name: String!
-}
-
-input StringQueryOperatorInput {
-  eq: String
-  in: [String!]
-  ne: String
-  nin: [String!]
-  regex: String
 }
 
 """
@@ -1225,10 +1167,6 @@ type query_root {
 
   """Restrooms API"""
   SearchRestrooms(arg1: SearchRestroomsInput!): [SearchRestroomsOutput]
-  continent(code: ID!): Continent
-  continents(filter: ContinentFilterInput = {}): [Continent!]!
-  countries(filter: CountryFilterInput = {}): [Country!]!
-  country(code: ID!): Country
 
   """
   fetch data from the table: "customer"
@@ -1272,8 +1210,6 @@ type query_root {
 
   """fetch data from the table: "customer" using primary key columns"""
   customer_by_pk(id: Int!): customer
-  language(code: ID!): Language
-  languages(filter: LanguageFilterInput = {}): [Language!]!
 
   """
   fetch data from the table: "order"
