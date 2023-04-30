@@ -38,7 +38,7 @@ query lookupCustomerOrder {
 			discount_price
 		}
 	}
-	tz_policies {
+	policies {
 		id
 	}
 }
@@ -46,7 +46,7 @@ query lookupCustomerOrder {
 
 ```
 query lookupPolicies {
-  tz_policies(where: {deleted_at: {_is_null: true}}, order_by: {updated_at: desc_nulls_last}) {
+  policies(where: {deleted_at: {_is_null: true}}, order_by: {updated_at: desc_nulls_last}) {
     id
     created_at
     display_name

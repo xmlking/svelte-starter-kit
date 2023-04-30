@@ -39,14 +39,14 @@ X-REQUEST-TYPE: GraphQL
 query ListPolicies(
   $limit: Int = 50
   $offset: Int = 0
-  $orderBy: [tz_policies_order_by!] = [{ updated_at: desc_nulls_last }]
+  $orderBy: [policies_order_by!] = [{ updated_at: desc_nulls_last }]
 ) {
-  counts: tz_policies_aggregate(where: { deleted_at: { _is_null: true } }) {
+  counts: policies_aggregate(where: { deleted_at: { _is_null: true } }) {
     aggregate {
       count
     }
   }
-  tz_policies(
+  policies(
 	order_by: $orderBy
     limit: $limit
     offset: $offset
@@ -101,17 +101,17 @@ x-hasura-user-id: sumo@chinthagunta.com
 X-REQUEST-TYPE: GraphQL
 
 query SearchPolicies(
-  $where: tz_policies_bool_exp
+  $where: policies_bool_exp
   $limit: Int = 50
   $offset: Int = 0
-  $orderBy: [tz_policies_order_by!] = [{ updated_at: desc_nulls_last }]
+  $orderBy: [policies_order_by!] = [{ updated_at: desc_nulls_last }]
 ) {
-  counts: tz_policies_aggregate(where: $where) {
+  counts: policies_aggregate(where: $where) {
     aggregate {
       count
     }
   }
-  tz_policies(
+  policies(
     order_by: $orderBy
     limit: $limit
     offset: $offset
@@ -157,7 +157,7 @@ query SearchPolicies(
 }
 
 ###
-@firstPoliciyId =  {{listPolicies.response.body.$.data.tz_policies[0].id}}
+@firstPoliciyId =  {{listPolicies.response.body.$.data.policies[0].id}}
 ###
 
 ### getPolicy by Id
@@ -171,7 +171,7 @@ x-hasura-user-id: sumo@chinthagunta.com
 X-REQUEST-TYPE: GraphQL
 
 query GetPolicy($id: uuid!) {
-  tz_policies_by_pk(id: $id) {
+  policies_by_pk(id: $id) {
     id
     display_name
     description
@@ -219,8 +219,8 @@ x-hasura-org-id: chinthagunta.com
 x-hasura-user-id: sumo@chinthagunta.com
 X-REQUEST-TYPE: GraphQL
 
-mutation UpdatePolicy($id: uuid!, $data: tz_policies_set_input!) {
-  update_tz_policies_by_pk(pk_columns: { id: $id }, _set: $data) {
+mutation UpdatePolicy($id: uuid!, $data: policies_set_input!) {
+  update_policies_by_pk(pk_columns: { id: $id }, _set: $data) {
     id,
 	display_name,
     updated_at
@@ -247,8 +247,8 @@ x-hasura-org-id: chinthagunta.com
 x-hasura-user-id: sumo@chinthagunta.com
 X-REQUEST-TYPE: GraphQL
 
-mutation CreatePolicy($data: tz_policies_insert_input!) {
-  insert_tz_policies_one(object: $data) {
+mutation CreatePolicy($data: policies_insert_input!) {
+  insert_policies_one(object: $data) {
     id,
 	display_name,
 	updated_at
@@ -276,7 +276,7 @@ mutation CreatePolicy($data: tz_policies_insert_input!) {
 }
 
 ###
-@createdPoliciyId =  {{createPolicy.response.body.$.data.insert_tz_policies_one.id}}
+@createdPoliciyId =  {{createPolicy.response.body.$.data.insert_policies_one.id}}
 ###
 
 ### delete policiy
@@ -291,7 +291,7 @@ x-hasura-user-id: sumo@chinthagunta.com
 X-REQUEST-TYPE: GraphQL
 
 mutation DeletePolicy($id:uuid!) {
-  delete_tz_policies_by_pk(id:  $id) {
+  delete_policies_by_pk(id:  $id) {
       display_name
   }
 }

@@ -34,11 +34,11 @@ hasura version
 hasura console
 
 # Create a new seed by exporting data from tables already present in the database:
-hasura seed create tz_policies_seed --database-name postgresdb --from-table tz_policies
+hasura seed create policies_seed --database-name postgresdb --from-table policies
 # Export data from multiple tables:
 # hasura seed create customer_order_seed --database-name postgresdb --from-table customer --from-table order
 # Apply only a particular file:
-hasura seed apply --file 1672767180588_tz_policies_seed.sql --database-name postgresdb
+hasura seed apply --file 1682875115105_policies_seed.sql --database-name postgresdb
 # hasura seed apply --file 1672767205525_customer_order_seed.sql --database-name postgresdb
 
 
@@ -53,7 +53,11 @@ hasura metadata apply --endpoint https://dsysnjrgygjipcilpkca.hasura.us-east-1.n
 # if you get error: "x509: certificate signed by unknown authority", add `--insecure-skip-tls-verify` flag to above command
 
 #  Check the status of Migrations
-hasura migrate status   --database-name postgresdb
+hasura migrate status --database-name postgresdb
+# Apply the Metadata and Migrations:
+hasura metadata apply
+hasura migrate apply --database-name postgresdb
+hasura metadata reload
 
 # Export Hasura GraphQL Engine metadata from the database
 hasura metadata export
@@ -87,7 +91,7 @@ hasura metadata apply --endpoint http://localhost:8080  --admin-secret myadminse
 # apply metadata and DB Migrations
 hasura deploy --endpoint http://localhost:8080  --admin-secret myadminsecretkey
 hasura seed apply --file 1672767205525_customer_order_seed.sql --database-name postgresdb --endpoint http://localhost:8080  --admin-secret myadminsecretkey
-hasura seed apply --file 1672767180588_tz_policies_seed.sql --database-name postgresdb --endpoint http://localhost:8080  --admin-secret myadminsecretkey
+hasura seed apply --file 1672767180588_policies_seed.sql --database-name postgresdb --endpoint http://localhost:8080  --admin-secret myadminsecretkey
 ```
 
 ### Export Metadata

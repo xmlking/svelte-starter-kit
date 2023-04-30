@@ -29,7 +29,7 @@
 {/if}
 
 <div>
-	created_at: {$ListPolicies2.data?.tz_policies?.[0].created_at} // if created_at is date type, use .toISOString() .toLocaleString()
+	created_at: {$ListPolicies2.data?.policies?.[0].created_at} // if created_at is date type, use .toISOString() .toLocaleString()
 </div>
 
 <pre>

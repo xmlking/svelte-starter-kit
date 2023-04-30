@@ -4,7 +4,7 @@
 
 	const schedules = graphql(`
 		subscription StreamPolicy {
-			tz_policies(order_by: [{ updated_at: desc_nulls_last }], limit: 50, offset: 0, where: { deleted_at: { _is_null: true } })  {
+			policies(order_by: [{ updated_at: desc_nulls_last }], limit: 50, offset: 0, where: { deleted_at: { _is_null: true } })  {
 				id
 				display_name
 			}
@@ -13,7 +13,7 @@
 
 	// const livePolicy = graphql(`
 	// 	query LivePolicy {
-	// 		tz_policies(order_by: [{ updated_at: desc_nulls_last }], limit: 50, offset: 0, where: { deleted_at: { _is_null: true } }) @live {
+	// 		policies(order_by: [{ updated_at: desc_nulls_last }], limit: 50, offset: 0, where: { deleted_at: { _is_null: true } }) @live {
 	// 			id
 	// 			display_name
 	// 		}

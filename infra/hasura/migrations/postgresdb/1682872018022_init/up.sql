@@ -25,8 +25,7 @@ BEGIN
   RETURN OLD;
 END;
 $$;
-COMMENT ON TABLE public.tz_policies IS 'This is policy table.';
-CREATE TABLE public.tz_policies (
+CREATE TABLE public.policies (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
     updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -56,13 +55,14 @@ CREATE TABLE public.tz_policies (
     weight integer DEFAULT 1000,
     app_id character varying
 );
-ALTER TABLE ONLY public.tz_policies
-    ADD CONSTRAINT tz_policies_pkey PRIMARY KEY (id);
-CREATE INDEX tzpolicy_deleted_at ON public.tz_policies USING btree (deleted_at);
-CREATE INDEX tzpolicy_subject_id_subject_type ON public.tz_policies USING btree (subject_id, subject_type);
-CREATE INDEX tzpolicy_subject_secondary_id_subject_type ON public.tz_policies USING btree (subject_secondary_id, subject_type);
-CREATE INDEX tzpolicy_template ON public.tz_policies USING btree (template);
-CREATE TRIGGER set_public_tz_policies_updated_at BEFORE UPDATE ON public.tz_policies FOR EACH ROW EXECUTE FUNCTION public.set_current_timestamp_updated_at();
-COMMENT ON TRIGGER set_public_tz_policies_updated_at ON public.tz_policies IS 'trigger to set value of column "updated_at" to current timestamp on row update';
-CREATE TRIGGER protect_public_tz_policies_record_delete BEFORE DELETE ON public.tz_policies FOR EACH ROW EXECUTE FUNCTION public.protect_record_delete();
-COMMENT ON TRIGGER protect_public_tz_policies_record_delete ON public.tz_policies IS 'trigger to prevent policies deletion';
+COMMENT ON TABLE public.policies IS 'This is policy table.';
+ALTER TABLE ONLY public.policies
+    ADD CONSTRAINT policies_pkey PRIMARY KEY (id);
+CREATE INDEX policy_deleted_at ON public.policies USING btree (deleted_at);
+CREATE INDEX policy_subject_id_subject_type ON public.policies USING btree (subject_id, subject_type);
+CREATE INDEX policy_subject_secondary_id_subject_type ON public.policies USING btree (subject_secondary_id, subject_type);
+CREATE INDEX policy_template ON public.policies USING btree (template);
+CREATE TRIGGER set_public_policies_updated_at BEFORE UPDATE ON public.policies FOR EACH ROW EXECUTE FUNCTION public.set_current_timestamp_updated_at();
+COMMENT ON TRIGGER set_public_policies_updated_at ON public.policies IS 'trigger to set value of column "updated_at" to current timestamp on row update';
+CREATE TRIGGER protect_public_policies_record_delete BEFORE DELETE ON public.policies FOR EACH ROW EXECUTE FUNCTION public.protect_record_delete();
+COMMENT ON TRIGGER protect_public_policies_record_delete ON public.policies IS 'trigger to prevent policies deletion';

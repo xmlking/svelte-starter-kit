@@ -1,5 +1,5 @@
-query SearchPolicies($where: tz_policies_bool_exp, $limit: Int = 50, $offset: Int = 0, $orderBy: [tz_policies_order_by!] = [{ updated_at: desc_nulls_last }]) {
-	tz_policies(order_by: $orderBy, limit: $limit, offset: $offset, where: $where) {
+query SearchPolicies($where: policies_bool_exp, $limit: Int = 50, $offset: Int = 0, $orderBy: [policies_order_by!] = [{ updated_at: desc_nulls_last }]) {
+	policies(order_by: $orderBy, limit: $limit, offset: $offset, where: $where) {
 		# ...Policy_list_fields @mask_disable
 		id
 		created_at

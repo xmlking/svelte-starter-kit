@@ -1,4 +1,4 @@
-fragment Policy_list_fields on tz_policies {
+fragment Policy_list_fields on policies {
 	id
 	# action
 	# annotations

@@ -1,5 +1,5 @@
-query CountPolicies($where: tz_policies_bool_exp) {
-	counts: tz_policies_aggregate(where: $where) {
+query CountPolicies($where: policies_bool_exp) {
+	counts: policies_aggregate(where: $where) {
 		aggregate {
 			count
 		}

@@ -60,7 +60,7 @@ export async function load(event) {
 
 		const {
 			counts: { aggregate: count },
-			tz_policies: policies
+			policies: policies
 		} = data;
 
 		return { count, policies };
@@ -91,7 +91,7 @@ export const actions = {
 
 			if (errors) throw new PolicyError('DELETE_POLICY_ERROR', 'delete policy api error', errors[0] as GraphQLError);
 
-			const actionResult = data.delete_tz_policies_by_pk;
+			const actionResult = data.delete_policies_by_pk;
 
 			return {
 				actionResult
@@ -112,7 +112,7 @@ export const actions = {
 
 			if (errors) throw new PolicyError('CREATE_POLICY_ERROR', 'create policy api error', errors[0] as GraphQLError);
 
-			const actionResult = data.insert_tz_policies_one;
+			const actionResult = data.insert_policies_one;
 			return {
 				actionResult
 			};
@@ -132,7 +132,7 @@ export const actions = {
 
 			if (errors) throw new PolicyError('UPDATE_POLICY_ERROR', 'update policy api error', errors[0] as GraphQLError);
 
-			const actionResult = data.update_tz_policies_by_pk;
+			const actionResult = data.update_policies_by_pk;
 			return {
 				actionResult
 			};

@@ -1,4 +1,4 @@
-import { CachePolicy, CreatePolicyStore, GetPolicyStore, UpdatePolicyStore, type tz_policies_insert_input } from '$houdini';
+import { CachePolicy, CreatePolicyStore, GetPolicyStore, UpdatePolicyStore, type policies_insert_input } from '$houdini';
 import { handleActionErrors, handleLoadErrors, NotFoundError, PolicyError } from '$lib/errors';
 import { policyCreateSchema, policyUpdateSchema } from '$lib/models/schema';
 import { Logger } from '$lib/utils';
@@ -29,7 +29,7 @@ export async function load(event) {
 
 	const { id } = params;
 	if (id == '00000000-0000-0000-0000-000000000000') {
-		const policy: tz_policies_insert_input = {
+		const policy: policies_insert_input = {
 			id: '00000000-0000-0000-0000-000000000000',
 			display_name: '',
 			// tags: ['tz', 'us'],
@@ -67,7 +67,7 @@ export async function load(event) {
 		});
 
 		if (errors) throw new PolicyError('GET_POLICY_ERROR', 'get policy api error', errors[0] as GraphQLError);
-		const policy = data?.tz_policies_by_pk;
+		const policy = data?.policies_by_pk;
 		if (!policy) throw new NotFoundError('policy not found');
 		return { policy };
 	} catch (err) {
@@ -122,7 +122,7 @@ export const actions = {
 				});
 				if (errors) throw new PolicyError('CREATE_POLICY_ERROR', 'create policy api error', errors[0] as GraphQLError);
 
-				const actionResult = data?.insert_tz_policies_one;
+				const actionResult = data?.insert_policies_one;
 				if (!actionResult) throw new NotFoundError('data is null');
 
 				return { actionResult };
@@ -149,7 +149,7 @@ export const actions = {
 				});
 				if (errors) throw new PolicyError('UPDATE_POLICY_ERROR', 'update policy api error', errors[0] as GraphQLError);
 
-				const actionResult = data?.update_tz_policies_by_pk;
+				const actionResult = data?.update_policies_by_pk;
 				if (!actionResult) throw new NotFoundError('data is null');
 
 				return { actionResult };
