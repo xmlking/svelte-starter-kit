@@ -50,7 +50,7 @@ export async function load(event) {
 		// 	'cache-control': 'public, max-age=300'
 		// });
 
-		return { policies: data.tz_policies };
+		return { policies: data.policies };
 	} catch (err) {
 		log.error('policies:actions:load:error:', err);
 		Sentry.setContext('source', { code: 'policy' });
@@ -87,7 +87,7 @@ export const actions = {
 			});
 			if (errors) throw new PolicyError('DELETE_POLICY_ERROR', 'delete policy api error', errors[0] as GraphQLError);
 
-			const actionResult = data?.delete_tz_policies_by_pk;
+			const actionResult = data?.delete_policies_by_pk;
 			if (!actionResult) throw new NotFoundError('data is null');
 
 			return {

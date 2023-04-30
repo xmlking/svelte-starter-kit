@@ -1,5 +1,5 @@
 query GetPolicy($id: uuid!) {
-	tz_policies_by_pk(id: $id) {
+	policies_by_pk(id: $id) {
 		# ...Policy_all_fields @mask_disable
 		id
 		action

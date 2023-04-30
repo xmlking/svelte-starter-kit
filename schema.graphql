@@ -165,334 +165,6 @@ enum cursor_ordering {
   DESC
 }
 
-"""
-columns and relationships of "customer"
-"""
-type customer {
-  email: String
-  first_name: String
-  id: Int!
-  ip_address: String
-  last_name: String
-
-  """An array relationship"""
-  orders(
-    """distinct select on columns"""
-    distinct_on: [order_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [order_order_by!]
-
-    """filter the rows returned"""
-    where: order_bool_exp
-  ): [order!]!
-
-  """An aggregate relationship"""
-  orders_aggregate(
-    """distinct select on columns"""
-    distinct_on: [order_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [order_order_by!]
-
-    """filter the rows returned"""
-    where: order_bool_exp
-  ): order_aggregate!
-  phone: String
-  username: String
-}
-
-"""
-aggregated selection of "customer"
-"""
-type customer_aggregate {
-  aggregate: customer_aggregate_fields
-  nodes: [customer!]!
-}
-
-"""
-aggregate fields of "customer"
-"""
-type customer_aggregate_fields {
-  avg: customer_avg_fields
-  count(columns: [customer_select_column!], distinct: Boolean): Int!
-  max: customer_max_fields
-  min: customer_min_fields
-  stddev: customer_stddev_fields
-  stddev_pop: customer_stddev_pop_fields
-  stddev_samp: customer_stddev_samp_fields
-  sum: customer_sum_fields
-  var_pop: customer_var_pop_fields
-  var_samp: customer_var_samp_fields
-  variance: customer_variance_fields
-}
-
-"""aggregate avg on columns"""
-type customer_avg_fields {
-  id: Float
-}
-
-"""
-Boolean expression to filter rows from the table "customer". All fields are combined with a logical 'AND'.
-"""
-input customer_bool_exp {
-  _and: [customer_bool_exp!]
-  _not: customer_bool_exp
-  _or: [customer_bool_exp!]
-  email: String_comparison_exp
-  first_name: String_comparison_exp
-  id: Int_comparison_exp
-  ip_address: String_comparison_exp
-  last_name: String_comparison_exp
-  orders: order_bool_exp
-  orders_aggregate: order_aggregate_bool_exp
-  phone: String_comparison_exp
-  username: String_comparison_exp
-}
-
-"""
-unique or primary key constraints on table "customer"
-"""
-enum customer_constraint {
-  """
-  unique or primary key constraint on columns "id"
-  """
-  customer_pkey
-}
-
-"""
-input type for incrementing numeric columns in table "customer"
-"""
-input customer_inc_input {
-  id: Int
-}
-
-"""
-input type for inserting data into table "customer"
-"""
-input customer_insert_input {
-  email: String
-  first_name: String
-  id: Int
-  ip_address: String
-  last_name: String
-  orders: order_arr_rel_insert_input
-  phone: String
-  username: String
-}
-
-"""aggregate max on columns"""
-type customer_max_fields {
-  email: String
-  first_name: String
-  id: Int
-  ip_address: String
-  last_name: String
-  phone: String
-  username: String
-}
-
-"""aggregate min on columns"""
-type customer_min_fields {
-  email: String
-  first_name: String
-  id: Int
-  ip_address: String
-  last_name: String
-  phone: String
-  username: String
-}
-
-"""
-response of any mutation on the table "customer"
-"""
-type customer_mutation_response {
-  """number of rows affected by the mutation"""
-  affected_rows: Int!
-
-  """data from the rows affected by the mutation"""
-  returning: [customer!]!
-}
-
-"""
-input type for inserting object relation for remote table "customer"
-"""
-input customer_obj_rel_insert_input {
-  data: customer_insert_input!
-
-  """upsert condition"""
-  on_conflict: customer_on_conflict
-}
-
-"""
-on_conflict condition type for table "customer"
-"""
-input customer_on_conflict {
-  constraint: customer_constraint!
-  update_columns: [customer_update_column!]! = []
-  where: customer_bool_exp
-}
-
-"""Ordering options when selecting data from "customer"."""
-input customer_order_by {
-  email: order_by
-  first_name: order_by
-  id: order_by
-  ip_address: order_by
-  last_name: order_by
-  orders_aggregate: order_aggregate_order_by
-  phone: order_by
-  username: order_by
-}
-
-"""primary key columns input for table: customer"""
-input customer_pk_columns_input {
-  id: Int!
-}
-
-"""
-select columns of table "customer"
-"""
-enum customer_select_column {
-  """column name"""
-  email
-
-  """column name"""
-  first_name
-
-  """column name"""
-  id
-
-  """column name"""
-  ip_address
-
-  """column name"""
-  last_name
-
-  """column name"""
-  phone
-
-  """column name"""
-  username
-}
-
-"""
-input type for updating data in table "customer"
-"""
-input customer_set_input {
-  email: String
-  first_name: String
-  id: Int
-  ip_address: String
-  last_name: String
-  phone: String
-  username: String
-}
-
-"""aggregate stddev on columns"""
-type customer_stddev_fields {
-  id: Float
-}
-
-"""aggregate stddev_pop on columns"""
-type customer_stddev_pop_fields {
-  id: Float
-}
-
-"""aggregate stddev_samp on columns"""
-type customer_stddev_samp_fields {
-  id: Float
-}
-
-"""
-Streaming cursor of the table "customer"
-"""
-input customer_stream_cursor_input {
-  """Stream column input with initial value"""
-  initial_value: customer_stream_cursor_value_input!
-
-  """cursor ordering"""
-  ordering: cursor_ordering
-}
-
-"""Initial value of the column from where the streaming should start"""
-input customer_stream_cursor_value_input {
-  email: String
-  first_name: String
-  id: Int
-  ip_address: String
-  last_name: String
-  phone: String
-  username: String
-}
-
-"""aggregate sum on columns"""
-type customer_sum_fields {
-  id: Int
-}
-
-"""
-update columns of table "customer"
-"""
-enum customer_update_column {
-  """column name"""
-  email
-
-  """column name"""
-  first_name
-
-  """column name"""
-  id
-
-  """column name"""
-  ip_address
-
-  """column name"""
-  last_name
-
-  """column name"""
-  phone
-
-  """column name"""
-  username
-}
-
-input customer_updates {
-  """increments the numeric columns with given value of the filtered values"""
-  _inc: customer_inc_input
-
-  """sets the columns of the filtered rows to the given values"""
-  _set: customer_set_input
-  where: customer_bool_exp!
-}
-
-"""aggregate var_pop on columns"""
-type customer_var_pop_fields {
-  id: Float
-}
-
-"""aggregate var_samp on columns"""
-type customer_var_samp_fields {
-  id: Float
-}
-
-"""aggregate variance on columns"""
-type customer_variance_fields {
-  id: Float
-}
-
 scalar hstore
 
 """
@@ -513,320 +185,73 @@ input hstore_comparison_exp {
 """mutation root"""
 type mutation_root {
   """
-  delete data from the table: "customer"
+  delete data from the table: "policies"
   """
-  delete_customer(
+  delete_policies(
     """filter the rows which have to be deleted"""
-    where: customer_bool_exp!
-  ): customer_mutation_response
+    where: policies_bool_exp!
+  ): policies_mutation_response
 
   """
-  delete single row from the table: "customer"
+  delete single row from the table: "policies"
   """
-  delete_customer_by_pk(id: Int!): customer
+  delete_policies_by_pk(id: uuid!): policies
 
   """
-  delete data from the table: "order"
+  insert data into the table: "policies"
   """
-  delete_order(
-    """filter the rows which have to be deleted"""
-    where: order_bool_exp!
-  ): order_mutation_response
-
-  """
-  delete single row from the table: "order"
-  """
-  delete_order_by_pk(id: Int!): order
-
-  """
-  delete data from the table: "tz_policies"
-  """
-  delete_tz_policies(
-    """filter the rows which have to be deleted"""
-    where: tz_policies_bool_exp!
-  ): tz_policies_mutation_response
-
-  """
-  delete single row from the table: "tz_policies"
-  """
-  delete_tz_policies_by_pk(id: uuid!): tz_policies
-
-  """
-  insert data into the table: "customer"
-  """
-  insert_customer(
+  insert_policies(
     """the rows to be inserted"""
-    objects: [customer_insert_input!]!
+    objects: [policies_insert_input!]!
 
     """upsert condition"""
-    on_conflict: customer_on_conflict
-  ): customer_mutation_response
+    on_conflict: policies_on_conflict
+  ): policies_mutation_response
 
   """
-  insert a single row into the table: "customer"
+  insert a single row into the table: "policies"
   """
-  insert_customer_one(
+  insert_policies_one(
     """the row to be inserted"""
-    object: customer_insert_input!
+    object: policies_insert_input!
 
     """upsert condition"""
-    on_conflict: customer_on_conflict
-  ): customer
+    on_conflict: policies_on_conflict
+  ): policies
 
   """
-  insert data into the table: "order"
+  update data of the table: "policies"
   """
-  insert_order(
-    """the rows to be inserted"""
-    objects: [order_insert_input!]!
-
-    """upsert condition"""
-    on_conflict: order_on_conflict
-  ): order_mutation_response
-
-  """
-  insert a single row into the table: "order"
-  """
-  insert_order_one(
-    """the row to be inserted"""
-    object: order_insert_input!
-
-    """upsert condition"""
-    on_conflict: order_on_conflict
-  ): order
-
-  """
-  insert data into the table: "tz_policies"
-  """
-  insert_tz_policies(
-    """the rows to be inserted"""
-    objects: [tz_policies_insert_input!]!
-
-    """upsert condition"""
-    on_conflict: tz_policies_on_conflict
-  ): tz_policies_mutation_response
-
-  """
-  insert a single row into the table: "tz_policies"
-  """
-  insert_tz_policies_one(
-    """the row to be inserted"""
-    object: tz_policies_insert_input!
-
-    """upsert condition"""
-    on_conflict: tz_policies_on_conflict
-  ): tz_policies
-
-  """
-  update data of the table: "customer"
-  """
-  update_customer(
+  update_policies(
     """increments the numeric columns with given value of the filtered values"""
-    _inc: customer_inc_input
+    _inc: policies_inc_input
 
     """sets the columns of the filtered rows to the given values"""
-    _set: customer_set_input
+    _set: policies_set_input
 
     """filter the rows which have to be updated"""
-    where: customer_bool_exp!
-  ): customer_mutation_response
+    where: policies_bool_exp!
+  ): policies_mutation_response
 
   """
-  update single row of the table: "customer"
+  update single row of the table: "policies"
   """
-  update_customer_by_pk(
+  update_policies_by_pk(
     """increments the numeric columns with given value of the filtered values"""
-    _inc: customer_inc_input
+    _inc: policies_inc_input
 
     """sets the columns of the filtered rows to the given values"""
-    _set: customer_set_input
-    pk_columns: customer_pk_columns_input!
-  ): customer
+    _set: policies_set_input
+    pk_columns: policies_pk_columns_input!
+  ): policies
 
   """
-  update multiples rows of table: "customer"
+  update multiples rows of table: "policies"
   """
-  update_customer_many(
+  update_policies_many(
     """updates to execute, in order"""
-    updates: [customer_updates!]!
-  ): [customer_mutation_response]
-
-  """
-  update data of the table: "order"
-  """
-  update_order(
-    """increments the numeric columns with given value of the filtered values"""
-    _inc: order_inc_input
-
-    """sets the columns of the filtered rows to the given values"""
-    _set: order_set_input
-
-    """filter the rows which have to be updated"""
-    where: order_bool_exp!
-  ): order_mutation_response
-
-  """
-  update single row of the table: "order"
-  """
-  update_order_by_pk(
-    """increments the numeric columns with given value of the filtered values"""
-    _inc: order_inc_input
-
-    """sets the columns of the filtered rows to the given values"""
-    _set: order_set_input
-    pk_columns: order_pk_columns_input!
-  ): order
-
-  """
-  update multiples rows of table: "order"
-  """
-  update_order_many(
-    """updates to execute, in order"""
-    updates: [order_updates!]!
-  ): [order_mutation_response]
-
-  """
-  update data of the table: "tz_policies"
-  """
-  update_tz_policies(
-    """increments the numeric columns with given value of the filtered values"""
-    _inc: tz_policies_inc_input
-
-    """sets the columns of the filtered rows to the given values"""
-    _set: tz_policies_set_input
-
-    """filter the rows which have to be updated"""
-    where: tz_policies_bool_exp!
-  ): tz_policies_mutation_response
-
-  """
-  update single row of the table: "tz_policies"
-  """
-  update_tz_policies_by_pk(
-    """increments the numeric columns with given value of the filtered values"""
-    _inc: tz_policies_inc_input
-
-    """sets the columns of the filtered rows to the given values"""
-    _set: tz_policies_set_input
-    pk_columns: tz_policies_pk_columns_input!
-  ): tz_policies
-
-  """
-  update multiples rows of table: "tz_policies"
-  """
-  update_tz_policies_many(
-    """updates to execute, in order"""
-    updates: [tz_policies_updates!]!
-  ): [tz_policies_mutation_response]
-}
-
-"""
-columns and relationships of "order"
-"""
-type order {
-  """An object relationship"""
-  customer: customer
-  customer_id: Int
-  discount_price: String
-  id: Int!
-  order_date: String
-  product: String
-  purchase_price: String
-  transaction_id: String
-}
-
-"""
-aggregated selection of "order"
-"""
-type order_aggregate {
-  aggregate: order_aggregate_fields
-  nodes: [order!]!
-}
-
-input order_aggregate_bool_exp {
-  count: order_aggregate_bool_exp_count
-}
-
-input order_aggregate_bool_exp_count {
-  arguments: [order_select_column!]
-  distinct: Boolean
-  filter: order_bool_exp
-  predicate: Int_comparison_exp!
-}
-
-"""
-aggregate fields of "order"
-"""
-type order_aggregate_fields {
-  avg: order_avg_fields
-  count(columns: [order_select_column!], distinct: Boolean): Int!
-  max: order_max_fields
-  min: order_min_fields
-  stddev: order_stddev_fields
-  stddev_pop: order_stddev_pop_fields
-  stddev_samp: order_stddev_samp_fields
-  sum: order_sum_fields
-  var_pop: order_var_pop_fields
-  var_samp: order_var_samp_fields
-  variance: order_variance_fields
-}
-
-"""
-order by aggregate values of table "order"
-"""
-input order_aggregate_order_by {
-  avg: order_avg_order_by
-  count: order_by
-  max: order_max_order_by
-  min: order_min_order_by
-  stddev: order_stddev_order_by
-  stddev_pop: order_stddev_pop_order_by
-  stddev_samp: order_stddev_samp_order_by
-  sum: order_sum_order_by
-  var_pop: order_var_pop_order_by
-  var_samp: order_var_samp_order_by
-  variance: order_variance_order_by
-}
-
-"""
-input type for inserting array relation for remote table "order"
-"""
-input order_arr_rel_insert_input {
-  data: [order_insert_input!]!
-
-  """upsert condition"""
-  on_conflict: order_on_conflict
-}
-
-"""aggregate avg on columns"""
-type order_avg_fields {
-  customer_id: Float
-  id: Float
-}
-
-"""
-order by avg() on columns of table "order"
-"""
-input order_avg_order_by {
-  customer_id: order_by
-  id: order_by
-}
-
-"""
-Boolean expression to filter rows from the table "order". All fields are combined with a logical 'AND'.
-"""
-input order_bool_exp {
-  _and: [order_bool_exp!]
-  _not: order_bool_exp
-  _or: [order_bool_exp!]
-  customer: customer_bool_exp
-  customer_id: Int_comparison_exp
-  discount_price: String_comparison_exp
-  id: Int_comparison_exp
-  order_date: String_comparison_exp
-  product: String_comparison_exp
-  purchase_price: String_comparison_exp
-  transaction_id: String_comparison_exp
+    updates: [policies_updates!]!
+  ): [policies_mutation_response]
 }
 
 """column ordering options"""
@@ -850,648 +275,8 @@ enum order_by {
   desc_nulls_last
 }
 
-"""
-unique or primary key constraints on table "order"
-"""
-enum order_constraint {
-  """
-  unique or primary key constraint on columns "id"
-  """
-  order_pkey
-}
-
-"""
-input type for incrementing numeric columns in table "order"
-"""
-input order_inc_input {
-  customer_id: Int
-  id: Int
-}
-
-"""
-input type for inserting data into table "order"
-"""
-input order_insert_input {
-  customer: customer_obj_rel_insert_input
-  customer_id: Int
-  discount_price: String
-  id: Int
-  order_date: String
-  product: String
-  purchase_price: String
-  transaction_id: String
-}
-
-"""aggregate max on columns"""
-type order_max_fields {
-  customer_id: Int
-  discount_price: String
-  id: Int
-  order_date: String
-  product: String
-  purchase_price: String
-  transaction_id: String
-}
-
-"""
-order by max() on columns of table "order"
-"""
-input order_max_order_by {
-  customer_id: order_by
-  discount_price: order_by
-  id: order_by
-  order_date: order_by
-  product: order_by
-  purchase_price: order_by
-  transaction_id: order_by
-}
-
-"""aggregate min on columns"""
-type order_min_fields {
-  customer_id: Int
-  discount_price: String
-  id: Int
-  order_date: String
-  product: String
-  purchase_price: String
-  transaction_id: String
-}
-
-"""
-order by min() on columns of table "order"
-"""
-input order_min_order_by {
-  customer_id: order_by
-  discount_price: order_by
-  id: order_by
-  order_date: order_by
-  product: order_by
-  purchase_price: order_by
-  transaction_id: order_by
-}
-
-"""
-response of any mutation on the table "order"
-"""
-type order_mutation_response {
-  """number of rows affected by the mutation"""
-  affected_rows: Int!
-
-  """data from the rows affected by the mutation"""
-  returning: [order!]!
-}
-
-"""
-on_conflict condition type for table "order"
-"""
-input order_on_conflict {
-  constraint: order_constraint!
-  update_columns: [order_update_column!]! = []
-  where: order_bool_exp
-}
-
-"""Ordering options when selecting data from "order"."""
-input order_order_by {
-  customer: customer_order_by
-  customer_id: order_by
-  discount_price: order_by
-  id: order_by
-  order_date: order_by
-  product: order_by
-  purchase_price: order_by
-  transaction_id: order_by
-}
-
-"""primary key columns input for table: order"""
-input order_pk_columns_input {
-  id: Int!
-}
-
-"""
-select columns of table "order"
-"""
-enum order_select_column {
-  """column name"""
-  customer_id
-
-  """column name"""
-  discount_price
-
-  """column name"""
-  id
-
-  """column name"""
-  order_date
-
-  """column name"""
-  product
-
-  """column name"""
-  purchase_price
-
-  """column name"""
-  transaction_id
-}
-
-"""
-input type for updating data in table "order"
-"""
-input order_set_input {
-  customer_id: Int
-  discount_price: String
-  id: Int
-  order_date: String
-  product: String
-  purchase_price: String
-  transaction_id: String
-}
-
-"""aggregate stddev on columns"""
-type order_stddev_fields {
-  customer_id: Float
-  id: Float
-}
-
-"""
-order by stddev() on columns of table "order"
-"""
-input order_stddev_order_by {
-  customer_id: order_by
-  id: order_by
-}
-
-"""aggregate stddev_pop on columns"""
-type order_stddev_pop_fields {
-  customer_id: Float
-  id: Float
-}
-
-"""
-order by stddev_pop() on columns of table "order"
-"""
-input order_stddev_pop_order_by {
-  customer_id: order_by
-  id: order_by
-}
-
-"""aggregate stddev_samp on columns"""
-type order_stddev_samp_fields {
-  customer_id: Float
-  id: Float
-}
-
-"""
-order by stddev_samp() on columns of table "order"
-"""
-input order_stddev_samp_order_by {
-  customer_id: order_by
-  id: order_by
-}
-
-"""
-Streaming cursor of the table "order"
-"""
-input order_stream_cursor_input {
-  """Stream column input with initial value"""
-  initial_value: order_stream_cursor_value_input!
-
-  """cursor ordering"""
-  ordering: cursor_ordering
-}
-
-"""Initial value of the column from where the streaming should start"""
-input order_stream_cursor_value_input {
-  customer_id: Int
-  discount_price: String
-  id: Int
-  order_date: String
-  product: String
-  purchase_price: String
-  transaction_id: String
-}
-
-"""aggregate sum on columns"""
-type order_sum_fields {
-  customer_id: Int
-  id: Int
-}
-
-"""
-order by sum() on columns of table "order"
-"""
-input order_sum_order_by {
-  customer_id: order_by
-  id: order_by
-}
-
-"""
-update columns of table "order"
-"""
-enum order_update_column {
-  """column name"""
-  customer_id
-
-  """column name"""
-  discount_price
-
-  """column name"""
-  id
-
-  """column name"""
-  order_date
-
-  """column name"""
-  product
-
-  """column name"""
-  purchase_price
-
-  """column name"""
-  transaction_id
-}
-
-input order_updates {
-  """increments the numeric columns with given value of the filtered values"""
-  _inc: order_inc_input
-
-  """sets the columns of the filtered rows to the given values"""
-  _set: order_set_input
-  where: order_bool_exp!
-}
-
-"""aggregate var_pop on columns"""
-type order_var_pop_fields {
-  customer_id: Float
-  id: Float
-}
-
-"""
-order by var_pop() on columns of table "order"
-"""
-input order_var_pop_order_by {
-  customer_id: order_by
-  id: order_by
-}
-
-"""aggregate var_samp on columns"""
-type order_var_samp_fields {
-  customer_id: Float
-  id: Float
-}
-
-"""
-order by var_samp() on columns of table "order"
-"""
-input order_var_samp_order_by {
-  customer_id: order_by
-  id: order_by
-}
-
-"""aggregate variance on columns"""
-type order_variance_fields {
-  customer_id: Float
-  id: Float
-}
-
-"""
-order by variance() on columns of table "order"
-"""
-input order_variance_order_by {
-  customer_id: order_by
-  id: order_by
-}
-
-type query_root {
-  """Universities API"""
-  ListUniversities(arg1: ListUniversitiesInput!): [ListUniversitiesOutput]
-
-  """Restrooms API"""
-  SearchRestrooms(arg1: SearchRestroomsInput!): [SearchRestroomsOutput]
-
-  """
-  fetch data from the table: "customer"
-  """
-  customer(
-    """distinct select on columns"""
-    distinct_on: [customer_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [customer_order_by!]
-
-    """filter the rows returned"""
-    where: customer_bool_exp
-  ): [customer!]!
-
-  """
-  fetch aggregated fields from the table: "customer"
-  """
-  customer_aggregate(
-    """distinct select on columns"""
-    distinct_on: [customer_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [customer_order_by!]
-
-    """filter the rows returned"""
-    where: customer_bool_exp
-  ): customer_aggregate!
-
-  """fetch data from the table: "customer" using primary key columns"""
-  customer_by_pk(id: Int!): customer
-
-  """
-  fetch data from the table: "order"
-  """
-  order(
-    """distinct select on columns"""
-    distinct_on: [order_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [order_order_by!]
-
-    """filter the rows returned"""
-    where: order_bool_exp
-  ): [order!]!
-
-  """
-  fetch aggregated fields from the table: "order"
-  """
-  order_aggregate(
-    """distinct select on columns"""
-    distinct_on: [order_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [order_order_by!]
-
-    """filter the rows returned"""
-    where: order_bool_exp
-  ): order_aggregate!
-
-  """fetch data from the table: "order" using primary key columns"""
-  order_by_pk(id: Int!): order
-
-  """
-  fetch data from the table: "tz_policies"
-  """
-  tz_policies(
-    """distinct select on columns"""
-    distinct_on: [tz_policies_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [tz_policies_order_by!]
-
-    """filter the rows returned"""
-    where: tz_policies_bool_exp
-  ): [tz_policies!]!
-
-  """
-  fetch aggregated fields from the table: "tz_policies"
-  """
-  tz_policies_aggregate(
-    """distinct select on columns"""
-    distinct_on: [tz_policies_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [tz_policies_order_by!]
-
-    """filter the rows returned"""
-    where: tz_policies_bool_exp
-  ): tz_policies_aggregate!
-
-  """fetch data from the table: "tz_policies" using primary key columns"""
-  tz_policies_by_pk(id: uuid!): tz_policies
-}
-
-type subscription_root {
-  """
-  fetch data from the table: "customer"
-  """
-  customer(
-    """distinct select on columns"""
-    distinct_on: [customer_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [customer_order_by!]
-
-    """filter the rows returned"""
-    where: customer_bool_exp
-  ): [customer!]!
-
-  """
-  fetch aggregated fields from the table: "customer"
-  """
-  customer_aggregate(
-    """distinct select on columns"""
-    distinct_on: [customer_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [customer_order_by!]
-
-    """filter the rows returned"""
-    where: customer_bool_exp
-  ): customer_aggregate!
-
-  """fetch data from the table: "customer" using primary key columns"""
-  customer_by_pk(id: Int!): customer
-
-  """
-  fetch data from the table in a streaming manner: "customer"
-  """
-  customer_stream(
-    """maximum number of rows returned in a single batch"""
-    batch_size: Int!
-
-    """cursor to stream the results returned by the query"""
-    cursor: [customer_stream_cursor_input]!
-
-    """filter the rows returned"""
-    where: customer_bool_exp
-  ): [customer!]!
-
-  """
-  fetch data from the table: "order"
-  """
-  order(
-    """distinct select on columns"""
-    distinct_on: [order_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [order_order_by!]
-
-    """filter the rows returned"""
-    where: order_bool_exp
-  ): [order!]!
-
-  """
-  fetch aggregated fields from the table: "order"
-  """
-  order_aggregate(
-    """distinct select on columns"""
-    distinct_on: [order_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [order_order_by!]
-
-    """filter the rows returned"""
-    where: order_bool_exp
-  ): order_aggregate!
-
-  """fetch data from the table: "order" using primary key columns"""
-  order_by_pk(id: Int!): order
-
-  """
-  fetch data from the table in a streaming manner: "order"
-  """
-  order_stream(
-    """maximum number of rows returned in a single batch"""
-    batch_size: Int!
-
-    """cursor to stream the results returned by the query"""
-    cursor: [order_stream_cursor_input]!
-
-    """filter the rows returned"""
-    where: order_bool_exp
-  ): [order!]!
-
-  """
-  fetch data from the table: "tz_policies"
-  """
-  tz_policies(
-    """distinct select on columns"""
-    distinct_on: [tz_policies_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [tz_policies_order_by!]
-
-    """filter the rows returned"""
-    where: tz_policies_bool_exp
-  ): [tz_policies!]!
-
-  """
-  fetch aggregated fields from the table: "tz_policies"
-  """
-  tz_policies_aggregate(
-    """distinct select on columns"""
-    distinct_on: [tz_policies_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [tz_policies_order_by!]
-
-    """filter the rows returned"""
-    where: tz_policies_bool_exp
-  ): tz_policies_aggregate!
-
-  """fetch data from the table: "tz_policies" using primary key columns"""
-  tz_policies_by_pk(id: uuid!): tz_policies
-
-  """
-  fetch data from the table in a streaming manner: "tz_policies"
-  """
-  tz_policies_stream(
-    """maximum number of rows returned in a single batch"""
-    batch_size: Int!
-
-    """cursor to stream the results returned by the query"""
-    cursor: [tz_policies_stream_cursor_input]!
-
-    """filter the rows returned"""
-    where: tz_policies_bool_exp
-  ): [tz_policies!]!
-}
-
-scalar timestamptz
-
-"""
-Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'.
-"""
-input timestamptz_comparison_exp {
-  _eq: timestamptz
-  _gt: timestamptz
-  _gte: timestamptz
-  _in: [timestamptz!]
-  _is_null: Boolean
-  _lt: timestamptz
-  _lte: timestamptz
-  _neq: timestamptz
-  _nin: [timestamptz!]
-}
-
-"""
-columns and relationships of "tz_policies"
-"""
-type tz_policies {
+"""This is policy table."""
+type policies {
   action: String!
   annotations: hstore
   app_id: String
@@ -1523,42 +308,42 @@ type tz_policies {
 }
 
 """
-aggregated selection of "tz_policies"
+aggregated selection of "policies"
 """
-type tz_policies_aggregate {
-  aggregate: tz_policies_aggregate_fields
-  nodes: [tz_policies!]!
+type policies_aggregate {
+  aggregate: policies_aggregate_fields
+  nodes: [policies!]!
 }
 
 """
-aggregate fields of "tz_policies"
+aggregate fields of "policies"
 """
-type tz_policies_aggregate_fields {
-  avg: tz_policies_avg_fields
-  count(columns: [tz_policies_select_column!], distinct: Boolean): Int!
-  max: tz_policies_max_fields
-  min: tz_policies_min_fields
-  stddev: tz_policies_stddev_fields
-  stddev_pop: tz_policies_stddev_pop_fields
-  stddev_samp: tz_policies_stddev_samp_fields
-  sum: tz_policies_sum_fields
-  var_pop: tz_policies_var_pop_fields
-  var_samp: tz_policies_var_samp_fields
-  variance: tz_policies_variance_fields
+type policies_aggregate_fields {
+  avg: policies_avg_fields
+  count(columns: [policies_select_column!], distinct: Boolean): Int!
+  max: policies_max_fields
+  min: policies_min_fields
+  stddev: policies_stddev_fields
+  stddev_pop: policies_stddev_pop_fields
+  stddev_samp: policies_stddev_samp_fields
+  sum: policies_sum_fields
+  var_pop: policies_var_pop_fields
+  var_samp: policies_var_samp_fields
+  variance: policies_variance_fields
 }
 
 """aggregate avg on columns"""
-type tz_policies_avg_fields {
+type policies_avg_fields {
   weight: Float
 }
 
 """
-Boolean expression to filter rows from the table "tz_policies". All fields are combined with a logical 'AND'.
+Boolean expression to filter rows from the table "policies". All fields are combined with a logical 'AND'.
 """
-input tz_policies_bool_exp {
-  _and: [tz_policies_bool_exp!]
-  _not: tz_policies_bool_exp
-  _or: [tz_policies_bool_exp!]
+input policies_bool_exp {
+  _and: [policies_bool_exp!]
+  _not: policies_bool_exp
+  _or: [policies_bool_exp!]
   action: String_comparison_exp
   annotations: hstore_comparison_exp
   app_id: String_comparison_exp
@@ -1590,26 +375,26 @@ input tz_policies_bool_exp {
 }
 
 """
-unique or primary key constraints on table "tz_policies"
+unique or primary key constraints on table "policies"
 """
-enum tz_policies_constraint {
+enum policies_constraint {
   """
   unique or primary key constraint on columns "id"
   """
-  tz_policies_pkey
+  policies_pkey
 }
 
 """
-input type for incrementing numeric columns in table "tz_policies"
+input type for incrementing numeric columns in table "policies"
 """
-input tz_policies_inc_input {
+input policies_inc_input {
   weight: Int
 }
 
 """
-input type for inserting data into table "tz_policies"
+input type for inserting data into table "policies"
 """
-input tz_policies_insert_input {
+input policies_insert_input {
   action: String
   annotations: hstore
   app_id: String
@@ -1641,7 +426,7 @@ input tz_policies_insert_input {
 }
 
 """aggregate max on columns"""
-type tz_policies_max_fields {
+type policies_max_fields {
   action: String
   app_id: String
   created_at: timestamptz
@@ -1669,7 +454,7 @@ type tz_policies_max_fields {
 }
 
 """aggregate min on columns"""
-type tz_policies_min_fields {
+type policies_min_fields {
   action: String
   app_id: String
   created_at: timestamptz
@@ -1697,27 +482,27 @@ type tz_policies_min_fields {
 }
 
 """
-response of any mutation on the table "tz_policies"
+response of any mutation on the table "policies"
 """
-type tz_policies_mutation_response {
+type policies_mutation_response {
   """number of rows affected by the mutation"""
   affected_rows: Int!
 
   """data from the rows affected by the mutation"""
-  returning: [tz_policies!]!
+  returning: [policies!]!
 }
 
 """
-on_conflict condition type for table "tz_policies"
+on_conflict condition type for table "policies"
 """
-input tz_policies_on_conflict {
-  constraint: tz_policies_constraint!
-  update_columns: [tz_policies_update_column!]! = []
-  where: tz_policies_bool_exp
+input policies_on_conflict {
+  constraint: policies_constraint!
+  update_columns: [policies_update_column!]! = []
+  where: policies_bool_exp
 }
 
-"""Ordering options when selecting data from "tz_policies"."""
-input tz_policies_order_by {
+"""Ordering options when selecting data from "policies"."""
+input policies_order_by {
   action: order_by
   annotations: order_by
   app_id: order_by
@@ -1748,15 +533,15 @@ input tz_policies_order_by {
   weight: order_by
 }
 
-"""primary key columns input for table: tz_policies"""
-input tz_policies_pk_columns_input {
+"""primary key columns input for table: policies"""
+input policies_pk_columns_input {
   id: uuid!
 }
 
 """
-select columns of table "tz_policies"
+select columns of table "policies"
 """
-enum tz_policies_select_column {
+enum policies_select_column {
   """column name"""
   action
 
@@ -1843,9 +628,9 @@ enum tz_policies_select_column {
 }
 
 """
-input type for updating data in table "tz_policies"
+input type for updating data in table "policies"
 """
-input tz_policies_set_input {
+input policies_set_input {
   action: String
   annotations: hstore
   app_id: String
@@ -1877,33 +662,33 @@ input tz_policies_set_input {
 }
 
 """aggregate stddev on columns"""
-type tz_policies_stddev_fields {
+type policies_stddev_fields {
   weight: Float
 }
 
 """aggregate stddev_pop on columns"""
-type tz_policies_stddev_pop_fields {
+type policies_stddev_pop_fields {
   weight: Float
 }
 
 """aggregate stddev_samp on columns"""
-type tz_policies_stddev_samp_fields {
+type policies_stddev_samp_fields {
   weight: Float
 }
 
 """
-Streaming cursor of the table "tz_policies"
+Streaming cursor of the table "policies"
 """
-input tz_policies_stream_cursor_input {
+input policies_stream_cursor_input {
   """Stream column input with initial value"""
-  initial_value: tz_policies_stream_cursor_value_input!
+  initial_value: policies_stream_cursor_value_input!
 
   """cursor ordering"""
   ordering: cursor_ordering
 }
 
 """Initial value of the column from where the streaming should start"""
-input tz_policies_stream_cursor_value_input {
+input policies_stream_cursor_value_input {
   action: String
   annotations: hstore
   app_id: String
@@ -1935,14 +720,14 @@ input tz_policies_stream_cursor_value_input {
 }
 
 """aggregate sum on columns"""
-type tz_policies_sum_fields {
+type policies_sum_fields {
   weight: Int
 }
 
 """
-update columns of table "tz_policies"
+update columns of table "policies"
 """
-enum tz_policies_update_column {
+enum policies_update_column {
   """column name"""
   action
 
@@ -2028,28 +813,155 @@ enum tz_policies_update_column {
   weight
 }
 
-input tz_policies_updates {
+input policies_updates {
   """increments the numeric columns with given value of the filtered values"""
-  _inc: tz_policies_inc_input
+  _inc: policies_inc_input
 
   """sets the columns of the filtered rows to the given values"""
-  _set: tz_policies_set_input
-  where: tz_policies_bool_exp!
+  _set: policies_set_input
+  where: policies_bool_exp!
 }
 
 """aggregate var_pop on columns"""
-type tz_policies_var_pop_fields {
+type policies_var_pop_fields {
   weight: Float
 }
 
 """aggregate var_samp on columns"""
-type tz_policies_var_samp_fields {
+type policies_var_samp_fields {
   weight: Float
 }
 
 """aggregate variance on columns"""
-type tz_policies_variance_fields {
+type policies_variance_fields {
   weight: Float
+}
+
+type query_root {
+  """Universities API"""
+  ListUniversities(arg1: ListUniversitiesInput!): [ListUniversitiesOutput]
+
+  """Restrooms API"""
+  SearchRestrooms(arg1: SearchRestroomsInput!): [SearchRestroomsOutput]
+
+  """
+  fetch data from the table: "policies"
+  """
+  policies(
+    """distinct select on columns"""
+    distinct_on: [policies_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [policies_order_by!]
+
+    """filter the rows returned"""
+    where: policies_bool_exp
+  ): [policies!]!
+
+  """
+  fetch aggregated fields from the table: "policies"
+  """
+  policies_aggregate(
+    """distinct select on columns"""
+    distinct_on: [policies_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [policies_order_by!]
+
+    """filter the rows returned"""
+    where: policies_bool_exp
+  ): policies_aggregate!
+
+  """fetch data from the table: "policies" using primary key columns"""
+  policies_by_pk(id: uuid!): policies
+}
+
+type subscription_root {
+  """
+  fetch data from the table: "policies"
+  """
+  policies(
+    """distinct select on columns"""
+    distinct_on: [policies_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [policies_order_by!]
+
+    """filter the rows returned"""
+    where: policies_bool_exp
+  ): [policies!]!
+
+  """
+  fetch aggregated fields from the table: "policies"
+  """
+  policies_aggregate(
+    """distinct select on columns"""
+    distinct_on: [policies_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [policies_order_by!]
+
+    """filter the rows returned"""
+    where: policies_bool_exp
+  ): policies_aggregate!
+
+  """fetch data from the table: "policies" using primary key columns"""
+  policies_by_pk(id: uuid!): policies
+
+  """
+  fetch data from the table in a streaming manner: "policies"
+  """
+  policies_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [policies_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: policies_bool_exp
+  ): [policies!]!
+}
+
+scalar timestamptz
+
+"""
+Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'.
+"""
+input timestamptz_comparison_exp {
+  _eq: timestamptz
+  _gt: timestamptz
+  _gte: timestamptz
+  _in: [timestamptz!]
+  _is_null: Boolean
+  _lt: timestamptz
+  _lte: timestamptz
+  _neq: timestamptz
+  _nin: [timestamptz!]
 }
 
 scalar uuid

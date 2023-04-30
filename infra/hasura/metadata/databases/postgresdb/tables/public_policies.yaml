@@ -1,5 +1,5 @@
 table:
-  name: tz_policies
+  name: policies
   schema: public
 insert_permissions:
   - role: editor

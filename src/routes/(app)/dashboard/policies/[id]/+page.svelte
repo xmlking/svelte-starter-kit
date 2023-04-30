@@ -3,7 +3,7 @@
 	import { goto } from '$app/navigation';
 	import { ErrorMessage, FloatingLabelField, Tags } from '$lib/components';
 // import {default as TagInput } from '$lib/components/TagInput.svelte';
-	import type { tz_policies_insert_input } from '$houdini';
+	import type { policies_insert_input } from '$houdini';
 	import { DateInput } from '$lib/components/form';
 	import { addToast, ToastLevel } from '$lib/components/toast';
 	import { policyClientSchema } from '$lib/models/schema';
@@ -49,7 +49,7 @@
 		isDirty,
 		isValid,
 		reset,
-	} = createForm<tz_policies_insert_input>({
+	} = createForm<policies_insert_input>({
 		initialValues: policy ?? {},
 		extend: validator({ schema }),
 		// this is dummy submit method for felte, sveltekit's `Form Action` really submit the form.
