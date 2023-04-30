@@ -18,6 +18,7 @@ Awesome **SvelteKit** Links
 - Grid
 
   - [svelte-image-gallery](https://github.com/berkinakkaya/svelte-image-gallery)
+  - [Svelte Bricks](https://bricks.janosh.dev/)
 
 - Charts
 
@@ -117,6 +118,9 @@ Add ORIGIN Env Varaible i.e., `ORIGIN=http://localhost:3000 node build/index.js`
 - How to make SvelteKit WebApp as PWA
   - **Option 1:** add `src/service-worker.js` as documented in SvelteKit [Docs](https://kit.svelte.dev/docs/service-workers)
   - **Option 2:** If you need a more full-flegded but also more opinionated solution, we recommend looking at solutions like [Vite PWA plugin](https://vite-pwa-org.netlify.app/frameworks/sveltekit.html), which uses [Workbox](https://web.dev/learn/pwa/workbox).
+
+## Blogs
+- [https://joyofcode.xyz/](https://joyofcode.xyz/)
 
 ## Community
 
