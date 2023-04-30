@@ -1,5 +1,10 @@
 SET check_function_bodies = false;
-SET TIME ZONE 'UTC';
+CREATE EXTENSION IF NOT EXISTS citext WITH SCHEMA public;
+COMMENT ON EXTENSION citext IS 'data type for case-insensitive character strings';
+CREATE EXTENSION IF NOT EXISTS hstore WITH SCHEMA public;
+COMMENT ON EXTENSION hstore IS 'data type for storing sets of (key, value) pairs';
+CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
+COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
 CREATE FUNCTION public.set_current_timestamp_updated_at() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
@@ -11,8 +16,18 @@ BEGIN
   RETURN _new;
 END;
 $$;
+CREATE FUNCTION public.protect_record_delete() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    RAISE EXCEPTION 'Can not delete rows in this table';
+  END IF;
+  RETURN OLD;
+END;
+$$;
+COMMENT ON TABLE public.tz_policies IS 'This is policy table.';
 CREATE TABLE public.tz_policies (
-    id uuid NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
     updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
     deleted_at timestamp with time zone,
@@ -49,3 +64,5 @@ CREATE INDEX tzpolicy_subject_secondary_id_subject_type ON public.tz_policies US
 CREATE INDEX tzpolicy_template ON public.tz_policies USING btree (template);
 CREATE TRIGGER set_public_tz_policies_updated_at BEFORE UPDATE ON public.tz_policies FOR EACH ROW EXECUTE FUNCTION public.set_current_timestamp_updated_at();
 COMMENT ON TRIGGER set_public_tz_policies_updated_at ON public.tz_policies IS 'trigger to set value of column "updated_at" to current timestamp on row update';
+CREATE TRIGGER protect_public_tz_policies_record_delete BEFORE DELETE ON public.tz_policies FOR EACH ROW EXECUTE FUNCTION public.protect_record_delete();
+COMMENT ON TRIGGER protect_public_tz_policies_record_delete ON public.tz_policies IS 'trigger to prevent policies deletion';
