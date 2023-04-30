@@ -5,6 +5,15 @@ CREATE EXTENSION IF NOT EXISTS hstore WITH SCHEMA public;
 COMMENT ON EXTENSION hstore IS 'data type for storing sets of (key, value) pairs';
 CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
 COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
+CREATE FUNCTION public.protect_record_delete() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    RAISE EXCEPTION 'Can not delete rows in this table';
+  END IF;
+  RETURN OLD;
+END;
+$$;
 CREATE FUNCTION public.set_current_timestamp_updated_at() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
@@ -14,15 +23,6 @@ BEGIN
   _new := NEW;
   _new."updated_at" = NOW();
   RETURN _new;
-END;
-$$;
-CREATE FUNCTION public.protect_record_delete() RETURNS trigger
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-    RAISE EXCEPTION 'Can not delete rows in this table';
-  END IF;
-  RETURN OLD;
 END;
 $$;
 CREATE TABLE public.policies (

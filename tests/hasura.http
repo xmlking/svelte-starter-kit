@@ -1,5 +1,5 @@
 ###
-@graphqlEndpoint =  {{$dotenv PUBLIC_GRAPHQL_ENDPOINT}}
+@graphqlEndpoint =  {{$dotenv HASURA_GRAPHQL_ENDPOINT}}/v1/graphql
 @graphqlAdminToken =  {{$dotenv HASURA_GRAPHQL_ADMIN_SECRET}}
 @graphqlUserToken =  'get me from OAuth flow'
 ###
