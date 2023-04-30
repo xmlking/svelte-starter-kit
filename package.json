@@ -35,7 +35,7 @@
 		"@svelte-put/resize": "2.0.0",
 		"@sveltejs/adapter-auto": "2.0.0",
 		"@sveltejs/adapter-node": "1.2.3",
-		"@sveltejs/kit": "1.15.7",
+		"@sveltejs/kit": "1.15.9",
 		"@sveltejs/package": "2.0.2",
 		"@tailwindcss/aspect-ratio": "0.4.2",
 		"@tailwindcss/container-queries": "0.1.1",
