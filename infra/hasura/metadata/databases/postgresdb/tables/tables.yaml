@@ -1,3 +1,1 @@
-- "!include public_customer.yaml"
-- "!include public_order.yaml"
 - "!include public_tz_policies.yaml"

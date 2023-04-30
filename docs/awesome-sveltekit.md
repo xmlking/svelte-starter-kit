@@ -120,6 +120,7 @@ Add ORIGIN Env Varaible i.e., `ORIGIN=http://localhost:3000 node build/index.js`
   - **Option 2:** If you need a more full-flegded but also more opinionated solution, we recommend looking at solutions like [Vite PWA plugin](https://vite-pwa-org.netlify.app/frameworks/sveltekit.html), which uses [Workbox](https://web.dev/learn/pwa/workbox).
 
 ## Blogs
+
 - [https://joyofcode.xyz/](https://joyofcode.xyz/)
 
 ## Community
