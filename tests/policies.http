@@ -242,6 +242,7 @@ mutation UpdatePolicy($id: uuid!, $data: policies_set_input!) {
 POST  {{graphqlEndpoint}}
 Content-Type: application/json
 x-hasura-admin-secret: {{graphqlAdminToken}}
+x-hasura-allowed-roles:  viewer editor
 x-hasura-role: editor
 x-hasura-org-id: chinthagunta.com
 x-hasura-user-id: sumo@chinthagunta.com
@@ -281,16 +282,17 @@ mutation CreatePolicy($data: policies_insert_input!) {
 
 ### delete policiy
 # if null returned, either ID is not found or this user don't have permissions to delete
-# @name deletePolicy
+# @name deletePolicyFail
 POST  {{graphqlEndpoint}}
 Content-Type: application/json
 x-hasura-admin-secret: {{graphqlAdminToken}}
+x-hasura-allowed-roles:  viewer editor moderator
 x-hasura-role: editor
 x-hasura-org-id: chinthagunta.com
 x-hasura-user-id: sumo@chinthagunta.com
 X-REQUEST-TYPE: GraphQL
 
-mutation DeletePolicy($id:uuid!) {
+mutation DeletePolicyFail($id:uuid!) {
   delete_policies_by_pk(id:  $id) {
       display_name
   }
@@ -298,4 +300,27 @@ mutation DeletePolicy($id:uuid!) {
 
 {
   "id": "{{createdPoliciyId}}"
+}
+
+### delete policiy
+# if null returned, either ID is not found or this user don't have permissions to delete
+# @name deletePolicy
+POST  {{graphqlEndpoint}}
+Content-Type: application/json
+x-hasura-admin-secret: {{graphqlAdminToken}}
+x-hasura-allowed-roles:  viewer editor moderator
+x-hasura-role: editor
+x-hasura-org-id: chinthagunta.com
+x-hasura-user-id: sumo@chinthagunta.com
+X-REQUEST-TYPE: GraphQL
+
+mutation DeletePolicy($id: uuid!, $deletedAt: timestamptz!) {
+	update_policies_by_pk(pk_columns: { id: $id }, _set: { deleted_at: $deletedAt }) {
+		display_name
+	}
+}
+
+{
+  "id": "{{createdPoliciyId}}",
+  "deletedAt": "{{$localDatetime iso8601}}"
 }

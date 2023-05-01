@@ -65,3 +65,9 @@ CREATE TRIGGER set_public_policies_updated_at BEFORE UPDATE ON public.policies F
 COMMENT ON TRIGGER set_public_policies_updated_at ON public.policies IS 'trigger to set value of column "updated_at" to current timestamp on row update';
 CREATE TRIGGER protect_public_policies_record_delete BEFORE DELETE ON public.policies FOR EACH ROW EXECUTE FUNCTION public.protect_record_delete();
 COMMENT ON TRIGGER protect_public_policies_record_delete ON public.policies IS 'trigger to prevent policies deletion';
+
+-- # to drop
+-- DROP TRIGGER IF EXISTS protect_public_policies_record_delete
+-- ON public.policies;
+
+-- DROP FUNCTION public.protect_record_delete();
