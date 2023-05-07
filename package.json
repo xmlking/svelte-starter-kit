@@ -30,7 +30,7 @@
 		"@neodrag/svelte": "2.0.3",
 		"@popperjs/core": "2.11.7",
 		"@sentry/svelte": "7.50.0",
-		"@sentry/tracing": "7.50.0",
+		"@sentry/tracing": "7.51.0",
 		"@skeletonlabs/skeleton": "1.2.5",
 		"@svelte-put/resize": "2.0.0",
 		"@sveltejs/adapter-auto": "2.0.1",
