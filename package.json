@@ -86,7 +86,7 @@
 		"svelte-headless-table": "0.17.3",
 		"svelte-heros-v2": "0.4.2",
 		"svelte-time-distance": "0.0.3",
-		"sveltekit-superforms": "0.8.4",
+		"sveltekit-superforms": "0.8.6",
 		"tailwindcss": "3.3.2",
 		"tslib": "2.5.0",
 		"typescript": "5.0.4",
