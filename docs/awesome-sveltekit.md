@@ -11,6 +11,10 @@ Awesome **SvelteKit** Links
   - [redisgraph-navi](https://github.com/jlefebure/redisgraph-navi/tree/master/src/client)
   - [Autosize Textarea](https://github.com/ankurrsinghal/svelte-autoresize-textarea)
 
+- Forms
+  - [svelte-select](https://github.com/rob-balfre/svelte-select)
+  - [Autosize Textarea](https://github.com/ankurrsinghal/svelte-autoresize-textarea)
+- 
 - three.js
 
   - [Threlte](https://threlte.xyz/) is a component library for Svelte to build and render `three.js` scenes declaratively and state-driven in Svelte apps.
