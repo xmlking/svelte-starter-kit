@@ -1,5 +1,11 @@
-mutation DeletePolicy($id: uuid!) {
-	delete_policies_by_pk(id: $id) {
+mutation DeletePolicy($id: uuid!, $deletedAt: timestamptz!) {
+	update_policies_by_pk(pk_columns: { id: $id }, _set: { deletedAt: $deletedAt }) {
 		displayName
 	}
 }
+
+# mutation DeletePolicy($id: uuid!) {
+# 	delete_policies_by_pk(id: $id) {
+# 		displayName
+# 	}
+# }

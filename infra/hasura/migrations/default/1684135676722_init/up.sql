@@ -74,3 +74,5 @@ CREATE TRIGGER protect_public_policies_record_delete BEFORE DELETE ON public.pol
 COMMENT ON TRIGGER protect_public_policies_record_delete ON public.policies IS 'trigger to prevent policies deletion';
 CREATE TRIGGER set_public_policies_updated_at BEFORE UPDATE ON public.policies FOR EACH ROW EXECUTE FUNCTION public.set_current_timestamp_updated_at();
 COMMENT ON TRIGGER set_public_policies_updated_at ON public.policies IS 'trigger to set value of column "updated_at" to current timestamp on row update';
+ALTER TABLE ONLY public.policies
+    ADD CONSTRAINT policies_subject_domain_fkey FOREIGN KEY (subject_domain) REFERENCES public.organization(value);

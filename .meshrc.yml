@@ -10,7 +10,7 @@ sources:
   #           Content-Type: application/json
   #           x-hasura-admin-secret: {env.HASURA_GRAPHQL_ADMIN_SECRET}
   #           x-hasura-role: self
-  #           x-hasura-org-id: chcinthagunta.com
+  #           x-hasura-org-id: chinthagunta
   #           x-hasura-user-id: sumo@chinthagunta.com
   - name: Countries
     handler:

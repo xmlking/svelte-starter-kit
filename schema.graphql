@@ -382,6 +382,25 @@ enum organization_constraint {
   organization_pkey
 }
 
+enum organization_enum {
+  """chinthagunta org"""
+  chinthagunta
+
+  """example org"""
+  example
+}
+
+"""
+Boolean expression to compare columns of type "organization_enum". All fields are combined with logical 'AND'.
+"""
+input organization_enum_comparison_exp {
+  _eq: organization_enum
+  _in: [organization_enum!]
+  _is_null: Boolean
+  _neq: organization_enum
+  _nin: [organization_enum!]
+}
+
 """
 input type for inserting data into table "organization"
 """
@@ -507,7 +526,7 @@ type policies {
   sourceAddress: String
   sourcePort: String
   subjectDisplayName: String
-  subjectDomain: String
+  subjectDomain: organization_enum
   subjectId: String!
   subjectSecondaryId: String
   subjectType: String
@@ -574,7 +593,7 @@ input policies_bool_exp {
   sourceAddress: String_comparison_exp
   sourcePort: String_comparison_exp
   subjectDisplayName: String_comparison_exp
-  subjectDomain: String_comparison_exp
+  subjectDomain: organization_enum_comparison_exp
   subjectId: String_comparison_exp
   subjectSecondaryId: String_comparison_exp
   subjectType: String_comparison_exp
@@ -625,7 +644,7 @@ input policies_insert_input {
   sourceAddress: String
   sourcePort: String
   subjectDisplayName: String
-  subjectDomain: String
+  subjectDomain: organization_enum
   subjectId: String
   subjectSecondaryId: String
   subjectType: String
@@ -655,7 +674,6 @@ type policies_max_fields {
   sourceAddress: String
   sourcePort: String
   subjectDisplayName: String
-  subjectDomain: String
   subjectId: String
   subjectSecondaryId: String
   subjectType: String
@@ -683,7 +701,6 @@ type policies_min_fields {
   sourceAddress: String
   sourcePort: String
   subjectDisplayName: String
-  subjectDomain: String
   subjectId: String
   subjectSecondaryId: String
   subjectType: String
@@ -861,7 +878,7 @@ input policies_set_input {
   sourceAddress: String
   sourcePort: String
   subjectDisplayName: String
-  subjectDomain: String
+  subjectDomain: organization_enum
   subjectId: String
   subjectSecondaryId: String
   subjectType: String
@@ -919,7 +936,7 @@ input policies_stream_cursor_value_input {
   sourceAddress: String
   sourcePort: String
   subjectDisplayName: String
-  subjectDomain: String
+  subjectDomain: organization_enum
   subjectId: String
   subjectSecondaryId: String
   subjectType: String

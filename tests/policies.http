@@ -33,7 +33,7 @@ x-hasura-admin-secret: {{graphqlAdminToken}}
 Authorization: Bearer {{graphqlUserToken}}
 x-hasura-allowed-roles:  self supervisor
 x-hasura-role: supervisor
-x-hasura-org-id: chinthagunta.com
+x-hasura-org-id: chinthagunta
 x-hasura-user-id: sumo@chinthagunta.com
 X-REQUEST-TYPE: GraphQL
 
@@ -92,7 +92,7 @@ x-hasura-admin-secret: {{graphqlAdminToken}}
 Authorization: Bearer {{graphqlUserToken}}
 x-hasura-allowed-roles:  self supervisor
 x-hasura-role: self
-x-hasura-org-id: chinthagunta.com
+x-hasura-org-id: chinthagunta
 x-hasura-user-id: sumo@chinthagunta.com
 X-REQUEST-TYPE: GraphQL
 
@@ -159,7 +159,7 @@ x-hasura-admin-secret: {{graphqlAdminToken}}
 Authorization: Bearer {{graphqlUserToken}}
 x-hasura-allowed-roles:  self supervisor
 x-hasura-role: self
-x-hasura-org-id: chinthagunta.com
+x-hasura-org-id: chinthagunta
 x-hasura-user-id: sumo@chinthagunta.com
 X-REQUEST-TYPE: GraphQL
 
@@ -208,7 +208,7 @@ x-hasura-admin-secret: {{graphqlAdminToken}}
 Authorization: Bearer {{graphqlUserToken}}
 x-hasura-allowed-roles:  self supervisor
 x-hasura-role: self
-x-hasura-org-id: chinthagunta.com
+x-hasura-org-id: chinthagunta
 x-hasura-user-id: sumo@chinthagunta.com
 X-REQUEST-TYPE: GraphQL
 
@@ -238,7 +238,7 @@ x-hasura-admin-secret: {{graphqlAdminToken}}
 Authorization: Bearer {{graphqlUserToken}}
 x-hasura-allowed-roles:  self supervisor
 x-hasura-role: self
-x-hasura-org-id: chinthagunta.com
+x-hasura-org-id: chinthagunta
 x-hasura-user-id: sumo@chinthagunta.com
 X-REQUEST-TYPE: GraphQL
 
@@ -282,7 +282,7 @@ x-hasura-admin-secret: {{graphqlAdminToken}}
 Authorization: Bearer {{graphqlUserToken}}
 x-hasura-allowed-roles:  self supervisor
 x-hasura-role: self
-x-hasura-org-id: chinthagunta.com
+x-hasura-org-id: chinthagunta
 x-hasura-user-id: sumo@chinthagunta.com
 X-REQUEST-TYPE: GraphQL
 
@@ -305,7 +305,7 @@ x-hasura-admin-secret: {{graphqlAdminToken}}
 Authorization: Bearer {{graphqlUserToken}}
 x-hasura-allowed-roles:  self supervisor
 x-hasura-role: self
-x-hasura-org-id: chinthagunta.com
+x-hasura-org-id: chinthagunta
 x-hasura-user-id: sumo@chinthagunta.com
 X-REQUEST-TYPE: GraphQL
 
