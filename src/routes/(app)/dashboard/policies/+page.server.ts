@@ -77,8 +77,9 @@ export const actions = {
 		try {
 			const formData = await request.formData();
 			const { id } = deleteSchema.parse(formData);
+			const deletedAt = new Date().toISOString();
 
-			const variables = { id };
+			const variables = { id, deletedAt };
 
 			const { errors, data } = await deletePolicyStore.mutate(variables, {
 				metadata: { backendToken: 'token from TokenVault', logResult: true },
@@ -86,7 +87,7 @@ export const actions = {
 			});
 			if (errors) throw new PolicyError('DELETE_POLICY_ERROR', 'delete policy api error', errors[0] as GraphQLError);
 
-			const actionResult = data?.delete_policies_by_pk;
+			const actionResult = data?.update_policies_by_pk;
 			if (!actionResult) throw new NotFoundError('data is null');
 
 			return {
