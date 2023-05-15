@@ -33,7 +33,7 @@ export const authjs = SvelteKitAuth({
 						credentials: {
 							username: { label: 'Username', type: 'text', placeholder: 'type any username / password' },
 							password: { label: 'Password', type: 'password' },
-							domain: { label: 'Domain', type: 'select', value: envPub.PUBLIC_TENANT_ID }
+							domain: { label: 'Domain', type: 'select', value: envPub.PUBLIC_ORGANIZATION }
 						},
 						async authorize(credentials, req) {
 							const user = {
@@ -86,7 +86,7 @@ export const authjs = SvelteKitAuth({
 				log.debug('in isSignIn');
 				token.email ??= profile.upn;
 				token.roles ??= appRoles(profile.roles ?? profile.groups);
-				token.org = envPub.PUBLIC_TENANT_ID;
+				token.org = envPub.PUBLIC_ORGANIZATION;
 				// `scp` or `scope` is required for Spring Security.
 				const scp = Array.isArray(token.roles) ? token.roles.join(' ') : undefined;
 				token.scp = scp;

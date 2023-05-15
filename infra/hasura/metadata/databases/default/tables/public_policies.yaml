@@ -133,6 +133,9 @@ select_permissions:
         - protocol
         - source_address
         - source_port
+        - subject_domain
+        - subject_type
+        - updated_at
         - valid_from
         - valid_to
         - weight
@@ -147,7 +150,7 @@ select_permissions:
           - template:
               _eq: false
           - valid_from:
-              _gte: now()
+              _lte: now()
   - role: self
     permission:
       columns:
