@@ -26,6 +26,16 @@ BEGIN
   RETURN _new;
 END;
 $$;
+CREATE TABLE public.action (
+    value text NOT NULL,
+    description text NOT NULL
+);
+COMMENT ON TABLE public.action IS 'action type';
+CREATE TABLE public.direction (
+    value text NOT NULL,
+    description text NOT NULL
+);
+COMMENT ON TABLE public.direction IS 'direction type';
 CREATE TABLE public.organization (
     value text NOT NULL,
     description text NOT NULL
@@ -62,10 +72,21 @@ CREATE TABLE public.policies (
     app_id character varying
 );
 COMMENT ON TABLE public.policies IS 'This is policy table.';
+CREATE TABLE public.subject_type (
+    value text NOT NULL,
+    description text NOT NULL
+);
+COMMENT ON TABLE public.subject_type IS 'Subject Type';
+ALTER TABLE ONLY public.action
+    ADD CONSTRAINT action_pkey PRIMARY KEY (value);
+ALTER TABLE ONLY public.direction
+    ADD CONSTRAINT direction_pkey PRIMARY KEY (value);
 ALTER TABLE ONLY public.organization
     ADD CONSTRAINT organization_pkey PRIMARY KEY (value);
 ALTER TABLE ONLY public.policies
     ADD CONSTRAINT policies_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.subject_type
+    ADD CONSTRAINT subject_type_pkey PRIMARY KEY (value);
 CREATE INDEX policy_deleted_at ON public.policies USING btree (deleted_at);
 CREATE INDEX policy_subject_id_subject_type ON public.policies USING btree (subject_id, subject_type);
 CREATE INDEX policy_subject_secondary_id_subject_type ON public.policies USING btree (subject_secondary_id, subject_type);
@@ -75,4 +96,10 @@ COMMENT ON TRIGGER protect_public_policies_record_delete ON public.policies IS '
 CREATE TRIGGER set_public_policies_updated_at BEFORE UPDATE ON public.policies FOR EACH ROW EXECUTE FUNCTION public.set_current_timestamp_updated_at();
 COMMENT ON TRIGGER set_public_policies_updated_at ON public.policies IS 'trigger to set value of column "updated_at" to current timestamp on row update';
 ALTER TABLE ONLY public.policies
+    ADD CONSTRAINT policies_action_fkey FOREIGN KEY (action) REFERENCES public.action(value);
+ALTER TABLE ONLY public.policies
+    ADD CONSTRAINT policies_direction_fkey FOREIGN KEY (direction) REFERENCES public.direction(value);
+ALTER TABLE ONLY public.policies
     ADD CONSTRAINT policies_subject_domain_fkey FOREIGN KEY (subject_domain) REFERENCES public.organization(value);
+ALTER TABLE ONLY public.policies
+    ADD CONSTRAINT policies_subject_type_fkey FOREIGN KEY (subject_type) REFERENCES public.subject_type(value);
