@@ -34,19 +34,19 @@ hasura version
 hasura console
 
 # Create a new seed by exporting data from tables already present in the database:
-hasura seed create policies_seed --database-name default --from-table policies
 hasura seed create organization_seed --database-name default --from-table organization
 hasura seed create direction_seed --database-name default --from-table direction
 hasura seed create action_seed --database-name default --from-table action
 hasura seed create subject_type_seed --database-name default --from-table subject_type
+hasura seed create policies_seed --database-name default --from-table policies
 # Export data from multiple tables:
 # hasura seed create policies_organization_seed --database-name default --from-table policies --from-table organization
 # Apply only a particular file:
-hasura seed apply --file 1684142134894_policies_seed.sql --database-name default
 hasura seed apply --file 1684142140561_organization_seed.sql --database-name default
 hasura seed apply --file 1684142145167_direction_seed.sql --database-name default
 hasura seed apply --file 1684142149809_action_seed.sql --database-name default
 hasura seed apply --file 1684142153358_subject_type_seed.sql --database-name default
+hasura seed apply --file 1684142134894_policies_seed.sql --database-name default
 # hasura seed apply --file 1684101975415_policies_organization_seed.sql --database-name default
 
 
@@ -63,8 +63,8 @@ hasura metadata apply --endpoint https://erraxvkmnzplotebnxuy.hasura.us-east-1.n
 #  Check the status of Migrations
 hasura migrate status --database-name default
 # Apply the Metadata and Migrations:
-hasura metadata apply
 hasura migrate apply --database-name default
+hasura metadata apply
 hasura metadata reload
 # update local "init" migrate file from server
  hasura migrate create  "init" --database-name default --from-server
