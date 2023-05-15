@@ -24,8 +24,8 @@ NOTE: You can pass `--endpoint <hasura-endpoint> --admin-secret <admin-secret> c
 
 ```shell
 # Create a directory to store migrations (with endpoint and admin secret configured):
-# hasura init <my-project> --endpoint https://my-graphql-engine.com --admin-secret adminsecretkey
-hasura init hasura --project infra --endpoint https://dsysnjrgygjipcilpkca.hasura.us-east-1.nhost.run --admin-secret <my-admin-secret>
+# use `''` to escape if `admin-secret` has special characters
+hasura init hasura --project infra --endpoint https://erraxvkmnzplotebnxuy.hasura.us-east-1.nhost.run --admin-secret '<my-admin-secret>'
 # move infra/hasura/config.yaml to project root and edit metadata_directory, migrations_directory, seeds_directory paths
 
 hasura version
@@ -34,30 +34,34 @@ hasura version
 hasura console
 
 # Create a new seed by exporting data from tables already present in the database:
-hasura seed create policies_seed --database-name postgresdb --from-table policies
+hasura seed create policies_seed --database-name default --from-table policies
+hasura seed create organization_seed --database-name default --from-table organization
 # Export data from multiple tables:
-# hasura seed create customer_order_seed --database-name postgresdb --from-table customer --from-table order
+# hasura seed create policies_organization_seed --database-name default --from-table policies --from-table organization
 # Apply only a particular file:
-hasura seed apply --file 1682875115105_policies_seed.sql --database-name postgresdb
-# hasura seed apply --file 1672767205525_customer_order_seed.sql --database-name postgresdb
+hasura seed apply --file 1684117729424_policies_seed.sql --database-name default
+hasura seed apply --file 1684117772284_organization_seed.sql --database-name default
+# hasura seed apply --file 1684101975415_policies_organization_seed.sql --database-name default
 
 
 # To apply all the Migrations present in the `migrations/` directory and the Metadata present in the `metadata/` directory on a new, "fresh",
 # instance of the Hasura Server at http://another-server-instance.hasura.app:
-hasura deploy --endpoint https://dsysnjrgygjipcilpkca.hasura.us-east-1.nhost.run  --admin-secret <admin-secret>
+hasura deploy --endpoint https://erraxvkmnzplotebnxuy.hasura.us-east-1.nhost.run  --admin-secret <admin-secret>
 # To apply only apply metadata
-hasura metadata apply --endpoint https://dsysnjrgygjipcilpkca.hasura.us-east-1.nhost.run  --admin-secret <admin-secret>
+hasura metadata apply --endpoint https://erraxvkmnzplotebnxuy.hasura.us-east-1.nhost.run  --admin-secret <admin-secret>
 # NOTE:
 # if you get error: "permission denied to create extension \"hstore\"", Run `create extension hstore;` in hasura console
 # if you get error: "must be owner of extension hstore",  Run `alter role nhost_hasura with superuser;` in hasura console
 # if you get error: "x509: certificate signed by unknown authority", add `--insecure-skip-tls-verify` flag to above command
 
 #  Check the status of Migrations
-hasura migrate status --database-name postgresdb
+hasura migrate status --database-name default
 # Apply the Metadata and Migrations:
 hasura metadata apply
-hasura migrate apply --database-name postgresdb
+hasura migrate apply --database-name default
 hasura metadata reload
+# update local "init" migrate file from server
+ hasura migrate create  "init" --database-name default --from-server
 
 # Export Hasura GraphQL Engine metadata from the database
 hasura metadata export
@@ -90,8 +94,8 @@ To apply all the **Metadata** and **Migrations** present in the `infra/hasura` d
 hasura metadata apply --endpoint http://localhost:8080  --admin-secret myadminsecretkey
 # apply metadata and DB Migrations
 hasura deploy --endpoint http://localhost:8080  --admin-secret myadminsecretkey
-hasura seed apply --file 1672767205525_customer_order_seed.sql --database-name postgresdb --endpoint http://localhost:8080  --admin-secret myadminsecretkey
-hasura seed apply --file 1672767180588_policies_seed.sql --database-name postgresdb --endpoint http://localhost:8080  --admin-secret myadminsecretkey
+hasura seed apply --file 1684117729424_policies_seed.sql --database-name default --endpoint http://localhost:8080  --admin-secret myadminsecretkey
+hasura seed apply --file 1684117772284_organization_seed.sql --database-name default --endpoint http://localhost:8080  --admin-secret myadminsecretkey
 ```
 
 ### Export Metadata

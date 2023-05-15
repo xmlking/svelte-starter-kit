@@ -37,9 +37,7 @@ services:
     ports:
       - '5432:5432'
     environment:
-      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgresdb
     volumes:
       - db_data:/var/lib/postgresql/data
       - ./infra/db_scripts/init-database.sh:/docker-entrypoint-initdb.d/init-database.sh
@@ -54,7 +52,7 @@ services:
       -c ssl_key_file=/etc/ssl/private/ssl-cert-snakeoil.key
 
   hasura:
-    image: hasura/graphql-engine:v2.23.0
+    image: hasura/graphql-engine:v2.25.0
     ports:
       - '8080:8080'
     depends_on:
@@ -63,9 +61,9 @@ services:
     restart: always
     environment:
       ## postgres database to store Hasura metadata
-      HASURA_GRAPHQL_METADATA_DATABASE_URL: postgres://postgres:postgres@postgres:5432/postgresdb?sslmode=allow
+      HASURA_GRAPHQL_METADATA_DATABASE_URL: postgres://postgres:postgres@postgres:5432/postgres?sslmode=allow
       ## this env var can be used to add the above postgres database to Hasura as a data source. this can be removed/updated based on your needs
-      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:postgres@postgres:5432/postgresdb?sslmode=allow
+      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:postgres@postgres:5432/postgres?sslmode=allow
       ## enable the console served by server
       HASURA_GRAPHQL_ENABLE_CONSOLE: 'true' # set to "false" to disable console
       ## enable debugging mode. It is recommended to disable this in production
@@ -83,7 +81,7 @@ services:
           "key": "1084d8d404126d641c232604aa27bc756921c07a5869c6de6cfd0c6c455de0fe",
           "claims_map": {
             "x-hasura-allowed-roles": { "path": "$.roles" },
-            "x-hasura-default-role": "viewer",
+            "x-hasura-default-role": "self",
             "x-hasura-user-id": { "path": "$.sub" },
             "x-hasura-org-id":  { "path": "$.org", "default": "public" }
           }
@@ -94,6 +92,11 @@ services:
       ## enable allowList only for prod if required
       # HASURA_GRAPHQL_ENABLE_ALLOWLIST: 'true'
       HASURA_GRAPHQL_ENABLE_TELEMETRY: 'false'
+    healthcheck:
+      test: curl --fail -s http://localhost:8080/healthz || exit 1
+      interval: 30s
+      timeout: 15s
+      retries: 3
 
 volumes:
   db_data:

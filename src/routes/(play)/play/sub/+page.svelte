@@ -4,18 +4,18 @@
 
 	const schedules = graphql(`
 		subscription StreamPolicy {
-			policies(order_by: [{ updated_at: desc_nulls_last }], limit: 50, offset: 0, where: { deleted_at: { _is_null: true } })  {
+			policies(order_by: [{ updatedAt: desc_nulls_last }], limit: 50, offset: 0, where: { updatedAt: { _is_null: true } })  {
 				id
-				display_name
+				displayName
 			}
 		}
 	`);
 
 	// const livePolicy = graphql(`
 	// 	query LivePolicy {
-	// 		policies(order_by: [{ updated_at: desc_nulls_last }], limit: 50, offset: 0, where: { deleted_at: { _is_null: true } }) @live {
+	// 		policies(order_by: [{ updatedAt: desc_nulls_last }], limit: 50, offset: 0) @live {
 	// 			id
-	// 			display_name
+	// 			displayName
 	// 		}
 	// 	}
 	// `);

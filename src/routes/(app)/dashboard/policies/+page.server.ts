@@ -23,14 +23,13 @@ export async function load(event) {
 	try {
 		await parent(); // HINT: to make sure use session is valid
 
-		const { limit, offset, subject_type, display_name } = searchSchema.parse(url.searchParams);
-		console.log(limit, offset, subject_type, display_name);
+		const { limit, offset, subjectType, displayName } = searchSchema.parse(url.searchParams);
+		console.log(limit, offset, subjectType, displayName);
 
-		const orderBy = [{ updated_at: order_by.desc_nulls_first }];
+		const orderBy = [{ updatedAt: order_by.desc_nulls_first }];
 		const where = {
-			deleted_at: { _is_null: true },
-			...(subject_type ? { subject_type: { _eq: subject_type } } : {}),
-			...(display_name ? { display_name: { _like: `%${display_name}%` } } : {})
+			...(subjectType ? { subjectType: { _eq: subjectType } } : {}),
+			...(displayName ? { displayName: { _like: `%${displayName}%` } } : {})
 		};
 		const variables = { where, limit, offset, orderBy };
 
@@ -38,7 +37,7 @@ export async function load(event) {
 			event,
 			blocking: true,
 			policy: CachePolicy.CacheAndNetwork,
-			metadata: { backendToken: 'token from TokenVault', useRole: 'viewer', logResult: true },
+			metadata: { backendToken: 'token from TokenVault', useRole: 'self', logResult: true },
 			variables
 		});
 

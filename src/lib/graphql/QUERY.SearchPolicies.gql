@@ -1,16 +1,16 @@
-query SearchPolicies($where: policies_bool_exp, $limit: Int = 50, $offset: Int = 0, $orderBy: [policies_order_by!] = [{ updated_at: desc_nulls_last }]) {
+query SearchPolicies($where: policies_bool_exp, $limit: Int = 50, $offset: Int = 0, $orderBy: [policies_order_by!] = [{ updatedAt: desc_nulls_last }]) {
 	policies(order_by: $orderBy, limit: $limit, offset: $offset, where: $where) {
 		# ...Policy_list_fields @mask_disable
 		id
-		created_at
-		destination_address
-		destination_port
+		createdAt
+		destinationAddress
+		destinationPort
 		disabled
-		display_name
-		source_address
-		source_port
-		subject_display_name
+		displayName
+		sourceAddress
+		sourcePort
+		subjectDisplayName
 		template
-		updated_at
+		updatedAt
 	}
 }

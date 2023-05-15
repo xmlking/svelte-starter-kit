@@ -18,7 +18,7 @@
 	let { actionResult, actionError, formErrors, fieldErrors } = form || {};
 	$: if (form) ({ actionResult, actionError, formErrors, fieldErrors } = form);
 	$: if (actionResult) {
-		addToast({ message: `${actionResult.display_name} saved`, dismissible: true, duration: 10000, type: ToastLevel.Info });
+		addToast({ message: `${actionResult.displayName} saved`, dismissible: true, duration: 10000, type: ToastLevel.Info });
 		goto('/dashboard/policies');
 	}
 	$: if (actionError) addToast({ message: actionError.message, dismissible: true, duration: 10000, type: ToastLevel.Error });
@@ -130,7 +130,7 @@
 	{#if policy}
 		<div class="mb-6 grid gap-6 md:grid-cols-3 lg:grid-cols-6">
 			<div class="col-span-2">
-				<FloatingLabelField name="display_name" style="outlined" label="Display Name" error={fieldErrors?.display_name?.[0] || $fErrors?.display_name?.[0]} />
+				<FloatingLabelField name="displayName" style="outlined" label="Display Name" error={fieldErrors?.displayName?.[0] || $fErrors?.displayName?.[0]} />
 			</div>
 			<div class="col-span-4">
 				<FloatingLabelField name="description" style="outlined" label="Description" error={fieldErrors?.description?.[0] || $fErrors?.description?.[0]} />
@@ -149,34 +149,34 @@
 			<div class="col-span-2">
 				<div class="btn-group">
 					{#each subjectTypeOptions as opt}
-						<input type="radio" name="subject_type" value={opt.value} data-title={opt.label} class="btn" disabled={editMode} />
+						<input type="radio" name="subjectType" value={opt.value} data-title={opt.label} class="btn" disabled={editMode} />
 					{/each}
 				</div>
-				<ErrorMessage id="subject_type_help" error={fieldErrors?.subject_type?.[0] || $fErrors?.subject_type?.[0]} />
+				<ErrorMessage id="subjectType_help" error={fieldErrors?.subjectType?.[0] || $fErrors?.subjectType?.[0]} />
 			</div>
 			<div>
-				<FloatingLabelField name="subject_display_name" style="outlined" label="Subject display name" error={fieldErrors?.subject_display_name?.[0] || $fErrors?.subject_display_name?.[0]} disabled={editMode} />
+				<FloatingLabelField name="subjectDisplayName" style="outlined" label="Subject display name" error={fieldErrors?.subjectDisplayName?.[0] || $fErrors?.subjectDisplayName?.[0]} disabled={editMode} />
 			</div>
 			<div>
-				<FloatingLabelField name="subject_id" style="outlined" label="Subject ID" error={fieldErrors?.subject_id?.[0] || $fErrors?.subject_id?.[0]} disabled={editMode} />
+				<FloatingLabelField name="subjectId" style="outlined" label="Subject ID" error={fieldErrors?.subjectId?.[0] || $fErrors?.subjectId?.[0]} disabled={editMode} />
 			</div>
 			<div>
-				<FloatingLabelField name="subject_secondary_id" style="outlined" label="Subject Secondary ID" error={fieldErrors?.subject_secondary_id?.[0] || $fErrors?.subject_secondary_id?.[0]} disabled={editMode} />
+				<FloatingLabelField name="subjectSecondaryId" style="outlined" label="Subject Secondary ID" error={fieldErrors?.subjectSecondaryId?.[0] || $fErrors?.subjectSecondaryId?.[0]} disabled={editMode} />
 			</div>
 			<div>
-				<FloatingLabelField name="subject_domain" style="outlined" label="Subject domain" error={fieldErrors?.subject_domain?.[0] || $fErrors?.subject_domain?.[0]} disabled={true} />
+				<FloatingLabelField name="subjectDomain" style="outlined" label="Subject domain" error={fieldErrors?.subjectDomain?.[0] || $fErrors?.subjectDomain?.[0]} disabled={true} />
 			</div>
 			<div class="col-span-3">
-				<FloatingLabelField name="source_address" style="outlined" label="Source address" error={fieldErrors?.source_address?.[0] || $fErrors?.source_address?.[0]} />
+				<FloatingLabelField name="sourceAddress" style="outlined" label="Source address" error={fieldErrors?.sourceAddress?.[0] || $fErrors?.sourceAddress?.[0]} />
 			</div>
 			<div class="col-span-3">
-				<FloatingLabelField name="source_port" style="outlined" label="Source port" error={fieldErrors?.source_port?.[0] || $fErrors?.source_port?.[0]} />
+				<FloatingLabelField name="sourcePort" style="outlined" label="Source port" error={fieldErrors?.sourcePort?.[0] || $fErrors?.sourcePort?.[0]} />
 			</div>
 			<div class="col-span-3">
-				<FloatingLabelField name="destination_address" style="outlined" label="Destination address" error={fieldErrors?.destination_address?.[0] || $fErrors?.destination_address?.[0]} />
+				<FloatingLabelField name="destinationAddress" style="outlined" label="Destination address" error={fieldErrors?.destinationAddress?.[0] || $fErrors?.destinationAddress?.[0]} />
 			</div>
 			<div class="col-span-3">
-				<FloatingLabelField name="destination_port" style="outlined" label="Destination port" error={fieldErrors?.destination_port?.[0] || $fErrors?.destination_port?.[0]} />
+				<FloatingLabelField name="destinationPort" style="outlined" label="Destination port" error={fieldErrors?.destinationPort?.[0] || $fErrors?.destinationPort?.[0]} />
 			</div>
 			<div>
 				<select name="protocol" class="select-bordered select w-full focus:outline-none">
@@ -206,7 +206,7 @@
 			</div>
 
 			<div class="col-span-6">
-				<FloatingLabelField name="app_id" style="outlined" label="App id" error={fieldErrors?.app_id?.[0] || $fErrors?.app_id?.[0]} />
+				<FloatingLabelField name="appId" style="outlined" label="App id" error={fieldErrors?.appId?.[0] || $fErrors?.appId?.[0]} />
 			</div>
 
 			<div>
@@ -224,12 +224,12 @@
 				<ErrorMessage error={fieldErrors?.template?.[0] || JSON.stringify($fErrors?.template?.[0])} />
 			</div>
 			<div class="col-start-5">
-				<!-- <FloatingLabelField type="datetime-local" name="valid_from" value={$fData.valid_from} error="{fieldErrors?.valid_from?.[0] || $fErrors?.valid_from?.[0]}" label="Valid From" /> -->
-				<DateInput name="valid_from" style="outlined" label="Valid From" value={$fData.valid_from} error={fieldErrors?.valid_from?.[0] || $fErrors?.valid_from?.[0]} />
+				<!-- <FloatingLabelField type="datetime-local" name="validFrom" value={$fData.validFrom} error="{fieldErrors?.validFrom?.[0] || $fErrors?.validFrom?.[0]}" label="Valid From" /> -->
+				<DateInput name="validFrom" style="outlined" label="Valid From" value={$fData.validFrom} error={fieldErrors?.validFrom?.[0] || $fErrors?.validFrom?.[0]} />
 			</div>
 			<div class="col-end-auto">
-				<!-- <FloatingLabelField type="datetime-local" name="valid_to"  value={$fData.valid_to} error="{fieldErrors?.valid_to?.[0] || $fErrors?.valid_to?.[0]}" label="Valid To" /> -->
-				<DateInput name="valid_to" style="outlined" label="Valid To" value={$fData.valid_to} error={fieldErrors?.valid_to?.[0] || $fErrors?.valid_to?.[0]} />
+				<!-- <FloatingLabelField type="datetime-local" name="validTo"  value={$fData.validTo} error="{fieldErrors?.validTo?.[0] || $fErrors?.validTo?.[0]}" label="Valid To" /> -->
+				<DateInput name="validTo" style="outlined" label="Valid To" value={$fData.validTo} error={fieldErrors?.validTo?.[0] || $fErrors?.validTo?.[0]} />
 			</div>
 		</div>
 	{/if}

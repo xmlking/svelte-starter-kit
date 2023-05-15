@@ -40,7 +40,7 @@ export const authjs = SvelteKitAuth({
 								id: '1',
 								name: 'Sumo Demo',
 								org: credentials.domain,
-								roles: ['moderator', 'tester'],
+								roles: ['self', 'tester'],
 								email: 'sumo@demo.com'
 							};
 							return user;

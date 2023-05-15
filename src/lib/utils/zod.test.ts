@@ -10,23 +10,23 @@ describe('Test zod validations', () => {
 		console.log('afterAll...');
 	});
 	it('should correctly handles a valid ISO date-string', () => {
-		const valid_from = '2022-12-14T22:07:09+00:00';
-		const valid_from2 = '2022-12-14T22:07:10.430805+00:00';
-		const valid_to = null;
+		const validFrom = '2022-12-14T22:07:09+00:00';
+		const validFrom2 = '2022-12-14T22:07:10.430805+00:00';
+		const validTo = null;
 
 		const schema = z.string().datetime({ offset: true }).nullish();
 
-		expect(schema.parse(valid_from)).toStrictEqual(valid_from);
-		expect(schema.parse(valid_from2)).toStrictEqual(valid_from2);
-		expect(schema.parse(valid_to)).toStrictEqual(valid_to);
+		expect(schema.parse(validFrom)).toStrictEqual(validFrom);
+		expect(schema.parse(validFrom2)).toStrictEqual(validFrom2);
+		expect(schema.parse(validTo)).toStrictEqual(validTo);
 
-		const valid_to2 = '';
+		const validTo2 = '';
 		const emptySchema = z.preprocess(emptyToNull, z.string().datetime({ offset: true }).nullish());
-		expect(emptySchema.parse(valid_to2)).toStrictEqual(null);
+		expect(emptySchema.parse(validTo2)).toStrictEqual(null);
 
-		const valid_to3 = '';
+		const validTo3 = '';
 		const emptyDTSchema = asOptionalField(z.string().datetime({ offset: true }));
-		expect(emptyDTSchema.parse(valid_to3)).toStrictEqual(undefined);
+		expect(emptyDTSchema.parse(validTo3)).toStrictEqual(undefined);
 	});
 	it('should correctly convert stringified JSON object to Map', () => {
 		const annotations = `{"key1": "value1", "key2": "value2"}`;

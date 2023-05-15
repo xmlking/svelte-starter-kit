@@ -69,7 +69,7 @@ export const authjs = SvelteKitAuth({
 				const hasuraToken = {
 					'https://hasura.io/jwt/claims': {
 						'x-hasura-allowed-roles': token.roles,
-						'x-hasura-default-role': 'viewer',
+						'x-hasura-default-role': 'self',
 						'x-hasura-org-id': envPub.PUBLIC_TENANT_ID,
 						'x-hasura-user-id': token.email // token.sub
 					}
