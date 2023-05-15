@@ -97,6 +97,11 @@ Awesome **SvelteKit** Links
 
 - [Zod Validation](https://twitter.com/BHolmesDev/status/1581627163098632194?s=20&t=O-vh5nFKUjCOyTTBnaRwQA)
 
+## Made with SvelteKit
+- [SvelteLab](https://github.com/SvelteLab/SvelteLab)
+- [Appwrite Console](https://github.com/appwrite/console)
+- [Chat UI - GPT Style](https://github.com/huggingface/chat-ui)
+
 ## FQA
 
 - External Links
