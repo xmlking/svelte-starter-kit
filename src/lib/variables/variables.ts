@@ -20,7 +20,7 @@ const schema = z.object({
 	PUBLIC_SENTRY_DSN: z.string().url().regex(new RegExp('^\\S*$'), {
 		message: 'No spaces allowed'
 	}),
-	PUBLIC_TENANT_ID: z.string().regex(new RegExp('^\\S*$'), {
+	PUBLIC_ORGANIZATION: z.string().regex(new RegExp('^\\S*$'), {
 		message: 'No spaces allowed'
 	})
 });

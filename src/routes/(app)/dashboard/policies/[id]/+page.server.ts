@@ -40,7 +40,7 @@ export async function load(event) {
 			subjectType: 'subject_type_user',
 			subjectSecondaryId: 'sumo@chinthagunta.com',
 			subjectDisplayName: '',
-			subjectDomain: envPub.PUBLIC_TENANT_ID,
+			subjectDomain: envPub.PUBLIC_ORGANIZATION,
 			disabled: false,
 			template: false,
 			sourceAddress: '',

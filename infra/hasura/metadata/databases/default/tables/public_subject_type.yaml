@@ -1,0 +1,4 @@
+table:
+  name: subject_type
+  schema: public
+is_enum: true

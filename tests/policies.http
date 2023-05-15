@@ -83,6 +83,56 @@ query ListPolicies(
   "offset": 0
 }
 
+### search active policies for agent
+# @name searchAgentPolicies
+POST  {{graphqlEndpoint}}
+Content-Type: application/json
+x-hasura-admin-secret: {{graphqlAdminToken}}
+Authorization: Bearer {{graphqlUserToken}}
+x-hasura-allowed-roles:  agent self supervisor
+x-hasura-role: agent
+x-hasura-org-id: chinthagunta
+x-hasura-user-id: sumo@chinthagunta.com
+X-REQUEST-TYPE: GraphQL
+
+query SearchAgentPolicies(
+  $where: policies_bool_exp
+  $limit: Int = 50
+  $offset: Int = 0
+  $orderBy: [policies_order_by!] = [{ updatedAt: desc_nulls_last }]
+) {
+  policies(
+    order_by: $orderBy
+    limit: $limit
+    offset: $offset
+    where: $where
+  ) {
+    id
+    displayName
+    description
+    validFrom
+    validTo
+    subjectDomain
+    sourceAddress
+    sourcePort
+    destinationAddress
+    destinationPort
+    protocol
+    action
+    direction
+    appId
+    weight
+  }
+}
+
+{
+  "where": {
+    "subjectType": { "_eq": "subject_type_user" },
+    "displayName": { "_like": "%user%" }
+  },
+  "limit": 2,
+  "orderBy": [{ "updatedAt": "desc_nulls_last" }]
+}
 
 ### search active policies
 # @name searchPolicies
