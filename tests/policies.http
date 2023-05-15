@@ -4,7 +4,7 @@
 @graphqlUserToken =  'get me from OAuth flow'
 ###
 
-### Pull Schema
+### IntrospectionQuery
 # @name IntrospectionQuery
 POST  {{graphqlEndpoint}}
 Content-Type: application/json
@@ -30,8 +30,9 @@ query IntrospectionQuery {
 POST  {{graphqlEndpoint}}
 Content-Type: application/json
 x-hasura-admin-secret: {{graphqlAdminToken}}
-# Authorization: Bearer {{graphqlUserToken}}
-x-hasura-role: editor
+Authorization: Bearer {{graphqlUserToken}}
+x-hasura-allowed-roles:  self supervisor
+x-hasura-role: supervisor
 x-hasura-org-id: chinthagunta.com
 x-hasura-user-id: sumo@chinthagunta.com
 X-REQUEST-TYPE: GraphQL
@@ -39,46 +40,39 @@ X-REQUEST-TYPE: GraphQL
 query ListPolicies(
   $limit: Int = 50
   $offset: Int = 0
-  $orderBy: [policies_order_by!] = [{ updated_at: desc_nulls_last }]
+  $orderBy: [policies_order_by!] = [{ updatedAt: desc_nulls_last }]
 ) {
-  counts: policies_aggregate(where: { deleted_at: { _is_null: true } }) {
-    aggregate {
-      count
-    }
-  }
   policies(
 	order_by: $orderBy
     limit: $limit
     offset: $offset
-    where: { deleted_at: { _is_null: true } }
   ) {
     id
-    display_name
+    displayName
     description
     tags
     annotations
     disabled
     template
-    created_at
-    created_by
-    updated_at
-    updated_by
-    deleted_at
-    valid_from
-    valid_to
-    subject_display_name
-    subject_domain
-    subject_id
-    subject_secondary_id
-    subject_type
-    source_address
-    source_port
-    destination_address
-    destination_port
+    createdAt
+    createdBy
+    updatedAt
+    updatedBy
+    validFrom
+    validTo
+    subjectDisplayName
+    subjectDomain
+    subjectId
+    subjectSecondaryId
+    subjectType
+    sourceAddress
+    sourcePort
+    destinationAddress
+    destinationPort
     protocol
     action
     direction
-    app_id
+    appId
     weight
   }
 }
@@ -95,7 +89,9 @@ query ListPolicies(
 POST  {{graphqlEndpoint}}
 Content-Type: application/json
 x-hasura-admin-secret: {{graphqlAdminToken}}
-x-hasura-role: editor
+Authorization: Bearer {{graphqlUserToken}}
+x-hasura-allowed-roles:  self supervisor
+x-hasura-role: self
 x-hasura-org-id: chinthagunta.com
 x-hasura-user-id: sumo@chinthagunta.com
 X-REQUEST-TYPE: GraphQL
@@ -104,13 +100,8 @@ query SearchPolicies(
   $where: policies_bool_exp
   $limit: Int = 50
   $offset: Int = 0
-  $orderBy: [policies_order_by!] = [{ updated_at: desc_nulls_last }]
+  $orderBy: [policies_order_by!] = [{ updatedAt: desc_nulls_last }]
 ) {
-  counts: policies_aggregate(where: $where) {
-    aggregate {
-      count
-    }
-  }
   policies(
     order_by: $orderBy
     limit: $limit
@@ -118,46 +109,46 @@ query SearchPolicies(
     where: $where
   ) {
     id
-    display_name
+    displayName
     description
     tags
     annotations
     disabled
     template
-    created_at
-    updated_at
-    valid_from
-    valid_to
-    subject_display_name
-    subject_domain
-    subject_id
-    subject_secondary_id
-    subject_type
-    source_address
-    source_port
-    destination_address
-    destination_port
+    createdAt
+	createdBy
+    updatedAt
+	updatedBy
+    validFrom
+    validTo
+    subjectDisplayName
+    subjectDomain
+    subjectId
+    subjectSecondaryId
+    subjectType
+    sourceAddress
+    sourcePort
+    destinationAddress
+    destinationPort
     protocol
     action
     direction
-    app_id
+    appId
     weight
   }
 }
 
-
 {
   "where": {
-    "deleted_at": { "_is_null": true },
-    "subject_type": { "_eq": "subject_type_user" },
-    "display_name": { "_like": "%user%" }
+    "subjectType": { "_eq": "subject_type_user" },
+    "displayName": { "_like": "%user%" }
   },
   "limit": 2,
-  "orderBy": [{ "updated_at": "desc_nulls_last" }]
+  "orderBy": [{ "updatedAt": "desc_nulls_last" }]
 }
 
 ###
-@firstPoliciyId =  {{listPolicies.response.body.$.data.policies[0].id}}
+@firstPoliciyId =  {{searchPolicies.response.body.$.data.policies[0].id}}
 ###
 
 ### getPolicy by Id
@@ -165,7 +156,9 @@ query SearchPolicies(
 POST  {{graphqlEndpoint}}
 Content-Type: application/json
 x-hasura-admin-secret: {{graphqlAdminToken}}
-x-hasura-role: editor
+Authorization: Bearer {{graphqlUserToken}}
+x-hasura-allowed-roles:  self supervisor
+x-hasura-role: self
 x-hasura-org-id: chinthagunta.com
 x-hasura-user-id: sumo@chinthagunta.com
 X-REQUEST-TYPE: GraphQL
@@ -173,48 +166,48 @@ X-REQUEST-TYPE: GraphQL
 query GetPolicy($id: uuid!) {
   policies_by_pk(id: $id) {
     id
-    display_name
+    displayName
     description
     tags
     annotations
     disabled
     template
-    created_at
-    created_by
-    updated_at
-    updated_by
-    deleted_at
-    valid_from
-    valid_to
-    subject_display_name
-    subject_domain
-    subject_id
-    subject_secondary_id
-    subject_type
-    source_address
-    source_port
-    destination_address
-    destination_port
+    createdAt
+    createdBy
+    updatedAt
+    updatedBy
+    validFrom
+    validTo
+    subjectDisplayName
+    subjectDomain
+    subjectId
+    subjectSecondaryId
+    subjectType
+    sourceAddress
+    sourcePort
+    destinationAddress
+    destinationPort
     protocol
     action
     direction
-    app_id
+    appId
     weight
   }
 }
-
 
 {
   "id": "{{firstPoliciyId}}"
 }
 
 ### update policiy by ID
-# subject_domain = x-hasura-org-id 	updated_by = x-hasura-user-id
+# subjectDomain = x-hasura-org-id 	updatedBy = x-hasura-user-id
 # @name updatePolicy
 POST  {{graphqlEndpoint}}
 Content-Type: application/json
 x-hasura-admin-secret: {{graphqlAdminToken}}
-x-hasura-role: editor
+Authorization: Bearer {{graphqlUserToken}}
+x-hasura-allowed-roles:  self supervisor
+x-hasura-role: self
 x-hasura-org-id: chinthagunta.com
 x-hasura-user-id: sumo@chinthagunta.com
 X-REQUEST-TYPE: GraphQL
@@ -222,8 +215,8 @@ X-REQUEST-TYPE: GraphQL
 mutation UpdatePolicy($id: uuid!, $data: policies_set_input!) {
   update_policies_by_pk(pk_columns: { id: $id }, _set: $data) {
     id,
-	display_name,
-    updated_at
+	displayName,
+    updatedAt
   }
 }
 
@@ -237,13 +230,14 @@ mutation UpdatePolicy($id: uuid!, $data: policies_set_input!) {
 }
 
 ### create new policiy
-# subject_domain = x-hasura-org-id 	created_by = x-hasura-user-id
+# subjectDomain = x-hasura-org-id 	createdBy = x-hasura-user-id
 # @name createPolicy
 POST  {{graphqlEndpoint}}
 Content-Type: application/json
 x-hasura-admin-secret: {{graphqlAdminToken}}
-x-hasura-allowed-roles:  viewer editor
-x-hasura-role: editor
+Authorization: Bearer {{graphqlUserToken}}
+x-hasura-allowed-roles:  self supervisor
+x-hasura-role: self
 x-hasura-org-id: chinthagunta.com
 x-hasura-user-id: sumo@chinthagunta.com
 X-REQUEST-TYPE: GraphQL
@@ -251,28 +245,27 @@ X-REQUEST-TYPE: GraphQL
 mutation CreatePolicy($data: policies_insert_input!) {
   insert_policies_one(object: $data) {
     id,
-	display_name,
-	updated_at
+	displayName,
+	updatedAt
   }
 }
 
 {
   "data":{
-    "id":"{{$guid}}",
-    "display_name":"user 1",
+    "displayName":"user 1",
     "description":"user 1 policy",
     "tags":"{tz,us}",
     "annotations":"\"sumo\"=>\"demo\"",
-    "subject_id":"6e9bf365-8c09-4dd9-b9b2-83f6ab315618",
-    "subject_secondary_id":"sumo@chinthagunta.com",
-    "subject_display_name":"sumanth chinthagunta",
-    "subject_type":"subject_type_user",
-    "source_address":"0.0.0.0",
-    "source_port":"5000",
-    "destination_address":"1.1.1.1",
-    "destination_port":"443",
-    "app_id":"myapp.exe",
-    "valid_from":"{{$datetime rfc1123|iso8601 [offset option]}}"
+    "subjectId":"6e9bf365-8c09-4dd9-b9b2-83f6ab315618",
+    "subjectSecondaryId":"sumo@chinthagunta.com",
+    "subjectDisplayName":"sumanth chinthagunta",
+    "subjectType":"subject_type_user",
+    "sourceAddress":"0.0.0.0",
+    "sourcePort":"5000",
+    "destinationAddress":"1.1.1.1",
+    "destinationPort":"443",
+    "appId":"myapp.exe",
+    "validFrom":"{{$datetime rfc1123|iso8601 [offset option]}}"
   }
 }
 
@@ -286,15 +279,16 @@ mutation CreatePolicy($data: policies_insert_input!) {
 POST  {{graphqlEndpoint}}
 Content-Type: application/json
 x-hasura-admin-secret: {{graphqlAdminToken}}
-x-hasura-allowed-roles:  viewer editor moderator
-x-hasura-role: editor
+Authorization: Bearer {{graphqlUserToken}}
+x-hasura-allowed-roles:  self supervisor
+x-hasura-role: self
 x-hasura-org-id: chinthagunta.com
 x-hasura-user-id: sumo@chinthagunta.com
 X-REQUEST-TYPE: GraphQL
 
 mutation DeletePolicyFail($id:uuid!) {
   delete_policies_by_pk(id:  $id) {
-      display_name
+      displayName
   }
 }
 
@@ -308,15 +302,16 @@ mutation DeletePolicyFail($id:uuid!) {
 POST  {{graphqlEndpoint}}
 Content-Type: application/json
 x-hasura-admin-secret: {{graphqlAdminToken}}
-x-hasura-allowed-roles:  viewer editor moderator
-x-hasura-role: editor
+Authorization: Bearer {{graphqlUserToken}}
+x-hasura-allowed-roles:  self supervisor
+x-hasura-role: self
 x-hasura-org-id: chinthagunta.com
 x-hasura-user-id: sumo@chinthagunta.com
 X-REQUEST-TYPE: GraphQL
 
 mutation DeletePolicy($id: uuid!, $deletedAt: timestamptz!) {
-	update_policies_by_pk(pk_columns: { id: $id }, _set: { deleted_at: $deletedAt }) {
-		display_name
+	update_policies_by_pk(pk_columns: { id: $id }, _set: { deletedAt: $deletedAt }) {
+		displayName
 	}
 }
 

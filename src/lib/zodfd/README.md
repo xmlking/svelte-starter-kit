@@ -37,14 +37,14 @@ const searchSchema = zfd.formData(policySearchSchema, { empty: 'strip' });
 export async function load(event) {
 	const { url, parent } = event;
 	try {
-		const { limit, offset, subject_type, display_name } = searchSchema.parse(url.searchParams);
+		const { limit, offset, subjectType, displayName } = searchSchema.parse(url.searchParams);
 
 		const orderBy = [{ updated_at: order_by.desc_nulls_first }];
 		const where = {
 			deleted_at: { _is_null: true },
-			subject_type: { _eq: subject_type },
-			...(subject_type ? { subject_type: { _eq: subject_type } } : {}),
-			...(display_name ? { display_name: { _like: `%${display_name}%` } } : {})
+			subjectType: { _eq: subjectType },
+			...(subjectType ? { subjectType: { _eq: subjectType } } : {}),
+			...(displayName ? { displayName: { _like: `%${displayName}%` } } : {})
 		};
 		const variables = { where, limit, offset, orderBy };
 

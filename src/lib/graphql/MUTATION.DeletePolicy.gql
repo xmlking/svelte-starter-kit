@@ -1,5 +1,5 @@
 mutation DeletePolicy($id: uuid!) {
 	delete_policies_by_pk(id: $id) {
-		display_name
+		displayName
 	}
 }

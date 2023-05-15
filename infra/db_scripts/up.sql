@@ -3,6 +3,8 @@ CREATE EXTENSION IF NOT EXISTS citext WITH SCHEMA public;
 COMMENT ON EXTENSION citext IS 'data type for case-insensitive character strings';
 CREATE EXTENSION IF NOT EXISTS hstore WITH SCHEMA public;
 COMMENT ON EXTENSION hstore IS 'data type for storing sets of (key, value) pairs';
+CREATE EXTENSION IF NOT EXISTS ltree WITH SCHEMA public;
+COMMENT ON EXTENSION ltree IS 'data type for storing hierarchical data path';
 CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
 COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
 CREATE FUNCTION public.protect_record_delete() RETURNS trigger
@@ -24,20 +26,25 @@ BEGIN
   RETURN _new;
 END;
 $$;
+CREATE TABLE public.organization (
+    value text NOT NULL,
+    description text NOT NULL
+);
+COMMENT ON TABLE public.organization IS 'organizations are enums';
 CREATE TABLE public.policies (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
-    created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    deleted_at timestamp with time zone,
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
     created_by character varying NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_by character varying NOT NULL,
+    deleted_at timestamp with time zone,
     display_name character varying NOT NULL,
-    description character varying(100),
+    description character varying,
     tags text[],
     annotations public.hstore,
     disabled boolean DEFAULT false,
     template boolean DEFAULT false,
-    valid_from timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
+    valid_from timestamp with time zone DEFAULT now(),
     valid_to timestamp with time zone,
     subject_id character varying NOT NULL,
     subject_secondary_id character varying,
@@ -55,19 +62,15 @@ CREATE TABLE public.policies (
     app_id character varying
 );
 COMMENT ON TABLE public.policies IS 'This is policy table.';
+ALTER TABLE ONLY public.organization
+    ADD CONSTRAINT organization_pkey PRIMARY KEY (value);
 ALTER TABLE ONLY public.policies
     ADD CONSTRAINT policies_pkey PRIMARY KEY (id);
 CREATE INDEX policy_deleted_at ON public.policies USING btree (deleted_at);
 CREATE INDEX policy_subject_id_subject_type ON public.policies USING btree (subject_id, subject_type);
 CREATE INDEX policy_subject_secondary_id_subject_type ON public.policies USING btree (subject_secondary_id, subject_type);
 CREATE INDEX policy_template ON public.policies USING btree (template);
-CREATE TRIGGER set_public_policies_updated_at BEFORE UPDATE ON public.policies FOR EACH ROW EXECUTE FUNCTION public.set_current_timestamp_updated_at();
-COMMENT ON TRIGGER set_public_policies_updated_at ON public.policies IS 'trigger to set value of column "updated_at" to current timestamp on row update';
 CREATE TRIGGER protect_public_policies_record_delete BEFORE DELETE ON public.policies FOR EACH ROW EXECUTE FUNCTION public.protect_record_delete();
 COMMENT ON TRIGGER protect_public_policies_record_delete ON public.policies IS 'trigger to prevent policies deletion';
-
--- # to drop
--- DROP TRIGGER IF EXISTS protect_public_policies_record_delete
--- ON public.policies;
-
--- DROP FUNCTION public.protect_record_delete();
+CREATE TRIGGER set_public_policies_updated_at BEFORE UPDATE ON public.policies FOR EACH ROW EXECUTE FUNCTION public.set_current_timestamp_updated_at();
+COMMENT ON TRIGGER set_public_policies_updated_at ON public.policies IS 'trigger to set value of column "updated_at" to current timestamp on row update';

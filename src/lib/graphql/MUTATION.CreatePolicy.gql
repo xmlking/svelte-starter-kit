@@ -1,7 +1,7 @@
 mutation CreatePolicy($data: policies_insert_input!) {
 	insert_policies_one(object: $data) {
 		id
-		display_name
-		updated_at
+		displayName
+		updatedAt
 	}
 }

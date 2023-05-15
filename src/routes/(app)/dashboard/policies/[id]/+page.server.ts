@@ -31,22 +31,22 @@ export async function load(event) {
 	if (id == '00000000-0000-0000-0000-000000000000') {
 		const policy: policies_insert_input = {
 			id: '00000000-0000-0000-0000-000000000000',
-			display_name: '',
+			displayName: '',
 			// tags: ['tz', 'us'],
 			// annotations: { 'sumo': 'demo' },
-			valid_from: null,
-			valid_to: null,
-			subject_id: '6e9bf365-8c09-4dd9-b9b2-83f6ab315618',
-			subject_type: 'subject_type_user',
-			subject_secondary_id: 'sumo@chinthagunta.com',
-			subject_display_name: '',
-			subject_domain: envPub.PUBLIC_TENANT_ID,
+			validFrom: null,
+			validTo: null,
+			subjectId: '6e9bf365-8c09-4dd9-b9b2-83f6ab315618',
+			subjectType: 'subject_type_user',
+			subjectSecondaryId: 'sumo@chinthagunta.com',
+			subjectDisplayName: '',
+			subjectDomain: envPub.PUBLIC_TENANT_ID,
 			disabled: false,
 			template: false,
-			source_address: '',
-			source_port: '',
-			destination_address: '',
-			destination_port: '',
+			sourceAddress: '',
+			sourcePort: '',
+			destinationAddress: '',
+			destinationPort: '',
 			protocol: 'Any',
 			action: 'action_block',
 			direction: 'direction_egress',
@@ -62,7 +62,7 @@ export async function load(event) {
 			event,
 			blocking: true,
 			policy: CachePolicy.CacheAndNetwork,
-			metadata: { backendToken: 'token from TokenVault', useRole: 'viewer', logResult: true },
+			metadata: { backendToken: 'token from TokenVault', useRole: 'self', logResult: true },
 			variables
 		});
 
@@ -103,8 +103,6 @@ export const actions = {
 			// CREATE
 			if (id == '00000000-0000-0000-0000-000000000000') {
 				log.debug('CREATE action formData:', formData);
-
-				formData.set('id', crypto.randomUUID());
 				const payload = createSchema.parse(formData);
 				log.debug('CREATE action payload:', payload);
 

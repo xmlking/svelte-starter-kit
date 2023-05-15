@@ -185,6 +185,19 @@ input hstore_comparison_exp {
 """mutation root"""
 type mutation_root {
   """
+  delete data from the table: "organization"
+  """
+  delete_organization(
+    """filter the rows which have to be deleted"""
+    where: organization_bool_exp!
+  ): organization_mutation_response
+
+  """
+  delete single row from the table: "organization"
+  """
+  delete_organization_by_pk(value: String!): organization
+
+  """
   delete data from the table: "policies"
   """
   delete_policies(
@@ -196,6 +209,28 @@ type mutation_root {
   delete single row from the table: "policies"
   """
   delete_policies_by_pk(id: uuid!): policies
+
+  """
+  insert data into the table: "organization"
+  """
+  insert_organization(
+    """the rows to be inserted"""
+    objects: [organization_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: organization_on_conflict
+  ): organization_mutation_response
+
+  """
+  insert a single row into the table: "organization"
+  """
+  insert_organization_one(
+    """the row to be inserted"""
+    object: organization_insert_input!
+
+    """upsert condition"""
+    on_conflict: organization_on_conflict
+  ): organization
 
   """
   insert data into the table: "policies"
@@ -218,6 +253,34 @@ type mutation_root {
     """upsert condition"""
     on_conflict: policies_on_conflict
   ): policies
+
+  """
+  update data of the table: "organization"
+  """
+  update_organization(
+    """sets the columns of the filtered rows to the given values"""
+    _set: organization_set_input
+
+    """filter the rows which have to be updated"""
+    where: organization_bool_exp!
+  ): organization_mutation_response
+
+  """
+  update single row of the table: "organization"
+  """
+  update_organization_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: organization_set_input
+    pk_columns: organization_pk_columns_input!
+  ): organization
+
+  """
+  update multiples rows of table: "organization"
+  """
+  update_organization_many(
+    """updates to execute, in order"""
+    updates: [organization_updates!]!
+  ): [organization_mutation_response]
 
   """
   update data of the table: "policies"
@@ -275,35 +338,185 @@ enum order_by {
   desc_nulls_last
 }
 
+"""organizations are enums"""
+type organization {
+  description: String!
+  value: String!
+}
+
+"""
+aggregated selection of "organization"
+"""
+type organization_aggregate {
+  aggregate: organization_aggregate_fields
+  nodes: [organization!]!
+}
+
+"""
+aggregate fields of "organization"
+"""
+type organization_aggregate_fields {
+  count(columns: [organization_select_column!], distinct: Boolean): Int!
+  max: organization_max_fields
+  min: organization_min_fields
+}
+
+"""
+Boolean expression to filter rows from the table "organization". All fields are combined with a logical 'AND'.
+"""
+input organization_bool_exp {
+  _and: [organization_bool_exp!]
+  _not: organization_bool_exp
+  _or: [organization_bool_exp!]
+  description: String_comparison_exp
+  value: String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "organization"
+"""
+enum organization_constraint {
+  """
+  unique or primary key constraint on columns "value"
+  """
+  organization_pkey
+}
+
+"""
+input type for inserting data into table "organization"
+"""
+input organization_insert_input {
+  description: String
+  value: String
+}
+
+"""aggregate max on columns"""
+type organization_max_fields {
+  description: String
+  value: String
+}
+
+"""aggregate min on columns"""
+type organization_min_fields {
+  description: String
+  value: String
+}
+
+"""
+response of any mutation on the table "organization"
+"""
+type organization_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [organization!]!
+}
+
+"""
+on_conflict condition type for table "organization"
+"""
+input organization_on_conflict {
+  constraint: organization_constraint!
+  update_columns: [organization_update_column!]! = []
+  where: organization_bool_exp
+}
+
+"""Ordering options when selecting data from "organization"."""
+input organization_order_by {
+  description: order_by
+  value: order_by
+}
+
+"""primary key columns input for table: organization"""
+input organization_pk_columns_input {
+  value: String!
+}
+
+"""
+select columns of table "organization"
+"""
+enum organization_select_column {
+  """column name"""
+  description
+
+  """column name"""
+  value
+}
+
+"""
+input type for updating data in table "organization"
+"""
+input organization_set_input {
+  description: String
+  value: String
+}
+
+"""
+Streaming cursor of the table "organization"
+"""
+input organization_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: organization_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input organization_stream_cursor_value_input {
+  description: String
+  value: String
+}
+
+"""
+update columns of table "organization"
+"""
+enum organization_update_column {
+  """column name"""
+  description
+
+  """column name"""
+  value
+}
+
+input organization_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: organization_set_input
+
+  """filter the rows which have to be updated"""
+  where: organization_bool_exp!
+}
+
 """This is policy table."""
 type policies {
   action: String!
   annotations: hstore
-  app_id: String
-  created_at: timestamptz!
-  created_by: String!
-  deleted_at: timestamptz
+  appId: String
+  createdAt: timestamptz!
+  createdBy: String!
+  deletedAt: timestamptz
   description: String
-  destination_address: String
-  destination_port: String
+  destinationAddress: String
+  destinationPort: String
   direction: String!
   disabled: Boolean
-  display_name: String!
+  displayName: String!
   id: uuid!
   protocol: String
-  source_address: String
-  source_port: String
-  subject_display_name: String
-  subject_domain: String
-  subject_id: String!
-  subject_secondary_id: String
-  subject_type: String
+  sourceAddress: String
+  sourcePort: String
+  subjectDisplayName: String
+  subjectDomain: String
+  subjectId: String!
+  subjectSecondaryId: String
+  subjectType: String
   tags: _text
   template: Boolean
-  updated_at: timestamptz!
-  updated_by: String!
-  valid_from: timestamptz
-  valid_to: timestamptz
+  updatedAt: timestamptz!
+  updatedBy: String!
+  validFrom: timestamptz
+  validTo: timestamptz
   weight: Int
 }
 
@@ -346,31 +559,31 @@ input policies_bool_exp {
   _or: [policies_bool_exp!]
   action: String_comparison_exp
   annotations: hstore_comparison_exp
-  app_id: String_comparison_exp
-  created_at: timestamptz_comparison_exp
-  created_by: String_comparison_exp
-  deleted_at: timestamptz_comparison_exp
+  appId: String_comparison_exp
+  createdAt: timestamptz_comparison_exp
+  createdBy: String_comparison_exp
+  deletedAt: timestamptz_comparison_exp
   description: String_comparison_exp
-  destination_address: String_comparison_exp
-  destination_port: String_comparison_exp
+  destinationAddress: String_comparison_exp
+  destinationPort: String_comparison_exp
   direction: String_comparison_exp
   disabled: Boolean_comparison_exp
-  display_name: String_comparison_exp
+  displayName: String_comparison_exp
   id: uuid_comparison_exp
   protocol: String_comparison_exp
-  source_address: String_comparison_exp
-  source_port: String_comparison_exp
-  subject_display_name: String_comparison_exp
-  subject_domain: String_comparison_exp
-  subject_id: String_comparison_exp
-  subject_secondary_id: String_comparison_exp
-  subject_type: String_comparison_exp
+  sourceAddress: String_comparison_exp
+  sourcePort: String_comparison_exp
+  subjectDisplayName: String_comparison_exp
+  subjectDomain: String_comparison_exp
+  subjectId: String_comparison_exp
+  subjectSecondaryId: String_comparison_exp
+  subjectType: String_comparison_exp
   tags: _text_comparison_exp
   template: Boolean_comparison_exp
-  updated_at: timestamptz_comparison_exp
-  updated_by: String_comparison_exp
-  valid_from: timestamptz_comparison_exp
-  valid_to: timestamptz_comparison_exp
+  updatedAt: timestamptz_comparison_exp
+  updatedBy: String_comparison_exp
+  validFrom: timestamptz_comparison_exp
+  validTo: timestamptz_comparison_exp
   weight: Int_comparison_exp
 }
 
@@ -397,87 +610,87 @@ input type for inserting data into table "policies"
 input policies_insert_input {
   action: String
   annotations: hstore
-  app_id: String
-  created_at: timestamptz
-  created_by: String
-  deleted_at: timestamptz
+  appId: String
+  createdAt: timestamptz
+  createdBy: String
+  deletedAt: timestamptz
   description: String
-  destination_address: String
-  destination_port: String
+  destinationAddress: String
+  destinationPort: String
   direction: String
   disabled: Boolean
-  display_name: String
+  displayName: String
   id: uuid
   protocol: String
-  source_address: String
-  source_port: String
-  subject_display_name: String
-  subject_domain: String
-  subject_id: String
-  subject_secondary_id: String
-  subject_type: String
+  sourceAddress: String
+  sourcePort: String
+  subjectDisplayName: String
+  subjectDomain: String
+  subjectId: String
+  subjectSecondaryId: String
+  subjectType: String
   tags: _text
   template: Boolean
-  updated_at: timestamptz
-  updated_by: String
-  valid_from: timestamptz
-  valid_to: timestamptz
+  updatedAt: timestamptz
+  updatedBy: String
+  validFrom: timestamptz
+  validTo: timestamptz
   weight: Int
 }
 
 """aggregate max on columns"""
 type policies_max_fields {
   action: String
-  app_id: String
-  created_at: timestamptz
-  created_by: String
-  deleted_at: timestamptz
+  appId: String
+  createdAt: timestamptz
+  createdBy: String
+  deletedAt: timestamptz
   description: String
-  destination_address: String
-  destination_port: String
+  destinationAddress: String
+  destinationPort: String
   direction: String
-  display_name: String
+  displayName: String
   id: uuid
   protocol: String
-  source_address: String
-  source_port: String
-  subject_display_name: String
-  subject_domain: String
-  subject_id: String
-  subject_secondary_id: String
-  subject_type: String
-  updated_at: timestamptz
-  updated_by: String
-  valid_from: timestamptz
-  valid_to: timestamptz
+  sourceAddress: String
+  sourcePort: String
+  subjectDisplayName: String
+  subjectDomain: String
+  subjectId: String
+  subjectSecondaryId: String
+  subjectType: String
+  updatedAt: timestamptz
+  updatedBy: String
+  validFrom: timestamptz
+  validTo: timestamptz
   weight: Int
 }
 
 """aggregate min on columns"""
 type policies_min_fields {
   action: String
-  app_id: String
-  created_at: timestamptz
-  created_by: String
-  deleted_at: timestamptz
+  appId: String
+  createdAt: timestamptz
+  createdBy: String
+  deletedAt: timestamptz
   description: String
-  destination_address: String
-  destination_port: String
+  destinationAddress: String
+  destinationPort: String
   direction: String
-  display_name: String
+  displayName: String
   id: uuid
   protocol: String
-  source_address: String
-  source_port: String
-  subject_display_name: String
-  subject_domain: String
-  subject_id: String
-  subject_secondary_id: String
-  subject_type: String
-  updated_at: timestamptz
-  updated_by: String
-  valid_from: timestamptz
-  valid_to: timestamptz
+  sourceAddress: String
+  sourcePort: String
+  subjectDisplayName: String
+  subjectDomain: String
+  subjectId: String
+  subjectSecondaryId: String
+  subjectType: String
+  updatedAt: timestamptz
+  updatedBy: String
+  validFrom: timestamptz
+  validTo: timestamptz
   weight: Int
 }
 
@@ -505,31 +718,31 @@ input policies_on_conflict {
 input policies_order_by {
   action: order_by
   annotations: order_by
-  app_id: order_by
-  created_at: order_by
-  created_by: order_by
-  deleted_at: order_by
+  appId: order_by
+  createdAt: order_by
+  createdBy: order_by
+  deletedAt: order_by
   description: order_by
-  destination_address: order_by
-  destination_port: order_by
+  destinationAddress: order_by
+  destinationPort: order_by
   direction: order_by
   disabled: order_by
-  display_name: order_by
+  displayName: order_by
   id: order_by
   protocol: order_by
-  source_address: order_by
-  source_port: order_by
-  subject_display_name: order_by
-  subject_domain: order_by
-  subject_id: order_by
-  subject_secondary_id: order_by
-  subject_type: order_by
+  sourceAddress: order_by
+  sourcePort: order_by
+  subjectDisplayName: order_by
+  subjectDomain: order_by
+  subjectId: order_by
+  subjectSecondaryId: order_by
+  subjectType: order_by
   tags: order_by
   template: order_by
-  updated_at: order_by
-  updated_by: order_by
-  valid_from: order_by
-  valid_to: order_by
+  updatedAt: order_by
+  updatedBy: order_by
+  validFrom: order_by
+  validTo: order_by
   weight: order_by
 }
 
@@ -549,25 +762,25 @@ enum policies_select_column {
   annotations
 
   """column name"""
-  app_id
+  appId
 
   """column name"""
-  created_at
+  createdAt
 
   """column name"""
-  created_by
+  createdBy
 
   """column name"""
-  deleted_at
+  deletedAt
 
   """column name"""
   description
 
   """column name"""
-  destination_address
+  destinationAddress
 
   """column name"""
-  destination_port
+  destinationPort
 
   """column name"""
   direction
@@ -576,7 +789,7 @@ enum policies_select_column {
   disabled
 
   """column name"""
-  display_name
+  displayName
 
   """column name"""
   id
@@ -585,25 +798,25 @@ enum policies_select_column {
   protocol
 
   """column name"""
-  source_address
+  sourceAddress
 
   """column name"""
-  source_port
+  sourcePort
 
   """column name"""
-  subject_display_name
+  subjectDisplayName
 
   """column name"""
-  subject_domain
+  subjectDomain
 
   """column name"""
-  subject_id
+  subjectId
 
   """column name"""
-  subject_secondary_id
+  subjectSecondaryId
 
   """column name"""
-  subject_type
+  subjectType
 
   """column name"""
   tags
@@ -612,16 +825,16 @@ enum policies_select_column {
   template
 
   """column name"""
-  updated_at
+  updatedAt
 
   """column name"""
-  updated_by
+  updatedBy
 
   """column name"""
-  valid_from
+  validFrom
 
   """column name"""
-  valid_to
+  validTo
 
   """column name"""
   weight
@@ -633,31 +846,31 @@ input type for updating data in table "policies"
 input policies_set_input {
   action: String
   annotations: hstore
-  app_id: String
-  created_at: timestamptz
-  created_by: String
-  deleted_at: timestamptz
+  appId: String
+  createdAt: timestamptz
+  createdBy: String
+  deletedAt: timestamptz
   description: String
-  destination_address: String
-  destination_port: String
+  destinationAddress: String
+  destinationPort: String
   direction: String
   disabled: Boolean
-  display_name: String
+  displayName: String
   id: uuid
   protocol: String
-  source_address: String
-  source_port: String
-  subject_display_name: String
-  subject_domain: String
-  subject_id: String
-  subject_secondary_id: String
-  subject_type: String
+  sourceAddress: String
+  sourcePort: String
+  subjectDisplayName: String
+  subjectDomain: String
+  subjectId: String
+  subjectSecondaryId: String
+  subjectType: String
   tags: _text
   template: Boolean
-  updated_at: timestamptz
-  updated_by: String
-  valid_from: timestamptz
-  valid_to: timestamptz
+  updatedAt: timestamptz
+  updatedBy: String
+  validFrom: timestamptz
+  validTo: timestamptz
   weight: Int
 }
 
@@ -691,31 +904,31 @@ input policies_stream_cursor_input {
 input policies_stream_cursor_value_input {
   action: String
   annotations: hstore
-  app_id: String
-  created_at: timestamptz
-  created_by: String
-  deleted_at: timestamptz
+  appId: String
+  createdAt: timestamptz
+  createdBy: String
+  deletedAt: timestamptz
   description: String
-  destination_address: String
-  destination_port: String
+  destinationAddress: String
+  destinationPort: String
   direction: String
   disabled: Boolean
-  display_name: String
+  displayName: String
   id: uuid
   protocol: String
-  source_address: String
-  source_port: String
-  subject_display_name: String
-  subject_domain: String
-  subject_id: String
-  subject_secondary_id: String
-  subject_type: String
+  sourceAddress: String
+  sourcePort: String
+  subjectDisplayName: String
+  subjectDomain: String
+  subjectId: String
+  subjectSecondaryId: String
+  subjectType: String
   tags: _text
   template: Boolean
-  updated_at: timestamptz
-  updated_by: String
-  valid_from: timestamptz
-  valid_to: timestamptz
+  updatedAt: timestamptz
+  updatedBy: String
+  validFrom: timestamptz
+  validTo: timestamptz
   weight: Int
 }
 
@@ -735,25 +948,25 @@ enum policies_update_column {
   annotations
 
   """column name"""
-  app_id
+  appId
 
   """column name"""
-  created_at
+  createdAt
 
   """column name"""
-  created_by
+  createdBy
 
   """column name"""
-  deleted_at
+  deletedAt
 
   """column name"""
   description
 
   """column name"""
-  destination_address
+  destinationAddress
 
   """column name"""
-  destination_port
+  destinationPort
 
   """column name"""
   direction
@@ -762,7 +975,7 @@ enum policies_update_column {
   disabled
 
   """column name"""
-  display_name
+  displayName
 
   """column name"""
   id
@@ -771,25 +984,25 @@ enum policies_update_column {
   protocol
 
   """column name"""
-  source_address
+  sourceAddress
 
   """column name"""
-  source_port
+  sourcePort
 
   """column name"""
-  subject_display_name
+  subjectDisplayName
 
   """column name"""
-  subject_domain
+  subjectDomain
 
   """column name"""
-  subject_id
+  subjectId
 
   """column name"""
-  subject_secondary_id
+  subjectSecondaryId
 
   """column name"""
-  subject_type
+  subjectType
 
   """column name"""
   tags
@@ -798,16 +1011,16 @@ enum policies_update_column {
   template
 
   """column name"""
-  updated_at
+  updatedAt
 
   """column name"""
-  updated_by
+  updatedBy
 
   """column name"""
-  valid_from
+  validFrom
 
   """column name"""
-  valid_to
+  validTo
 
   """column name"""
   weight
@@ -819,6 +1032,8 @@ input policies_updates {
 
   """sets the columns of the filtered rows to the given values"""
   _set: policies_set_input
+
+  """filter the rows which have to be updated"""
   where: policies_bool_exp!
 }
 
@@ -843,6 +1058,49 @@ type query_root {
 
   """Restrooms API"""
   SearchRestrooms(arg1: SearchRestroomsInput!): [SearchRestroomsOutput]
+
+  """
+  fetch data from the table: "organization"
+  """
+  organization(
+    """distinct select on columns"""
+    distinct_on: [organization_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [organization_order_by!]
+
+    """filter the rows returned"""
+    where: organization_bool_exp
+  ): [organization!]!
+
+  """
+  fetch aggregated fields from the table: "organization"
+  """
+  organization_aggregate(
+    """distinct select on columns"""
+    distinct_on: [organization_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [organization_order_by!]
+
+    """filter the rows returned"""
+    where: organization_bool_exp
+  ): organization_aggregate!
+
+  """fetch data from the table: "organization" using primary key columns"""
+  organization_by_pk(value: String!): organization
 
   """
   fetch data from the table: "policies"
@@ -889,6 +1147,63 @@ type query_root {
 }
 
 type subscription_root {
+  """
+  fetch data from the table: "organization"
+  """
+  organization(
+    """distinct select on columns"""
+    distinct_on: [organization_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [organization_order_by!]
+
+    """filter the rows returned"""
+    where: organization_bool_exp
+  ): [organization!]!
+
+  """
+  fetch aggregated fields from the table: "organization"
+  """
+  organization_aggregate(
+    """distinct select on columns"""
+    distinct_on: [organization_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [organization_order_by!]
+
+    """filter the rows returned"""
+    where: organization_bool_exp
+  ): organization_aggregate!
+
+  """fetch data from the table: "organization" using primary key columns"""
+  organization_by_pk(value: String!): organization
+
+  """
+  fetch data from the table in a streaming manner: "organization"
+  """
+  organization_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [organization_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: organization_bool_exp
+  ): [organization!]!
+
   """
   fetch data from the table: "policies"
   """

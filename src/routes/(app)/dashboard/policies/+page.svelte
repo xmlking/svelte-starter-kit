@@ -10,7 +10,7 @@
 	import { writable } from 'svelte/store';
 
 	export let form;
-	$: if (form?.actionResult) addToast({ message: `${form.actionResult.display_name} deleted`, dismissible: true, duration: 10000, type: ToastLevel.Info });
+	$: if (form?.actionResult) addToast({ message: `${form.actionResult.displayName} deleted`, dismissible: true, duration: 10000, type: ToastLevel.Info });
 	$: if (form?.actionError) addToast({ message: form.actionError.message, dismissible: true, duration: 10000, type: ToastLevel.Error });
 
 	export let data;
@@ -32,24 +32,24 @@
 			cell: ({ value }) =>
 				createRender(Link, {
 					url: `/dashboard/policies/${value.id}`,
-					content: value.display_name
+					content: value.displayName
 				}),
 			plugins: {
 				tableFilter: {
-					getFilterValue: ({ display_name }) => display_name
+					getFilterValue: ({ displayName }) => displayName
 				},
 				sort: {
-					getSortValue: ({ display_name }) => display_name
+					getSortValue: ({ displayName }) => displayName
 				}
 			}
 		}),
 		table.column({
 			header: 'Subject',
-			accessor: 'subject_display_name'
+			accessor: 'subjectDisplayName'
 		}),
 		table.column({
 			header: 'Created',
-			accessor: 'created_at',
+			accessor: 'createdAt',
 			cell: ({ value }) =>
 				createRender(TimeDistance, {
 					timestamp: Date.parse(value),
@@ -67,12 +67,12 @@
 		table.column({
 			header: 'Source',
 			id: 'source',
-			accessor: (item) => `${item.source_address ?? ''}:${item.source_port ?? ''}`
+			accessor: (item) => `${item.sourceAddress ?? ''}:${item.sourcePort ?? ''}`
 		}),
 		table.column({
 			header: 'Destination',
 			id: 'destination',
-			accessor: (item) => `${item.destination_address ?? ''}:${item.destination_port ?? ''}`
+			accessor: (item) => `${item.destinationAddress ?? ''}:${item.destinationPort ?? ''}`
 		}),
 		table.column({
 			header: 'Disabled',
@@ -103,8 +103,8 @@
 	const { pageIndex, pageCount, pageSize, hasNextPage, hasPreviousPage } = pluginStates.page;
 
 	// Search Table
-	let display_name = $page.url.searchParams.get('display_name') ?? '';
-	let subject_type = $page.url.searchParams.get('subject_type') ?? '';
+	let displayName = $page.url.searchParams.get('displayName') ?? '';
+	let subjectType = $page.url.searchParams.get('subjectType') ?? '';
 	let limit = $page.url.searchParams.get('limit') ?? '50';
 	let offset = $page.url.searchParams.get('offset') ?? '0';
 
@@ -155,27 +155,27 @@
 			<span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white"> Policies </span>
 		</NavBrand>
 		<ButtonGroup class="w-1/2">
-			<Select name="subject_type" class="w-auto !rounded-r-none" items={subTypeOptions} value={subject_type} placeholder="Select Type" />
+			<Select name="subjectType" class="w-auto !rounded-r-none" items={subTypeOptions} value={subjectType} placeholder="Select Type" />
 			<InputAddon class="!bg-gray-50 !px-2 dark:!bg-gray-500">
-				{#if subject_type == 'subject_type_group'}
+				{#if subjectType == 'subject_type_group'}
 					<UserGroup />
-				{:else if subject_type == 'subject_type_service_account'}
+				{:else if subjectType == 'subject_type_service_account'}
 					<UserCircle />
-				{:else if subject_type == 'subject_type_device'}
+				{:else if subjectType == 'subject_type_device'}
 					<DevicePhoneMobile />
 				{:else}
 					<User />
 				{/if}
 			</InputAddon>
-			<Input name="display_name" value={display_name} autofocus class="input !rounded-none focus:outline-none" placeholder="Display Name" />
+			<Input name="displayName" value={displayName} autofocus class="input !rounded-none focus:outline-none" placeholder="Display Name" />
 			<Select name="limit" items={limits} value={limit} class="w-16 !rounded-none border-l-0" />
 			<input name="offset" value={offset} type="hidden" />
 			<Button type="submit" color="dark"  class="!p-2.5"><MagnifyingGlass size="20" /></Button>
 		</ButtonGroup>
 		<a class="btn" href="/dashboard/policies/00000000-0000-0000-0000-000000000000">Add Policy</a>
 	</Navbar>
-	<ErrorMessage error={fieldErrors?.subject_type?.[0]} />
-	<ErrorMessage error={fieldErrors?.display_name?.[0]} />
+	<ErrorMessage error={fieldErrors?.subjectType?.[0]} />
+	<ErrorMessage error={fieldErrors?.displayName?.[0]} />
 	<ErrorMessage error={fieldErrors?.limit?.[0]} />
 	<ErrorMessage error={fieldErrors?.offset?.[0]} />
 </form>

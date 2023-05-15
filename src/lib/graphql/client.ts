@@ -50,7 +50,7 @@ export default new HoudiniClient({
 		return {
 			headers: {
 				...(token ? { Authorization: `Bearer ${token}` } : {}),
-				...(useRole ? { 'x-hasura-role': useRole } : { 'x-hasura-role': 'editor' }),
+				...(useRole ? { 'x-hasura-role': useRole } : { 'x-hasura-role': 'self' }),
 				...(backendToken ? { backendToken } : {})
 			}
 		};

@@ -107,8 +107,9 @@ fragment TypeRef on __Type {
 POST  {{graphqlEndpoint}}
 Content-Type: application/json
 x-hasura-admin-secret: {{graphqlAdminToken}}
-# Authorization: Bearer {{graphqlUserToken}}
-x-hasura-role: editor
+Authorization: Bearer {{graphqlUserToken}}
+x-hasura-allowed-roles:  self supervisor
+x-hasura-role: self
 x-hasura-org-id: chinthagunta.com
 x-hasura-user-id: sumo@chinthagunta.com
 X-REQUEST-TYPE: GraphQL
@@ -142,7 +143,9 @@ query MyQuery {
 POST  {{graphqlEndpoint}}
 Content-Type: application/json
 x-hasura-admin-secret: {{graphqlAdminToken}}
-x-hasura-role: editor
+Authorization: Bearer {{graphqlUserToken}}
+x-hasura-allowed-roles:  self supervisor
+x-hasura-role: self
 x-hasura-org-id: chinthagunta.com
 x-hasura-user-id: sumo@chinthagunta.com
 X-REQUEST-TYPE: GraphQL
