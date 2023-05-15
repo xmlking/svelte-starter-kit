@@ -39,8 +39,8 @@ hasura seed create organization_seed --database-name default --from-table organi
 # Export data from multiple tables:
 # hasura seed create policies_organization_seed --database-name default --from-table policies --from-table organization
 # Apply only a particular file:
-hasura seed apply --file 1684117729424_policies_seed.sql --database-name default
-hasura seed apply --file 1684117772284_organization_seed.sql --database-name default
+hasura seed apply --file 1684135711683_policies_seed.sql --database-name default
+hasura seed apply --file 1684135716943_organization_seed.sql --database-name default
 # hasura seed apply --file 1684101975415_policies_organization_seed.sql --database-name default
 
 
