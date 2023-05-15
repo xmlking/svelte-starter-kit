@@ -156,6 +156,187 @@ input _text_comparison_exp {
   _nin: [_text!]
 }
 
+"""action type"""
+type action {
+  description: String!
+  value: String!
+}
+
+"""
+aggregated selection of "action"
+"""
+type action_aggregate {
+  aggregate: action_aggregate_fields
+  nodes: [action!]!
+}
+
+"""
+aggregate fields of "action"
+"""
+type action_aggregate_fields {
+  count(columns: [action_select_column!], distinct: Boolean): Int!
+  max: action_max_fields
+  min: action_min_fields
+}
+
+"""
+Boolean expression to filter rows from the table "action". All fields are combined with a logical 'AND'.
+"""
+input action_bool_exp {
+  _and: [action_bool_exp!]
+  _not: action_bool_exp
+  _or: [action_bool_exp!]
+  description: String_comparison_exp
+  value: String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "action"
+"""
+enum action_constraint {
+  """
+  unique or primary key constraint on columns "value"
+  """
+  action_pkey
+}
+
+enum action_enum {
+  """ACTION_BLOCK"""
+  action_block
+
+  """ACTION_CALLOUT_INSPECTION"""
+  action_callout_inspection
+
+  """ACTION_CALLOUT_TERMINATING"""
+  action_callout_terminating
+
+  """ACTION_CALLOUT_UNKNOWN"""
+  action_callout_unknown
+
+  """ACTION_PERMIT"""
+  action_permit
+
+  """ACTION_UNSPECIFIED"""
+  action_unspecified
+}
+
+"""
+Boolean expression to compare columns of type "action_enum". All fields are combined with logical 'AND'.
+"""
+input action_enum_comparison_exp {
+  _eq: action_enum
+  _in: [action_enum!]
+  _is_null: Boolean
+  _neq: action_enum
+  _nin: [action_enum!]
+}
+
+"""
+input type for inserting data into table "action"
+"""
+input action_insert_input {
+  description: String
+  value: String
+}
+
+"""aggregate max on columns"""
+type action_max_fields {
+  description: String
+  value: String
+}
+
+"""aggregate min on columns"""
+type action_min_fields {
+  description: String
+  value: String
+}
+
+"""
+response of any mutation on the table "action"
+"""
+type action_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [action!]!
+}
+
+"""
+on_conflict condition type for table "action"
+"""
+input action_on_conflict {
+  constraint: action_constraint!
+  update_columns: [action_update_column!]! = []
+  where: action_bool_exp
+}
+
+"""Ordering options when selecting data from "action"."""
+input action_order_by {
+  description: order_by
+  value: order_by
+}
+
+"""primary key columns input for table: action"""
+input action_pk_columns_input {
+  value: String!
+}
+
+"""
+select columns of table "action"
+"""
+enum action_select_column {
+  """column name"""
+  description
+
+  """column name"""
+  value
+}
+
+"""
+input type for updating data in table "action"
+"""
+input action_set_input {
+  description: String
+  value: String
+}
+
+"""
+Streaming cursor of the table "action"
+"""
+input action_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: action_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input action_stream_cursor_value_input {
+  description: String
+  value: String
+}
+
+"""
+update columns of table "action"
+"""
+enum action_update_column {
+  """column name"""
+  description
+
+  """column name"""
+  value
+}
+
+input action_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: action_set_input
+
+  """filter the rows which have to be updated"""
+  where: action_bool_exp!
+}
+
 """ordering argument of a cursor"""
 enum cursor_ordering {
   """ascending ordering of the cursor"""
@@ -163,6 +344,178 @@ enum cursor_ordering {
 
   """descending ordering of the cursor"""
   DESC
+}
+
+"""direction type"""
+type direction {
+  description: String!
+  value: String!
+}
+
+"""
+aggregated selection of "direction"
+"""
+type direction_aggregate {
+  aggregate: direction_aggregate_fields
+  nodes: [direction!]!
+}
+
+"""
+aggregate fields of "direction"
+"""
+type direction_aggregate_fields {
+  count(columns: [direction_select_column!], distinct: Boolean): Int!
+  max: direction_max_fields
+  min: direction_min_fields
+}
+
+"""
+Boolean expression to filter rows from the table "direction". All fields are combined with a logical 'AND'.
+"""
+input direction_bool_exp {
+  _and: [direction_bool_exp!]
+  _not: direction_bool_exp
+  _or: [direction_bool_exp!]
+  description: String_comparison_exp
+  value: String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "direction"
+"""
+enum direction_constraint {
+  """
+  unique or primary key constraint on columns "value"
+  """
+  direction_pkey
+}
+
+enum direction_enum {
+  """DIRECTION_EGRESS"""
+  direction_egress
+
+  """DIRECTION_INGRESS"""
+  direction_ingress
+
+  """DIRECTION_UNSPECIFIED"""
+  direction_unspecified
+}
+
+"""
+Boolean expression to compare columns of type "direction_enum". All fields are combined with logical 'AND'.
+"""
+input direction_enum_comparison_exp {
+  _eq: direction_enum
+  _in: [direction_enum!]
+  _is_null: Boolean
+  _neq: direction_enum
+  _nin: [direction_enum!]
+}
+
+"""
+input type for inserting data into table "direction"
+"""
+input direction_insert_input {
+  description: String
+  value: String
+}
+
+"""aggregate max on columns"""
+type direction_max_fields {
+  description: String
+  value: String
+}
+
+"""aggregate min on columns"""
+type direction_min_fields {
+  description: String
+  value: String
+}
+
+"""
+response of any mutation on the table "direction"
+"""
+type direction_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [direction!]!
+}
+
+"""
+on_conflict condition type for table "direction"
+"""
+input direction_on_conflict {
+  constraint: direction_constraint!
+  update_columns: [direction_update_column!]! = []
+  where: direction_bool_exp
+}
+
+"""Ordering options when selecting data from "direction"."""
+input direction_order_by {
+  description: order_by
+  value: order_by
+}
+
+"""primary key columns input for table: direction"""
+input direction_pk_columns_input {
+  value: String!
+}
+
+"""
+select columns of table "direction"
+"""
+enum direction_select_column {
+  """column name"""
+  description
+
+  """column name"""
+  value
+}
+
+"""
+input type for updating data in table "direction"
+"""
+input direction_set_input {
+  description: String
+  value: String
+}
+
+"""
+Streaming cursor of the table "direction"
+"""
+input direction_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: direction_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input direction_stream_cursor_value_input {
+  description: String
+  value: String
+}
+
+"""
+update columns of table "direction"
+"""
+enum direction_update_column {
+  """column name"""
+  description
+
+  """column name"""
+  value
+}
+
+input direction_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: direction_set_input
+
+  """filter the rows which have to be updated"""
+  where: direction_bool_exp!
 }
 
 scalar hstore
@@ -184,6 +537,32 @@ input hstore_comparison_exp {
 
 """mutation root"""
 type mutation_root {
+  """
+  delete data from the table: "action"
+  """
+  delete_action(
+    """filter the rows which have to be deleted"""
+    where: action_bool_exp!
+  ): action_mutation_response
+
+  """
+  delete single row from the table: "action"
+  """
+  delete_action_by_pk(value: String!): action
+
+  """
+  delete data from the table: "direction"
+  """
+  delete_direction(
+    """filter the rows which have to be deleted"""
+    where: direction_bool_exp!
+  ): direction_mutation_response
+
+  """
+  delete single row from the table: "direction"
+  """
+  delete_direction_by_pk(value: String!): direction
+
   """
   delete data from the table: "organization"
   """
@@ -209,6 +588,63 @@ type mutation_root {
   delete single row from the table: "policies"
   """
   delete_policies_by_pk(id: uuid!): policies
+
+  """
+  delete data from the table: "subject_type"
+  """
+  delete_subject_type(
+    """filter the rows which have to be deleted"""
+    where: subject_type_bool_exp!
+  ): subject_type_mutation_response
+
+  """
+  delete single row from the table: "subject_type"
+  """
+  delete_subject_type_by_pk(value: String!): subject_type
+
+  """
+  insert data into the table: "action"
+  """
+  insert_action(
+    """the rows to be inserted"""
+    objects: [action_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: action_on_conflict
+  ): action_mutation_response
+
+  """
+  insert a single row into the table: "action"
+  """
+  insert_action_one(
+    """the row to be inserted"""
+    object: action_insert_input!
+
+    """upsert condition"""
+    on_conflict: action_on_conflict
+  ): action
+
+  """
+  insert data into the table: "direction"
+  """
+  insert_direction(
+    """the rows to be inserted"""
+    objects: [direction_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: direction_on_conflict
+  ): direction_mutation_response
+
+  """
+  insert a single row into the table: "direction"
+  """
+  insert_direction_one(
+    """the row to be inserted"""
+    object: direction_insert_input!
+
+    """upsert condition"""
+    on_conflict: direction_on_conflict
+  ): direction
 
   """
   insert data into the table: "organization"
@@ -253,6 +689,84 @@ type mutation_root {
     """upsert condition"""
     on_conflict: policies_on_conflict
   ): policies
+
+  """
+  insert data into the table: "subject_type"
+  """
+  insert_subject_type(
+    """the rows to be inserted"""
+    objects: [subject_type_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: subject_type_on_conflict
+  ): subject_type_mutation_response
+
+  """
+  insert a single row into the table: "subject_type"
+  """
+  insert_subject_type_one(
+    """the row to be inserted"""
+    object: subject_type_insert_input!
+
+    """upsert condition"""
+    on_conflict: subject_type_on_conflict
+  ): subject_type
+
+  """
+  update data of the table: "action"
+  """
+  update_action(
+    """sets the columns of the filtered rows to the given values"""
+    _set: action_set_input
+
+    """filter the rows which have to be updated"""
+    where: action_bool_exp!
+  ): action_mutation_response
+
+  """
+  update single row of the table: "action"
+  """
+  update_action_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: action_set_input
+    pk_columns: action_pk_columns_input!
+  ): action
+
+  """
+  update multiples rows of table: "action"
+  """
+  update_action_many(
+    """updates to execute, in order"""
+    updates: [action_updates!]!
+  ): [action_mutation_response]
+
+  """
+  update data of the table: "direction"
+  """
+  update_direction(
+    """sets the columns of the filtered rows to the given values"""
+    _set: direction_set_input
+
+    """filter the rows which have to be updated"""
+    where: direction_bool_exp!
+  ): direction_mutation_response
+
+  """
+  update single row of the table: "direction"
+  """
+  update_direction_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: direction_set_input
+    pk_columns: direction_pk_columns_input!
+  ): direction
+
+  """
+  update multiples rows of table: "direction"
+  """
+  update_direction_many(
+    """updates to execute, in order"""
+    updates: [direction_updates!]!
+  ): [direction_mutation_response]
 
   """
   update data of the table: "organization"
@@ -315,6 +829,34 @@ type mutation_root {
     """updates to execute, in order"""
     updates: [policies_updates!]!
   ): [policies_mutation_response]
+
+  """
+  update data of the table: "subject_type"
+  """
+  update_subject_type(
+    """sets the columns of the filtered rows to the given values"""
+    _set: subject_type_set_input
+
+    """filter the rows which have to be updated"""
+    where: subject_type_bool_exp!
+  ): subject_type_mutation_response
+
+  """
+  update single row of the table: "subject_type"
+  """
+  update_subject_type_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: subject_type_set_input
+    pk_columns: subject_type_pk_columns_input!
+  ): subject_type
+
+  """
+  update multiples rows of table: "subject_type"
+  """
+  update_subject_type_many(
+    """updates to execute, in order"""
+    updates: [subject_type_updates!]!
+  ): [subject_type_mutation_response]
 }
 
 """column ordering options"""
@@ -509,7 +1051,7 @@ input organization_updates {
 
 """This is policy table."""
 type policies {
-  action: String!
+  action: action_enum!
   annotations: hstore
   appId: String
   createdAt: timestamptz!
@@ -518,7 +1060,7 @@ type policies {
   description: String
   destinationAddress: String
   destinationPort: String
-  direction: String!
+  direction: direction_enum!
   disabled: Boolean
   displayName: String!
   id: uuid!
@@ -529,7 +1071,7 @@ type policies {
   subjectDomain: organization_enum
   subjectId: String!
   subjectSecondaryId: String
-  subjectType: String
+  subjectType: subject_type_enum
   tags: _text
   template: Boolean
   updatedAt: timestamptz!
@@ -576,7 +1118,7 @@ input policies_bool_exp {
   _and: [policies_bool_exp!]
   _not: policies_bool_exp
   _or: [policies_bool_exp!]
-  action: String_comparison_exp
+  action: action_enum_comparison_exp
   annotations: hstore_comparison_exp
   appId: String_comparison_exp
   createdAt: timestamptz_comparison_exp
@@ -585,7 +1127,7 @@ input policies_bool_exp {
   description: String_comparison_exp
   destinationAddress: String_comparison_exp
   destinationPort: String_comparison_exp
-  direction: String_comparison_exp
+  direction: direction_enum_comparison_exp
   disabled: Boolean_comparison_exp
   displayName: String_comparison_exp
   id: uuid_comparison_exp
@@ -596,7 +1138,7 @@ input policies_bool_exp {
   subjectDomain: organization_enum_comparison_exp
   subjectId: String_comparison_exp
   subjectSecondaryId: String_comparison_exp
-  subjectType: String_comparison_exp
+  subjectType: subject_type_enum_comparison_exp
   tags: _text_comparison_exp
   template: Boolean_comparison_exp
   updatedAt: timestamptz_comparison_exp
@@ -627,7 +1169,7 @@ input policies_inc_input {
 input type for inserting data into table "policies"
 """
 input policies_insert_input {
-  action: String
+  action: action_enum
   annotations: hstore
   appId: String
   createdAt: timestamptz
@@ -636,7 +1178,7 @@ input policies_insert_input {
   description: String
   destinationAddress: String
   destinationPort: String
-  direction: String
+  direction: direction_enum
   disabled: Boolean
   displayName: String
   id: uuid
@@ -647,7 +1189,7 @@ input policies_insert_input {
   subjectDomain: organization_enum
   subjectId: String
   subjectSecondaryId: String
-  subjectType: String
+  subjectType: subject_type_enum
   tags: _text
   template: Boolean
   updatedAt: timestamptz
@@ -659,7 +1201,6 @@ input policies_insert_input {
 
 """aggregate max on columns"""
 type policies_max_fields {
-  action: String
   appId: String
   createdAt: timestamptz
   createdBy: String
@@ -667,7 +1208,6 @@ type policies_max_fields {
   description: String
   destinationAddress: String
   destinationPort: String
-  direction: String
   displayName: String
   id: uuid
   protocol: String
@@ -676,7 +1216,6 @@ type policies_max_fields {
   subjectDisplayName: String
   subjectId: String
   subjectSecondaryId: String
-  subjectType: String
   updatedAt: timestamptz
   updatedBy: String
   validFrom: timestamptz
@@ -686,7 +1225,6 @@ type policies_max_fields {
 
 """aggregate min on columns"""
 type policies_min_fields {
-  action: String
   appId: String
   createdAt: timestamptz
   createdBy: String
@@ -694,7 +1232,6 @@ type policies_min_fields {
   description: String
   destinationAddress: String
   destinationPort: String
-  direction: String
   displayName: String
   id: uuid
   protocol: String
@@ -703,7 +1240,6 @@ type policies_min_fields {
   subjectDisplayName: String
   subjectId: String
   subjectSecondaryId: String
-  subjectType: String
   updatedAt: timestamptz
   updatedBy: String
   validFrom: timestamptz
@@ -861,7 +1397,7 @@ enum policies_select_column {
 input type for updating data in table "policies"
 """
 input policies_set_input {
-  action: String
+  action: action_enum
   annotations: hstore
   appId: String
   createdAt: timestamptz
@@ -870,7 +1406,7 @@ input policies_set_input {
   description: String
   destinationAddress: String
   destinationPort: String
-  direction: String
+  direction: direction_enum
   disabled: Boolean
   displayName: String
   id: uuid
@@ -881,7 +1417,7 @@ input policies_set_input {
   subjectDomain: organization_enum
   subjectId: String
   subjectSecondaryId: String
-  subjectType: String
+  subjectType: subject_type_enum
   tags: _text
   template: Boolean
   updatedAt: timestamptz
@@ -919,7 +1455,7 @@ input policies_stream_cursor_input {
 
 """Initial value of the column from where the streaming should start"""
 input policies_stream_cursor_value_input {
-  action: String
+  action: action_enum
   annotations: hstore
   appId: String
   createdAt: timestamptz
@@ -928,7 +1464,7 @@ input policies_stream_cursor_value_input {
   description: String
   destinationAddress: String
   destinationPort: String
-  direction: String
+  direction: direction_enum
   disabled: Boolean
   displayName: String
   id: uuid
@@ -939,7 +1475,7 @@ input policies_stream_cursor_value_input {
   subjectDomain: organization_enum
   subjectId: String
   subjectSecondaryId: String
-  subjectType: String
+  subjectType: subject_type_enum
   tags: _text
   template: Boolean
   updatedAt: timestamptz
@@ -1077,6 +1613,92 @@ type query_root {
   SearchRestrooms(arg1: SearchRestroomsInput!): [SearchRestroomsOutput]
 
   """
+  fetch data from the table: "action"
+  """
+  action(
+    """distinct select on columns"""
+    distinct_on: [action_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [action_order_by!]
+
+    """filter the rows returned"""
+    where: action_bool_exp
+  ): [action!]!
+
+  """
+  fetch aggregated fields from the table: "action"
+  """
+  action_aggregate(
+    """distinct select on columns"""
+    distinct_on: [action_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [action_order_by!]
+
+    """filter the rows returned"""
+    where: action_bool_exp
+  ): action_aggregate!
+
+  """fetch data from the table: "action" using primary key columns"""
+  action_by_pk(value: String!): action
+
+  """
+  fetch data from the table: "direction"
+  """
+  direction(
+    """distinct select on columns"""
+    distinct_on: [direction_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [direction_order_by!]
+
+    """filter the rows returned"""
+    where: direction_bool_exp
+  ): [direction!]!
+
+  """
+  fetch aggregated fields from the table: "direction"
+  """
+  direction_aggregate(
+    """distinct select on columns"""
+    distinct_on: [direction_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [direction_order_by!]
+
+    """filter the rows returned"""
+    where: direction_bool_exp
+  ): direction_aggregate!
+
+  """fetch data from the table: "direction" using primary key columns"""
+  direction_by_pk(value: String!): direction
+
+  """
   fetch data from the table: "organization"
   """
   organization(
@@ -1161,9 +1783,347 @@ type query_root {
 
   """fetch data from the table: "policies" using primary key columns"""
   policies_by_pk(id: uuid!): policies
+
+  """
+  fetch data from the table: "subject_type"
+  """
+  subject_type(
+    """distinct select on columns"""
+    distinct_on: [subject_type_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [subject_type_order_by!]
+
+    """filter the rows returned"""
+    where: subject_type_bool_exp
+  ): [subject_type!]!
+
+  """
+  fetch aggregated fields from the table: "subject_type"
+  """
+  subject_type_aggregate(
+    """distinct select on columns"""
+    distinct_on: [subject_type_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [subject_type_order_by!]
+
+    """filter the rows returned"""
+    where: subject_type_bool_exp
+  ): subject_type_aggregate!
+
+  """fetch data from the table: "subject_type" using primary key columns"""
+  subject_type_by_pk(value: String!): subject_type
+}
+
+"""Subject Type"""
+type subject_type {
+  description: String!
+  value: String!
+}
+
+"""
+aggregated selection of "subject_type"
+"""
+type subject_type_aggregate {
+  aggregate: subject_type_aggregate_fields
+  nodes: [subject_type!]!
+}
+
+"""
+aggregate fields of "subject_type"
+"""
+type subject_type_aggregate_fields {
+  count(columns: [subject_type_select_column!], distinct: Boolean): Int!
+  max: subject_type_max_fields
+  min: subject_type_min_fields
+}
+
+"""
+Boolean expression to filter rows from the table "subject_type". All fields are combined with a logical 'AND'.
+"""
+input subject_type_bool_exp {
+  _and: [subject_type_bool_exp!]
+  _not: subject_type_bool_exp
+  _or: [subject_type_bool_exp!]
+  description: String_comparison_exp
+  value: String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "subject_type"
+"""
+enum subject_type_constraint {
+  """
+  unique or primary key constraint on columns "value"
+  """
+  subject_type_pkey
+}
+
+enum subject_type_enum {
+  """SUBJECT_TYPE_DEVICE"""
+  subject_type_device
+
+  """SUBJECT_TYPE_DEVICE_POOL"""
+  subject_type_device_pool
+
+  """SUBJECT_TYPE_GROUP"""
+  subject_type_group
+
+  """SUBJECT_TYPE_SERVICE_ACCOUNT"""
+  subject_type_service_account
+
+  """SUBJECT_TYPE_UNSPECIFIED"""
+  subject_type_unspecified
+
+  """SUBJECT_TYPE_USER"""
+  subject_type_user
+}
+
+"""
+Boolean expression to compare columns of type "subject_type_enum". All fields are combined with logical 'AND'.
+"""
+input subject_type_enum_comparison_exp {
+  _eq: subject_type_enum
+  _in: [subject_type_enum!]
+  _is_null: Boolean
+  _neq: subject_type_enum
+  _nin: [subject_type_enum!]
+}
+
+"""
+input type for inserting data into table "subject_type"
+"""
+input subject_type_insert_input {
+  description: String
+  value: String
+}
+
+"""aggregate max on columns"""
+type subject_type_max_fields {
+  description: String
+  value: String
+}
+
+"""aggregate min on columns"""
+type subject_type_min_fields {
+  description: String
+  value: String
+}
+
+"""
+response of any mutation on the table "subject_type"
+"""
+type subject_type_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [subject_type!]!
+}
+
+"""
+on_conflict condition type for table "subject_type"
+"""
+input subject_type_on_conflict {
+  constraint: subject_type_constraint!
+  update_columns: [subject_type_update_column!]! = []
+  where: subject_type_bool_exp
+}
+
+"""Ordering options when selecting data from "subject_type"."""
+input subject_type_order_by {
+  description: order_by
+  value: order_by
+}
+
+"""primary key columns input for table: subject_type"""
+input subject_type_pk_columns_input {
+  value: String!
+}
+
+"""
+select columns of table "subject_type"
+"""
+enum subject_type_select_column {
+  """column name"""
+  description
+
+  """column name"""
+  value
+}
+
+"""
+input type for updating data in table "subject_type"
+"""
+input subject_type_set_input {
+  description: String
+  value: String
+}
+
+"""
+Streaming cursor of the table "subject_type"
+"""
+input subject_type_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: subject_type_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input subject_type_stream_cursor_value_input {
+  description: String
+  value: String
+}
+
+"""
+update columns of table "subject_type"
+"""
+enum subject_type_update_column {
+  """column name"""
+  description
+
+  """column name"""
+  value
+}
+
+input subject_type_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: subject_type_set_input
+
+  """filter the rows which have to be updated"""
+  where: subject_type_bool_exp!
 }
 
 type subscription_root {
+  """
+  fetch data from the table: "action"
+  """
+  action(
+    """distinct select on columns"""
+    distinct_on: [action_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [action_order_by!]
+
+    """filter the rows returned"""
+    where: action_bool_exp
+  ): [action!]!
+
+  """
+  fetch aggregated fields from the table: "action"
+  """
+  action_aggregate(
+    """distinct select on columns"""
+    distinct_on: [action_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [action_order_by!]
+
+    """filter the rows returned"""
+    where: action_bool_exp
+  ): action_aggregate!
+
+  """fetch data from the table: "action" using primary key columns"""
+  action_by_pk(value: String!): action
+
+  """
+  fetch data from the table in a streaming manner: "action"
+  """
+  action_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [action_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: action_bool_exp
+  ): [action!]!
+
+  """
+  fetch data from the table: "direction"
+  """
+  direction(
+    """distinct select on columns"""
+    distinct_on: [direction_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [direction_order_by!]
+
+    """filter the rows returned"""
+    where: direction_bool_exp
+  ): [direction!]!
+
+  """
+  fetch aggregated fields from the table: "direction"
+  """
+  direction_aggregate(
+    """distinct select on columns"""
+    distinct_on: [direction_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [direction_order_by!]
+
+    """filter the rows returned"""
+    where: direction_bool_exp
+  ): direction_aggregate!
+
+  """fetch data from the table: "direction" using primary key columns"""
+  direction_by_pk(value: String!): direction
+
+  """
+  fetch data from the table in a streaming manner: "direction"
+  """
+  direction_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [direction_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: direction_bool_exp
+  ): [direction!]!
+
   """
   fetch data from the table: "organization"
   """
@@ -1277,6 +2237,63 @@ type subscription_root {
     """filter the rows returned"""
     where: policies_bool_exp
   ): [policies!]!
+
+  """
+  fetch data from the table: "subject_type"
+  """
+  subject_type(
+    """distinct select on columns"""
+    distinct_on: [subject_type_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [subject_type_order_by!]
+
+    """filter the rows returned"""
+    where: subject_type_bool_exp
+  ): [subject_type!]!
+
+  """
+  fetch aggregated fields from the table: "subject_type"
+  """
+  subject_type_aggregate(
+    """distinct select on columns"""
+    distinct_on: [subject_type_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [subject_type_order_by!]
+
+    """filter the rows returned"""
+    where: subject_type_bool_exp
+  ): subject_type_aggregate!
+
+  """fetch data from the table: "subject_type" using primary key columns"""
+  subject_type_by_pk(value: String!): subject_type
+
+  """
+  fetch data from the table in a streaming manner: "subject_type"
+  """
+  subject_type_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [subject_type_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: subject_type_bool_exp
+  ): [subject_type!]!
 }
 
 scalar timestamptz

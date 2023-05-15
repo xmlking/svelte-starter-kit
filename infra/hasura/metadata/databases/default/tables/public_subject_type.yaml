@@ -2,3 +2,22 @@ table:
   name: subject_type
   schema: public
 is_enum: true
+select_permissions:
+  - role: agent
+    permission:
+      columns:
+        - description
+        - value
+      filter: {}
+  - role: self
+    permission:
+      columns:
+        - description
+        - value
+      filter: {}
+  - role: supervisor
+    permission:
+      columns:
+        - description
+        - value
+      filter: {}
