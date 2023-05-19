@@ -32,9 +32,9 @@ SSH to **db host**
 Connect to database with `psql` cli:
 
 ```shell
-psql -U postgres -d postgresdb
+psql -U postgres -d postgres
 # switch to postgresdb
-postgresdb=# \c postgresdb
+postgresdb=# \c postgres
 # list databases
 postgresdb=# \l
 # list relations
@@ -50,9 +50,10 @@ postgresdb-# \q
 Create a PostgreSQL **user** and **schemas** for **Hasura**
 
 ```shell
-psql -U postgres -d postgresdb
+psql -d postgres -U postgres
 # switch to a database postgresdb:
-postgresdb=# \c postgresdb
+postgresdb=# \c postgres
+SELECT current_user;
 ```
 
 Then run each of the following SQL statments
@@ -64,10 +65,6 @@ Then run each of the following SQL statments
 
 -- create a separate user for hasura (if you don't already have one)
 CREATE USER hasurauser WITH PASSWORD 'change_me';
-
--- create pgcrypto extension, required for UUID
-CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
-COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
 
 -- create the schemas required by the hasura cloud system
 CREATE SCHEMA IF NOT EXISTS hdb_catalog;
@@ -88,6 +85,7 @@ GRANT USAGE ON SCHEMA public TO hasurauser;
 GRANT ALL ON ALL TABLES IN SCHEMA public TO hasurauser;
 GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO hasurauser;
 GRANT ALL ON ALL FUNCTIONS IN SCHEMA public TO hasurauser;
+GRANT CREATE ON SCHEMA public TO hasurauser;
 
 -- Similarly add these for other schemas as well, if you have any
 -- GRANT USAGE ON SCHEMA <schema-name> TO hasurauser;
@@ -100,8 +98,14 @@ Create application specific schema objects
 
 ```sql
 -- create application required extensions
+CREATE EXTENSION IF NOT EXISTS citext WITH SCHEMA public;
+COMMENT ON EXTENSION citext IS 'data type for case-insensitive character strings';
 CREATE EXTENSION IF NOT EXISTS hstore WITH SCHEMA public;
 COMMENT ON EXTENSION hstore IS 'data type for storing sets of (key, value) pairs';
+CREATE EXTENSION IF NOT EXISTS ltree WITH SCHEMA public;
+COMMENT ON EXTENSION ltree IS 'data type for storing hierarchical data path';
+CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
+COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
 
 SELECT * FROM pg_extension;
 SELECT extname, extowner::regrole FROM pg_catalog.pg_extension;
@@ -110,7 +114,7 @@ SELECT extname, extowner::regrole FROM pg_catalog.pg_extension;
 you can connect to the database using the database connection string from remote computer:
 
 ```shell
-psql postgresql://hasurauser:hasura_password@db_host:5432/postgresdb
+psql postgresql://hasurauser:hasura_password@db_host:5432/postgres
 ```
 
 ## Usage
@@ -120,4 +124,20 @@ psql postgresql://hasurauser:hasura_password@db_host:5432/postgresdb
 select schema_name from information_schema.schemata;
 ```
 
+You will have access to
+
+```shell
+/bin/vi /etc/pgbackrest.conf
+cat  /var/lib/pgsql/14/data/pg_hba.conf
+
+/bin/systemctl start postgresql*
+/bin/systemctl stop postgresql*
+/bin/systemctl restart postgresql*
+/bin/systemctl reload postgresql*
+/bin/systemctl status postgresql*
+/bin/systemctl daemon-reload
+```
+
 ## Reference
+
+- HCP PostgreSQL provisioning [docs](https://console.hcp.uhg.com/products/postgresql/create-postgresql-database)
