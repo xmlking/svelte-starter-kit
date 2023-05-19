@@ -34,6 +34,8 @@
 		"streetsidesoftware.code-spell-checker",
 		"stylelint.vscode-stylelint",
 		"svelte.svelte-vscode",
+		"ardenivanov.svelte-intellisense",
+		"fivethree.vscode-svelte-snippets",
 		"Tyriar.sort-lines",
 		"VisualStudioExptTeam.vscodeintellicode",
 		"vunguyentuan.vscode-css-variables",
