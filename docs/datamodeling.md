@@ -1,6 +1,6 @@
 # Data Modeling
 
-This document provide guidelines when creating tables in PostgreSQL database which is used by Hasura to expose GraphQL APIs securely. 
+This document provide guidelines when creating tables in **PostgreSQL** database which is used by *Hasura* to expose GraphQL APIs securely. 
 
 ## Style guide
 
@@ -123,7 +123,7 @@ Adding a user to an org sets `deleted_at = null` if there is already an existing
 Alternatively, we could remove the unique constraint on `user_id` and `org_id` and always insert in the add user case (after checking to see if the user is in the org). This would then function as an audit log table.
 
 The decision we have made is to use `Soft Delete`
-Follow hasura [Setting up Soft Deletes for Data](https://hasura.io/docs/latest/schema/common-patterns/data-modeling/soft-deletes/) document to Set up appropriate insert/update/delete permissions.
+Follow hasura [Setting up Soft Deletes for Data](https://hasura.io/docs/latest/schema/common-patterns/data-modeling/soft-deletes/) document to Set up appropriate `insert/update/delete` permissions.
 
  ## Reference
 - [Database Style guide](https://docs.sourcegraph.com/dev/background-information/postgresql)
