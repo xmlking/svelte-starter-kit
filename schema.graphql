@@ -1820,7 +1820,7 @@ type query_root {
   subject_type_by_pk(value: String!): subject_type
 }
 
-"""Subject Type"""
+"""Subject Type """
 type subject_type {
   description: String!
   value: String!
