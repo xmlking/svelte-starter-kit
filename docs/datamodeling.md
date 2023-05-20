@@ -125,6 +125,45 @@ Alternatively, we could remove the unique constraint on `user_id` and `org_id` a
 The decision we have made is to use `Soft Delete`
 Follow hasura [Setting up Soft Deletes for Data](https://hasura.io/docs/latest/schema/common-patterns/data-modeling/soft-deletes/) document to Set up appropriate `insert/update/delete` permissions.
 
+### Use foreign keys
+
+If you have a column that references another column in the database, add a foreign key constraint.
+
+There are reasons to not use foreign keys at scale, but we are not at scale and we can drop these in the future if they become a problem.
+
+### Don't cascade deletes
+
+Foreign key constraints should not cascade deletes for a few reasons:
+
+1. We don't want to accidentally delete a lot of data (either from our application, or from a manual query in prod).
+2. If we ever add new tables that depend on other tables via foreign key, it is not necessarily the case that cascading the delete is correct for the new table. Explicit application code is better here.
+3. If we ever get to the point of sharding the db, we will probably need to drop all foreign key constraints so it would be great if we did not make our code depend on cascading delete behavior.
+
+Instead of cascading deletes, applications should explicitly delete the rows that would otherwise get deleted if cascading deletes were enabled.
+
+### Table names
+Tables are plural (e.g. repositories, users, comments, etc.).
+
+Join tables should be named based on the two tables being joined (e.g. foo_bar joins foo and bar).
+
+### Validation
+To the extent that certain fields require validation (e.g. username) we should perform that validation in client AND EITHER the database when possible, OR the graphql api. 
+
+This results in the best experience for the client, and protects us from corrupt data.
+
+### Triggers
+Because a trigger resides in the database and anyone who has the required privilege can use it, a trigger lets you write a set of SQL statements that multiple applications can use. It lets you avoid redundant code when multiple programs need to perform the same database operation.
+
+Triggers are usually a good tool for:
+- Computing derived column values automatically.
+- Enforcing complex integrity constraints (e.g. when a faster CHECK constraint isn't powerful enough).
+- Maintaining derived tables (e.g creating an audit trail of activity in the database).
+
+Triggers are often not a good tool for:
+- Implementing complex application logic.
+
+Whatever you end up doing, ensure that the affected code paths are tested appropriately. For instance, if you created a trigger that populates a column, you should test that a record that is written can be read back with the affected column set to what you expect.
+
  ## Reference
 - [Database Style guide](https://docs.sourcegraph.com/dev/background-information/postgresql)
 - [Setting up Soft Deletes for Data](https://hasura.io/docs/latest/schema/common-patterns/data-modeling/soft-deletes/)
