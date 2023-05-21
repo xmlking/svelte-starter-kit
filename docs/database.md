@@ -29,6 +29,11 @@ For local dev _postgres_ database running in docker compose, these steps are not
 
 SSH to **db host**
 
+```shell
+# if your database is running in docker
+docker compose exec postgres /bin/bash
+```
+
 Connect to database with `psql` cli:
 
 ```shell
@@ -86,6 +91,9 @@ GRANT ALL ON ALL TABLES IN SCHEMA public TO hasurauser;
 GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO hasurauser;
 GRANT ALL ON ALL FUNCTIONS IN SCHEMA public TO hasurauser;
 GRANT CREATE ON SCHEMA public TO hasurauser;
+
+GRANT SET ON PARAMETER rules.soft_deletion to hasurauser;
+ALTER DATABASE postgres SET rules.soft_deletion TO on;
 
 -- Similarly add these for other schemas as well, if you have any
 -- GRANT USAGE ON SCHEMA <schema-name> TO hasurauser;

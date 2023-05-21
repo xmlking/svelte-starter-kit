@@ -94,7 +94,7 @@ export const actions = {
 				actionResult
 			};
 		} catch (err) {
-			console.error('policies:actions:delete:error:', err);
+			log.error('policies:actions:delete:error:', err);
 			Sentry.setContext('source', { code: 'policy.delete' });
 			Sentry.captureException(err);
 

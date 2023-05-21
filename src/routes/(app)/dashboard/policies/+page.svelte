@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { Delete, ErrorMessage, Link } from '$lib/components';
-	import { addToast, ToastLevel } from '$lib/components/toast';
-	import { Breadcrumb, BreadcrumbItem, Button, ButtonGroup, Input, InputAddon, Navbar, NavBrand, Select } from 'flowbite-svelte';
-	import { createRender, createTable, Render, Subscribe } from 'svelte-headless-table';
+	import { ToastLevel, addToast } from '$lib/components/toast';
+	import { Breadcrumb, BreadcrumbItem, Button, ButtonGroup, Input, InputAddon, NavBrand, Navbar, Select } from 'flowbite-svelte';
+	import { Render, Subscribe, createRender, createTable } from 'svelte-headless-table';
 	import { addPagination, addSortBy, addTableFilter } from 'svelte-headless-table/plugins';
 	import { ChevronDown, ChevronUp, DevicePhoneMobile, MagnifyingGlass, ShieldCheck, User, UserCircle, UserGroup } from 'svelte-heros-v2';
 	import { TimeDistance } from 'svelte-time-distance';
@@ -170,7 +170,7 @@
 			<Input name="displayName" value={displayName} autofocus class="input !rounded-none focus:outline-none" placeholder="Display Name" />
 			<Select name="limit" items={limits} value={limit} class="w-16 !rounded-none border-l-0" />
 			<input name="offset" value={offset} type="hidden" />
-			<Button type="submit" color="dark"  class="!p-2.5"><MagnifyingGlass size="20" /></Button>
+			<Button type="submit" color="dark" class="!p-2.5"><MagnifyingGlass size="20" /></Button>
 		</ButtonGroup>
 		<a class="btn" href="/dashboard/policies/00000000-0000-0000-0000-000000000000">Add Policy</a>
 	</Navbar>
@@ -190,13 +190,13 @@
 					<div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
 						<svg class="h-5 w-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" /></svg>
 					</div>
-					<input bind:value={$filterValue} type="text" id="table-search" class="block w-80 rounded-lg border border-gray-300 bg-gray-50 p-2.5 pl-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500  dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500" placeholder="Search rows..." />
+					<input bind:value={$filterValue} type="text" id="table-search" class="block w-80 rounded-lg border border-gray-300 bg-gray-50 p-2.5 pl-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500" placeholder="Search rows..." />
 				</div>
 			</div>
 		</div>
 
 		<table {...$tableAttrs} class="w-full text-left text-sm text-gray-500 dark:text-gray-400">
-			<thead class="bg-gray-50 text-xs uppercase text-gray-700  dark:bg-gray-700 dark:text-gray-400">
+			<thead class="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
 				{#each $headerRows as headerRow (headerRow.id)}
 					<Subscribe attrs={headerRow.attrs()} let:attrs>
 						<tr {...attrs}>
