@@ -1,4 +1,6 @@
 SET check_function_bodies = false;
+---ALTER DATABASE postgres SET rules.soft_deletion TO on;
+SET SESSION "rules.soft_deletion" = 'on';
 CREATE EXTENSION IF NOT EXISTS citext WITH SCHEMA public;
 COMMENT ON EXTENSION citext IS 'data type for case-insensitive character strings';
 CREATE EXTENSION IF NOT EXISTS hstore WITH SCHEMA public;
@@ -7,15 +9,7 @@ CREATE EXTENSION IF NOT EXISTS ltree WITH SCHEMA public;
 COMMENT ON EXTENSION ltree IS 'data type for storing hierarchical data path';
 CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
 COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
-CREATE FUNCTION public.protect_record_delete() RETURNS trigger
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-    RAISE EXCEPTION 'Can not delete rows in this table';
-    RETURN OLD;
-END;
-$$;
-CREATE FUNCTION public.set_current_timestamp_updated_at() RETURNS trigger
+ CREATE OR REPLACE FUNCTION public.set_current_timestamp_updated_at() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 DECLARE
@@ -60,7 +54,7 @@ CREATE TABLE public.policies (
     subject_secondary_id character varying,
     subject_display_name character varying,
     subject_type character varying DEFAULT 'subject_type_user'::character varying,
-    subject_domain character varying,
+    organization character varying,
     source_address character varying,
     source_port character varying,
     destination_address character varying,
@@ -88,11 +82,15 @@ ALTER TABLE ONLY public.policies
 ALTER TABLE ONLY public.subject_type
     ADD CONSTRAINT subject_type_pkey PRIMARY KEY (value);
 CREATE INDEX policy_deleted_at ON public.policies USING btree (deleted_at);
+CREATE UNIQUE INDEX policy_display_name_organization_unique ON public.policies USING btree (display_name, organization) WHERE (deleted_at IS NULL);
 CREATE INDEX policy_subject_id_subject_type ON public.policies USING btree (subject_id, subject_type);
 CREATE INDEX policy_subject_secondary_id_subject_type ON public.policies USING btree (subject_secondary_id, subject_type);
 CREATE INDEX policy_template ON public.policies USING btree (template);
-CREATE TRIGGER protect_public_policies_record_delete BEFORE DELETE ON public.policies FOR EACH ROW EXECUTE FUNCTION public.protect_record_delete();
-COMMENT ON TRIGGER protect_public_policies_record_delete ON public.policies IS 'trigger to prevent policies deletion';
+CREATE OR REPLACE RULE policies_soft_deletion_rule AS
+    ON DELETE TO public.policies
+   WHERE current_setting('rules.soft_deletion'::text) = 'on'::text DO INSTEAD  UPDATE policies SET deleted_at = now()
+  WHERE (policies.id = old.id);
+COMMENT ON RULE policies_soft_deletion_rule ON public.policies IS 'Make soft instead of hard deletion';
 CREATE TRIGGER set_public_policies_updated_at BEFORE UPDATE ON public.policies FOR EACH ROW EXECUTE FUNCTION public.set_current_timestamp_updated_at();
 COMMENT ON TRIGGER set_public_policies_updated_at ON public.policies IS 'trigger to set value of column "updated_at" to current timestamp on row update';
 ALTER TABLE ONLY public.policies
@@ -100,6 +98,6 @@ ALTER TABLE ONLY public.policies
 ALTER TABLE ONLY public.policies
     ADD CONSTRAINT policies_direction_fkey FOREIGN KEY (direction) REFERENCES public.direction(value);
 ALTER TABLE ONLY public.policies
-    ADD CONSTRAINT policies_subject_domain_fkey FOREIGN KEY (subject_domain) REFERENCES public.organization(value);
+    ADD CONSTRAINT policies_organization_fkey FOREIGN KEY (organization) REFERENCES public.organization(value);
 ALTER TABLE ONLY public.policies
     ADD CONSTRAINT policies_subject_type_fkey FOREIGN KEY (subject_type) REFERENCES public.subject_type(value);

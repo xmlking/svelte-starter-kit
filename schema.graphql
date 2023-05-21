@@ -332,6 +332,8 @@ enum action_update_column {
 input action_updates {
   """sets the columns of the filtered rows to the given values"""
   _set: action_set_input
+
+  """filter the rows which have to be updated"""
   where: action_bool_exp!
 }
 
@@ -511,6 +513,8 @@ enum direction_update_column {
 input direction_updates {
   """sets the columns of the filtered rows to the given values"""
   _set: direction_set_input
+
+  """filter the rows which have to be updated"""
   where: direction_bool_exp!
 }
 
@@ -1040,6 +1044,8 @@ enum organization_update_column {
 input organization_updates {
   """sets the columns of the filtered rows to the given values"""
   _set: organization_set_input
+
+  """filter the rows which have to be updated"""
   where: organization_bool_exp!
 }
 
@@ -1058,11 +1064,11 @@ type policies {
   disabled: Boolean
   displayName: String!
   id: uuid!
+  organization: organization_enum
   protocol: String
   sourceAddress: String
   sourcePort: String
   subjectDisplayName: String
-  subjectDomain: organization_enum
   subjectId: String!
   subjectSecondaryId: String
   subjectType: subject_type_enum
@@ -1125,11 +1131,11 @@ input policies_bool_exp {
   disabled: Boolean_comparison_exp
   displayName: String_comparison_exp
   id: uuid_comparison_exp
+  organization: organization_enum_comparison_exp
   protocol: String_comparison_exp
   sourceAddress: String_comparison_exp
   sourcePort: String_comparison_exp
   subjectDisplayName: String_comparison_exp
-  subjectDomain: organization_enum_comparison_exp
   subjectId: String_comparison_exp
   subjectSecondaryId: String_comparison_exp
   subjectType: subject_type_enum_comparison_exp
@@ -1150,6 +1156,11 @@ enum policies_constraint {
   unique or primary key constraint on columns "id"
   """
   policies_pkey
+
+  """
+  unique or primary key constraint on columns "display_name", "organization"
+  """
+  policy_display_name_organization_unique
 }
 
 """
@@ -1176,11 +1187,11 @@ input policies_insert_input {
   disabled: Boolean
   displayName: String
   id: uuid
+  organization: organization_enum
   protocol: String
   sourceAddress: String
   sourcePort: String
   subjectDisplayName: String
-  subjectDomain: organization_enum
   subjectId: String
   subjectSecondaryId: String
   subjectType: subject_type_enum
@@ -1276,11 +1287,11 @@ input policies_order_by {
   disabled: order_by
   displayName: order_by
   id: order_by
+  organization: order_by
   protocol: order_by
   sourceAddress: order_by
   sourcePort: order_by
   subjectDisplayName: order_by
-  subjectDomain: order_by
   subjectId: order_by
   subjectSecondaryId: order_by
   subjectType: order_by
@@ -1342,6 +1353,9 @@ enum policies_select_column {
   id
 
   """column name"""
+  organization
+
+  """column name"""
   protocol
 
   """column name"""
@@ -1352,9 +1366,6 @@ enum policies_select_column {
 
   """column name"""
   subjectDisplayName
-
-  """column name"""
-  subjectDomain
 
   """column name"""
   subjectId
@@ -1404,11 +1415,11 @@ input policies_set_input {
   disabled: Boolean
   displayName: String
   id: uuid
+  organization: organization_enum
   protocol: String
   sourceAddress: String
   sourcePort: String
   subjectDisplayName: String
-  subjectDomain: organization_enum
   subjectId: String
   subjectSecondaryId: String
   subjectType: subject_type_enum
@@ -1462,11 +1473,11 @@ input policies_stream_cursor_value_input {
   disabled: Boolean
   displayName: String
   id: uuid
+  organization: organization_enum
   protocol: String
   sourceAddress: String
   sourcePort: String
   subjectDisplayName: String
-  subjectDomain: organization_enum
   subjectId: String
   subjectSecondaryId: String
   subjectType: subject_type_enum
@@ -1528,6 +1539,9 @@ enum policies_update_column {
   id
 
   """column name"""
+  organization
+
+  """column name"""
   protocol
 
   """column name"""
@@ -1538,9 +1552,6 @@ enum policies_update_column {
 
   """column name"""
   subjectDisplayName
-
-  """column name"""
-  subjectDomain
 
   """column name"""
   subjectId
@@ -1579,6 +1590,8 @@ input policies_updates {
 
   """sets the columns of the filtered rows to the given values"""
   _set: policies_set_input
+
+  """filter the rows which have to be updated"""
   where: policies_bool_exp!
 }
 
@@ -1820,7 +1833,7 @@ type query_root {
   subject_type_by_pk(value: String!): subject_type
 }
 
-"""Subject Type """
+"""Subject Type"""
 type subject_type {
   description: String!
   value: String!
@@ -1996,6 +2009,8 @@ enum subject_type_update_column {
 input subject_type_updates {
   """sets the columns of the filtered rows to the given values"""
   _set: subject_type_set_input
+
+  """filter the rows which have to be updated"""
   where: subject_type_bool_exp!
 }
 

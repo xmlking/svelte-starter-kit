@@ -34,20 +34,20 @@ hasura version
 hasura console
 
 # Create a new seed by exporting data from tables already present in the database:
-hasura seed create organization_seed --database-name default --from-table organization
-hasura seed create direction_seed --database-name default --from-table direction
-hasura seed create action_seed --database-name default --from-table action
-hasura seed create subject_type_seed --database-name default --from-table subject_type
-hasura seed create policies_seed --database-name default --from-table policies
+hasura seed create organization --database-name default --from-table organization
+hasura seed create direction --database-name default --from-table direction
+hasura seed create action --database-name default --from-table action
+hasura seed create subject_type --database-name default --from-table subject_type
+hasura seed create policies --database-name default --from-table policies
 # Export data from multiple tables:
-# hasura seed create policies_organization_seed --database-name default --from-table policies --from-table organization
+# hasura seed create policies_organization --database-name default --from-table policies --from-table organization
 # Apply only a particular file:
-hasura seed apply --file 1684142140561_organization_seed.sql --database-name default
-hasura seed apply --file 1684142145167_direction_seed.sql --database-name default
-hasura seed apply --file 1684142149809_action_seed.sql --database-name default
-hasura seed apply --file 1684142153358_subject_type_seed.sql --database-name default
-hasura seed apply --file 1684142134894_policies_seed.sql --database-name default
-# hasura seed apply --file 1684101975415_policies_organization_seed.sql --database-name default
+hasura seed apply --file 1684206602839_organization.sql --database-name default
+hasura seed apply --file 1684206608561_direction.sql --database-name default
+hasura seed apply --file 1684206612631_action.sql --database-name default
+hasura seed apply --file 1684206616256_subject_type.sql --database-name default
+hasura seed apply --file 1684206620559_policies.sql --database-name default
+# hasura seed apply --file 1684101975415_policies_organization.sql --database-name default
 
 
 # To apply all the Migrations present in the `migrations/` directory and the Metadata present in the `metadata/` directory on a new, "fresh",
@@ -64,6 +64,8 @@ hasura metadata apply --endpoint https://erraxvkmnzplotebnxuy.hasura.us-east-1.n
 hasura migrate status --database-name default
 # Apply the Metadata and Migrations:
 hasura migrate apply --database-name default
+# then apply seeds
+# after applying seeds, then apply metadata
 hasura metadata apply
 hasura metadata reload
 # update local "init" migrate file from server
@@ -230,3 +232,4 @@ Use plugin [@graphql-codegen/hasura-allow-list](https://npmjs.com/package/@graph
 - [Hasura Backend Plus](https://nhost.github.io/hasura-backend-plus/)
 - [GraphQL Security in Production with Automated Allow Lists](https://hasura.io/blog/graphql-security-in-production-with-hasura-automated-allow-lists/)
 - Hasura [Production Checklist](https://hasura.io/docs/latest/deployment/production-checklist/)
+- Hasura [Roles & Session Variables](https://hasura.io/docs/latest/auth/authorization/roles-variables/)

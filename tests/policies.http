@@ -1,7 +1,8 @@
 ###
 @graphqlEndpoint =  {{$dotenv HASURA_GRAPHQL_ENDPOINT}}/v1/graphql
 @graphqlAdminToken =  {{$dotenv HASURA_GRAPHQL_ADMIN_SECRET}}
-@graphqlUserToken =  'get me from OAuth flow'
+# set token without `''`
+@graphqlUserToken =
 ###
 
 ### IntrospectionQuery
@@ -61,7 +62,7 @@ query ListPolicies(
     validFrom
     validTo
     subjectDisplayName
-    subjectDomain
+    organization
     subjectId
     subjectSecondaryId
     subjectType
@@ -112,7 +113,7 @@ query SearchAgentPolicies(
     description
     validFrom
     validTo
-    subjectDomain
+    organization
     sourceAddress
     sourcePort
     destinationAddress
@@ -172,7 +173,7 @@ query SearchPolicies(
     validFrom
     validTo
     subjectDisplayName
-    subjectDomain
+    organization
     subjectId
     subjectSecondaryId
     subjectType
@@ -229,7 +230,7 @@ query GetPolicy($id: uuid!) {
     validFrom
     validTo
     subjectDisplayName
-    subjectDomain
+    organization
     subjectId
     subjectSecondaryId
     subjectType
@@ -250,7 +251,7 @@ query GetPolicy($id: uuid!) {
 }
 
 ### update policiy by ID
-# subjectDomain = x-hasura-org-id 	updatedBy = x-hasura-user-id
+# organization = x-hasura-org-id 	updatedBy = x-hasura-user-id
 # @name updatePolicy
 POST  {{graphqlEndpoint}}
 Content-Type: application/json
@@ -280,7 +281,7 @@ mutation UpdatePolicy($id: uuid!, $data: policies_set_input!) {
 }
 
 ### create new policiy
-# subjectDomain = x-hasura-org-id 	createdBy = x-hasura-user-id
+# organization = x-hasura-org-id 	createdBy = x-hasura-user-id
 # @name createPolicy
 POST  {{graphqlEndpoint}}
 Content-Type: application/json

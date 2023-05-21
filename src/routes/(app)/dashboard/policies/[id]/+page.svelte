@@ -7,12 +7,15 @@
 	import { DateInput } from '$lib/components/form';
 	import { addToast, ToastLevel } from '$lib/components/toast';
 	import { policyClientSchema } from '$lib/models/schema';
+	import { Logger } from '$lib/utils';
 	import { validator } from '@felte/validator-zod';
 	import type { Snapshot } from '@sveltejs/kit';
 	import { createForm } from 'felte';
 	import { Breadcrumb, BreadcrumbItem, Button, ButtonGroup, Helper, Spinner } from 'flowbite-svelte';
 	import { tick } from 'svelte';
 	import { AdjustmentsHorizontal, ArrowLeft, CloudArrowDown } from 'svelte-heros-v2';
+
+	const log = new Logger('routes:policies:item');
 
 	export let form;
 	let { actionResult, actionError, formErrors, fieldErrors } = form || {};
@@ -31,7 +34,7 @@
 	// TODO: Snapshot helps to recover form state, if navigated without submitting
 	export const snapshot: Snapshot = {
   		capture: () => 'hello',
-  		restore: (message) => console.log(message)
+  		restore: (message) => log.debug(message)
 	};
 
 	async function goBack() {
@@ -55,11 +58,11 @@
 		// this is dummy submit method for felte, sveltekit's `Form Action` really submit the form.
 		onSubmit: async (values, context) => {
 			await tick();
-			console.debug(values);
-			console.debug(new FormData(context.form));
+			log.debug(values);
+			log.debug(new FormData(context.form));
 		}
 	});
-	console.log('fData', $fData);
+	log.debug('fData', $fData);
 
 	//Form
 	let subjectTypeOptions = [
@@ -164,7 +167,7 @@
 				<FloatingLabelField name="subjectSecondaryId" style="outlined" label="Subject Secondary ID" error={fieldErrors?.subjectSecondaryId?.[0] || $fErrors?.subjectSecondaryId?.[0]} disabled={editMode} />
 			</div>
 			<div>
-				<FloatingLabelField name="subjectDomain" style="outlined" label="Subject domain" error={fieldErrors?.subjectDomain?.[0] || $fErrors?.subjectDomain?.[0]} disabled={true} />
+				<FloatingLabelField name="organization" style="outlined" label="Organization" error={fieldErrors?.organization?.[0] || $fErrors?.organization?.[0]} disabled={true} />
 			</div>
 			<div class="col-span-3">
 				<FloatingLabelField name="sourceAddress" style="outlined" label="Source address" error={fieldErrors?.sourceAddress?.[0] || $fErrors?.sourceAddress?.[0]} />

@@ -15,7 +15,7 @@ fragment Policy_list_fields on policies {
 	sourceAddress
 	sourcePort
 	subjectDisplayName
-	# subjectDomain
+	# organization
 	# subjectId
 	# subjectSecondaryId
 	# subjectType

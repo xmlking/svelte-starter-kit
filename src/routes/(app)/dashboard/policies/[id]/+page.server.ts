@@ -1,5 +1,5 @@
 import { CachePolicy, CreatePolicyStore, GetPolicyStore, UpdatePolicyStore, type policies_insert_input } from '$houdini';
-import { handleActionErrors, handleLoadErrors, NotFoundError, PolicyError } from '$lib/errors';
+import { NotFoundError, PolicyError, handleActionErrors, handleLoadErrors } from '$lib/errors';
 import { policyCreateSchema, policyUpdateSchema } from '$lib/models/schema';
 import { Logger } from '$lib/utils';
 import { uuidSchema } from '$lib/utils/zod.utils';
@@ -8,7 +8,6 @@ import { zfd } from '$lib/zodfd';
 import * as Sentry from '@sentry/svelte';
 import { fail, redirect } from '@sveltejs/kit';
 import type { GraphQLError } from 'graphql';
-import crypto from 'node:crypto';
 import { ZodError } from 'zod';
 
 const log = new Logger('policy.details.server');
@@ -40,7 +39,7 @@ export async function load(event) {
 			subjectType: 'subject_type_user',
 			subjectSecondaryId: 'sumo@chinthagunta.com',
 			subjectDisplayName: '',
-			subjectDomain: envPub.PUBLIC_ORGANIZATION,
+			organization: envPub.PUBLIC_ORGANIZATION,
 			disabled: false,
 			template: false,
 			sourceAddress: '',
@@ -154,7 +153,7 @@ export const actions = {
 				// throw redirect(303, '/dashboard/policies');
 			}
 		} catch (err) {
-			console.error('policy:actions:save:error:', err);
+			log.error('policy:actions:save:error:', err);
 			Sentry.setContext('source', { code: 'policy.save' });
 			Sentry.captureException(err);
 

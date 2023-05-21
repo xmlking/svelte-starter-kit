@@ -17,14 +17,14 @@ configuration:
       custom_name: destinationPort
     display_name:
       custom_name: displayName
+    organization:
+      custom_name: organization
     source_address:
       custom_name: sourceAddress
     source_port:
       custom_name: sourcePort
     subject_display_name:
       custom_name: subjectDisplayName
-    subject_domain:
-      custom_name: subjectDomain
     subject_id:
       custom_name: subjectId
     subject_secondary_id:
@@ -47,10 +47,10 @@ configuration:
     destination_address: destinationAddress
     destination_port: destinationPort
     display_name: displayName
+    organization: organization
     source_address: sourceAddress
     source_port: sourcePort
     subject_display_name: subjectDisplayName
-    subject_domain: subjectDomain
     subject_id: subjectId
     subject_secondary_id: subjectSecondaryId
     subject_type: subjectType
@@ -65,7 +65,7 @@ insert_permissions:
       check: {}
       set:
         created_by: x-hasura-user-id
-        subject_domain: x-hasura-org-id
+        organization: x-hasura-org-id
         updated_by: x-hasura-user-id
       columns:
         - action
@@ -109,7 +109,7 @@ insert_permissions:
         - source_address
         - source_port
         - subject_display_name
-        - subject_domain
+        - organization
         - subject_id
         - subject_secondary_id
         - subject_type
@@ -133,7 +133,7 @@ select_permissions:
         - protocol
         - source_address
         - source_port
-        - subject_domain
+        - organization
         - subject_type
         - updated_at
         - valid_from
@@ -143,7 +143,7 @@ select_permissions:
         _and:
           - deleted_at:
               _is_null: true
-          - subject_domain:
+          - organization:
               _eq: x-hasura-org-id
           - disabled:
               _eq: false
@@ -170,7 +170,7 @@ select_permissions:
         - source_address
         - source_port
         - subject_display_name
-        - subject_domain
+        - organization
         - subject_id
         - subject_secondary_id
         - subject_type
@@ -185,7 +185,7 @@ select_permissions:
         _and:
           - deleted_at:
               _is_null: true
-          - subject_domain:
+          - organization:
               _eq: x-hasura-org-id
           - created_by:
               _eq: x-hasura-user-id
@@ -208,7 +208,7 @@ select_permissions:
         - source_address
         - source_port
         - subject_display_name
-        - subject_domain
+        - organization
         - subject_id
         - subject_secondary_id
         - subject_type
@@ -223,7 +223,7 @@ select_permissions:
         _and:
           - deleted_at:
               _is_null: true
-          - subject_domain:
+          - organization:
               _eq: x-hasura-org-id
 update_permissions:
   - role: self
@@ -250,7 +250,7 @@ update_permissions:
         _and:
           - deleted_at:
               _is_null: true
-          - subject_domain:
+          - organization:
               _eq: x-hasura-org-id
           - created_by:
               _eq: x-hasura-user-id
@@ -281,7 +281,7 @@ update_permissions:
         _and:
           - deleted_at:
               _is_null: true
-          - subject_domain:
+          - organization:
               _eq: x-hasura-org-id
       check: null
       set:

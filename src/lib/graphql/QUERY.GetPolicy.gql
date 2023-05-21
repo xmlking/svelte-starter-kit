@@ -17,7 +17,7 @@ query GetPolicy($id: uuid!) {
 		sourceAddress
 		sourcePort
 		subjectDisplayName
-		subjectDomain
+		organization
 		subjectId
 		subjectSecondaryId
 		subjectType
