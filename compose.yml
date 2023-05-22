@@ -82,7 +82,7 @@ services:
           "key": "1084d8d404126d641c232604aa27bc756921c07a5869c6de6cfd0c6c455de0fe",
           "claims_map": {
             "x-hasura-allowed-roles": { "path": "$.roles" },
-            "x-hasura-default-role": "self",
+            "x-hasura-default-role": "user",
             "x-hasura-user-id": { "path": "$.sub" },
             "x-hasura-org-id":  { "path": "$.org", "default": "public" }
           }

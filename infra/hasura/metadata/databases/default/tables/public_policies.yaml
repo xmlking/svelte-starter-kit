@@ -60,7 +60,7 @@ configuration:
     valid_to: validTo
   custom_root_fields: {}
 insert_permissions:
-  - role: self
+  - role: user
     permission:
       check: {}
       set:
@@ -89,7 +89,7 @@ insert_permissions:
         - valid_from
         - valid_to
         - weight
-  - role: supervisor
+  - role: manager
     permission:
       check: {}
       set:
@@ -151,7 +151,7 @@ select_permissions:
               _eq: false
           - valid_from:
               _lte: now()
-  - role: self
+  - role: user
     permission:
       columns:
         - action
@@ -189,7 +189,7 @@ select_permissions:
               _eq: x-hasura-org-id
           - created_by:
               _eq: x-hasura-user-id
-  - role: supervisor
+  - role: manager
     permission:
       columns:
         - action
@@ -226,7 +226,7 @@ select_permissions:
           - organization:
               _eq: x-hasura-org-id
 update_permissions:
-  - role: self
+  - role: user
     permission:
       columns:
         - action
@@ -257,7 +257,7 @@ update_permissions:
       check: null
       set:
         updated_by: x-hasura-user-id
-  - role: supervisor
+  - role: manager
     permission:
       columns:
         - action

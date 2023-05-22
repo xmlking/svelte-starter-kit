@@ -61,7 +61,7 @@ export async function load(event) {
 			event,
 			blocking: true,
 			policy: CachePolicy.CacheAndNetwork,
-			metadata: { backendToken: 'token from TokenVault', useRole: 'self', logResult: true },
+			metadata: { backendToken: 'token from TokenVault', useRole: 'user', logResult: true },
 			variables
 		});
 

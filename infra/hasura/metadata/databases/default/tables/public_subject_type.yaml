@@ -9,13 +9,13 @@ select_permissions:
         - description
         - value
       filter: {}
-  - role: self
+  - role: user
     permission:
       columns:
         - description
         - value
       filter: {}
-  - role: supervisor
+  - role: manager
     permission:
       columns:
         - description

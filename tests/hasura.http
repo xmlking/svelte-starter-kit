@@ -108,8 +108,8 @@ POST  {{graphqlEndpoint}}
 Content-Type: application/json
 x-hasura-admin-secret: {{graphqlAdminToken}}
 Authorization: Bearer {{graphqlUserToken}}
-x-hasura-allowed-roles:  self supervisor
-x-hasura-role: self
+x-hasura-allowed-roles:  user manager
+x-hasura-role: user
 x-hasura-org-id: chinthagunta
 x-hasura-user-id: sumo@chinthagunta.com
 X-REQUEST-TYPE: GraphQL
@@ -144,8 +144,8 @@ POST  {{graphqlEndpoint}}
 Content-Type: application/json
 x-hasura-admin-secret: {{graphqlAdminToken}}
 Authorization: Bearer {{graphqlUserToken}}
-x-hasura-allowed-roles:  self supervisor
-x-hasura-role: self
+x-hasura-allowed-roles:  user manager
+x-hasura-role: user
 x-hasura-org-id: chinthagunta
 x-hasura-user-id: sumo@chinthagunta.com
 X-REQUEST-TYPE: GraphQL
