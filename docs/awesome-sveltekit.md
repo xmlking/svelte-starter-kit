@@ -54,6 +54,9 @@ Awesome **SvelteKit** Links
 
 - [sveltekit-superforms](https://github.com/ciscoheat/sveltekit-superforms) - SvelteKit native form handing for backend and frontend.
   - [Intro Video](https://www.youtube.com/watch?v=MiKzH3kcVfs)
+- [sveltekit-flash-message](https://github.com/ciscoheat/sveltekit-flash-message)
+  - [Intro Video](https://youtu.be/hB6OkaYWS5I)
+
 - [felte](https://felte.dev/) - An extensible form library for Svelte, Solid and React
 
 ## GraphQL
