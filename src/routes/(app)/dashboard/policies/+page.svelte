@@ -32,7 +32,8 @@
 			cell: ({ value }) =>
 				createRender(Link, {
 					url: `/dashboard/policies/${value.id}`,
-					content: value.displayName
+					content: value.displayName,
+					title: value.description
 				}),
 			plugins: {
 				tableFilter: {

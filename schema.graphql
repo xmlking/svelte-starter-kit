@@ -332,8 +332,6 @@ enum action_update_column {
 input action_updates {
   """sets the columns of the filtered rows to the given values"""
   _set: action_set_input
-
-  """filter the rows which have to be updated"""
   where: action_bool_exp!
 }
 
@@ -344,6 +342,634 @@ enum cursor_ordering {
 
   """descending ordering of the cursor"""
   DESC
+}
+
+"""device to pool bridge table """
+type device_pool {
+  createdAt: timestamptz!
+  createdBy: String!
+
+  """An object relationship"""
+  device: devices!
+  deviceId: uuid!
+  id: uuid!
+
+  """An object relationship"""
+  pool: pools!
+  poolId: uuid!
+  updatedAt: timestamptz!
+  updatedBy: String!
+}
+
+"""
+aggregated selection of "device_pool"
+"""
+type device_pool_aggregate {
+  aggregate: device_pool_aggregate_fields
+  nodes: [device_pool!]!
+}
+
+input device_pool_aggregate_bool_exp {
+  count: device_pool_aggregate_bool_exp_count
+}
+
+input device_pool_aggregate_bool_exp_count {
+  arguments: [device_pool_select_column!]
+  distinct: Boolean
+  filter: device_pool_bool_exp
+  predicate: Int_comparison_exp!
+}
+
+"""
+aggregate fields of "device_pool"
+"""
+type device_pool_aggregate_fields {
+  count(columns: [device_pool_select_column!], distinct: Boolean): Int!
+  max: device_pool_max_fields
+  min: device_pool_min_fields
+}
+
+"""
+order by aggregate values of table "device_pool"
+"""
+input device_pool_aggregate_order_by {
+  count: order_by
+  max: device_pool_max_order_by
+  min: device_pool_min_order_by
+}
+
+"""
+input type for inserting array relation for remote table "device_pool"
+"""
+input device_pool_arr_rel_insert_input {
+  data: [device_pool_insert_input!]!
+
+  """upsert condition"""
+  on_conflict: device_pool_on_conflict
+}
+
+"""
+Boolean expression to filter rows from the table "device_pool". All fields are combined with a logical 'AND'.
+"""
+input device_pool_bool_exp {
+  _and: [device_pool_bool_exp!]
+  _not: device_pool_bool_exp
+  _or: [device_pool_bool_exp!]
+  createdAt: timestamptz_comparison_exp
+  createdBy: String_comparison_exp
+  device: devices_bool_exp
+  deviceId: uuid_comparison_exp
+  id: uuid_comparison_exp
+  pool: pools_bool_exp
+  poolId: uuid_comparison_exp
+  updatedAt: timestamptz_comparison_exp
+  updatedBy: String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "device_pool"
+"""
+enum device_pool_constraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  device_pool_pkey
+
+  """
+  unique or primary key constraint on columns "pool_id", "device_id"
+  """
+  device_pool_pool_id_device_id_key
+}
+
+"""
+input type for inserting data into table "device_pool"
+"""
+input device_pool_insert_input {
+  createdAt: timestamptz
+  createdBy: String
+  device: devices_obj_rel_insert_input
+  deviceId: uuid
+  id: uuid
+  pool: pools_obj_rel_insert_input
+  poolId: uuid
+  updatedAt: timestamptz
+  updatedBy: String
+}
+
+"""aggregate max on columns"""
+type device_pool_max_fields {
+  createdAt: timestamptz
+  createdBy: String
+  deviceId: uuid
+  id: uuid
+  poolId: uuid
+  updatedAt: timestamptz
+  updatedBy: String
+}
+
+"""
+order by max() on columns of table "device_pool"
+"""
+input device_pool_max_order_by {
+  createdAt: order_by
+  createdBy: order_by
+  deviceId: order_by
+  id: order_by
+  poolId: order_by
+  updatedAt: order_by
+  updatedBy: order_by
+}
+
+"""aggregate min on columns"""
+type device_pool_min_fields {
+  createdAt: timestamptz
+  createdBy: String
+  deviceId: uuid
+  id: uuid
+  poolId: uuid
+  updatedAt: timestamptz
+  updatedBy: String
+}
+
+"""
+order by min() on columns of table "device_pool"
+"""
+input device_pool_min_order_by {
+  createdAt: order_by
+  createdBy: order_by
+  deviceId: order_by
+  id: order_by
+  poolId: order_by
+  updatedAt: order_by
+  updatedBy: order_by
+}
+
+"""
+response of any mutation on the table "device_pool"
+"""
+type device_pool_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [device_pool!]!
+}
+
+"""
+on_conflict condition type for table "device_pool"
+"""
+input device_pool_on_conflict {
+  constraint: device_pool_constraint!
+  update_columns: [device_pool_update_column!]! = []
+  where: device_pool_bool_exp
+}
+
+"""Ordering options when selecting data from "device_pool"."""
+input device_pool_order_by {
+  createdAt: order_by
+  createdBy: order_by
+  device: devices_order_by
+  deviceId: order_by
+  id: order_by
+  pool: pools_order_by
+  poolId: order_by
+  updatedAt: order_by
+  updatedBy: order_by
+}
+
+"""primary key columns input for table: device_pool"""
+input device_pool_pk_columns_input {
+  id: uuid!
+}
+
+"""
+select columns of table "device_pool"
+"""
+enum device_pool_select_column {
+  """column name"""
+  createdAt
+
+  """column name"""
+  createdBy
+
+  """column name"""
+  deviceId
+
+  """column name"""
+  id
+
+  """column name"""
+  poolId
+
+  """column name"""
+  updatedAt
+
+  """column name"""
+  updatedBy
+}
+
+"""
+input type for updating data in table "device_pool"
+"""
+input device_pool_set_input {
+  createdAt: timestamptz
+  createdBy: String
+  deviceId: uuid
+  id: uuid
+  poolId: uuid
+  updatedAt: timestamptz
+  updatedBy: String
+}
+
+"""
+Streaming cursor of the table "device_pool"
+"""
+input device_pool_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: device_pool_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input device_pool_stream_cursor_value_input {
+  createdAt: timestamptz
+  createdBy: String
+  deviceId: uuid
+  id: uuid
+  poolId: uuid
+  updatedAt: timestamptz
+  updatedBy: String
+}
+
+"""
+update columns of table "device_pool"
+"""
+enum device_pool_update_column {
+  """column name"""
+  createdAt
+
+  """column name"""
+  createdBy
+
+  """column name"""
+  deviceId
+
+  """column name"""
+  id
+
+  """column name"""
+  poolId
+
+  """column name"""
+  updatedAt
+
+  """column name"""
+  updatedBy
+}
+
+input device_pool_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: device_pool_set_input
+  where: device_pool_bool_exp!
+}
+
+"""devices metadata"""
+type devices {
+  annotations: hstore
+  createdAt: timestamptz!
+  createdBy: String!
+  deletedAt: timestamptz
+  description: String
+
+  """An array relationship"""
+  device_pools(
+    """distinct select on columns"""
+    distinct_on: [device_pool_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [device_pool_order_by!]
+
+    """filter the rows returned"""
+    where: device_pool_bool_exp
+  ): [device_pool!]!
+
+  """An aggregate relationship"""
+  device_pools_aggregate(
+    """distinct select on columns"""
+    distinct_on: [device_pool_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [device_pool_order_by!]
+
+    """filter the rows returned"""
+    where: device_pool_bool_exp
+  ): device_pool_aggregate!
+  displayName: String!
+  id: uuid!
+  ip: String!
+  organization: organization_enum!
+  tags: _text
+  updatedAt: timestamptz!
+  updatedBy: String!
+}
+
+"""
+aggregated selection of "devices"
+"""
+type devices_aggregate {
+  aggregate: devices_aggregate_fields
+  nodes: [devices!]!
+}
+
+"""
+aggregate fields of "devices"
+"""
+type devices_aggregate_fields {
+  count(columns: [devices_select_column!], distinct: Boolean): Int!
+  max: devices_max_fields
+  min: devices_min_fields
+}
+
+"""
+Boolean expression to filter rows from the table "devices". All fields are combined with a logical 'AND'.
+"""
+input devices_bool_exp {
+  _and: [devices_bool_exp!]
+  _not: devices_bool_exp
+  _or: [devices_bool_exp!]
+  annotations: hstore_comparison_exp
+  createdAt: timestamptz_comparison_exp
+  createdBy: String_comparison_exp
+  deletedAt: timestamptz_comparison_exp
+  description: String_comparison_exp
+  device_pools: device_pool_bool_exp
+  device_pools_aggregate: device_pool_aggregate_bool_exp
+  displayName: String_comparison_exp
+  id: uuid_comparison_exp
+  ip: String_comparison_exp
+  organization: organization_enum_comparison_exp
+  tags: _text_comparison_exp
+  updatedAt: timestamptz_comparison_exp
+  updatedBy: String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "devices"
+"""
+enum devices_constraint {
+  """
+  unique or primary key constraint on columns "display_name", "organization"
+  """
+  devices_display_name_organization_unique
+
+  """
+  unique or primary key constraint on columns "id"
+  """
+  devices_pkey
+}
+
+"""
+input type for inserting data into table "devices"
+"""
+input devices_insert_input {
+  annotations: hstore
+  createdAt: timestamptz
+  createdBy: String
+  deletedAt: timestamptz
+  description: String
+  device_pools: device_pool_arr_rel_insert_input
+  displayName: String
+  id: uuid
+  ip: String
+  organization: organization_enum
+  tags: _text
+  updatedAt: timestamptz
+  updatedBy: String
+}
+
+"""aggregate max on columns"""
+type devices_max_fields {
+  createdAt: timestamptz
+  createdBy: String
+  deletedAt: timestamptz
+  description: String
+  displayName: String
+  id: uuid
+  ip: String
+  updatedAt: timestamptz
+  updatedBy: String
+}
+
+"""aggregate min on columns"""
+type devices_min_fields {
+  createdAt: timestamptz
+  createdBy: String
+  deletedAt: timestamptz
+  description: String
+  displayName: String
+  id: uuid
+  ip: String
+  updatedAt: timestamptz
+  updatedBy: String
+}
+
+"""
+response of any mutation on the table "devices"
+"""
+type devices_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [devices!]!
+}
+
+"""
+input type for inserting object relation for remote table "devices"
+"""
+input devices_obj_rel_insert_input {
+  data: devices_insert_input!
+
+  """upsert condition"""
+  on_conflict: devices_on_conflict
+}
+
+"""
+on_conflict condition type for table "devices"
+"""
+input devices_on_conflict {
+  constraint: devices_constraint!
+  update_columns: [devices_update_column!]! = []
+  where: devices_bool_exp
+}
+
+"""Ordering options when selecting data from "devices"."""
+input devices_order_by {
+  annotations: order_by
+  createdAt: order_by
+  createdBy: order_by
+  deletedAt: order_by
+  description: order_by
+  device_pools_aggregate: device_pool_aggregate_order_by
+  displayName: order_by
+  id: order_by
+  ip: order_by
+  organization: order_by
+  tags: order_by
+  updatedAt: order_by
+  updatedBy: order_by
+}
+
+"""primary key columns input for table: devices"""
+input devices_pk_columns_input {
+  id: uuid!
+}
+
+"""
+select columns of table "devices"
+"""
+enum devices_select_column {
+  """column name"""
+  annotations
+
+  """column name"""
+  createdAt
+
+  """column name"""
+  createdBy
+
+  """column name"""
+  deletedAt
+
+  """column name"""
+  description
+
+  """column name"""
+  displayName
+
+  """column name"""
+  id
+
+  """column name"""
+  ip
+
+  """column name"""
+  organization
+
+  """column name"""
+  tags
+
+  """column name"""
+  updatedAt
+
+  """column name"""
+  updatedBy
+}
+
+"""
+input type for updating data in table "devices"
+"""
+input devices_set_input {
+  annotations: hstore
+  createdAt: timestamptz
+  createdBy: String
+  deletedAt: timestamptz
+  description: String
+  displayName: String
+  id: uuid
+  ip: String
+  organization: organization_enum
+  tags: _text
+  updatedAt: timestamptz
+  updatedBy: String
+}
+
+"""
+Streaming cursor of the table "devices"
+"""
+input devices_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: devices_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input devices_stream_cursor_value_input {
+  annotations: hstore
+  createdAt: timestamptz
+  createdBy: String
+  deletedAt: timestamptz
+  description: String
+  displayName: String
+  id: uuid
+  ip: String
+  organization: organization_enum
+  tags: _text
+  updatedAt: timestamptz
+  updatedBy: String
+}
+
+"""
+update columns of table "devices"
+"""
+enum devices_update_column {
+  """column name"""
+  annotations
+
+  """column name"""
+  createdAt
+
+  """column name"""
+  createdBy
+
+  """column name"""
+  deletedAt
+
+  """column name"""
+  description
+
+  """column name"""
+  displayName
+
+  """column name"""
+  id
+
+  """column name"""
+  ip
+
+  """column name"""
+  organization
+
+  """column name"""
+  tags
+
+  """column name"""
+  updatedAt
+
+  """column name"""
+  updatedBy
+}
+
+input devices_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: devices_set_input
+  where: devices_bool_exp!
 }
 
 """direction type"""
@@ -513,8 +1139,6 @@ enum direction_update_column {
 input direction_updates {
   """sets the columns of the filtered rows to the given values"""
   _set: direction_set_input
-
-  """filter the rows which have to be updated"""
   where: direction_bool_exp!
 }
 
@@ -549,6 +1173,32 @@ type mutation_root {
   delete single row from the table: "action"
   """
   delete_action_by_pk(value: String!): action
+
+  """
+  delete data from the table: "device_pool"
+  """
+  delete_device_pool(
+    """filter the rows which have to be deleted"""
+    where: device_pool_bool_exp!
+  ): device_pool_mutation_response
+
+  """
+  delete single row from the table: "device_pool"
+  """
+  delete_device_pool_by_pk(id: uuid!): device_pool
+
+  """
+  delete data from the table: "devices"
+  """
+  delete_devices(
+    """filter the rows which have to be deleted"""
+    where: devices_bool_exp!
+  ): devices_mutation_response
+
+  """
+  delete single row from the table: "devices"
+  """
+  delete_devices_by_pk(id: uuid!): devices
 
   """
   delete data from the table: "direction"
@@ -590,6 +1240,19 @@ type mutation_root {
   delete_policies_by_pk(id: uuid!): policies
 
   """
+  delete data from the table: "pools"
+  """
+  delete_pools(
+    """filter the rows which have to be deleted"""
+    where: pools_bool_exp!
+  ): pools_mutation_response
+
+  """
+  delete single row from the table: "pools"
+  """
+  delete_pools_by_pk(id: uuid!): pools
+
+  """
   delete data from the table: "subject_type"
   """
   delete_subject_type(
@@ -623,6 +1286,50 @@ type mutation_root {
     """upsert condition"""
     on_conflict: action_on_conflict
   ): action
+
+  """
+  insert data into the table: "device_pool"
+  """
+  insert_device_pool(
+    """the rows to be inserted"""
+    objects: [device_pool_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: device_pool_on_conflict
+  ): device_pool_mutation_response
+
+  """
+  insert a single row into the table: "device_pool"
+  """
+  insert_device_pool_one(
+    """the row to be inserted"""
+    object: device_pool_insert_input!
+
+    """upsert condition"""
+    on_conflict: device_pool_on_conflict
+  ): device_pool
+
+  """
+  insert data into the table: "devices"
+  """
+  insert_devices(
+    """the rows to be inserted"""
+    objects: [devices_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: devices_on_conflict
+  ): devices_mutation_response
+
+  """
+  insert a single row into the table: "devices"
+  """
+  insert_devices_one(
+    """the row to be inserted"""
+    object: devices_insert_input!
+
+    """upsert condition"""
+    on_conflict: devices_on_conflict
+  ): devices
 
   """
   insert data into the table: "direction"
@@ -691,6 +1398,28 @@ type mutation_root {
   ): policies
 
   """
+  insert data into the table: "pools"
+  """
+  insert_pools(
+    """the rows to be inserted"""
+    objects: [pools_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: pools_on_conflict
+  ): pools_mutation_response
+
+  """
+  insert a single row into the table: "pools"
+  """
+  insert_pools_one(
+    """the row to be inserted"""
+    object: pools_insert_input!
+
+    """upsert condition"""
+    on_conflict: pools_on_conflict
+  ): pools
+
+  """
   insert data into the table: "subject_type"
   """
   insert_subject_type(
@@ -739,6 +1468,62 @@ type mutation_root {
     """updates to execute, in order"""
     updates: [action_updates!]!
   ): [action_mutation_response]
+
+  """
+  update data of the table: "device_pool"
+  """
+  update_device_pool(
+    """sets the columns of the filtered rows to the given values"""
+    _set: device_pool_set_input
+
+    """filter the rows which have to be updated"""
+    where: device_pool_bool_exp!
+  ): device_pool_mutation_response
+
+  """
+  update single row of the table: "device_pool"
+  """
+  update_device_pool_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: device_pool_set_input
+    pk_columns: device_pool_pk_columns_input!
+  ): device_pool
+
+  """
+  update multiples rows of table: "device_pool"
+  """
+  update_device_pool_many(
+    """updates to execute, in order"""
+    updates: [device_pool_updates!]!
+  ): [device_pool_mutation_response]
+
+  """
+  update data of the table: "devices"
+  """
+  update_devices(
+    """sets the columns of the filtered rows to the given values"""
+    _set: devices_set_input
+
+    """filter the rows which have to be updated"""
+    where: devices_bool_exp!
+  ): devices_mutation_response
+
+  """
+  update single row of the table: "devices"
+  """
+  update_devices_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: devices_set_input
+    pk_columns: devices_pk_columns_input!
+  ): devices
+
+  """
+  update multiples rows of table: "devices"
+  """
+  update_devices_many(
+    """updates to execute, in order"""
+    updates: [devices_updates!]!
+  ): [devices_mutation_response]
 
   """
   update data of the table: "direction"
@@ -829,6 +1614,34 @@ type mutation_root {
     """updates to execute, in order"""
     updates: [policies_updates!]!
   ): [policies_mutation_response]
+
+  """
+  update data of the table: "pools"
+  """
+  update_pools(
+    """sets the columns of the filtered rows to the given values"""
+    _set: pools_set_input
+
+    """filter the rows which have to be updated"""
+    where: pools_bool_exp!
+  ): pools_mutation_response
+
+  """
+  update single row of the table: "pools"
+  """
+  update_pools_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: pools_set_input
+    pk_columns: pools_pk_columns_input!
+  ): pools
+
+  """
+  update multiples rows of table: "pools"
+  """
+  update_pools_many(
+    """updates to execute, in order"""
+    updates: [pools_updates!]!
+  ): [pools_mutation_response]
 
   """
   update data of the table: "subject_type"
@@ -1044,8 +1857,6 @@ enum organization_update_column {
 input organization_updates {
   """sets the columns of the filtered rows to the given values"""
   _set: organization_set_input
-
-  """filter the rows which have to be updated"""
   where: organization_bool_exp!
 }
 
@@ -1590,8 +2401,6 @@ input policies_updates {
 
   """sets the columns of the filtered rows to the given values"""
   _set: policies_set_input
-
-  """filter the rows which have to be updated"""
   where: policies_bool_exp!
 }
 
@@ -1608,6 +2417,329 @@ type policies_var_samp_fields {
 """aggregate variance on columns"""
 type policies_variance_fields {
   weight: Float
+}
+
+"""Device pools"""
+type pools {
+  annotations: hstore
+  createdAt: timestamptz!
+  createdBy: String!
+  deletedAt: timestamptz
+  description: String
+  displayName: String!
+  id: uuid!
+  organization: organization_enum!
+
+  """An array relationship"""
+  pool_devices(
+    """distinct select on columns"""
+    distinct_on: [device_pool_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [device_pool_order_by!]
+
+    """filter the rows returned"""
+    where: device_pool_bool_exp
+  ): [device_pool!]!
+
+  """An aggregate relationship"""
+  pool_devices_aggregate(
+    """distinct select on columns"""
+    distinct_on: [device_pool_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [device_pool_order_by!]
+
+    """filter the rows returned"""
+    where: device_pool_bool_exp
+  ): device_pool_aggregate!
+  tags: _text
+  updatedAt: timestamptz!
+  updatedBy: String!
+}
+
+"""
+aggregated selection of "pools"
+"""
+type pools_aggregate {
+  aggregate: pools_aggregate_fields
+  nodes: [pools!]!
+}
+
+"""
+aggregate fields of "pools"
+"""
+type pools_aggregate_fields {
+  count(columns: [pools_select_column!], distinct: Boolean): Int!
+  max: pools_max_fields
+  min: pools_min_fields
+}
+
+"""
+Boolean expression to filter rows from the table "pools". All fields are combined with a logical 'AND'.
+"""
+input pools_bool_exp {
+  _and: [pools_bool_exp!]
+  _not: pools_bool_exp
+  _or: [pools_bool_exp!]
+  annotations: hstore_comparison_exp
+  createdAt: timestamptz_comparison_exp
+  createdBy: String_comparison_exp
+  deletedAt: timestamptz_comparison_exp
+  description: String_comparison_exp
+  displayName: String_comparison_exp
+  id: uuid_comparison_exp
+  organization: organization_enum_comparison_exp
+  pool_devices: device_pool_bool_exp
+  pool_devices_aggregate: device_pool_aggregate_bool_exp
+  tags: _text_comparison_exp
+  updatedAt: timestamptz_comparison_exp
+  updatedBy: String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "pools"
+"""
+enum pools_constraint {
+  """
+  unique or primary key constraint on columns "display_name", "organization"
+  """
+  pools_display_name_organization_unique
+
+  """
+  unique or primary key constraint on columns "id"
+  """
+  pools_pkey
+}
+
+"""
+input type for inserting data into table "pools"
+"""
+input pools_insert_input {
+  annotations: hstore
+  createdAt: timestamptz
+  createdBy: String
+  deletedAt: timestamptz
+  description: String
+  displayName: String
+  id: uuid
+  organization: organization_enum
+  pool_devices: device_pool_arr_rel_insert_input
+  tags: _text
+  updatedAt: timestamptz
+  updatedBy: String
+}
+
+"""aggregate max on columns"""
+type pools_max_fields {
+  createdAt: timestamptz
+  createdBy: String
+  deletedAt: timestamptz
+  description: String
+  displayName: String
+  id: uuid
+  updatedAt: timestamptz
+  updatedBy: String
+}
+
+"""aggregate min on columns"""
+type pools_min_fields {
+  createdAt: timestamptz
+  createdBy: String
+  deletedAt: timestamptz
+  description: String
+  displayName: String
+  id: uuid
+  updatedAt: timestamptz
+  updatedBy: String
+}
+
+"""
+response of any mutation on the table "pools"
+"""
+type pools_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [pools!]!
+}
+
+"""
+input type for inserting object relation for remote table "pools"
+"""
+input pools_obj_rel_insert_input {
+  data: pools_insert_input!
+
+  """upsert condition"""
+  on_conflict: pools_on_conflict
+}
+
+"""
+on_conflict condition type for table "pools"
+"""
+input pools_on_conflict {
+  constraint: pools_constraint!
+  update_columns: [pools_update_column!]! = []
+  where: pools_bool_exp
+}
+
+"""Ordering options when selecting data from "pools"."""
+input pools_order_by {
+  annotations: order_by
+  createdAt: order_by
+  createdBy: order_by
+  deletedAt: order_by
+  description: order_by
+  displayName: order_by
+  id: order_by
+  organization: order_by
+  pool_devices_aggregate: device_pool_aggregate_order_by
+  tags: order_by
+  updatedAt: order_by
+  updatedBy: order_by
+}
+
+"""primary key columns input for table: pools"""
+input pools_pk_columns_input {
+  id: uuid!
+}
+
+"""
+select columns of table "pools"
+"""
+enum pools_select_column {
+  """column name"""
+  annotations
+
+  """column name"""
+  createdAt
+
+  """column name"""
+  createdBy
+
+  """column name"""
+  deletedAt
+
+  """column name"""
+  description
+
+  """column name"""
+  displayName
+
+  """column name"""
+  id
+
+  """column name"""
+  organization
+
+  """column name"""
+  tags
+
+  """column name"""
+  updatedAt
+
+  """column name"""
+  updatedBy
+}
+
+"""
+input type for updating data in table "pools"
+"""
+input pools_set_input {
+  annotations: hstore
+  createdAt: timestamptz
+  createdBy: String
+  deletedAt: timestamptz
+  description: String
+  displayName: String
+  id: uuid
+  organization: organization_enum
+  tags: _text
+  updatedAt: timestamptz
+  updatedBy: String
+}
+
+"""
+Streaming cursor of the table "pools"
+"""
+input pools_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: pools_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input pools_stream_cursor_value_input {
+  annotations: hstore
+  createdAt: timestamptz
+  createdBy: String
+  deletedAt: timestamptz
+  description: String
+  displayName: String
+  id: uuid
+  organization: organization_enum
+  tags: _text
+  updatedAt: timestamptz
+  updatedBy: String
+}
+
+"""
+update columns of table "pools"
+"""
+enum pools_update_column {
+  """column name"""
+  annotations
+
+  """column name"""
+  createdAt
+
+  """column name"""
+  createdBy
+
+  """column name"""
+  deletedAt
+
+  """column name"""
+  description
+
+  """column name"""
+  displayName
+
+  """column name"""
+  id
+
+  """column name"""
+  organization
+
+  """column name"""
+  tags
+
+  """column name"""
+  updatedAt
+
+  """column name"""
+  updatedBy
+}
+
+input pools_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: pools_set_input
+  where: pools_bool_exp!
 }
 
 type query_root {
@@ -1659,6 +2791,92 @@ type query_root {
 
   """fetch data from the table: "action" using primary key columns"""
   action_by_pk(value: String!): action
+
+  """
+  fetch data from the table: "device_pool"
+  """
+  device_pool(
+    """distinct select on columns"""
+    distinct_on: [device_pool_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [device_pool_order_by!]
+
+    """filter the rows returned"""
+    where: device_pool_bool_exp
+  ): [device_pool!]!
+
+  """
+  fetch aggregated fields from the table: "device_pool"
+  """
+  device_pool_aggregate(
+    """distinct select on columns"""
+    distinct_on: [device_pool_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [device_pool_order_by!]
+
+    """filter the rows returned"""
+    where: device_pool_bool_exp
+  ): device_pool_aggregate!
+
+  """fetch data from the table: "device_pool" using primary key columns"""
+  device_pool_by_pk(id: uuid!): device_pool
+
+  """
+  fetch data from the table: "devices"
+  """
+  devices(
+    """distinct select on columns"""
+    distinct_on: [devices_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [devices_order_by!]
+
+    """filter the rows returned"""
+    where: devices_bool_exp
+  ): [devices!]!
+
+  """
+  fetch aggregated fields from the table: "devices"
+  """
+  devices_aggregate(
+    """distinct select on columns"""
+    distinct_on: [devices_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [devices_order_by!]
+
+    """filter the rows returned"""
+    where: devices_bool_exp
+  ): devices_aggregate!
+
+  """fetch data from the table: "devices" using primary key columns"""
+  devices_by_pk(id: uuid!): devices
 
   """
   fetch data from the table: "direction"
@@ -1788,6 +3006,49 @@ type query_root {
 
   """fetch data from the table: "policies" using primary key columns"""
   policies_by_pk(id: uuid!): policies
+
+  """
+  fetch data from the table: "pools"
+  """
+  pools(
+    """distinct select on columns"""
+    distinct_on: [pools_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [pools_order_by!]
+
+    """filter the rows returned"""
+    where: pools_bool_exp
+  ): [pools!]!
+
+  """
+  fetch aggregated fields from the table: "pools"
+  """
+  pools_aggregate(
+    """distinct select on columns"""
+    distinct_on: [pools_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [pools_order_by!]
+
+    """filter the rows returned"""
+    where: pools_bool_exp
+  ): pools_aggregate!
+
+  """fetch data from the table: "pools" using primary key columns"""
+  pools_by_pk(id: uuid!): pools
 
   """
   fetch data from the table: "subject_type"
@@ -2009,8 +3270,6 @@ enum subject_type_update_column {
 input subject_type_updates {
   """sets the columns of the filtered rows to the given values"""
   _set: subject_type_set_input
-
-  """filter the rows which have to be updated"""
   where: subject_type_bool_exp!
 }
 
@@ -2071,6 +3330,120 @@ type subscription_root {
     """filter the rows returned"""
     where: action_bool_exp
   ): [action!]!
+
+  """
+  fetch data from the table: "device_pool"
+  """
+  device_pool(
+    """distinct select on columns"""
+    distinct_on: [device_pool_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [device_pool_order_by!]
+
+    """filter the rows returned"""
+    where: device_pool_bool_exp
+  ): [device_pool!]!
+
+  """
+  fetch aggregated fields from the table: "device_pool"
+  """
+  device_pool_aggregate(
+    """distinct select on columns"""
+    distinct_on: [device_pool_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [device_pool_order_by!]
+
+    """filter the rows returned"""
+    where: device_pool_bool_exp
+  ): device_pool_aggregate!
+
+  """fetch data from the table: "device_pool" using primary key columns"""
+  device_pool_by_pk(id: uuid!): device_pool
+
+  """
+  fetch data from the table in a streaming manner: "device_pool"
+  """
+  device_pool_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [device_pool_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: device_pool_bool_exp
+  ): [device_pool!]!
+
+  """
+  fetch data from the table: "devices"
+  """
+  devices(
+    """distinct select on columns"""
+    distinct_on: [devices_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [devices_order_by!]
+
+    """filter the rows returned"""
+    where: devices_bool_exp
+  ): [devices!]!
+
+  """
+  fetch aggregated fields from the table: "devices"
+  """
+  devices_aggregate(
+    """distinct select on columns"""
+    distinct_on: [devices_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [devices_order_by!]
+
+    """filter the rows returned"""
+    where: devices_bool_exp
+  ): devices_aggregate!
+
+  """fetch data from the table: "devices" using primary key columns"""
+  devices_by_pk(id: uuid!): devices
+
+  """
+  fetch data from the table in a streaming manner: "devices"
+  """
+  devices_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [devices_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: devices_bool_exp
+  ): [devices!]!
 
   """
   fetch data from the table: "direction"
@@ -2242,6 +3615,63 @@ type subscription_root {
     """filter the rows returned"""
     where: policies_bool_exp
   ): [policies!]!
+
+  """
+  fetch data from the table: "pools"
+  """
+  pools(
+    """distinct select on columns"""
+    distinct_on: [pools_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [pools_order_by!]
+
+    """filter the rows returned"""
+    where: pools_bool_exp
+  ): [pools!]!
+
+  """
+  fetch aggregated fields from the table: "pools"
+  """
+  pools_aggregate(
+    """distinct select on columns"""
+    distinct_on: [pools_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [pools_order_by!]
+
+    """filter the rows returned"""
+    where: pools_bool_exp
+  ): pools_aggregate!
+
+  """fetch data from the table: "pools" using primary key columns"""
+  pools_by_pk(id: uuid!): pools
+
+  """
+  fetch data from the table in a streaming manner: "pools"
+  """
+  pools_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [pools_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: pools_bool_exp
+  ): [pools!]!
 
   """
   fetch data from the table: "subject_type"

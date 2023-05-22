@@ -2,6 +2,7 @@ query SearchPolicies($where: policies_bool_exp, $limit: Int = 50, $offset: Int =
 	policies(order_by: $orderBy, limit: $limit, offset: $offset, where: $where) {
 		# ...Policy_list_fields @mask_disable
 		id
+		description
 		createdAt
 		destinationAddress
 		destinationPort

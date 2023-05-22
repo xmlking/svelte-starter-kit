@@ -9,7 +9,7 @@ import { zfd } from '$lib/zodfd';
 import * as Sentry from '@sentry/svelte';
 import type { GraphQLError } from 'graphql';
 
-const log = new Logger('policies.server');
+const log = new Logger('route:policies');
 
 const searchPoliciesStore = new SearchPoliciesStore();
 const deletePolicyStore = new DeletePolicyStore();
@@ -24,7 +24,7 @@ export async function load(event) {
 		await parent(); // HINT: to make sure use session is valid
 
 		const { limit, offset, subjectType, displayName } = searchSchema.parse(url.searchParams);
-		console.log(limit, offset, subjectType, displayName);
+		log.debug(limit, offset, subjectType, displayName);
 
 		const orderBy = [{ updatedAt: order_by.desc_nulls_first }];
 		const where = {
@@ -37,7 +37,7 @@ export async function load(event) {
 			event,
 			blocking: true,
 			policy: CachePolicy.CacheAndNetwork,
-			metadata: { backendToken: 'token from TokenVault', useRole: 'self', logResult: true },
+			metadata: { backendToken: 'token from TokenVault', useRole: 'user', logResult: true },
 			variables
 		});
 

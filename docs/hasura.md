@@ -39,14 +39,18 @@ hasura seed create direction --database-name default --from-table direction
 hasura seed create action --database-name default --from-table action
 hasura seed create subject_type --database-name default --from-table subject_type
 hasura seed create policies --database-name default --from-table policies
+hasura seed create devices --database-name default --from-table devices
+hasura seed create pools --database-name default --from-table pools
 # Export data from multiple tables:
 # hasura seed create policies_organization --database-name default --from-table policies --from-table organization
 # Apply only a particular file:
-hasura seed apply --file 1684206602839_organization.sql --database-name default
-hasura seed apply --file 1684206608561_direction.sql --database-name default
-hasura seed apply --file 1684206612631_action.sql --database-name default
-hasura seed apply --file 1684206616256_subject_type.sql --database-name default
+hasura seed apply --file 1684708431893_organization.sql --database-name default
+hasura seed apply --file 1684708436910_direction.sql --database-name default
+hasura seed apply --file 1684708445914_action.sql --database-name default
+hasura seed apply --file 1684708447664_subject_type.sql --database-name default
 hasura seed apply --file 1684206620559_policies.sql --database-name default
+hasura seed apply --file 1684709181893_devices.sql --database-name default
+hasura seed apply --file 1684709183467_pools.sql --database-name default
 # hasura seed apply --file 1684101975415_policies_organization.sql --database-name default
 
 
