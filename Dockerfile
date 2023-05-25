@@ -22,7 +22,7 @@ RUN case ${TARGETPLATFORM} in \
 ### stage_build
 ### this stage builds the application.
 ############################################################
-FROM --platform=${BUILDPLATFORM} node:19 as build
+FROM --platform=${BUILDPLATFORM} node:20 as build
 
 # install pnpm
 #RUN curl -fsSL https://get.pnpm.io/install.sh | sh -; node - add --global pnpm
@@ -50,7 +50,7 @@ RUN pnpm build
 ### stage_runtime
 ### this stage installs the runtime dependencies.
 ############################################################
-FROM --platform=${BUILDPLATFORM} node:19-alpine as runtime
+FROM --platform=${BUILDPLATFORM} node:20-alpine as runtime
 
 # install pnpm
 RUN corepack enable; corepack prepare pnpm@8.2.0 --activate
