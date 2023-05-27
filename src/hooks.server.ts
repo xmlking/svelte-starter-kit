@@ -4,9 +4,8 @@ import { authjs, guard, houdini } from '$lib/server/middleware';
 import { Logger } from '$lib/utils';
 import envPub from '$lib/variables/variables';
 // import envPri from '$lib/variables/variables.server';
-// import * as Sentry from '@sentry/node';
-import * as Sentry from '@sentry/svelte';
-import { BrowserTracing } from '@sentry/tracing';
+import * as Sentry from '@sentry/sveltekit';
+import { handleErrorWithSentry } from '@sentry/sveltekit';
 import type { HandleFetch, HandleServerError } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 /**
@@ -39,13 +38,6 @@ if (!dev && envPub.PUBLIC_SENTRY_DSN) {
 		initialScope: {
 			tags: { source: 'server' }
 		},
-		// FIXME: https://github.com/getsentry/sentry-javascript/discussions/5838#discussioncomment-4789893
-		// integrations: [new Sentry.Integrations.Http()],
-		integrations: [new BrowserTracing()],
-
-		// Set tracesSampleRate to 1.0 to capture 100%
-		// of transactions for performance monitoring.
-		// We recommend adjusting this value in production
 		tracesSampleRate: 1.0
 	});
 
@@ -72,14 +64,15 @@ export const handle = sequence(authjs, guard, houdini);
 
 export const handleServerError = (({ error, event }) => {
 	console.error('hooks:server:handleServerError:', error);
-	Sentry.setExtra('event', event);
-	Sentry.captureException(error);
 	const err = error as App.Error;
 	return {
 		message: err.message ?? 'Whoops!',
 		context: err.context
 	};
 }) satisfies HandleServerError;
+
+// If you have a custom error handler, pass it to `handleErrorWithSentry`
+export const handleError = handleErrorWithSentry(handleServerError);
 
 export const handleFetch = (async ({ event, request, fetch }) => {
 	console.log('hooks.server.ts, HandleFetch: pageUrl:', event.url.toString());

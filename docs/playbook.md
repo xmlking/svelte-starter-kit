@@ -204,7 +204,7 @@ pnpm add -D svelte-time-distance date-fns
 Sentry helps track errors in code.
 
 ```shell
-pnpm add -D @sentry/svelte @sentry/node @sentry/tracing
+pnpx sentry/wizard@latest -i sveltekit
 ```
 
 #### GraphQL

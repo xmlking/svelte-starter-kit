@@ -73,6 +73,9 @@ pids
 !.env
 !.env.test
 
+# Sentry
+.sentryclirc
+
 # project specific files #
 ##########################
 stats.html

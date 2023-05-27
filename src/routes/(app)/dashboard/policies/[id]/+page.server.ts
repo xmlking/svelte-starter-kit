@@ -5,7 +5,7 @@ import { Logger } from '$lib/utils';
 import { uuidSchema } from '$lib/utils/zod.utils';
 import envPub from '$lib/variables/variables';
 import { zfd } from '$lib/zodfd';
-import * as Sentry from '@sentry/svelte';
+import * as Sentry from '@sentry/sveltekit';
 import { fail, redirect } from '@sveltejs/kit';
 import type { GraphQLError } from 'graphql';
 import { ZodError } from 'zod';
@@ -54,6 +54,13 @@ export async function load(event) {
 		return { policy };
 	}
 
+	const transaction = Sentry.startTransaction({
+		name: 'Policy Load Transaction'
+	});
+	Sentry.configureScope((scope) => {
+		scope.setSpan(transaction);
+	});
+
 	try {
 		const variables = { id };
 
@@ -71,13 +78,13 @@ export async function load(event) {
 		return { policy };
 	} catch (err) {
 		log.error('policies:actions:load:error:', err);
-		Sentry.setContext('source', { code: 'policy' });
-		Sentry.captureException(err);
 		if (err instanceof PolicyError && err.name === 'GET_POLICY_ERROR') {
 			return { loadError: err.toJSON() };
 		} else {
 			handleLoadErrors(err);
 		}
+	} finally {
+		transaction.finish();
 	}
 }
 
@@ -95,6 +102,12 @@ export const actions = {
 			throw redirect(307, '/auth/signin?callbackUrl=/dashboard/policy');
 		}
 
+		const transaction = Sentry.startTransaction({
+			name: 'Policy Save Transaction'
+		});
+		Sentry.configureScope((scope) => {
+			scope.setSpan(transaction);
+		});
 		try {
 			const formData = await request.formData();
 			const id = uuidSchema.parse(params.id);
@@ -154,9 +167,6 @@ export const actions = {
 			}
 		} catch (err) {
 			log.error('policy:actions:save:error:', err);
-			Sentry.setContext('source', { code: 'policy.save' });
-			Sentry.captureException(err);
-
 			if (err instanceof ZodError) {
 				const { formErrors, fieldErrors } = err.flatten();
 				return fail(400, { formErrors, fieldErrors });
@@ -165,6 +175,8 @@ export const actions = {
 			} else {
 				return handleActionErrors(err);
 			}
+		} finally {
+			transaction.finish();
 		}
 	}
 };
