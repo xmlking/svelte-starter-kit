@@ -9,22 +9,6 @@ CREATE EXTENSION IF NOT EXISTS ltree WITH SCHEMA public;
 COMMENT ON EXTENSION ltree IS 'data type for storing hierarchical data path';
 CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
 COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
-CREATE OR REPLACE FUNCTION public.set_current_timestamp_updated_at() RETURNS trigger
-    LANGUAGE plpgsql
-    AS $$
-DECLARE
-  _new record;
-BEGIN
-  _new := NEW;
-  _new."updated_at" = NOW();
-  RETURN _new;
-END;
-$$;
-CREATE TABLE public.action (
-    value text NOT NULL,
-    description text NOT NULL
-);
-COMMENT ON TABLE public.action IS 'action type';
 CREATE TABLE public.devices (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -40,6 +24,29 @@ CREATE TABLE public.devices (
     organization text NOT NULL
 );
 COMMENT ON TABLE public.devices IS 'devices metadata';
+CREATE FUNCTION public.devices_not_in_pool(poolid uuid) RETURNS SETOF public.devices
+    LANGUAGE sql STABLE
+    AS $$
+SELECT *
+FROM devices
+WHERE id NOT IN (SELECT device_id FROM device_pool WHERE pool_id = poolid)
+$$;
+CREATE FUNCTION public.set_current_timestamp_updated_at() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+  _new record;
+BEGIN
+  _new := NEW;
+  _new."updated_at" = NOW();
+  RETURN _new;
+END;
+$$;
+CREATE TABLE public.action (
+    value text NOT NULL,
+    description text NOT NULL
+);
+COMMENT ON TABLE public.action IS 'action type';
 CREATE TABLE public.device_pool (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -112,12 +119,12 @@ CREATE TABLE public.subject_type (
 COMMENT ON TABLE public.subject_type IS 'Subject Type';
 ALTER TABLE ONLY public.action
     ADD CONSTRAINT action_pkey PRIMARY KEY (value);
-ALTER TABLE ONLY public.devices
-    ADD CONSTRAINT devices_pkey PRIMARY KEY (id);
 ALTER TABLE ONLY public.device_pool
     ADD CONSTRAINT device_pool_pkey PRIMARY KEY (id);
 ALTER TABLE ONLY public.device_pool
     ADD CONSTRAINT device_pool_pool_id_device_id_key UNIQUE (pool_id, device_id);
+ALTER TABLE ONLY public.devices
+    ADD CONSTRAINT devices_pkey PRIMARY KEY (id);
 ALTER TABLE ONLY public.direction
     ADD CONSTRAINT direction_pkey PRIMARY KEY (value);
 ALTER TABLE ONLY public.organization
@@ -136,19 +143,19 @@ CREATE INDEX policy_subject_id_subject_type ON public.policies USING btree (subj
 CREATE INDEX policy_subject_secondary_id_subject_type ON public.policies USING btree (subject_secondary_id, subject_type);
 CREATE INDEX policy_template ON public.policies USING btree (template);
 CREATE UNIQUE INDEX pools_display_name_organization_unique ON public.pools USING btree (display_name, organization) WHERE (deleted_at IS NULL);
-CREATE OR REPLACE RULE devices_soft_deletion_rule AS
+CREATE RULE devices_soft_deletion_rule AS
     ON DELETE TO public.devices
-   WHERE current_setting('rules.soft_deletion'::text) = 'on'::text DO INSTEAD  UPDATE devices SET deleted_at = now()
+   WHERE (current_setting('rules.soft_deletion'::text) = 'on'::text) DO INSTEAD  UPDATE public.devices SET deleted_at = now()
   WHERE (devices.id = old.id);
 COMMENT ON RULE devices_soft_deletion_rule ON public.devices IS 'Make soft instead of hard deletion';
-CREATE OR REPLACE RULE policies_soft_deletion_rule AS
+CREATE RULE policies_soft_deletion_rule AS
     ON DELETE TO public.policies
-   WHERE current_setting('rules.soft_deletion'::text) = 'on'::text DO INSTEAD  UPDATE policies SET deleted_at = now()
+   WHERE (current_setting('rules.soft_deletion'::text) = 'on'::text) DO INSTEAD  UPDATE public.policies SET deleted_at = now()
   WHERE (policies.id = old.id);
 COMMENT ON RULE policies_soft_deletion_rule ON public.policies IS 'Make soft instead of hard deletion';
-CREATE OR REPLACE RULE pools_soft_deletion_rule AS
+CREATE RULE pools_soft_deletion_rule AS
     ON DELETE TO public.pools
-   WHERE current_setting('rules.soft_deletion'::text) = 'on'::text DO INSTEAD  UPDATE pools SET deleted_at = now()
+   WHERE (current_setting('rules.soft_deletion'::text) = 'on'::text) DO INSTEAD  UPDATE public.pools SET deleted_at = now()
   WHERE (pools.id = old.id);
 COMMENT ON RULE pools_soft_deletion_rule ON public.pools IS 'Make soft instead of hard deletion';
 CREATE TRIGGER set_public_device_pool_updated_at BEFORE UPDATE ON public.device_pool FOR EACH ROW EXECUTE FUNCTION public.set_current_timestamp_updated_at();
@@ -159,12 +166,12 @@ CREATE TRIGGER set_public_policies_updated_at BEFORE UPDATE ON public.policies F
 COMMENT ON TRIGGER set_public_policies_updated_at ON public.policies IS 'trigger to set value of column "updated_at" to current timestamp on row update';
 CREATE TRIGGER set_public_pools_updated_at BEFORE UPDATE ON public.pools FOR EACH ROW EXECUTE FUNCTION public.set_current_timestamp_updated_at();
 COMMENT ON TRIGGER set_public_pools_updated_at ON public.pools IS 'trigger to set value of column "updated_at" to current timestamp on row update';
-ALTER TABLE ONLY public.devices
-    ADD CONSTRAINT devices_organization_fkey FOREIGN KEY (organization) REFERENCES public.organization(value);
 ALTER TABLE ONLY public.device_pool
     ADD CONSTRAINT device_pool_device_id_fkey FOREIGN KEY (device_id) REFERENCES public.devices(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE ONLY public.device_pool
     ADD CONSTRAINT device_pool_pool_id_fkey FOREIGN KEY (pool_id) REFERENCES public.pools(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+ALTER TABLE ONLY public.devices
+    ADD CONSTRAINT devices_organization_fkey FOREIGN KEY (organization) REFERENCES public.organization(value);
 ALTER TABLE ONLY public.policies
     ADD CONSTRAINT policies_action_fkey FOREIGN KEY (action) REFERENCES public.action(value);
 ALTER TABLE ONLY public.policies

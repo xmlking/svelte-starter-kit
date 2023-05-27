@@ -31,6 +31,22 @@ object_relationships:
     using:
       foreign_key_constraint_on: pool_id
 insert_permissions:
+  - role: manager
+    permission:
+      check:
+        _and:
+          - device:
+              organization:
+                _eq: x-hasura-org-id
+          - pool:
+              organization:
+                _eq: x-hasura-org-id
+      set:
+        created_by: x-hasura-user-id
+        updated_by: x-hasura-user-id
+      columns:
+        - device_id
+        - pool_id
   - role: user
     permission:
       check:
@@ -47,22 +63,6 @@ insert_permissions:
           - device:
               created_by:
                 _eq: x-hasura-user-id
-      set:
-        created_by: x-hasura-user-id
-        updated_by: x-hasura-user-id
-      columns:
-        - device_id
-        - pool_id
-  - role: manager
-    permission:
-      check:
-        _and:
-          - device:
-              organization:
-                _eq: x-hasura-org-id
-          - pool:
-              organization:
-                _eq: x-hasura-org-id
       set:
         created_by: x-hasura-user-id
         updated_by: x-hasura-user-id
@@ -70,30 +70,6 @@ insert_permissions:
         - device_id
         - pool_id
 select_permissions:
-  - role: user
-    permission:
-      columns:
-        - created_by
-        - updated_by
-        - created_at
-        - updated_at
-        - device_id
-        - id
-        - pool_id
-      filter:
-        _and:
-          - device:
-              organization:
-                _eq: x-hasura-org-id
-          - pool:
-              organization:
-                _eq: x-hasura-org-id
-          - pool:
-              created_by:
-                _eq: x-hasura-user-id
-          - device:
-              created_by:
-                _eq: x-hasura-user-id
   - role: manager
     permission:
       columns:
@@ -112,11 +88,15 @@ select_permissions:
           - pool:
               organization:
                 _eq: x-hasura-org-id
-update_permissions:
   - role: user
     permission:
       columns:
+        - created_by
+        - updated_by
+        - created_at
+        - updated_at
         - device_id
+        - id
         - pool_id
       filter:
         _and:
@@ -132,10 +112,24 @@ update_permissions:
           - device:
               created_by:
                 _eq: x-hasura-user-id
+update_permissions:
+  - role: manager
+    permission:
+      columns:
+        - device_id
+        - pool_id
+      filter:
+        _and:
+          - device:
+              organization:
+                _eq: x-hasura-org-id
+          - pool:
+              organization:
+                _eq: x-hasura-org-id
       check: null
       set:
         updated_by: x-hasura-user-id
-  - role: manager
+  - role: user
     permission:
       columns:
         - device_id
@@ -148,10 +142,26 @@ update_permissions:
           - pool:
               organization:
                 _eq: x-hasura-org-id
+          - pool:
+              created_by:
+                _eq: x-hasura-user-id
+          - device:
+              created_by:
+                _eq: x-hasura-user-id
       check: null
       set:
         updated_by: x-hasura-user-id
 delete_permissions:
+  - role: manager
+    permission:
+      filter:
+        _and:
+          - device:
+              organization:
+                _eq: x-hasura-org-id
+          - pool:
+              organization:
+                _eq: x-hasura-org-id
   - role: user
     permission:
       filter:
@@ -168,13 +178,3 @@ delete_permissions:
           - device:
               created_by:
                 _eq: x-hasura-user-id
-  - role: manager
-    permission:
-      filter:
-        _and:
-          - device:
-              organization:
-                _eq: x-hasura-org-id
-          - pool:
-              organization:
-                _eq: x-hasura-org-id
