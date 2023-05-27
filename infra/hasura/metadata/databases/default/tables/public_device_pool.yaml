@@ -112,45 +112,6 @@ select_permissions:
           - device:
               created_by:
                 _eq: x-hasura-user-id
-update_permissions:
-  - role: manager
-    permission:
-      columns:
-        - device_id
-        - pool_id
-      filter:
-        _and:
-          - device:
-              organization:
-                _eq: x-hasura-org-id
-          - pool:
-              organization:
-                _eq: x-hasura-org-id
-      check: null
-      set:
-        updated_by: x-hasura-user-id
-  - role: user
-    permission:
-      columns:
-        - device_id
-        - pool_id
-      filter:
-        _and:
-          - device:
-              organization:
-                _eq: x-hasura-org-id
-          - pool:
-              organization:
-                _eq: x-hasura-org-id
-          - pool:
-              created_by:
-                _eq: x-hasura-user-id
-          - device:
-              created_by:
-                _eq: x-hasura-user-id
-      check: null
-      set:
-        updated_by: x-hasura-user-id
 delete_permissions:
   - role: manager
     permission:
