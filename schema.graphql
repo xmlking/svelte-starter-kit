@@ -332,6 +332,8 @@ enum action_update_column {
 input action_updates {
   """sets the columns of the filtered rows to the given values"""
   _set: action_set_input
+
+  """filter the rows which have to be updated"""
   where: action_bool_exp!
 }
 
@@ -632,6 +634,8 @@ enum device_pool_update_column {
 input device_pool_updates {
   """sets the columns of the filtered rows to the given values"""
   _set: device_pool_set_input
+
+  """filter the rows which have to be updated"""
   where: device_pool_bool_exp!
 }
 
@@ -969,6 +973,8 @@ enum devices_update_column {
 input devices_updates {
   """sets the columns of the filtered rows to the given values"""
   _set: devices_set_input
+
+  """filter the rows which have to be updated"""
   where: devices_bool_exp!
 }
 
@@ -1139,6 +1145,8 @@ enum direction_update_column {
 input direction_updates {
   """sets the columns of the filtered rows to the given values"""
   _set: direction_set_input
+
+  """filter the rows which have to be updated"""
   where: direction_bool_exp!
 }
 
@@ -1857,6 +1865,8 @@ enum organization_update_column {
 input organization_updates {
   """sets the columns of the filtered rows to the given values"""
   _set: organization_set_input
+
+  """filter the rows which have to be updated"""
   where: organization_bool_exp!
 }
 
@@ -2401,6 +2411,8 @@ input policies_updates {
 
   """sets the columns of the filtered rows to the given values"""
   _set: policies_set_input
+
+  """filter the rows which have to be updated"""
   where: policies_bool_exp!
 }
 
@@ -2739,6 +2751,8 @@ enum pools_update_column {
 input pools_updates {
   """sets the columns of the filtered rows to the given values"""
   _set: pools_set_input
+
+  """filter the rows which have to be updated"""
   where: pools_bool_exp!
 }
 
@@ -3270,6 +3284,8 @@ enum subject_type_update_column {
 input subject_type_updates {
   """sets the columns of the filtered rows to the given values"""
   _set: subject_type_set_input
+
+  """filter the rows which have to be updated"""
   where: subject_type_bool_exp!
 }
 
