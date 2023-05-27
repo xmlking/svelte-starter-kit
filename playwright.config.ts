@@ -5,7 +5,8 @@ const config: PlaywrightTestConfig = {
 		command: 'pnpm build && pnpm preview',
 		port: 4173
 	},
-	testDir: 'tests'
+	testDir: 'tests',
+	testMatch: /(.+\.)?(test|spec)\.[jt]s/
 };
 
 export default config;

@@ -6,7 +6,7 @@ import { ZodError } from 'zod';
 // import { getToken } from '@auth/core/jwt';
 import { policyDeleteSchema, policySearchSchema } from '$lib/models/schema';
 import { zfd } from '$lib/zodfd';
-import * as Sentry from '@sentry/svelte';
+import * as Sentry from '@sentry/sveltekit';
 import type { GraphQLError } from 'graphql';
 
 const log = new Logger('route:policies');
@@ -20,6 +20,12 @@ const searchSchema = zfd.formData(policySearchSchema, { empty: 'strip' });
  */
 export async function load(event) {
 	const { url, parent } = event;
+	const transaction = Sentry.startTransaction({
+		name: 'Policies List Transaction'
+	});
+	Sentry.configureScope((scope) => {
+		scope.setSpan(transaction);
+	});
 	try {
 		await parent(); // HINT: to make sure use session is valid
 
@@ -52,8 +58,6 @@ export async function load(event) {
 		return { policies: data.policies };
 	} catch (err) {
 		log.error('policies:actions:load:error:', err);
-		Sentry.setContext('source', { code: 'policy' });
-		Sentry.captureException(err);
 
 		if (err instanceof ZodError) {
 			const { formErrors, fieldErrors } = err.flatten();
@@ -63,6 +67,8 @@ export async function load(event) {
 		} else {
 			handleLoadErrors(err);
 		}
+	} finally {
+		transaction.finish();
 	}
 }
 
@@ -74,6 +80,12 @@ const deleteSchema = zfd.formData(policyDeleteSchema);
 export const actions = {
 	delete: async (event) => {
 		const { request } = event;
+		const transaction = Sentry.startTransaction({
+			name: 'Policy Delete Transaction'
+		});
+		Sentry.configureScope((scope) => {
+			scope.setSpan(transaction);
+		});
 		try {
 			const formData = await request.formData();
 			const { id } = deleteSchema.parse(formData);
@@ -95,14 +107,13 @@ export const actions = {
 			};
 		} catch (err) {
 			log.error('policies:actions:delete:error:', err);
-			Sentry.setContext('source', { code: 'policy.delete' });
-			Sentry.captureException(err);
-
 			if (err instanceof PolicyError && err.name === 'DELETE_POLICY_ERROR') {
 				return fail(400, { actionError: err.toJSON() });
 			} else {
 				return handleActionErrors(err);
 			}
+		} finally {
+			transaction.finish();
 		}
 	}
 };

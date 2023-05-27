@@ -16,8 +16,8 @@
 		"test:e2e": "playwright test",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-		"lint": "prettier --check . && eslint .",
-		"format": "prettier --write .",
+		"lint": "prettier --plugin-search-dir . --check . && eslint .",
+		"format": "prettier --plugin-search-dir . --write .",
 		"preinstall": "npx only-allow pnpm"
 	},
 	"devDependencies": {
@@ -29,8 +29,7 @@
 		"@neoconfetti/svelte": "1.0.0",
 		"@neodrag/svelte": "2.0.3",
 		"@popperjs/core": "2.11.8",
-		"@sentry/svelte": "7.53.1",
-		"@sentry/tracing": "7.53.1",
+		"@sentry/sveltekit": "7.53.1",
 		"@skeletonlabs/skeleton": "1.6.2",
 		"@svelte-put/resize": "2.0.0",
 		"@sveltejs/adapter-auto": "2.1.0",
