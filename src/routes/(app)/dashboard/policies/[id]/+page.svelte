@@ -8,6 +8,7 @@
 	import { DateInput } from '$lib/components/form';
 	import { addToast, ToastLevel } from '$lib/components/toast';
 	import { policyClientSchema } from '$lib/models/schema';
+	import type { Subject } from '$lib/models/types/subject';
 	import { Logger } from '$lib/utils';
 	import { validator } from '@felte/validator-zod';
 	import type { Snapshot } from '@sveltejs/kit';
@@ -164,7 +165,7 @@
 		if (!response.ok) throw new Error(`An error has occurred: ${response.status}`);
 		const data = await response.json();
 		if (!data) throw new Error('no data');
-		return data.results;
+		return data.results as Subject[];
 	}
 	async function onSubjectChange(changedSubject: CustomEvent) {
 		log.debug('onSubjectChange', changedSubject.detail);
@@ -178,6 +179,16 @@
 				$fData.subjectDisplayName = '';
 				$fData.subjectSecondaryId = '';
 			}
+		}
+	}
+	function onSubjectClear(event: CustomEvent) {
+		// reset Selected ???
+		log.debug('onSubjectClear', event.detail);
+		if (browser) {
+			subject= null
+			$fData.subjectId = '';
+			$fData.subjectDisplayName = '';
+			$fData.subjectSecondaryId = '';
 		}
 	}
 </script>
@@ -248,6 +259,7 @@
 						<input
 							type="radio"
 							name="subjectType"
+							on:change={onSubjectClear}
 							value={opt.value}
 							data-title={opt.label}
 							class="btn"
@@ -266,6 +278,7 @@
 					label="displayName"
 					bind:value={subject}
 					on:change={onSubjectChange}
+					on:clear={onSubjectClear}
 					disabled={editMode}
 					loadOptions={fetchSubjects}
 				>
