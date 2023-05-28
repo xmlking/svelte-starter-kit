@@ -4,7 +4,6 @@
 	import { sidebarOpen } from '$lib/stores/sidebar.store';
 	import { Sidebar, SidebarGroup, SidebarItem, SidebarWrapper } from 'flowbite-svelte';
 	import {
-		AcademicCap,
 		ArrowRightOnRectangle,
 		Bell,
 		ChartPie,
@@ -58,13 +57,6 @@
 							>3</span
 						>
 					</svelte:fragment>
-				</SidebarItem>
-				<SidebarItem
-					label="Accounts"
-					href="/dashboard/accounts"
-					active={activeUrl === '/dashboard/accounts'}
-				>
-					<svelte:fragment slot="icon"><AcademicCap /></svelte:fragment>
 				</SidebarItem>
 				<SidebarItem
 					label="Policies"

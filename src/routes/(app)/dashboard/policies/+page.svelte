@@ -20,6 +20,7 @@
 		ChevronUp,
 		DevicePhoneMobile,
 		MagnifyingGlass,
+		RectangleGroup,
 		ShieldCheck,
 		User,
 		UserCircle,
@@ -161,8 +162,9 @@
 		{ value: '', name: 'All' },
 		{ value: 'subject_type_user', name: 'User' },
 		{ value: 'subject_type_group', name: 'Group' },
+		{ value: 'subject_type_service_account', name: 'Service' },
 		{ value: 'subject_type_device', name: 'Device' },
-		{ value: 'subject_type_service_account', name: 'Service' }
+		{ value: 'subject_type_device_pool', name: 'Device Pool' }
 	];
 
 	const { filterValue } = pluginStates.tableFilter;
@@ -194,7 +196,7 @@
 				name="subjectType"
 				class="w-auto !rounded-r-none"
 				items={subTypeOptions}
-				value={subjectType}
+				bind:value={subjectType}
 				placeholder="Select Type"
 			/>
 			<InputAddon class="!bg-gray-50 !px-2 dark:!bg-gray-500">
@@ -204,6 +206,8 @@
 					<UserCircle />
 				{:else if subjectType == 'subject_type_device'}
 					<DevicePhoneMobile />
+				{:else if subjectType == 'subject_type_device_pool'}
+					<RectangleGroup />
 				{:else}
 					<User />
 				{/if}

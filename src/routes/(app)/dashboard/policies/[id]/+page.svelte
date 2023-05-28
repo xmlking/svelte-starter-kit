@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import { enhance } from '$app/forms';
 	import { goto } from '$app/navigation';
 	import { ErrorMessage, FloatingLabelField, Tags } from '$lib/components';
@@ -17,10 +18,20 @@
 		Button,
 		ButtonGroup,
 		Helper,
-		Spinner
+		Spinner,
+		UserCircle
 	} from 'flowbite-svelte';
+	import Svelecte from 'svelecte';
 	import { tick } from 'svelte';
-	import { AdjustmentsHorizontal, ArrowLeft, CloudArrowDown } from 'svelte-heros-v2';
+	import {
+		AdjustmentsHorizontal,
+		ArrowLeft,
+		CloudArrowDown,
+		DevicePhoneMobile,
+		RectangleGroup,
+		User,
+		UserGroup
+	} from 'svelte-heros-v2';
 
 	const log = new Logger('routes:policies:item');
 
@@ -99,6 +110,10 @@
 		{
 			value: 'subject_type_device',
 			label: 'Device'
+		},
+		{
+			value: 'subject_type_device_pool',
+			label: 'Device Pool'
 		}
 	];
 	let protocols = [
@@ -132,6 +147,41 @@
 			label: 'Ingress' // Inbound
 		}
 	];
+
+	// svelecte settings
+	let subject = policy?.subjectId
+		? {
+				id: policy.subjectId,
+				displayName: policy.subjectDisplayName,
+				secondaryId: policy.subjectSecondaryId
+		  }
+		: null;
+	const svelecteSettings = {
+		inputId: 'subjectDisplayName',
+		name: 'subjectDisplayName',
+		valueField: 'displayName',
+		labelField: 'displayName',
+		clearable: true,
+		minQuery: 2,
+		placeholder: "Start typing ('su' for example)",
+		resetOnBlur: true,
+		fetchResetOnBlur: true,
+		fetchCallback: (data) => data.results
+	};
+	async function onSubjectChange(changedSubject: CustomEvent) {
+		log.debug('onSubjectChange', changedSubject.detail);
+		if (browser) {
+			if (changedSubject?.detail) {
+				$fData.subjectId = changedSubject.detail.id;
+				$fData.subjectDisplayName = changedSubject.detail.displayName;
+				$fData.subjectSecondaryId = changedSubject.detail.secondaryId;
+			} else {
+				$fData.subjectId = '';
+				$fData.subjectDisplayName = '';
+				$fData.subjectSecondaryId = '';
+			}
+		}
+	}
 </script>
 
 <svelte:head>
@@ -147,7 +197,17 @@
 
 <ErrorMessage error={loadError?.message} />
 
-<form class="space-y-6" method="POST" action="?/save" use:fForm use:enhance>
+<form
+	class="space-y-6"
+	method="POST"
+	action="?/save"
+	autocomplete="off"
+	autocorrect="off"
+	autocapitalize="off"
+	spellcheck="false"
+	use:fForm
+	use:enhance
+>
 	{#if policy}
 		<div class="mb-6 grid gap-6 md:grid-cols-3 lg:grid-cols-6">
 			<div class="col-span-2">
@@ -190,11 +250,11 @@
 					error={fieldErrors?.annotations?.[0] || $fErrors?.annotations?.[0]}
 				/>
 				<Helper class="mt-2 text-sm italic"
-					>Format: "key1" => "value1", "key2" => "value2"</Helper
+					>Format: key1=>value1 (or) "key2" => "value2 with space"</Helper
 				>
 			</div>
 
-			<div class="col-span-2">
+			<div class="col-span-3">
 				<div class="btn-group">
 					{#each subjectTypeOptions as opt}
 						<input
@@ -212,49 +272,39 @@
 					error={fieldErrors?.subjectType?.[0] || $fErrors?.subjectType?.[0]}
 				/>
 			</div>
-			<div>
-				<FloatingLabelField
-					name="subjectDisplayName"
-					style="outlined"
-					label="Subject display name"
-					error={fieldErrors?.subjectDisplayName?.[0] ||
-						$fErrors?.subjectDisplayName?.[0]}
+			<div class="col-span-3">
+				<Svelecte
+					{...svelecteSettings}
+					on:change={onSubjectChange}
+					bind:value={subject}
+					valueAsObject
 					disabled={editMode}
-				/>
+					fetch="/api/directory/search?subType={$fData.subjectType}&filter=&search=displayName:[query]"
+				>
+					<b slot="icon" class="pl-2">
+						{#if $fData.subjectType == 'subject_type_group'}
+							<UserGroup />
+						{:else if $fData.subjectType == 'subject_type_service_account'}
+							<UserCircle />
+						{:else if $fData.subjectType == 'subject_type_device'}
+							<DevicePhoneMobile />
+						{:else if $fData.subjectType == 'subject_type_device_pool'}
+							<RectangleGroup />
+						{:else}
+							<User />
+						{/if}
+					</b>
+				</Svelecte>
 			</div>
-			<div>
-				<FloatingLabelField
-					name="subjectId"
-					style="outlined"
-					label="Subject ID"
-					error={fieldErrors?.subjectId?.[0] || $fErrors?.subjectId?.[0]}
-					disabled={editMode}
-				/>
-			</div>
-			<div>
-				<FloatingLabelField
-					name="subjectSecondaryId"
-					style="outlined"
-					label="Subject Secondary ID"
-					error={fieldErrors?.subjectSecondaryId?.[0] ||
-						$fErrors?.subjectSecondaryId?.[0]}
-					disabled={editMode}
-				/>
-			</div>
-			<div>
-				<FloatingLabelField
-					name="organization"
-					style="outlined"
-					label="Organization"
-					error={fieldErrors?.organization?.[0] || $fErrors?.organization?.[0]}
-					disabled={true}
-				/>
-			</div>
+			<input type="hidden" name="subjectId" bind:value={$fData.subjectId} />
+			<input type="hidden" name="subjectSecondaryId" bind:value={$fData.subjectSecondaryId} />
+			<input type="hidden" name="organization" bind:value={$fData.organization} />
 			<div class="col-span-3">
 				<FloatingLabelField
 					name="sourceAddress"
 					style="outlined"
-					label="Source address"
+					label="Source"
+					autocomplete="on"
 					error={fieldErrors?.sourceAddress?.[0] || $fErrors?.sourceAddress?.[0]}
 				/>
 			</div>
@@ -263,6 +313,7 @@
 					name="sourcePort"
 					style="outlined"
 					label="Source port"
+					autocomplete="on"
 					error={fieldErrors?.sourcePort?.[0] || $fErrors?.sourcePort?.[0]}
 				/>
 			</div>
@@ -270,7 +321,8 @@
 				<FloatingLabelField
 					name="destinationAddress"
 					style="outlined"
-					label="Destination address"
+					label="Destination"
+					autocomplete="on"
 					error={fieldErrors?.destinationAddress?.[0] ||
 						$fErrors?.destinationAddress?.[0]}
 				/>
@@ -280,6 +332,7 @@
 					name="destinationPort"
 					style="outlined"
 					label="Destination port"
+					autocomplete="on"
 					error={fieldErrors?.destinationPort?.[0] || $fErrors?.destinationPort?.[0]}
 				/>
 			</div>
