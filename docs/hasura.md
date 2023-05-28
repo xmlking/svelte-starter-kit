@@ -97,6 +97,26 @@ docker compose down
 docker compose down -v
 ```
 
+### Refresh local hasura running in docker-compose with changes committed to repo
+
+```shell
+docker compose down -v
+docker compose up hasura
+
+hasura migrate apply --database-name default
+
+hasura seed apply --file 1684708431893_organization.sql --database-name default
+hasura seed apply --file 1684708436910_direction.sql --database-name default
+hasura seed apply --file 1684708445914_action.sql --database-name default
+hasura seed apply --file 1684708447664_subject_type.sql --database-name default
+hasura seed apply --file 1684708449201_policies.sql --database-name default
+hasura seed apply --file 1684709181893_devices.sql --database-name default
+hasura seed apply --file 1684709183467_pools.sql --database-name default
+
+hasura metadata apply
+hasura metadata reload
+```
+
 ### Apply Metadata
 
 To apply all the **Metadata** and **Migrations** present in the `infra/hasura` directory to a new, "fresh" database (i.e., docker compose down -v):
