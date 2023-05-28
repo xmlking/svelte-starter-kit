@@ -6,7 +6,7 @@ import { redirect, type Handle } from '@sveltejs/kit';
  * It should be the last middleware
  */
 const log = new Logger('middleware:guard');
-const protectedPaths = ['/dashboard', '/account'];
+const protectedPaths = ['/dashboard', '/account', '/api'];
 const adminPaths = ['/dashboard/admin'];
 export const guard = (async ({ event, resolve }) => {
 	// skip auth logic on build to prevent infinite redirection in production mode

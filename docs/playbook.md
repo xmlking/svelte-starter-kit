@@ -270,7 +270,7 @@ pnpm add -D js-cookie
 Custom form elements
 
 ```shell
-pnpm add -D svelecte
+pnpm add -D svelte-select
 ```
 
 #### Progressive Web Apps (PWA)

@@ -21,7 +21,6 @@
 		Spinner,
 		UserCircle
 	} from 'flowbite-svelte';
-	import Svelecte from 'svelecte';
 	import { tick } from 'svelte';
 	import {
 		AdjustmentsHorizontal,
@@ -32,6 +31,7 @@
 		User,
 		UserGroup
 	} from 'svelte-heros-v2';
+	import Select from 'svelte-select';
 
 	const log = new Logger('routes:policies:item');
 
@@ -148,7 +148,7 @@
 		}
 	];
 
-	// svelecte settings
+	// select settings
 	let subject = policy?.subjectId
 		? {
 				id: policy.subjectId,
@@ -156,18 +156,16 @@
 				secondaryId: policy.subjectSecondaryId
 		  }
 		: null;
-	const svelecteSettings = {
-		inputId: 'subjectDisplayName',
-		name: 'subjectDisplayName',
-		valueField: 'displayName',
-		labelField: 'displayName',
-		clearable: true,
-		minQuery: 2,
-		placeholder: "Start typing ('su' for example)",
-		resetOnBlur: true,
-		fetchResetOnBlur: true,
-		fetchCallback: (data) => data.results
-	};
+	async function fetchSubjects(filterText: string) {
+		if (!filterText.length) return Promise.resolve([]);
+		const response = await fetch(
+			`/api/directory/search?subType=${$fData.subjectType}&filter=&search=${filterText}`
+		);
+		if (!response.ok) throw new Error(`An error has occurred: ${response.status}`);
+		const data = await response.json();
+		if (!data) throw new Error('no data');
+		return data.results;
+	}
 	async function onSubjectChange(changedSubject: CustomEvent) {
 		log.debug('onSubjectChange', changedSubject.detail);
 		if (browser) {
@@ -197,17 +195,7 @@
 
 <ErrorMessage error={loadError?.message} />
 
-<form
-	class="space-y-6"
-	method="POST"
-	action="?/save"
-	autocomplete="off"
-	autocorrect="off"
-	autocapitalize="off"
-	spellcheck="false"
-	use:fForm
-	use:enhance
->
+<form class="space-y-6" method="POST" action="?/save" use:fForm use:enhance>
 	{#if policy}
 		<div class="mb-6 grid gap-6 md:grid-cols-3 lg:grid-cols-6">
 			<div class="col-span-2">
@@ -273,15 +261,15 @@
 				/>
 			</div>
 			<div class="col-span-3">
-				<Svelecte
-					{...svelecteSettings}
-					on:change={onSubjectChange}
+				<Select
+					itemId="displayName"
+					label="displayName"
 					bind:value={subject}
-					valueAsObject
+					on:change={onSubjectChange}
 					disabled={editMode}
-					fetch="/api/directory/search?subType={$fData.subjectType}&filter=&search=displayName:[query]"
+					loadOptions={fetchSubjects}
 				>
-					<b slot="icon" class="pl-2">
+					<b slot="prepend" class="p-2">
 						{#if $fData.subjectType == 'subject_type_group'}
 							<UserGroup />
 						{:else if $fData.subjectType == 'subject_type_service_account'}
@@ -294,17 +282,39 @@
 							<User />
 						{/if}
 					</b>
-				</Svelecte>
+					<svelte:fragment slot="input-hidden" let:value>
+						<input
+							type="hidden"
+							name="subjectDisplayName"
+							disabled={editMode}
+							value={value ? value.displayName : null}
+						/>
+					</svelte:fragment>
+				</Select>
 			</div>
-			<input type="hidden" name="subjectId" bind:value={$fData.subjectId} />
-			<input type="hidden" name="subjectSecondaryId" bind:value={$fData.subjectSecondaryId} />
-			<input type="hidden" name="organization" bind:value={$fData.organization} />
+			<input
+				type="hidden"
+				name="subjectId"
+				disabled={editMode}
+				bind:value={$fData.subjectId}
+			/>
+			<input
+				type="hidden"
+				name="subjectSecondaryId"
+				disabled={editMode}
+				bind:value={$fData.subjectSecondaryId}
+			/>
+			<input
+				type="hidden"
+				name="organization"
+				disabled={editMode}
+				bind:value={$fData.organization}
+			/>
 			<div class="col-span-3">
 				<FloatingLabelField
 					name="sourceAddress"
 					style="outlined"
 					label="Source"
-					autocomplete="on"
 					error={fieldErrors?.sourceAddress?.[0] || $fErrors?.sourceAddress?.[0]}
 				/>
 			</div>
@@ -313,7 +323,6 @@
 					name="sourcePort"
 					style="outlined"
 					label="Source port"
-					autocomplete="on"
 					error={fieldErrors?.sourcePort?.[0] || $fErrors?.sourcePort?.[0]}
 				/>
 			</div>
@@ -322,7 +331,6 @@
 					name="destinationAddress"
 					style="outlined"
 					label="Destination"
-					autocomplete="on"
 					error={fieldErrors?.destinationAddress?.[0] ||
 						$fErrors?.destinationAddress?.[0]}
 				/>
@@ -332,7 +340,6 @@
 					name="destinationPort"
 					style="outlined"
 					label="Destination port"
-					autocomplete="on"
 					error={fieldErrors?.destinationPort?.[0] || $fErrors?.destinationPort?.[0]}
 				/>
 			</div>
