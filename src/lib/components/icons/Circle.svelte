@@ -1,5 +1,15 @@
 <!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512.002 512.002" style="enable-background:new 0 0 512.002 512.002;" xml:space="preserve">
+<svg
+	version="1.1"
+	id="Layer_1"
+	xmlns="http://www.w3.org/2000/svg"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	x="0px"
+	y="0px"
+	viewBox="0 0 512.002 512.002"
+	style="enable-background:new 0 0 512.002 512.002;"
+	xml:space="preserve"
+>
 	<circle style="fill:#0055B8;" cx="255.999" cy="255.999" r="81.407" />
 	<circle style="fill:#00A8E1;" cx="255.999" cy="50.631" r="42.628" />
 	<circle style="fill:#FF9E16;" cx="110.776" cy="110.787" r="42.629" />

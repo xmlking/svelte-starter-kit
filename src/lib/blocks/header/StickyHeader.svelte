@@ -5,29 +5,40 @@
 	Source code: https://github.com/jmagrippis/with-svelte
 -->
 <script lang="ts">
-	let previousY: number
-	let currentY: number
-	let clientHeight: number
+	let previousY: number;
+	let currentY: number;
+	let clientHeight: number;
 	const deriveDirection = (y: number) => {
-		const direction = !previousY || previousY < y ? 'down' : 'up'
-		previousY = y
-		return direction
-	}
-	$: scrollDirection = deriveDirection(currentY)
-	$: offscreen = scrollDirection === 'down' && currentY > clientHeight * 4
-
+		const direction = !previousY || previousY < y ? 'down' : 'up';
+		previousY = y;
+		return direction;
+	};
+	$: scrollDirection = deriveDirection(currentY);
+	$: offscreen = scrollDirection === 'down' && currentY > clientHeight * 4;
 </script>
 
 <svelte:window bind:scrollY={currentY} />
 
 <header
-	class="sticky top-0 flex h-[var(--header-height)] items-center bg-surface-1/50 px-2 text-lg backdrop-blur-sm transition-transform ease-in md:px-0 body-font text-gray-600 dark:bg-gray-900 dark:text-gray-400"
+	class="bg-surface-1/50 body-font sticky top-0 flex h-[var(--header-height)] items-center px-2 text-lg text-gray-600 backdrop-blur-sm transition-transform ease-in dark:bg-gray-900 dark:text-gray-400 md:px-0"
 	class:motion-safe:-translate-y-full={offscreen}
 	bind:clientHeight
 >
 	<div class="container mx-auto flex flex-col flex-wrap items-center p-5 md:flex-row">
-		<a href="/#" class="title-font mb-4 flex items-center font-medium text-gray-900 dark:text-white md:mb-0">
-			<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="h-10 w-10 rounded-full bg-indigo-500 p-2 text-white" viewBox="0 0 24 24">
+		<a
+			href="/#"
+			class="title-font mb-4 flex items-center font-medium text-gray-900 dark:text-white md:mb-0"
+		>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				fill="none"
+				stroke="currentColor"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				stroke-width="2"
+				class="h-10 w-10 rounded-full bg-indigo-500 p-2 text-white"
+				viewBox="0 0 24 24"
+			>
 				<path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
 			</svg>
 

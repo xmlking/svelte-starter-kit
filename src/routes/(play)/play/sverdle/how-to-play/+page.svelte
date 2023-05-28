@@ -3,12 +3,12 @@
 	<meta name="description" content="How to play Sverdle" />
 </svelte:head>
 
-<main class="container mx-auto bg-slate-100 overflow-y-auto py-32 px-8 dark:text-white">
+<main class="container mx-auto overflow-y-auto bg-slate-100 px-8 py-32 dark:text-white">
 	<h1>How to play Sverdle</h1>
 
 	<p>
-		Sverdle is a clone of <a href="https://www.nytimes.com/games/wordle/index.html">Wordle</a>, the
-		word guessing game. To play, enter a five-letter English word. For example:
+		Sverdle is a clone of <a href="https://www.nytimes.com/games/wordle/index.html">Wordle</a>,
+		the word guessing game. To play, enter a five-letter English word. For example:
 	</p>
 
 	<div class="example">
@@ -38,8 +38,8 @@
 
 	<p>
 		Unlike the original Wordle, Sverdle runs on the server instead of in the browser, making it
-		impossible to cheat. It uses <code>&lt;form&gt;</code> and cookies to submit data, meaning you can
-		even play with JavaScript disabled!
+		impossible to cheat. It uses <code>&lt;form&gt;</code> and cookies to submit data, meaning you
+		can even play with JavaScript disabled!
 	</p>
 </main>
 

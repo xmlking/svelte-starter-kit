@@ -55,9 +55,7 @@
 	 */
 	function update(event: MouseEvent) {
 		const guess = data.guesses[i];
-		const key = (event.target as HTMLButtonElement).getAttribute(
-			'data-key'
-		);
+		const key = (event.target as HTMLButtonElement).getAttribute('data-key');
 
 		if (key === 'backspace') {
 			data.guesses[i] = guess.slice(0, -1);
@@ -87,114 +85,115 @@
 	<meta name="description" content="A Wordle clone written in SvelteKit" />
 </svelte:head>
 
-<main class="container mx-auto bg-slate-100 overflow-y-auto py-32 px-8 dark:text-white">
-<h1 class="visually-hidden">Sverdle</h1>
+<main class="container mx-auto overflow-y-auto bg-slate-100 px-8 py-32 dark:text-white">
+	<h1 class="visually-hidden">Sverdle</h1>
 
-<form
-	method="POST"
-	action="?/enter"
-	use:enhance={() => {
-		// prevent default callback from resetting the form
-		return ({ update }) => {
-			update({ reset: false });
-		};
-	}}
->
-	<a class="how-to-play" href="/play/sverdle/how-to-play">How to play</a>
-
-	<div class="grid" class:playing={!won} class:bad-guess={form?.badGuess}>
-		{#each Array(6) as _, row}
-			{@const current = row === i}
-			<h2 class="visually-hidden">Row {row + 1}</h2>
-			<div class="row" class:current>
-				{#each Array(5) as _, column}
-					{@const answer = data.answers[row]?.[column]}
-					{@const value = data.guesses[row]?.[column] ?? ''}
-					{@const selected = current && column === data.guesses[row].length}
-					{@const exact = answer === 'x'}
-					{@const close = answer === 'c'}
-					{@const missing = answer === '_'}
-					<div class="letter" class:exact class:close class:missing class:selected>
-						{value}
-						<span class="visually-hidden">
-							{#if exact}
-								(correct)
-							{:else if close}
-								(present)
-							{:else if missing}
-								(absent)
-							{:else}
-								empty
-							{/if}
-						</span>
-						<input name="guess" disabled={!current} type="hidden" {value} />
-					</div>
-				{/each}
-			</div>
-		{/each}
-	</div>
-
-	<div class="controls">
-		{#if won || data.answers.length >= 6}
-			{#if !won && data.answer}
-				<p>the answer was "{data.answer}"</p>
-			{/if}
-			<button data-key="enter" class="restart selected" formaction="?/restart">
-				{won ? 'you won :)' : `game over :(`} play again?
-			</button>
-		{:else}
-			<div class="keyboard">
-				<button data-key="enter" class:selected={submittable} disabled={!submittable}>enter</button>
-
-				<button
-					on:click|preventDefault={update}
-					data-key="backspace"
-					formaction="?/update"
-					name="key"
-					value="backspace"
-				>
-					back
-				</button>
-
-				{#each ['qwertyuiop', 'asdfghjkl', 'zxcvbnm'] as row}
-					<div class="row">
-						{#each row as letter}
-							<button
-								on:click|preventDefault={update}
-								data-key={letter}
-								class={classnames[letter]}
-								disabled={data.guesses[i].length === 5}
-								formaction="?/update"
-								name="key"
-								value={letter}
-								aria-label="{letter} {description[letter] || ''}"
-							>
-								{letter}
-							</button>
-						{/each}
-					</div>
-				{/each}
-			</div>
-		{/if}
-	</div>
-</form>
-
-{#if won}
-	<div
-		style="position: absolute; left: 50%; top: 30%"
-		use:confetti={{
-			particleCount: $reduced_motion ? 0 : undefined,
-			force: 0.7,
-			stageWidth: window.innerWidth,
-			stageHeight: window.innerHeight,
-			colors: ['#ff3e00', '#40b3ff', '#676778']
+	<form
+		method="POST"
+		action="?/enter"
+		use:enhance={() => {
+			// prevent default callback from resetting the form
+			return ({ update }) => {
+				update({ reset: false });
+			};
 		}}
-	/>
-{/if}
+	>
+		<a class="how-to-play" href="/play/sverdle/how-to-play">How to play</a>
+
+		<div class="grid" class:playing={!won} class:bad-guess={form?.badGuess}>
+			{#each Array(6) as _, row}
+				{@const current = row === i}
+				<h2 class="visually-hidden">Row {row + 1}</h2>
+				<div class="row" class:current>
+					{#each Array(5) as _, column}
+						{@const answer = data.answers[row]?.[column]}
+						{@const value = data.guesses[row]?.[column] ?? ''}
+						{@const selected = current && column === data.guesses[row].length}
+						{@const exact = answer === 'x'}
+						{@const close = answer === 'c'}
+						{@const missing = answer === '_'}
+						<div class="letter" class:exact class:close class:missing class:selected>
+							{value}
+							<span class="visually-hidden">
+								{#if exact}
+									(correct)
+								{:else if close}
+									(present)
+								{:else if missing}
+									(absent)
+								{:else}
+									empty
+								{/if}
+							</span>
+							<input name="guess" disabled={!current} type="hidden" {value} />
+						</div>
+					{/each}
+				</div>
+			{/each}
+		</div>
+
+		<div class="controls">
+			{#if won || data.answers.length >= 6}
+				{#if !won && data.answer}
+					<p>the answer was "{data.answer}"</p>
+				{/if}
+				<button data-key="enter" class="restart selected" formaction="?/restart">
+					{won ? 'you won :)' : `game over :(`} play again?
+				</button>
+			{:else}
+				<div class="keyboard">
+					<button data-key="enter" class:selected={submittable} disabled={!submittable}
+						>enter</button
+					>
+
+					<button
+						on:click|preventDefault={update}
+						data-key="backspace"
+						formaction="?/update"
+						name="key"
+						value="backspace"
+					>
+						back
+					</button>
+
+					{#each ['qwertyuiop', 'asdfghjkl', 'zxcvbnm'] as row}
+						<div class="row">
+							{#each row as letter}
+								<button
+									on:click|preventDefault={update}
+									data-key={letter}
+									class={classnames[letter]}
+									disabled={data.guesses[i].length === 5}
+									formaction="?/update"
+									name="key"
+									value={letter}
+									aria-label="{letter} {description[letter] || ''}"
+								>
+									{letter}
+								</button>
+							{/each}
+						</div>
+					{/each}
+				</div>
+			{/if}
+		</div>
+	</form>
+
+	{#if won}
+		<div
+			style="position: absolute; left: 50%; top: 30%"
+			use:confetti={{
+				particleCount: $reduced_motion ? 0 : undefined,
+				force: 0.7,
+				stageWidth: window.innerWidth,
+				stageHeight: window.innerHeight,
+				colors: ['#ff3e00', '#40b3ff', '#676778']
+			}}
+		/>
+	{/if}
 </main>
 
 <style>
-
 	form {
 		width: 100%;
 		height: 100%;

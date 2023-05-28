@@ -6,10 +6,18 @@
 
 	const xKey = 'myX';
 	const yKey = 'myY';
-	data.forEach(d => {
+	data.forEach((d) => {
 		d[yKey] = +d[yKey];
 	});
 </script>
+
+<div class="chart-container">
+	<LayerCake x={xKey} y={yKey} yDomain={[0, null]} {data}>
+		<Svg>
+			<Area fill="#ff7ac7" />
+		</Svg>
+	</LayerCake>
+</div>
 
 <style>
 	/*
@@ -23,18 +31,3 @@
 		height: 100%;
 	}
 </style>
-
-<div class="chart-container">
-	<LayerCake
-		x={xKey}
-		y={yKey}
-		yDomain={[0, null]}
-		data={data}
-	>
-		<Svg>
-			<Area
-				fill="#ff7ac7"
-			/>
-		</Svg>
-	</LayerCake>
-</div>

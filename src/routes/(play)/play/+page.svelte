@@ -1,5 +1,5 @@
 <script lang="ts">
-  	import { Listgroup } from 'flowbite-svelte';
+	import { Listgroup } from 'flowbite-svelte';
 	let links = [
 		{ name: 'demo', href: '/play/demo' },
 		{ name: 'Chat', href: '/play/chat' },

@@ -18,10 +18,20 @@
 <ContextMenu />
 
 <div class="container" style="--toggle-height: {$mobile ? '4.6rem' : '0px'}">
-	<SplitPanel type="horizontal" min={$mobile ? '0px' : '360px'} max={$mobile ? '100%' : '50%'} pos={$mobile ? (selected_view === 0 ? '100%' : '0%') : '33%'}>
+	<SplitPanel
+		type="horizontal"
+		min={$mobile ? '0px' : '360px'}
+		max={$mobile ? '100%' : '50%'}
+		pos={$mobile ? (selected_view === 0 ? '100%' : '0%') : '33%'}
+	>
 		<section slot="a" class="content" />
 		<section slot="b" class:hidden={$mobile && selected_view === 0}>
-			<SplitPanel type="vertical" min={$mobile ? '0px' : '100px'} max={$mobile ? '100%' : '50%'} pos={$mobile ? (selected_view === 1 ? '100%' : '0%') : '50%'}>
+			<SplitPanel
+				type="vertical"
+				min={$mobile ? '0px' : '100px'}
+				max={$mobile ? '100%' : '50%'}
+				pos={$mobile ? (selected_view === 1 ? '100%' : '0%') : '50%'}
+			>
 				<section slot="a">
 					<SplitPanel type="horizontal" min="80px" max="300px" pos="200px">
 						<section class="navigator" slot="a" />

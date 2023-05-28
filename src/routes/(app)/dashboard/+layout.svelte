@@ -32,7 +32,8 @@
 	// console.log('session>>>', session);
 
 	// HINT: added `right-4 top-24` to original `btnClass`
-	let btnClass = 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-lg p-2.5 fixed right-4 top-24 z-50';
+	let btnClass =
+		'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-lg p-2.5 fixed right-4 top-24 z-50';
 </script>
 
 <DarkMode {btnClass} />
@@ -46,7 +47,7 @@
 		<SideMenu />
 		<!--   end::Sidebar      -->
 		<!--   start::Main Content     -->
-		<main class="container mx-auto overflow-y-auto py-32 px-8 dark:text-white">
+		<main class="container mx-auto overflow-y-auto px-8 py-32 dark:text-white">
 			<slot />
 		</main>
 		<!--   end::Main Content      -->

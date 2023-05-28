@@ -34,6 +34,7 @@ Ref: https://joyofcode.xyz/sveltekit-google-analytics
 
 <svelte:head>
 	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<!-- Global site tag (gtag.js) - Google Analytics -->
 	<script async {src}></script>
 	<script data-gid={gid}>
 		window.dataLayer = window.dataLayer || [];
@@ -43,6 +44,6 @@ Ref: https://joyofcode.xyz/sveltekit-google-analytics
 		}
 
 		gtag('js', new Date());
-		gtag('config',  document.currentScript.getAttribute('data-gid'), { send_page_view: false });
+		gtag('config', document.currentScript.getAttribute('data-gid'), { send_page_view: false });
 	</script>
 </svelte:head>

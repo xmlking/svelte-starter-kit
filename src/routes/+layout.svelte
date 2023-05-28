@@ -5,14 +5,14 @@
 	import envPub from '$lib/variables/variables';
 	import '../app.pcss';
 
-	 import { onMount } from 'svelte';
-	 import { pwaInfo } from 'virtual:pwa-info';
+	import { onMount } from 'svelte';
+	import { pwaInfo } from 'virtual:pwa-info';
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	let ReloadPrompt: any
+	let ReloadPrompt: any;
 	onMount(async () => {
 		if (pwaInfo) {
-			const { registerSW } = await import('virtual:pwa-register')
+			const { registerSW } = await import('virtual:pwa-register');
 			registerSW({
 				immediate: true,
 				onRegistered(r) {
@@ -21,23 +21,22 @@
 					//    console.log('Checking for sw update')
 					//    r.update()
 					// }, 20000 /* 20s for testing purposes */)
-					console.log(`SW Registered: ${r}`)
+					console.log(`SW Registered: ${r}`);
 				},
 				onRegisterError(error) {
-					console.log('SW registration error', error)
+					console.log('SW registration error', error);
 				}
-			})
+			});
 
-			ReloadPrompt = (await import('$lib/components/ReloadPrompt.svelte')).default
+			ReloadPrompt = (await import('$lib/components/ReloadPrompt.svelte')).default;
 		}
-	})
+	});
 
-	$: webManifest = pwaInfo ? pwaInfo.webManifest.linkTag : ''
-
+	$: webManifest = pwaInfo ? pwaInfo.webManifest.linkTag : '';
 </script>
 
 <svelte:head>
-    {@html webManifest}
+	{@html webManifest}
 </svelte:head>
 
 {#if !dev && envPub.PUBLIC_GOOGLE_ANALYTICS_TARGET_ID}
@@ -49,5 +48,5 @@
 <slot />
 
 {#if ReloadPrompt}
-  <svelte:component this={ReloadPrompt} />
+	<svelte:component this={ReloadPrompt} />
 {/if}

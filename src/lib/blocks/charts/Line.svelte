@@ -7,8 +7,25 @@
 	import { LayerCake, Svg } from 'layercake';
 	const xKey = 'myX';
 	const yKey = 'myY';
-
 </script>
+
+<div class="chart-container">
+	<LayerCake
+		padding={{ top: 8, right: 10, bottom: 20, left: 25 }}
+		x={xKey}
+		y={yKey}
+		yNice={4}
+		yDomain={[0, null]}
+		data={points}
+	>
+		<Svg>
+			<AxisX />
+			<AxisY ticks={4} />
+			<Line />
+			<Area />
+		</Svg>
+	</LayerCake>
+</div>
 
 <style>
 	/*
@@ -22,23 +39,3 @@
 		height: 100%;
 	}
 </style>
-
-<div class="chart-container">
-	<LayerCake
-		padding={{ top: 8, right: 10, bottom: 20, left: 25 }}
-		x={xKey}
-		y={yKey}
-		yNice={4}
-		yDomain={[0, null]}
-		data={points}
-	>
-		<Svg>
-			<AxisX/>
-			<AxisY
-				ticks={4}
-			/>
-			<Line/>
-			<Area/>
-		</Svg>
-	</LayerCake>
-</div>

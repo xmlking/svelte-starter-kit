@@ -1,9 +1,9 @@
 <script lang="ts">
-  	import { draggable } from '@neodrag/svelte';
-  	import { resize } from '@svelte-put/resize';
-  	import { Badge, Card, Hr, Input } from "flowbite-svelte";
-  	import { afterUpdate, beforeUpdate } from 'svelte';
-  	import * as eliza from './elizabot';
+	import { draggable } from '@neodrag/svelte';
+	import { resize } from '@svelte-put/resize';
+	import { Badge, Card, Hr, Input } from 'flowbite-svelte';
+	import { afterUpdate, beforeUpdate } from 'svelte';
+	import * as eliza from './elizabot';
 
 	let div: HTMLElement;
 	let autoscroll: boolean;
@@ -16,11 +16,13 @@
 		if (autoscroll) div.scrollTo(0, div.scrollHeight);
 	});
 
-	let comments: { author: string; text: string; placeholder?: boolean }[] = [{ author: 'eliza', text: 'How do you do. Please tell me your problem.' }];
+	let comments: { author: string; text: string; placeholder?: boolean }[] = [
+		{ author: 'eliza', text: 'How do you do. Please tell me your problem.' }
+	];
 
 	function handleKeydown(event: KeyboardEvent) {
 		if (event.key === 'Enter') {
-			const text =(event.target as HTMLButtonElement).value;
+			const text = (event.target as HTMLButtonElement).value;
 			if (!text) return;
 
 			comments = comments.concat({
@@ -57,18 +59,33 @@
 	<meta name="description" content="Eliza Chat" />
 </svelte:head>
 
-<div class="max-w-sm" use:resize use:draggable={{ axis: 'both', bounds: 'parent', handle: '.handle' }}>
-	<Card padding="lg" class="h-96 chat">
-			<div class="flex justify-between"><h3 class="text-xl font-medium text-gray-900 dark:text-white p-0">Eliza Chat</h3><Badge large={true} color="pink">Drag Me</Badge></div>
-			<Hr class="my-8" height="h-px" />
-			<div class="scrollable" bind:this={div}>
-				{#each comments as comment}
-					<article class={comment.author}>
-						<span>{comment.text}</span>
-					</article>
-				{/each}
-			</div>
-			<Input on:keydown={handleKeydown} type="text" placeholder="Type here" color='green' size="lg" />
+<div
+	class="max-w-sm"
+	use:resize
+	use:draggable={{ axis: 'both', bounds: 'parent', handle: '.handle' }}
+>
+	<Card padding="lg" class="chat h-96">
+		<div class="flex justify-between"
+			><h3 class="p-0 text-xl font-medium text-gray-900 dark:text-white">Eliza Chat</h3><Badge
+				large={true}
+				color="pink">Drag Me</Badge
+			></div
+		>
+		<Hr class="my-8" height="h-px" />
+		<div class="scrollable" bind:this={div}>
+			{#each comments as comment}
+				<article class={comment.author}>
+					<span>{comment.text}</span>
+				</article>
+			{/each}
+		</div>
+		<Input
+			on:keydown={handleKeydown}
+			type="text"
+			placeholder="Type here"
+			color="green"
+			size="lg"
+		/>
 	</Card>
 </div>
 

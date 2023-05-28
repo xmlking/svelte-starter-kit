@@ -18,19 +18,37 @@
 	// yyyy-MM-dd'T'HH:mm:ss.SSSSSSXXX  >>>  2022-12-14T21:33:47.453082+00:00
 	let internal = value ? format(new Date(value), DATE_FORMAT) : undefined;
 
-	const input = (value: string | null | undefined) => (internal = value ? format(new Date(value), DATE_FORMAT) : undefined);
-	const output = (internal: string | undefined) => (value = internal ? new Date(internal).toISOString() : null);
+	const input = (value: string | null | undefined) =>
+		(internal = value ? format(new Date(value), DATE_FORMAT) : undefined);
+	const output = (internal: string | undefined) =>
+		(value = internal ? new Date(internal).toISOString() : null);
 
 	$: input(value);
 	$: output(internal);
 
-	const { field, onInput, onBlur } = createField({ name, defaultValue: value, touchOnChange: true });
+	const { field, onInput, onBlur } = createField({
+		name,
+		defaultValue: value,
+		touchOnChange: true
+	});
 	$: onInput(value); // 2022-12-14T16:11:35.915Z // check null
 </script>
 
 <div use:field on:blur={onBlur} role="textbox">
-	<FloatingLabelInput type="datetime-local" step="0.001" {style} class="input-bordered input" bind:value={internal} {...$$restProps} color={error ? 'red' : null} aria-describedby={`${name}_help`} {label} />
+	<FloatingLabelInput
+		type="datetime-local"
+		step="0.001"
+		{style}
+		class="input-bordered input"
+		bind:value={internal}
+		{...$$restProps}
+		color={error ? 'red' : null}
+		aria-describedby={`${name}_help`}
+		{label}
+	/>
 	{#if error}
-		<p id={`${name}_help`} class="mt-2 text-xs font-normal text-red-700 dark:text-red-500"> <span class="font-medium">Oh, snapp!</span> {error}</p>
+		<p id={`${name}_help`} class="mt-2 text-xs font-normal text-red-700 dark:text-red-500">
+			<span class="font-medium">Oh, snapp!</span> {error}</p
+		>
 	{/if}
 </div>
