@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { clsx } from 'clsx';
 	export let divClass = 'mx-auto max-w-screen-sm text-center';
-	export let h1Class = 'mb-4 text-7xl tracking-tight font-extrabold lg:text-9xl text-primary-600 dark:text-primary-500';
+	export let h1Class =
+		'mb-4 text-7xl tracking-tight font-extrabold lg:text-9xl text-primary-600 dark:text-primary-500';
 </script>
 
 <div class={clsx(divClass, $$props.classDiv)}>

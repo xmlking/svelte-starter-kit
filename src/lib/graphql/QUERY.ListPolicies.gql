@@ -1,4 +1,8 @@
-query ListPolicies($limit: Int = 50, $offset: Int = 0, $orderBy: [policies_order_by!] = [{ updatedAt: desc_nulls_last }]) {
+query ListPolicies(
+	$limit: Int = 50
+	$offset: Int = 0
+	$orderBy: [policies_order_by!] = [{ updatedAt: desc_nulls_last }]
+) {
 	counts: policies_aggregate {
 		aggregate {
 			count

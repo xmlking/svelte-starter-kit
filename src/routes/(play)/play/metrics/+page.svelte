@@ -1,5 +1,15 @@
 <script lang="ts">
-	import { Area, AxisRadial, AxisX, AxisY, Bar, Beeswarm, BeeswarmForce, Brush, Line } from '$lib/blocks/charts';
+	import {
+		Area,
+		AxisRadial,
+		AxisX,
+		AxisY,
+		Bar,
+		Beeswarm,
+		BeeswarmForce,
+		Brush,
+		Line
+	} from '$lib/blocks/charts';
 	import { afterUpdate } from 'svelte';
 
 	let container: HTMLElement;
@@ -8,30 +18,27 @@
 	let activeSection = 'axis';
 	let anchors: NodeListOf<HTMLElement>;
 	afterUpdate(() => {
-			if (typeof window !== 'undefined') {
-				anchors = container.querySelectorAll('[id]');
-				lastId = window.location.hash.slice(1);
-				activeSection = lastId || 'axis';
-				onresize();
-				onscroll();
-				window.addEventListener('scroll', onscroll, true);
-				window.addEventListener('resize', onresize, true);
-				// wait for fonts to load...
-				const timeouts = [
-					setTimeout(onresize, 1000),
-					setTimeout(onresize, 5000)
-				];
-			}
-		});
-	function onresize () {
+		if (typeof window !== 'undefined') {
+			anchors = container.querySelectorAll('[id]');
+			lastId = window.location.hash.slice(1);
+			activeSection = lastId || 'axis';
+			onresize();
+			onscroll();
+			window.addEventListener('scroll', onscroll, true);
+			window.addEventListener('resize', onresize, true);
+			// wait for fonts to load...
+			const timeouts = [setTimeout(onresize, 1000), setTimeout(onresize, 5000)];
+		}
+	});
+	function onresize() {
 		if (container) {
 			const { top } = container.getBoundingClientRect();
-			positions = [].map.call(anchors, anchor => {
+			positions = [].map.call(anchors, (anchor) => {
 				return anchor.getBoundingClientRect().top - top;
 			});
 		}
 	}
-	function onscroll () {
+	function onscroll() {
 		const top = -window.scrollY;
 		let i = anchors.length;
 		while (i--) {
@@ -53,67 +60,64 @@
 <div bind:this={container}>
 	<h2 class="m-5">Metrics</h2>
 
-<div class="component-blocks">
+	<div class="component-blocks">
 		<div class="subgroup-blocks">
-
-				<div class="component-block">
-					<div class="block-container">
-						<AxisX />
-					</div>
+			<div class="component-block">
+				<div class="block-container">
+					<AxisX />
 				</div>
+			</div>
 
-				<div class="component-block">
-					<div class="block-container">
-						<AxisY />
-					</div>
+			<div class="component-block">
+				<div class="block-container">
+					<AxisY />
 				</div>
+			</div>
 
-				<div class="component-block">
-					<div class="block-container">
-						<Area />
-					</div>
+			<div class="component-block">
+				<div class="block-container">
+					<Area />
 				</div>
+			</div>
 
-				<div class="component-block">
-					<div class="block-container">
-						<AxisRadial />
-					</div>
+			<div class="component-block">
+				<div class="block-container">
+					<AxisRadial />
 				</div>
+			</div>
 
-				<div class="component-block">
-					<div class="block-container">
-						<Brush />
-					</div>
+			<div class="component-block">
+				<div class="block-container">
+					<Brush />
 				</div>
+			</div>
 
-				<div class="component-block">
-					<div class="block-container">
-						<Line />
-					</div>
+			<div class="component-block">
+				<div class="block-container">
+					<Line />
 				</div>
+			</div>
 
-				<div class="component-block">
-					<div class="block-container">
-						<Bar />
-					</div>
+			<div class="component-block">
+				<div class="block-container">
+					<Bar />
 				</div>
+			</div>
 
-				<div class="component-block">
-					<div class="block-container">
-						<Beeswarm />
-					</div>
+			<div class="component-block">
+				<div class="block-container">
+					<Beeswarm />
 				</div>
+			</div>
 
-				<div class="component-block">
-					<div class="block-container">
-						<BeeswarmForce />
-					</div>
+			<div class="component-block">
+				<div class="block-container">
+					<BeeswarmForce />
 				</div>
+			</div>
 		</div>
+	</div>
 </div>
-
-</div>
-
 
 <style lang="postcss">
 	.component-block {
@@ -138,7 +142,6 @@
 		margin-right: 0;
 	}
 	@media (max-width: 1150px) {
-
 		.component-block {
 			width: 43%;
 		}

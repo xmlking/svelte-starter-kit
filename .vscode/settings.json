@@ -14,7 +14,15 @@
 	},
 	////////// scm //////////
 	"scm.defaultViewMode": "tree",
-	"conventionalCommits.scopes": ["workspace", "actions", "lint", "deps", "docs", "policy", "provider"],
+	"conventionalCommits.scopes": [
+		"workspace",
+		"actions",
+		"lint",
+		"deps",
+		"docs",
+		"policy",
+		"provider"
+	],
 	////////// Editor //////////
 	"editor.autoIndent": "full",
 	"editor.lineHeight": 2,
@@ -109,7 +117,25 @@
 	// This makes the spell checker more lenient when two words are jammed together.
 	"cSpell.allowCompoundWords": true,
 	// This is the default list of filetypes to spell check except with proto3 added.
-	"cSpell.enabledLanguageIds": ["asciidoc", "css", "go", "html", "javascript", "json", "markdown", "plaintext", "python", "rust", "scss", "text", "typescript", "typescriptreact", "yml", "proto3", "svelte"],
+	"cSpell.enabledLanguageIds": [
+		"asciidoc",
+		"css",
+		"go",
+		"html",
+		"javascript",
+		"json",
+		"markdown",
+		"plaintext",
+		"python",
+		"rust",
+		"scss",
+		"text",
+		"typescript",
+		"typescriptreact",
+		"yml",
+		"proto3",
+		"svelte"
+	],
 	// This is a whitelist of words that we think we spell just fine.
 	"cSpell.words": ["grpc", "log", "proto", "protobuf", "timeout", "hasura"],
 	"cSpell.ignorePaths": ["node_modules", "**/node_modules", "**/node_modules/**", ".git"],
@@ -125,7 +151,15 @@
 
 	////////// vitest //////////
 	"vitest.include": ["**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx,svelte}"],
-	"vitest.exclude": ["**/node_modules/**", "$houdini/**", "**/dist/**", "**/cypress/**", "**/.{idea,git,cache,output,temp}/**", "**/ignored.test.ts", "tests/**"],
+	"vitest.exclude": [
+		"**/node_modules/**",
+		"$houdini/**",
+		"**/dist/**",
+		"**/cypress/**",
+		"**/.{idea,git,cache,output,temp}/**",
+		"**/ignored.test.ts",
+		"tests/**"
+	],
 
 	////////// tailwindCSS //////////
 	"tailwindCSS.emmetCompletions": true,
@@ -135,7 +169,18 @@
 	"eslint.options": {
 		"extensions": [".js", ".jsx", ".md", ".mdx", ".ts", ".tsx"]
 	},
-	"eslint.probe": ["javascript", "javascriptreact", "typescript", "typescriptreact", "html", "vue", "markdown", "svelte", "yaml", "mdx"],
+	"eslint.probe": [
+		"javascript",
+		"javascriptreact",
+		"typescript",
+		"typescriptreact",
+		"html",
+		"vue",
+		"markdown",
+		"svelte",
+		"yaml",
+		"mdx"
+	],
 	"eslint.validate": ["javascript", "javascriptreact", "svelte"],
 
 	////////// Proto //////////

@@ -16,7 +16,10 @@ const config = {
 	// darkMode: 'class', // or 'media' or false
 	darkMode: ['class', '[data-theme="dark"]'],
 
-	content: ['./src/**/*.{html,js,svelte,ts}', './node_modules/flowbite-svelte/**/*.{html,js,svelte,ts}'],
+	content: [
+		'./src/**/*.{html,js,svelte,ts}',
+		'./node_modules/flowbite-svelte/**/*.{html,js,svelte,ts}'
+	],
 
 	theme: {
 		extend: {

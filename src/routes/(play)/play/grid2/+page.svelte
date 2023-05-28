@@ -29,7 +29,12 @@
 
 <div class="grid">
 	{#each colorNames as [name, hex] (name)}
-		<div animate:flip={{ duration: (d) => Math.sqrt(d) * 40 }} style:background-color={name} style:--name="'{name}'" class="cell" />
+		<div
+			animate:flip={{ duration: (d) => Math.sqrt(d) * 40 }}
+			style:background-color={name}
+			style:--name="'{name}'"
+			class="cell"
+		/>
 	{/each}
 </div>
 

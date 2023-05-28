@@ -1,5 +1,5 @@
 <script lang="ts">
-import thisPage from './+page.svelte?raw';
+	import thisPage from './+page.svelte?raw';
 </script>
 
 <svelte:head>
@@ -9,12 +9,12 @@ import thisPage from './+page.svelte?raw';
 
 <section class="w-full md:w-9/12 xl:w-8/12">
 	<span class="font-bold uppercase tracking-widest">Atomic</span>
-	<h1 class="text-3xl lg:text-5xl font-bold text-pink-500">
-		Tail<br/>Design
+	<h1 class="text-3xl font-bold text-pink-500 lg:text-5xl">
+		Tail<br />Design
 	</h1>
-	<p class="font-bold mb-1">The Design is in the des...</p>
+	<p class="mb-1 font-bold">The Design is in the des...</p>
 	<p>Lorem ipsum dolor sit amet...</p>
-	<br/>
+	<br />
 	<h2>Demo Vite Raw Import</h2>
 	<div class="mockup-code text-primary-content">
 		<pre><code>{thisPage}</code></pre>

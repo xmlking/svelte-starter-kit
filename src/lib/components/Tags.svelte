@@ -121,7 +121,9 @@
 	function addTag(currentTag) {
 		if (typeof currentTag === 'object' && currentTag !== null) {
 			if (!autoCompleteKey) {
-				return console.error("'autoCompleteKey' is necessary if 'autoComplete' result is an array of objects");
+				return console.error(
+					"'autoCompleteKey' is necessary if 'autoComplete' result is an array of objects"
+				);
 			}
 
 			var currentObjTags = currentTag;
@@ -235,7 +237,10 @@
 	}
 
 	function buildMatchMarkup(search, value) {
-		return escapeHTML(value).replace(RegExp(regExpEscape(search.toLowerCase()), 'i'), '<strong>$&</strong>');
+		return escapeHTML(value).replace(
+			RegExp(regExpEscape(search.toLowerCase()), 'i'),
+			'<strong>$&</strong>'
+		);
 	}
 
 	async function getMatchElements(input) {
@@ -262,7 +267,11 @@
 		}
 
 		// Escape
-		if ((minChars > 0 && value == '') || (input && input.keyCode === 27) || value.length < minChars) {
+		if (
+			(minChars > 0 && value == '') ||
+			(input && input.keyCode === 27) ||
+			value.length < minChars
+		) {
 			arrelementsmatch = [];
 			return;
 		}
@@ -271,21 +280,29 @@
 
 		if (typeof autoCompleteValues[0] === 'object' && autoCompleteValues !== null) {
 			if (!autoCompleteKey) {
-				return console.error("'autoCompleteValue' is necessary if 'autoComplete' result is an array of objects");
+				return console.error(
+					"'autoCompleteValue' is necessary if 'autoComplete' result is an array of objects"
+				);
 			}
 
 			if (autoCompleteFilter !== false) {
-				matchs = autoCompleteValues.filter((e) => e[autoCompleteKey].toLowerCase().includes(value.toLowerCase()));
+				matchs = autoCompleteValues.filter((e) =>
+					e[autoCompleteKey].toLowerCase().includes(value.toLowerCase())
+				);
 			}
 			matchs = matchs.map((matchTag) => {
 				return {
 					label: matchTag,
-					search: autoCompleteMarkupKey ? matchTag[autoCompleteMarkupKey] : buildMatchMarkup(value, matchTag[autoCompleteKey])
+					search: autoCompleteMarkupKey
+						? matchTag[autoCompleteMarkupKey]
+						: buildMatchMarkup(value, matchTag[autoCompleteKey])
 				};
 			});
 		} else {
 			if (autoCompleteFilter !== false) {
-				matchs = autoCompleteValues.filter((e) => e.toLowerCase().includes(value.toLowerCase()));
+				matchs = autoCompleteValues.filter((e) =>
+					e.toLowerCase().includes(value.toLowerCase())
+				);
 			}
 			matchs = matchs.map((matchTag) => {
 				return {
@@ -319,19 +336,42 @@
 					{tag[autoCompleteKey]}
 				{/if}
 				{#if !disable}
-					<span class="svelte-tags-input-tag-remove" on:pointerdown={() => removeTag(i)}> &#215;</span>
+					<span class="svelte-tags-input-tag-remove" on:pointerdown={() => removeTag(i)}>
+						&#215;</span
+					>
 				{/if}
 			</span>
 		{/each}
 	{/if}
-	<input type="text" {id} {name} data-felte-ignore bind:value={tag} on:keydown={setTag} on:keyup={getMatchElements} on:paste={onPaste} on:drop={onDrop} on:focus={onFocus} on:blur={(e) => onBlur(e, tag)} on:pointerdown={onClick} class="svelte-tags-input" {placeholder} disabled={disable} autocomplete="off" />
+	<input
+		type="text"
+		{id}
+		{name}
+		data-felte-ignore
+		bind:value={tag}
+		on:keydown={setTag}
+		on:keyup={getMatchElements}
+		on:paste={onPaste}
+		on:drop={onDrop}
+		on:focus={onFocus}
+		on:blur={(e) => onBlur(e, tag)}
+		on:pointerdown={onClick}
+		class="svelte-tags-input"
+		{placeholder}
+		disabled={disable}
+		autocomplete="off"
+	/>
 </div>
 
 {#if autoComplete && arrelementsmatch.length > 0}
 	<div class="svelte-tags-input-matchs-parent">
 		<ul id="{id}_matchs" class="svelte-tags-input-matchs">
 			{#each arrelementsmatch as element, index}
-				<li tabindex="-1" class:focus={index === autoCompleteIndex} on:pointerdown|preventDefault={() => addTag(element.label)}>
+				<li
+					tabindex="-1"
+					class:focus={index === autoCompleteIndex}
+					on:pointerdown|preventDefault={() => addTag(element.label)}
+				>
 					{@html element.search}
 				</li>
 			{/each}
@@ -346,7 +386,8 @@
 	.svelte-tags-input-tag,
 	.svelte-tags-input-matchs,
 	.svelte-tags-input-layout label {
-		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+			Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 		font-size: 14px;
 		padding: 2px 5px;
 	}

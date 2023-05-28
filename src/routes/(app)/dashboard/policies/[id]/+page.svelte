@@ -2,7 +2,7 @@
 	import { enhance } from '$app/forms';
 	import { goto } from '$app/navigation';
 	import { ErrorMessage, FloatingLabelField, Tags } from '$lib/components';
-// import {default as TagInput } from '$lib/components/TagInput.svelte';
+	// import {default as TagInput } from '$lib/components/TagInput.svelte';
 	import type { policies_insert_input } from '$houdini';
 	import { DateInput } from '$lib/components/form';
 	import { addToast, ToastLevel } from '$lib/components/toast';
@@ -11,7 +11,14 @@
 	import { validator } from '@felte/validator-zod';
 	import type { Snapshot } from '@sveltejs/kit';
 	import { createForm } from 'felte';
-	import { Breadcrumb, BreadcrumbItem, Button, ButtonGroup, Helper, Spinner } from 'flowbite-svelte';
+	import {
+		Breadcrumb,
+		BreadcrumbItem,
+		Button,
+		ButtonGroup,
+		Helper,
+		Spinner
+	} from 'flowbite-svelte';
 	import { tick } from 'svelte';
 	import { AdjustmentsHorizontal, ArrowLeft, CloudArrowDown } from 'svelte-heros-v2';
 
@@ -21,10 +28,21 @@
 	let { actionResult, actionError, formErrors, fieldErrors } = form || {};
 	$: if (form) ({ actionResult, actionError, formErrors, fieldErrors } = form);
 	$: if (actionResult) {
-		addToast({ message: `${actionResult.displayName} saved`, dismissible: true, duration: 10000, type: ToastLevel.Info });
+		addToast({
+			message: `${actionResult.displayName} saved`,
+			dismissible: true,
+			duration: 10000,
+			type: ToastLevel.Info
+		});
 		goto('/dashboard/policies');
 	}
-	$: if (actionError) addToast({ message: actionError.message, dismissible: true, duration: 10000, type: ToastLevel.Error });
+	$: if (actionError)
+		addToast({
+			message: actionError.message,
+			dismissible: true,
+			duration: 10000,
+			type: ToastLevel.Error
+		});
 
 	export let data;
 	let { policy, loadError } = data;
@@ -33,8 +51,8 @@
 
 	// TODO: Snapshot helps to recover form state, if navigated without submitting
 	export const snapshot: Snapshot = {
-  		capture: () => 'hello',
-  		restore: (message) => log.debug(message)
+		capture: () => 'hello',
+		restore: (message) => log.debug(message)
 	};
 
 	async function goBack() {
@@ -51,7 +69,7 @@
 		isSubmitting,
 		isDirty,
 		isValid,
-		reset,
+		reset
 	} = createForm<policies_insert_input>({
 		initialValues: policy ?? {},
 		extend: validator({ schema }),
@@ -133,53 +151,137 @@
 	{#if policy}
 		<div class="mb-6 grid gap-6 md:grid-cols-3 lg:grid-cols-6">
 			<div class="col-span-2">
-				<FloatingLabelField name="displayName" style="outlined" label="Display Name" error={fieldErrors?.displayName?.[0] || $fErrors?.displayName?.[0]} />
+				<FloatingLabelField
+					name="displayName"
+					style="outlined"
+					label="Display Name"
+					error={fieldErrors?.displayName?.[0] || $fErrors?.displayName?.[0]}
+				/>
 			</div>
 			<div class="col-span-4">
-				<FloatingLabelField name="description" style="outlined" label="Description" error={fieldErrors?.description?.[0] || $fErrors?.description?.[0]} />
+				<FloatingLabelField
+					name="description"
+					style="outlined"
+					label="Description"
+					error={fieldErrors?.description?.[0] || $fErrors?.description?.[0]}
+				/>
 			</div>
 			<div class="my-tag col-span-3">
-				<Tags bind:tags={$fData.tags} onlyUnique={true} minChars={3} placeholder={'Enter tags...'} labelText={'Tags'} labelShow />
+				<Tags
+					bind:tags={$fData.tags}
+					onlyUnique={true}
+					minChars={3}
+					placeholder={'Enter tags...'}
+					labelText={'Tags'}
+					labelShow
+				/>
 				<input data-felte-ignore type="hidden" name="tags" bind:value={$fData.tags} />
 				<!-- <TagInput bind:tags={$fData.tags}  name="tags" /> <span>{tags}</span> -->
-				<ErrorMessage id="tags_help" error={fieldErrors?.tags?.[0] || $fErrors?.tags?.[0]} />
+				<ErrorMessage
+					id="tags_help"
+					error={fieldErrors?.tags?.[0] || $fErrors?.tags?.[0]}
+				/>
 			</div>
 			<div class="col-span-3">
-				<FloatingLabelField name="annotations" style="outlined" label="Annotations" error={fieldErrors?.annotations?.[0] || $fErrors?.annotations?.[0]} />
-				<Helper class='text-sm mt-2 italic'>Format: "key1" => "value1", "key2" => "value2"</Helper>
+				<FloatingLabelField
+					name="annotations"
+					style="outlined"
+					label="Annotations"
+					error={fieldErrors?.annotations?.[0] || $fErrors?.annotations?.[0]}
+				/>
+				<Helper class="mt-2 text-sm italic"
+					>Format: "key1" => "value1", "key2" => "value2"</Helper
+				>
 			</div>
 
 			<div class="col-span-2">
 				<div class="btn-group">
 					{#each subjectTypeOptions as opt}
-						<input type="radio" name="subjectType" value={opt.value} data-title={opt.label} class="btn" disabled={editMode} />
+						<input
+							type="radio"
+							name="subjectType"
+							value={opt.value}
+							data-title={opt.label}
+							class="btn"
+							disabled={editMode}
+						/>
 					{/each}
 				</div>
-				<ErrorMessage id="subjectType_help" error={fieldErrors?.subjectType?.[0] || $fErrors?.subjectType?.[0]} />
+				<ErrorMessage
+					id="subjectType_help"
+					error={fieldErrors?.subjectType?.[0] || $fErrors?.subjectType?.[0]}
+				/>
 			</div>
 			<div>
-				<FloatingLabelField name="subjectDisplayName" style="outlined" label="Subject display name" error={fieldErrors?.subjectDisplayName?.[0] || $fErrors?.subjectDisplayName?.[0]} disabled={editMode} />
+				<FloatingLabelField
+					name="subjectDisplayName"
+					style="outlined"
+					label="Subject display name"
+					error={fieldErrors?.subjectDisplayName?.[0] ||
+						$fErrors?.subjectDisplayName?.[0]}
+					disabled={editMode}
+				/>
 			</div>
 			<div>
-				<FloatingLabelField name="subjectId" style="outlined" label="Subject ID" error={fieldErrors?.subjectId?.[0] || $fErrors?.subjectId?.[0]} disabled={editMode} />
+				<FloatingLabelField
+					name="subjectId"
+					style="outlined"
+					label="Subject ID"
+					error={fieldErrors?.subjectId?.[0] || $fErrors?.subjectId?.[0]}
+					disabled={editMode}
+				/>
 			</div>
 			<div>
-				<FloatingLabelField name="subjectSecondaryId" style="outlined" label="Subject Secondary ID" error={fieldErrors?.subjectSecondaryId?.[0] || $fErrors?.subjectSecondaryId?.[0]} disabled={editMode} />
+				<FloatingLabelField
+					name="subjectSecondaryId"
+					style="outlined"
+					label="Subject Secondary ID"
+					error={fieldErrors?.subjectSecondaryId?.[0] ||
+						$fErrors?.subjectSecondaryId?.[0]}
+					disabled={editMode}
+				/>
 			</div>
 			<div>
-				<FloatingLabelField name="organization" style="outlined" label="Organization" error={fieldErrors?.organization?.[0] || $fErrors?.organization?.[0]} disabled={true} />
+				<FloatingLabelField
+					name="organization"
+					style="outlined"
+					label="Organization"
+					error={fieldErrors?.organization?.[0] || $fErrors?.organization?.[0]}
+					disabled={true}
+				/>
 			</div>
 			<div class="col-span-3">
-				<FloatingLabelField name="sourceAddress" style="outlined" label="Source address" error={fieldErrors?.sourceAddress?.[0] || $fErrors?.sourceAddress?.[0]} />
+				<FloatingLabelField
+					name="sourceAddress"
+					style="outlined"
+					label="Source address"
+					error={fieldErrors?.sourceAddress?.[0] || $fErrors?.sourceAddress?.[0]}
+				/>
 			</div>
 			<div class="col-span-3">
-				<FloatingLabelField name="sourcePort" style="outlined" label="Source port" error={fieldErrors?.sourcePort?.[0] || $fErrors?.sourcePort?.[0]} />
+				<FloatingLabelField
+					name="sourcePort"
+					style="outlined"
+					label="Source port"
+					error={fieldErrors?.sourcePort?.[0] || $fErrors?.sourcePort?.[0]}
+				/>
 			</div>
 			<div class="col-span-3">
-				<FloatingLabelField name="destinationAddress" style="outlined" label="Destination address" error={fieldErrors?.destinationAddress?.[0] || $fErrors?.destinationAddress?.[0]} />
+				<FloatingLabelField
+					name="destinationAddress"
+					style="outlined"
+					label="Destination address"
+					error={fieldErrors?.destinationAddress?.[0] ||
+						$fErrors?.destinationAddress?.[0]}
+				/>
 			</div>
 			<div class="col-span-3">
-				<FloatingLabelField name="destinationPort" style="outlined" label="Destination port" error={fieldErrors?.destinationPort?.[0] || $fErrors?.destinationPort?.[0]} />
+				<FloatingLabelField
+					name="destinationPort"
+					style="outlined"
+					label="Destination port"
+					error={fieldErrors?.destinationPort?.[0] || $fErrors?.destinationPort?.[0]}
+				/>
 			</div>
 			<div>
 				<select name="protocol" class="select-bordered select w-full focus:outline-none">
@@ -193,46 +295,98 @@
 			<div class="col-span-2">
 				<div class="btn-group">
 					{#each actionOptions as opt}
-						<input type="radio" name="action" value={opt.value} data-title={opt.label} class="btn" />
+						<input
+							type="radio"
+							name="action"
+							value={opt.value}
+							data-title={opt.label}
+							class="btn"
+						/>
 					{/each}
 				</div>
 			</div>
 			<div class="col-span-2">
 				<div class="btn-group">
 					{#each directionOptions as opt}
-						<input type="radio" name="direction" value={opt.value} data-title={opt.label} class="btn" />
+						<input
+							type="radio"
+							name="direction"
+							value={opt.value}
+							data-title={opt.label}
+							class="btn"
+						/>
 					{/each}
 				</div>
 			</div>
 			<div>
-				<FloatingLabelField name="weight" style="outlined" type="number" label="Weight" error={fieldErrors?.weight?.[0] || $fErrors?.weight?.[0]} />
+				<FloatingLabelField
+					name="weight"
+					style="outlined"
+					type="number"
+					label="Weight"
+					error={fieldErrors?.weight?.[0] || $fErrors?.weight?.[0]}
+				/>
 			</div>
 
 			<div class="col-span-6">
-				<FloatingLabelField name="appId" style="outlined" label="App id" error={fieldErrors?.appId?.[0] || $fErrors?.appId?.[0]} />
+				<FloatingLabelField
+					name="appId"
+					style="outlined"
+					label="App id"
+					error={fieldErrors?.appId?.[0] || $fErrors?.appId?.[0]}
+				/>
 			</div>
 
 			<div>
 				<label class="label cursor-pointer">
 					<span class="label-text">Disabled</span>
-					<input name="disabled" type="checkbox" value={$fData.disabled} checked={$fData.disabled} class="toggle-secondary toggle" />
+					<input
+						name="disabled"
+						type="checkbox"
+						value={$fData.disabled}
+						checked={$fData.disabled}
+						class="toggle-secondary toggle"
+					/>
 				</label>
-				<ErrorMessage error={fieldErrors?.disabled?.[0] || JSON.stringify($fErrors?.disabled?.[0])} />
+				<ErrorMessage
+					error={fieldErrors?.disabled?.[0] || JSON.stringify($fErrors?.disabled?.[0])}
+				/>
 			</div>
 			<div>
 				<label class="label cursor-pointer">
 					<span class="label-text">Template</span>
-					<input name="template" type="checkbox" value={$fData.template} checked={$fData.template} class="toggle-accent toggle" disabled={editMode} />
+					<input
+						name="template"
+						type="checkbox"
+						value={$fData.template}
+						checked={$fData.template}
+						class="toggle-accent toggle"
+						disabled={editMode}
+					/>
 				</label>
-				<ErrorMessage error={fieldErrors?.template?.[0] || JSON.stringify($fErrors?.template?.[0])} />
+				<ErrorMessage
+					error={fieldErrors?.template?.[0] || JSON.stringify($fErrors?.template?.[0])}
+				/>
 			</div>
 			<div class="col-start-5">
 				<!-- <FloatingLabelField type="datetime-local" name="validFrom" value={$fData.validFrom} error="{fieldErrors?.validFrom?.[0] || $fErrors?.validFrom?.[0]}" label="Valid From" /> -->
-				<DateInput name="validFrom" style="outlined" label="Valid From" value={$fData.validFrom} error={fieldErrors?.validFrom?.[0] || $fErrors?.validFrom?.[0]} />
+				<DateInput
+					name="validFrom"
+					style="outlined"
+					label="Valid From"
+					value={$fData.validFrom}
+					error={fieldErrors?.validFrom?.[0] || $fErrors?.validFrom?.[0]}
+				/>
 			</div>
 			<div class="col-end-auto">
 				<!-- <FloatingLabelField type="datetime-local" name="validTo"  value={$fData.validTo} error="{fieldErrors?.validTo?.[0] || $fErrors?.validTo?.[0]}" label="Valid To" /> -->
-				<DateInput name="validTo" style="outlined" label="Valid To" value={$fData.validTo} error={fieldErrors?.validTo?.[0] || $fErrors?.validTo?.[0]} />
+				<DateInput
+					name="validTo"
+					style="outlined"
+					label="Valid To"
+					value={$fData.validTo}
+					error={fieldErrors?.validTo?.[0] || $fErrors?.validTo?.[0]}
+				/>
 			</div>
 		</div>
 	{/if}
@@ -243,7 +397,10 @@
 		</Button>
 		{#if editMode}
 			<Button outline on:click={reset} disabled={!$isDirty}>
-				<AdjustmentsHorizontal size="18" class="mr-2 text-blue-500 dark:text-green-500" />Reset
+				<AdjustmentsHorizontal
+					size="18"
+					class="mr-2 text-blue-500 dark:text-green-500"
+				/>Reset
 			</Button>
 			<Button outline type="submit" disabled={!$isValid || $isSubmitting}>
 				{#if $isSubmitting}
@@ -257,7 +414,10 @@
 				{#if $isSubmitting}
 					<Spinner class="mr-3" size="4" color="white" />Createing ...
 				{:else}
-					<AdjustmentsHorizontal size="18" class="mr-2 text-blue-500 dark:text-green-500" />Create
+					<AdjustmentsHorizontal
+						size="18"
+						class="mr-2 text-blue-500 dark:text-green-500"
+					/>Create
 				{/if}
 			</Button>
 		{/if}
@@ -300,7 +460,7 @@
 
 	.my-tag :global(.svelte-tags-input-layout label) {
 		/* eslint-disable */
-		@apply absolute top-0.5 left-1 z-10 origin-[0] -translate-y-4 scale-75 transform bg-white px-2 text-sm text-gray-500 duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:px-2 peer-focus:text-blue-600 dark:bg-gray-900 dark:text-gray-400 peer-focus:dark:text-blue-500;
+		@apply absolute left-1 top-0.5 z-10 origin-[0] -translate-y-4 scale-75 transform bg-white px-2 text-sm text-gray-500 duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:px-2 peer-focus:text-blue-600 dark:bg-gray-900 dark:text-gray-400 peer-focus:dark:text-blue-500;
 	}
 
 	.my-tag :global(.svelte-tags-input) {

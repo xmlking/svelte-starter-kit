@@ -4,7 +4,12 @@
 
 	const schedules = graphql(`
 		subscription StreamPolicy {
-			policies(order_by: [{ updatedAt: desc_nulls_last }], limit: 50, offset: 0, where: { updatedAt: { _is_null: true } })  {
+			policies(
+				order_by: [{ updatedAt: desc_nulls_last }]
+				limit: 50
+				offset: 0
+				where: { updatedAt: { _is_null: true } }
+			) {
 				id
 				displayName
 			}
@@ -21,17 +26,18 @@
 	// `);
 
 	onMount(() => {
-		console.log('sub Mount')
-		schedules.listen()
-	})
+		console.log('sub Mount');
+		schedules.listen();
+	});
 	onDestroy(() => {
-		console.log('sub Destroy')
-		schedules.unlisten()
-	})
+		console.log('sub Destroy');
+		schedules.unlisten();
+	});
 	$: console.log('$schedules.data on load:', $schedules.data);
 </script>
+
 {#if $schedules.fetching}
-loading...
+	loading...
 {:else if $schedules.errors?.length}
 	{JSON.stringify($schedules)}
 {:else}

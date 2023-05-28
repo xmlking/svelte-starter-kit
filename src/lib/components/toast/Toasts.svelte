@@ -8,7 +8,14 @@
 
 	export let divClass = 'w-full max-w-xs p-4 ';
 
-	export let placement: 'top-left' | 'top-center' | 'top-right' | 'center' | 'bottom-left' | 'bottom-center' | 'bottom-right' = 'center';
+	export let placement:
+		| 'top-left'
+		| 'top-center'
+		| 'top-right'
+		| 'center'
+		| 'bottom-left'
+		| 'bottom-center'
+		| 'bottom-right' = 'center';
 	const placements = {
 		'top-left': 'absolute top-0 left-0',
 		'top-center': 'absolute top-0 left-1/2 -translate-x-1/2',
@@ -29,7 +36,14 @@
 {#if $toasts}
 	<section class={toastsClass}>
 		{#each $toasts as toast (toast.id)}
-			<Frame rounded border transition={slide} class="mb-2 w-full max-w-xs p-4" {...$$restProps} role="alert">
+			<Frame
+				rounded
+				border
+				transition={slide}
+				class="mb-2 w-full max-w-xs p-4"
+				{...$$restProps}
+				role="alert"
+			>
 				<div class="flex items-center">
 					<Frame color={toast.type} rounded class={iconClass}>
 						{#if toast.type === ToastLevel.Success}

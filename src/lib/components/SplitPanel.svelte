@@ -38,7 +38,10 @@
 		if (min_px < 0) min_px += size;
 		if (max_px < 0) max_px += size;
 
-		pos_px = priority === 'min' ? Math.max(min_px, Math.min(max_px, pos_px)) : Math.min(max_px, Math.max(min_px, pos_px));
+		pos_px =
+			priority === 'min'
+				? Math.max(min_px, Math.min(max_px, pos_px))
+				: Math.min(max_px, Math.max(min_px, pos_px));
 
 		position = pos.endsWith('%') ? (size ? `${(100 * pos_px) / size}%` : '0%') : `${pos_px}px`;
 	}
@@ -133,7 +136,13 @@
 	}
 </script>
 
-<div class="container {type}" bind:this={container} bind:clientWidth={w} bind:clientHeight={h} style="--pos: {position}">
+<div
+	class="container {type}"
+	bind:this={container}
+	bind:clientWidth={w}
+	bind:clientHeight={h}
+	style="--pos: {position}"
+>
 	<div class="pane">
 		<slot name="a" />
 	</div>
@@ -143,7 +152,12 @@
 	</div>
 
 	{#if pos !== '0%' && pos !== '100%'}
-		<div class="{type} divider" class:disabled use:drag={(e) => update(e.clientX, e.clientY)} use:touchDrag={(e) => update(e.touches[0].clientX, e.touches[0].clientY)} />
+		<div
+			class="{type} divider"
+			class:disabled
+			use:drag={(e) => update(e.clientX, e.clientY)}
+			use:touchDrag={(e) => update(e.touches[0].clientX, e.touches[0].clientY)}
+		/>
 	{/if}
 </div>
 

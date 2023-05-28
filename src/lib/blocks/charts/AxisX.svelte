@@ -6,6 +6,14 @@
 	const yKey = 'myY';
 </script>
 
+<div class="chart-container">
+	<LayerCake padding={{ top: 20, bottom: 20 }} x={xKey} y={yKey} {data}>
+		<Svg>
+			<AxisX baseline={true} />
+		</Svg>
+	</LayerCake>
+</div>
+
 <style>
 	/*
 		The wrapper div needs to have an explicit width and height in CSS.
@@ -18,18 +26,3 @@
 		height: 100%;
 	}
 </style>
-
-<div class="chart-container">
-	<LayerCake
-		padding={{ top: 20, bottom: 20 }}
-		x={xKey}
-		y={yKey}
-		data={data}
-	>
-		<Svg>
-			<AxisX
-				baseline={true}
-			/>
-		</Svg>
-	</LayerCake>
-</div>
