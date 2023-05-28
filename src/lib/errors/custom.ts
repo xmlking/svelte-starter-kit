@@ -87,3 +87,20 @@ export class PolicyError extends ErrorBase<PolicyErrorName, GraphQLError> {
 		return { message: `${this.name}: ${this.message}; cause: ${this.cause.message}` } as App.Error;
 	}
 }
+
+type DeviceErrorName =
+	| 'SEARCH_DEVICE_ERROR'
+	| 'GET_DEVICE_ERROR'
+	| 'CREATE_DEVICE_ERROR'
+	| 'UPDATE_DEVICE_ERROR'
+	| 'DELETE_DEVICE_ERROR'
+	| 'UPGRADE_DEVICE_ERROR';
+export class DeviceError extends ErrorBase<DeviceErrorName, GraphQLError> {
+	constructor(name: DeviceErrorName, message: string, cause: GraphQLError) {
+		super({ name, message, cause });
+	}
+	// return should be serializable to JSON
+	toJSON(): App.Error {
+		return { message: `${this.name}: ${this.message}; cause: ${this.cause.message}` } as App.Error;
+	}
+}

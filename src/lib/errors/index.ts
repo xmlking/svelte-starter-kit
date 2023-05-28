@@ -1,11 +1,11 @@
 /**
  * New Errors
  */
-export { NotFoundError, PolicyError, ValidationError } from './custom';
+export { DeviceError, NotFoundError, PolicyError, ValidationError } from './custom';
 export { ErrorBase } from './errors';
 export { getHttpCode } from './grpc2http';
 export { handleActionErrors, handleLoadErrors } from './handle';
-export { isHttpError, ResponseError, type HttpError } from './http';
+export { ResponseError, isHttpError, type HttpError } from './http';
 
 export type ErrorWithMessage = {
 	message: string;

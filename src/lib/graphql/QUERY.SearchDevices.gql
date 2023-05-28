@@ -5,17 +5,7 @@ query SearchDevices(
 	$orderBy: [devices_order_by!] = [{ updatedAt: desc_nulls_last }]
 ) {
 	devices(order_by: $orderBy, limit: $limit, offset: $offset, where: $where) {
-		ip
-		tags
-		createdBy
-		description
-		displayName
-		organization
-		updatedBy
-		createdAt
-		deletedAt
-		updatedAt
-		annotations
 		id
+		displayName
 	}
 }

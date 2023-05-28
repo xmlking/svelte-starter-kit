@@ -802,6 +802,10 @@ type devices_mutation_response {
   returning: [devices!]!
 }
 
+input devices_not_in_pool_args {
+  poolid: uuid
+}
+
 """
 input type for inserting object relation for remote table "devices"
 """
@@ -2893,6 +2897,56 @@ type query_root {
   devices_by_pk(id: uuid!): devices
 
   """
+  execute function "devices_not_in_pool" which returns "devices"
+  """
+  devices_not_in_pool(
+    """
+    input parameters for function "devices_not_in_pool"
+    """
+    args: devices_not_in_pool_args!
+
+    """distinct select on columns"""
+    distinct_on: [devices_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [devices_order_by!]
+
+    """filter the rows returned"""
+    where: devices_bool_exp
+  ): [devices!]!
+
+  """
+  execute function "devices_not_in_pool" and query aggregates on result of table type "devices"
+  """
+  devices_not_in_pool_aggregate(
+    """
+    input parameters for function "devices_not_in_pool_aggregate"
+    """
+    args: devices_not_in_pool_args!
+
+    """distinct select on columns"""
+    distinct_on: [devices_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [devices_order_by!]
+
+    """filter the rows returned"""
+    where: devices_bool_exp
+  ): devices_aggregate!
+
+  """
   fetch data from the table: "direction"
   """
   direction(
@@ -3446,6 +3500,56 @@ type subscription_root {
 
   """fetch data from the table: "devices" using primary key columns"""
   devices_by_pk(id: uuid!): devices
+
+  """
+  execute function "devices_not_in_pool" which returns "devices"
+  """
+  devices_not_in_pool(
+    """
+    input parameters for function "devices_not_in_pool"
+    """
+    args: devices_not_in_pool_args!
+
+    """distinct select on columns"""
+    distinct_on: [devices_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [devices_order_by!]
+
+    """filter the rows returned"""
+    where: devices_bool_exp
+  ): [devices!]!
+
+  """
+  execute function "devices_not_in_pool" and query aggregates on result of table type "devices"
+  """
+  devices_not_in_pool_aggregate(
+    """
+    input parameters for function "devices_not_in_pool_aggregate"
+    """
+    args: devices_not_in_pool_args!
+
+    """distinct select on columns"""
+    distinct_on: [devices_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [devices_order_by!]
+
+    """filter the rows returned"""
+    where: devices_bool_exp
+  ): devices_aggregate!
 
   """
   fetch data from the table in a streaming manner: "devices"
