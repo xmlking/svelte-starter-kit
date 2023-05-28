@@ -71,7 +71,7 @@
 		"houdini-svelte": "1.2.4",
 		"jose": "4.14.4",
 		"js-cookie": "3.0.5",
-		"jsdom": "22.0.0",
+		"jsdom": "22.1.0",
 		"layercake": "7.4.0",
 		"msw": "1.2.1",
 		"postcss": "8.4.23",
