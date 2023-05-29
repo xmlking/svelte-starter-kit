@@ -1,0 +1,10 @@
+SET check_function_bodies = false;
+INSERT INTO public.protocol (value, description) VALUES ('Any', 'Any');
+INSERT INTO public.protocol (value, description) VALUES ('IP', 'IP');
+INSERT INTO public.protocol (value, description) VALUES ('ICMP', 'ICMP');
+INSERT INTO public.protocol (value, description) VALUES ('IGMP', 'IGMP');
+INSERT INTO public.protocol (value, description) VALUES ('TCP', 'TCP');
+INSERT INTO public.protocol (value, description) VALUES ('UDP', 'UDP');
+INSERT INTO public.protocol (value, description) VALUES ('IPV6', 'IPV6');
+INSERT INTO public.protocol (value, description) VALUES ('ICMPV6', 'ICMPV6');
+INSERT INTO public.protocol (value, description) VALUES ('RM', 'RM');

@@ -5,4 +5,6 @@
 - "!include public_organization.yaml"
 - "!include public_policies.yaml"
 - "!include public_pools.yaml"
+- "!include public_protocol.yaml"
+- "!include public_rules.yaml"
 - "!include public_subject_type.yaml"

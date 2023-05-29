@@ -10,6 +10,7 @@ import Google from '@auth/core/providers/google';
 import { SvelteKitAuth } from '@auth/sveltekit';
 import type { Handle } from '@sveltejs/kit';
 import { appRoles } from './role-mapper';
+import { getOrg } from './org-mapper';
 // import { HasuraAdapter } from 'next-auth-hasura-adapter';
 
 // TODO: https://hasura.io/learn/graphql/hasura-authentication/integrations/nextjs-auth/
@@ -86,7 +87,7 @@ export const authjs = SvelteKitAuth({
 				log.debug('in isSignIn');
 				token.email ??= profile.upn;
 				token.roles ??= appRoles(profile.roles ?? profile.groups);
-				token.org = envPub.PUBLIC_ORGANIZATION;
+				token.org = getOrg(token.email);
 				// `scp` or `scope` is required for Spring Security.
 				const scp = Array.isArray(token.roles) ? token.roles.join(' ') : undefined;
 				token.scp = scp;

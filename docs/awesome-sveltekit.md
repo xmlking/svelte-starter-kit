@@ -4,6 +4,12 @@ Awesome **SvelteKit** Links
 
 ## Components
 
+- UI Component ToolKits
+  - [Skeleton UI](https://www.skeleton.dev/) UI components designed for Tailwind, Svelte and SvelteKit.
+  - [GrailUI](https://grail-ui.vercel.app/) is a set of headless UI components, actions and utilities.
+  - [Flowbite](https://flowbite-svelte.com/) components for Svelte, built on Tailwind CSS
+  - [daisyui](https://daisyui.com/) - pure CSS based UI components built on Tailwind CSS
+  
 - Force Graph examples with D3
 
   - [d3 Force Directed Graph demo](https://svelte.dev/repl/c23b43904005457981e78ca5042f7dd4?version=3.29.7)
@@ -55,9 +61,7 @@ Awesome **SvelteKit** Links
 - [sveltekit-superforms](https://github.com/ciscoheat/sveltekit-superforms) - SvelteKit native form handing for backend and frontend.
   - [Intro Video](https://www.youtube.com/watch?v=MiKzH3kcVfs)
 - [sveltekit-flash-message](https://github.com/ciscoheat/sveltekit-flash-message)
-
   - [Intro Video](https://youtu.be/hB6OkaYWS5I)
-
 - [felte](https://felte.dev/) - An extensible form library for Svelte, Solid and React
 
 ## GraphQL

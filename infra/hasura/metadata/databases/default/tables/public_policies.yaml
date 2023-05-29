@@ -3,26 +3,14 @@ table:
   schema: public
 configuration:
   column_config:
-    app_id:
-      custom_name: appId
     created_at:
       custom_name: createdAt
     created_by:
       custom_name: createdBy
     deleted_at:
       custom_name: deletedAt
-    destination_address:
-      custom_name: destinationAddress
-    destination_port:
-      custom_name: destinationPort
-    display_name:
-      custom_name: displayName
-    organization:
-      custom_name: organization
-    source_address:
-      custom_name: sourceAddress
-    source_port:
-      custom_name: sourcePort
+    role_id:
+      custom_name: roleId
     subject_display_name:
       custom_name: subjectDisplayName
     subject_id:
@@ -40,16 +28,10 @@ configuration:
     valid_to:
       custom_name: validTo
   custom_column_names:
-    app_id: appId
     created_at: createdAt
     created_by: createdBy
     deleted_at: deletedAt
-    destination_address: destinationAddress
-    destination_port: destinationPort
-    display_name: displayName
-    organization: organization
-    source_address: sourceAddress
-    source_port: sourcePort
+    role_id: roleId
     subject_display_name: subjectDisplayName
     subject_id: subjectId
     subject_secondary_id: subjectSecondaryId

@@ -37,10 +37,13 @@ hasura console
 hasura seed create organization --database-name default --from-table organization
 hasura seed create direction --database-name default --from-table direction
 hasura seed create action --database-name default --from-table action
+hasura seed create protocol --database-name default --from-table protocol
 hasura seed create subject_type --database-name default --from-table subject_type
-hasura seed create policies --database-name default --from-table policies
 hasura seed create devices --database-name default --from-table devices
 hasura seed create pools --database-name default --from-table pools
+hasura seed create rules --database-name default --from-table rules
+hasura seed create policies --database-name default --from-table policies
+
 # Export data from multiple tables:
 # hasura seed create policies_organization --database-name default --from-table policies --from-table organization
 # Apply only a particular file:
@@ -73,7 +76,7 @@ hasura migrate apply --database-name default
 hasura metadata apply
 hasura metadata reload
 # update local "init" migrate file from server
- hasura migrate create  "init" --database-name default --from-server
+hasura migrate create  "init" --database-name default --from-server
 
 # Export Hasura GraphQL Engine metadata from the database
 hasura metadata export
