@@ -7,6 +7,12 @@
 	import type { policies_insert_input } from '$houdini';
 	import { DateInput } from '$lib/components/form';
 	import { addToast, ToastLevel } from '$lib/components/toast';
+	import {
+		actionOptions,
+		directionOptions,
+		protocols,
+		subjectTypeOptions2
+	} from '$lib/models/enums';
 	import { policyClientSchema } from '$lib/models/schema';
 	import type { Subject } from '$lib/models/types/subject';
 	import { Logger } from '$lib/utils';
@@ -95,60 +101,6 @@
 	log.debug('fData', $fData);
 
 	//Form
-	let subjectTypeOptions = [
-		{
-			value: 'subject_type_user',
-			label: 'User'
-		},
-		{
-			value: 'subject_type_group',
-			label: 'Group'
-		},
-		// {
-		// 	value: 'subject_type_service_account',
-		// 	label: 'Service Account',
-		// },
-		{
-			value: 'subject_type_device',
-			label: 'Device'
-		},
-		{
-			value: 'subject_type_device_pool',
-			label: 'Device Pool'
-		}
-	];
-	let protocols = [
-		{ value: 'Any', name: 'Any' },
-		{ value: 'IP', name: 'IP' },
-		{ value: 'ICMP', name: 'ICMP' },
-		{ value: 'IGMP', name: 'IGMP' },
-		{ value: 'TCP', name: 'TCP' },
-		{ value: 'UDP', name: 'UDP' },
-		{ value: 'IPV6', name: 'IPV6' },
-		{ value: 'ICMPV6', name: 'ICMPV6' },
-		{ value: 'RM', name: 'RM' }
-	];
-	let actionOptions = [
-		{
-			value: 'action_permit',
-			label: 'Allow'
-		},
-		{
-			value: 'action_block',
-			label: 'Deny'
-		}
-	];
-	let directionOptions = [
-		{
-			value: 'direction_egress',
-			label: 'Egress' // Outbound
-		},
-		{
-			value: 'direction_ingress',
-			label: 'Ingress' // Inbound
-		}
-	];
-
 	// select settings
 	let subject = policy?.subjectId
 		? {
@@ -185,7 +137,7 @@
 		// reset Selected ???
 		log.debug('onSubjectClear', event.detail);
 		if (browser) {
-			subject= null
+			subject = null;
 			$fData.subjectId = '';
 			$fData.subjectDisplayName = '';
 			$fData.subjectSecondaryId = '';
@@ -255,7 +207,7 @@
 
 			<div class="col-span-3">
 				<div class="btn-group">
-					{#each subjectTypeOptions as opt}
+					{#each subjectTypeOptions2 as opt}
 						<input
 							type="radio"
 							name="subjectType"

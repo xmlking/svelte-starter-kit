@@ -154,7 +154,7 @@ COMMENT ON RULE policies_soft_deletion_rule ON public.policies IS 'Make soft ins
 
 Finally, follow hasura [Setting up Soft Deletes for Data](https://hasura.io/docs/latest/schema/common-patterns/data-modeling/soft-deletes/) document to Set up appropriate `insert/update/delete` permissions.
 
-Testing
+**Testing**
 
 ```sql
 SET rules.soft_deletion TO on;
@@ -166,6 +166,25 @@ SET rules.soft_deletion TO off;
 SELECT current_setting('rules.soft_deletion');
 DELETE FROM public.policies WHERE id = '49492040-72e7-4a81-9410-05a05c258420';
 SELECT id, deleted_at FROM public.policies WHERE id = '49492040-72e7-4a81-9410-05a05c258420';
+```
+
+### Indexes
+
+PostgreSQL offers several tools for searching and pattern matching text.
+The challenge is choosing which to use for a job. There’s:
+
+- LIKE and ILIKE [SQL pattern matching](http://www.postgresql.org/docs/current/static/functions-matching.html#FUNCTIONS-LIKE);
+- ~ and ~\* operators for [mostly-perl-compatible regular expressions;](http://www.postgresql.org/docs/current/static/functions-matching.html#FUNCTIONS-POSIX-REGEXP)
+- [full text search](http://www.postgresql.org/docs/current/static/textsearch.html) with @@, to_tsvector and to_tsquery
+
+> TODO
+>
+> Analyze cost of your common queries
+
+```sql
+EXPLAIN (ANALYZE ON, COSTS OFF, TIMING OFF) SELECT display_name FROM policies WHERE display_name LIKE 'freck%';
+EXPLAIN (ANALYZE ON, COSTS OFF, TIMING OFF) SELECT display_name FROM policies WHERE display_name ~ '^freck.*';
+EXPLAIN (ANALYZE ON, COSTS OFF, TIMING OFF) SELECT display_name FROM policies WHERE display_name ILIKE 'freck%';
 ```
 
 ### Use foreign keys

@@ -29,13 +29,13 @@ export async function load(event) {
 	try {
 		await parent(); // HINT: to make sure use session is valid
 
-		const { limit, offset, subjectType, displayName } = searchSchema.parse(url.searchParams);
-		log.debug(limit, offset, subjectType, displayName);
+		const { limit, offset, subjectType, subjectId } = searchSchema.parse(url.searchParams);
+		log.debug(limit, offset, subjectType, subjectId);
 
 		const orderBy = [{ updatedAt: order_by.desc_nulls_first }];
 		const where = {
 			...(subjectType ? { subjectType: { _eq: subjectType } } : {}),
-			...(displayName ? { displayName: { _like: `%${displayName}%` } } : {})
+			...(subjectId ? { subjectId: { _eq: subjectId } } : {})
 		};
 		const variables = { where, limit, offset, orderBy };
 

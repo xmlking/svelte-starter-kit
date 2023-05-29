@@ -3,7 +3,6 @@ import { NotFoundError, PolicyError, handleActionErrors, handleLoadErrors } from
 import { policyCreateSchema, policyUpdateSchema } from '$lib/models/schema';
 import { Logger } from '$lib/utils';
 import { uuidSchema } from '$lib/utils/zod.utils';
-import envPub from '$lib/variables/variables';
 import { zfd } from '$lib/zodfd';
 import * as Sentry from '@sentry/sveltekit';
 import { fail, redirect } from '@sveltejs/kit';
@@ -39,7 +38,6 @@ export async function load(event) {
 			subjectType: 'subject_type_user',
 			subjectSecondaryId: '',
 			subjectDisplayName: '',
-			organization: envPub.PUBLIC_ORGANIZATION,
 			disabled: false,
 			template: false,
 			sourceAddress: '',

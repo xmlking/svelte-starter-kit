@@ -26,7 +26,7 @@ FROM --platform=${BUILDPLATFORM} node:20 as build
 
 # install pnpm
 #RUN curl -fsSL https://get.pnpm.io/install.sh | sh -; node - add --global pnpm
-RUN corepack enable; corepack prepare pnpm@8.2.0 --activate
+RUN corepack enable; corepack prepare pnpm@8.6.0 --activate
 
 # build-args are used in vite.config.ts
 ARG BUILD_TIME
@@ -53,7 +53,7 @@ RUN pnpm build
 FROM --platform=${BUILDPLATFORM} node:20-alpine as runtime
 
 # install pnpm
-RUN corepack enable; corepack prepare pnpm@8.2.0 --activate
+RUN corepack enable; corepack prepare pnpm@8.6.0 --activate
 
 WORKDIR /app
 
@@ -70,7 +70,7 @@ RUN pnpm prune --prod --no-optional
 ############################################################
 #FROM gcr.io/distroless/nodejs:19 as final
 # FROM gcr.io/distroless/nodejs:18-debug as final
-FROM cgr.dev/chainguard/node:19 as final
+FROM cgr.dev/chainguard/node:20 as final
 ENV NODE_ENV production
 
 WORKDIR /app
