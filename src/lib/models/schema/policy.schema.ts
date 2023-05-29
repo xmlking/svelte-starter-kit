@@ -100,6 +100,7 @@ const policyExtraSchema = z.object({
 export const policySearchSchema = z.object({
 	limit: z.coerce.number().min(1).max(100).default(10),
 	offset: z.coerce.number().min(0).default(0),
+	// TODO use subject_type_enum
 	subjectType: z
 		.enum([
 			'subject_type_user',
@@ -109,7 +110,7 @@ export const policySearchSchema = z.object({
 			'subject_type_device_pool'
 		])
 		.optional(),
-	displayName: z.string().trim().min(4).max(256).optional()
+	subjectId: z.string().trim().uuid().optional()
 });
 
 /**

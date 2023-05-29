@@ -16,12 +16,12 @@ echo $GITHUB_PACKAGES_TOKEN | docker login ghcr.io -u xmlking --password-stdin
 (Optional) Prefetch and cache base images to speedup docker builds
 
 ```shell
-docker pull --platform linux/amd64 node:19
-docker pull --platform linux/arm64 node:19
-docker pull --platform linux/amd64 node:19-alpine
-docker pull --platform linux/arm64 node:19-alpine
-docker pull --platform linux/amd64 gcr.io/distroless/nodejs:19
-docker pull --platform linux/arm64 gcr.io/distroless/nodejs:19
+docker pull --platform linux/amd64 node:20
+docker pull --platform linux/arm64/v8 node:20
+docker pull --platform linux/amd64 node:20-alpine
+docker pull --platform linux/arm64/v8 node:20-alpine
+docker pull --platform linux/amd64 gcr.io/distroless/nodejs:20
+docker pull --platform linux/arm64/v8 gcr.io/distroless/nodejs:20
 ```
 
 Build and publish docker image to ghcr.io
@@ -39,16 +39,16 @@ DOCKER_IMAGE=$REGISTRY/$IMAGE_NAME
 export DOCKER_CLI_EXPERIMENTAL=enabled
 docker buildx create --use
 
-docker buildx build --platform linux/arm64,linux/amd64 \
+docker buildx build --platform linux/arm64/v8,linux/amd64 \
 -t $DOCKER_IMAGE\:$VERSION \
 -t $DOCKER_IMAGE\:latest \
 --build-arg BUILD_TIME=$BUILD_TIME --build-arg BUILD_VERSION=$VERSION \
 --push .
 
 # (optional) pull recent images from GHCR
-docker pull --platform linux/arm64 $DOCKER_IMAGE\:latest
+docker pull --platform linux/arm64/v8 $DOCKER_IMAGE\:latest
 docker pull --platform linux/amd64 $DOCKER_IMAGE\:latest
-docker pull --platform linux/arm64 $DOCKER_IMAGE\:$VERSION
+docker pull --platform linux/arm64/v8 $DOCKER_IMAGE\:$VERSION
 docker pull --platform linux/amd64 $DOCKER_IMAGE\:$VERSION
 
 # inspect
@@ -60,7 +60,7 @@ docker inspect --format "{{.Architecture}}" $DOCKER_IMAGE:$VERSION
 docker run -it --rm --platform linux/amd64 -p 3000:3000 \
 -e NODE_ENV=production -e ORIGIN=http://localhost:3000 --env-file ./.env $DOCKER_IMAGE:$VERSION
 
-docker run -it --rm --platform linux/arm64 -p 3000:3000 \
+docker run -it --rm --platform linux/arm64/v8 -p 3000:3000 \
 -e NODE_ENV=production -e ORIGIN=http://localhost:3000 --env-file ./.env $DOCKER_IMAGE:$VERSION
 ## (or)
 docker compose up
