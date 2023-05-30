@@ -2,3 +2,25 @@ table:
   name: protocol
   schema: public
 is_enum: true
+select_permissions:
+  - role: agent
+    permission:
+      columns:
+        - description
+        - value
+      filter: {}
+      allow_aggregations: true
+  - role: manager
+    permission:
+      columns:
+        - description
+        - value
+      filter: {}
+      allow_aggregations: true
+  - role: user
+    permission:
+      columns:
+        - description
+        - value
+      filter: {}
+      allow_aggregations: true

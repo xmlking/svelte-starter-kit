@@ -41,33 +41,26 @@ configuration:
     valid_from: validFrom
     valid_to: validTo
   custom_root_fields: {}
+object_relationships:
+  - name: rule
+    using:
+      foreign_key_constraint_on: role_id
 insert_permissions:
   - role: manager
     permission:
       check: {}
       set:
         created_by: x-hasura-user-id
+        organization: x-hasura-org-id
         updated_by: x-hasura-user-id
       columns:
-        - action
-        - annotations
-        - app_id
-        - description
-        - destination_address
-        - destination_port
-        - direction
-        - disabled
-        - display_name
-        - protocol
-        - source_address
-        - source_port
+        - active
+        - created_by
+        - role_id
         - subject_display_name
-        - organization
         - subject_id
         - subject_secondary_id
         - subject_type
-        - tags
-        - template
         - valid_from
         - valid_to
         - weight
@@ -79,24 +72,12 @@ insert_permissions:
         organization: x-hasura-org-id
         updated_by: x-hasura-user-id
       columns:
-        - action
-        - annotations
-        - app_id
-        - description
-        - destination_address
-        - destination_port
-        - direction
-        - disabled
-        - display_name
-        - protocol
-        - source_address
-        - source_port
+        - active
+        - role_id
         - subject_display_name
         - subject_id
         - subject_secondary_id
         - subject_type
-        - tags
-        - template
         - valid_from
         - valid_to
         - weight
@@ -104,18 +85,9 @@ select_permissions:
   - role: agent
     permission:
       columns:
-        - action
-        - app_id
-        - description
-        - destination_address
-        - destination_port
-        - direction
-        - display_name
         - id
-        - protocol
-        - source_address
-        - source_port
-        - organization
+        - subject_id
+        - subject_secondary_id
         - subject_type
         - updated_at
         - valid_from
@@ -125,39 +97,24 @@ select_permissions:
         _and:
           - deleted_at:
               _is_null: true
+          - active:
+              _eq: true
           - organization:
               _eq: x-hasura-org-id
-          - disabled:
-              _eq: false
-          - template:
-              _eq: false
           - valid_from:
               _lte: now()
   - role: manager
     permission:
       columns:
-        - action
-        - annotations
-        - app_id
+        - active
         - created_at
         - created_by
-        - description
-        - destination_address
-        - destination_port
-        - direction
-        - disabled
-        - display_name
         - id
-        - protocol
-        - source_address
-        - source_port
-        - subject_display_name
         - organization
+        - subject_display_name
         - subject_id
         - subject_secondary_id
         - subject_type
-        - tags
-        - template
         - updated_at
         - updated_by
         - valid_from
@@ -172,28 +129,15 @@ select_permissions:
   - role: user
     permission:
       columns:
-        - action
-        - annotations
-        - app_id
+        - active
         - created_at
         - created_by
-        - description
-        - destination_address
-        - destination_port
-        - direction
-        - disabled
-        - display_name
         - id
-        - protocol
-        - source_address
-        - source_port
-        - subject_display_name
         - organization
+        - subject_display_name
         - subject_id
         - subject_secondary_id
         - subject_type
-        - tags
-        - template
         - updated_at
         - updated_by
         - valid_from
@@ -211,20 +155,8 @@ update_permissions:
   - role: manager
     permission:
       columns:
-        - action
-        - annotations
-        - app_id
+        - active
         - deleted_at
-        - description
-        - destination_address
-        - destination_port
-        - direction
-        - disabled
-        - display_name
-        - protocol
-        - source_address
-        - source_port
-        - tags
         - valid_from
         - valid_to
         - weight
@@ -240,20 +172,8 @@ update_permissions:
   - role: user
     permission:
       columns:
-        - action
-        - annotations
-        - app_id
+        - active
         - deleted_at
-        - description
-        - destination_address
-        - destination_port
-        - direction
-        - disabled
-        - display_name
-        - protocol
-        - source_address
-        - source_port
-        - tags
         - valid_from
         - valid_to
         - weight

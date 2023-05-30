@@ -187,8 +187,9 @@ EXPLAIN (ANALYZE ON, COSTS OFF, TIMING OFF) SELECT display_name FROM policies WH
 EXPLAIN (ANALYZE ON, COSTS OFF, TIMING OFF) SELECT display_name FROM policies WHERE display_name ILIKE 'freck%';
 ```
 
-> PostgreSQL will use an index only if it thinks it will be cheaper that way. 
+> PostgreSQL will use an index only if it thinks it will be cheaper that way.
 > An index on a `boolean` column, which can only take two possible values, will almost never be used, because it is cheaper to sequentially read the whole table than to use random I/O on the index and the table if a high percantage of the table has to be retrieved.
+
 ### Use foreign keys
 
 If you have a column that references another column in the database, add a foreign key constraint.

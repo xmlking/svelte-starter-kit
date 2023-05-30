@@ -9,15 +9,18 @@ select_permissions:
         - description
         - value
       filter: {}
+      allow_aggregations: true
   - role: manager
     permission:
       columns:
         - description
         - value
       filter: {}
+      allow_aggregations: true
   - role: user
     permission:
       columns:
         - description
         - value
       filter: {}
+      allow_aggregations: true
