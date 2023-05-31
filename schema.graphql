@@ -2094,11 +2094,6 @@ enum policies_constraint {
   unique or primary key constraint on columns "role_id", "subject_id", "organization", "subject_type"
   """
   policies_subject_id_subject_type_role_id_organization_key
-
-  """
-  unique or primary key constraint on columns "role_id", "subject_id", "organization", "subject_type"
-  """
-  policies_subject_id_subject_type_role_id_organization_unique
 }
 
 """
@@ -3508,11 +3503,6 @@ input rules_bool_exp {
 unique or primary key constraints on table "rules"
 """
 enum rules_constraint {
-  """
-  unique or primary key constraint on columns "display_name", "organization"
-  """
-  rules_display_name_organization_key
-
   """
   unique or primary key constraint on columns "display_name", "organization"
   """
