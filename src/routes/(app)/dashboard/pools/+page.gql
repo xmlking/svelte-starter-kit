@@ -1,0 +1,20 @@
+query SearchPoolsAll($limit: Int = 50, $offset: Int = 0, $displayName: String! = "%%")
+@cache(policy: CacheAndNetwork) {
+	pools(
+		order_by: [{ updatedAt: desc_nulls_last }]
+		limit: $limit
+		offset: $offset
+		where: { displayName: { _like: $displayName } }
+	) {
+		tags
+		createdBy
+		description
+		displayName
+		organization
+		updatedBy
+		createdAt
+		updatedAt
+		annotations
+		id
+	}
+}

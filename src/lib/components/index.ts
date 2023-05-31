@@ -3,6 +3,7 @@ export { default as Analytics } from './Analytics.svelte';
 export { default as ContextMenu } from './ContextMenu.svelte';
 export { default as DarkMode } from './DarkMode.svelte';
 export { default as Delete } from './Delete.svelte';
+export { default as DeleteButton } from './DeleteButton.svelte';
 export { default as Drawer } from './Drawer.svelte';
 export { default as ErrorMessage } from './ErrorMessage.svelte';
 export { default as FloatingLabelField } from './FloatingLabelField.svelte';

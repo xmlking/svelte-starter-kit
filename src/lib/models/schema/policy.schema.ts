@@ -20,21 +20,22 @@ export const policyClientSchema = z
 		// annotations: z.preprocess(stringToJSON, z.record(z.string().trim().min(3), z.string().trim().min(3)).nullish()),
 		// annotations: z.preprocess(stringToMap, z.map(z.string().trim().min(3), z.string().trim().min(3))).nullish(),
 		annotations: z.string().trim().nullish(), // TODO: validate map string
-		disabled: z.boolean().optional().default(false),
-		template: z.boolean().optional().default(false),
+		active: z.boolean().optional().default(true),
+		shared: z.boolean().optional().default(false),
 		// validFrom: z.string().datetime({ offset: true }).nullish().catch(null),
 		// validTo: z.string().datetime({ offset: true }).nullish().catch(null),
 		validFrom: z.preprocess(emptyToNull, z.string().datetime({ offset: true }).nullish()),
 		validTo: z.preprocess(emptyToNull, z.string().datetime({ offset: true }).nullish()),
-		sourceAddress: z.string().ip().nullish(),
+		source: z.string().ip().nullish(),
 		sourcePort: z.string().trim().nullish(),
-		destinationAddress: z.string().ip().nullish(),
+		destination: z.string().ip().nullish(),
 		destinationPort: z.string().trim().nullish(),
 		protocol: z.enum(['Any', 'IP', 'ICMP', 'IGMP', 'TCP', 'UDP', 'IPV6', 'ICMPV6', 'RM']),
-		action: z.enum(['action_permit', 'action_block']),
-		direction: z.enum(['direction_egress', 'direction_ingress']),
+		action: z.enum(['permit', 'block']),
+		direction: z.enum(['egress', 'ingress']),
 		appId: z.string().trim().nullish(),
-		weight: z.number().min(0).max(2000).optional().default(1000)
+		weight: z.coerce.number().min(0).max(2000).optional().default(1000),
+		id: z.string().trim().uuid().optional()
 	})
 	.superRefine((data, ctx) => checkValidDates(ctx, data.validFrom, data.validTo));
 
@@ -50,7 +51,7 @@ export const policyBaseSchema = z.object({
 	// annotations: z.preprocess(stringToJSON, z.record(z.string().trim().min(3), z.string().trim().min(3)).nullish()),
 	// annotations: z.preprocess(stringToMap, z.map(z.string().trim().min(3), z.string().trim().min(3)).nullish()),
 	annotations: z.string().trim().nullish(), // TODO: validate map string
-	disabled: z.coerce.boolean().optional().default(false),
+	active: z.coerce.boolean().optional().default(true),
 	validFrom: z.string().datetime({ offset: true }).nullish().catch(null),
 	// validFrom: z.string().datetime({ offset: true }).nullish()
 	// 	.catch((ctx) => {
@@ -58,13 +59,13 @@ export const policyBaseSchema = z.object({
 	// 		return null;
 	// 	}),
 	validTo: z.string().datetime({ offset: true }).nullish().catch(null),
-	sourceAddress: z.string().ip().nullish(),
+	source: z.string().ip().nullish(),
 	sourcePort: z.string().trim().nullish(),
-	destinationAddress: z.string().ip().nullish(),
+	destination: z.string().ip().nullish(),
 	destinationPort: z.string().trim().nullish(),
 	protocol: z.enum(['Any', 'IP', 'ICMP', 'IGMP', 'TCP', 'UDP', 'IPV6', 'ICMPV6', 'RM']),
-	action: z.enum(['action_permit', 'action_block']),
-	direction: z.enum(['direction_egress', 'direction_ingress']),
+	action: z.enum(['permit', 'block']),
+	direction: z.enum(['egress', 'ingress']),
 	appId: z.string().trim().nullish(),
 	weight: z.coerce.number().min(0).max(2000).catch(1000)
 });
@@ -73,14 +74,12 @@ export const policyCreateBaseSchema = policyBaseSchema.extend({
 	subjectDisplayName: z.string().trim(),
 	subjectId: z.string().trim(),
 	subjectSecondaryId: z.string().trim(),
-	subjectType: z.enum([
-		'subject_type_user',
-		'subject_type_group',
-		'subject_type_device',
-		'subject_type_service_account',
-		'subject_type_device_pool'
-	]),
-	template: z.coerce.boolean().optional().default(false)
+	subjectType: z.enum(['user', 'group', 'device', 'service_account', 'device_pool']),
+	shared: z.coerce.boolean().optional().default(false)
+});
+
+export const policyUpdateBaseSchema = policyBaseSchema.extend({
+	ruleId: z.string().trim().uuid()
 });
 
 /**
@@ -100,23 +99,15 @@ const policyExtraSchema = z.object({
 export const policySearchSchema = z.object({
 	limit: z.coerce.number().min(1).max(100).default(10),
 	offset: z.coerce.number().min(0).default(0),
-	// TODO use subject_type_enum
-	subjectType: z
-		.enum([
-			'subject_type_user',
-			'subject_type_group',
-			'subject_type_device',
-			'subject_type_service_account',
-			'subject_type_device_pool'
-		])
-		.optional(),
+	// TODO use enum
+	subjectType: z.enum(['user', 'group', 'device', 'service_account', 'device_pool']).optional(),
 	subjectId: z.string().trim().uuid().optional()
 });
 
 /**
  * for update time validation
  */
-export const policyUpdateSchema = policyBaseSchema.superRefine((data, ctx) => checkValidDates(ctx, data.validFrom, data.validTo));
+export const policyUpdateSchema = policyUpdateBaseSchema.superRefine((data, ctx) => checkValidDates(ctx, data.validFrom, data.validTo));
 
 /**
  * for create time validation

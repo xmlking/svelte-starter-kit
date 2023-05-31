@@ -1,10 +1,10 @@
-import { CachePolicy, CreatePolicyStore, GetPolicyStore, UpdatePolicyStore, type policies_insert_input } from '$houdini';
+import type { policies_insert_input, policies_set_input, rules_set_input } from '$houdini';
+import { CachePolicy, CreatePolicyStore, GetPolicyStore, UpdatePolicyStore } from '$houdini';
 import { NotFoundError, PolicyError, handleActionErrors, handleLoadErrors } from '$lib/errors';
 import { policyCreateSchema, policyUpdateSchema } from '$lib/models/schema';
 import { Logger } from '$lib/utils';
 import { uuidSchema } from '$lib/utils/zod.utils';
 import { zfd } from '$lib/zodfd';
-import * as Sentry from '@sentry/sveltekit';
 import { fail, redirect } from '@sveltejs/kit';
 import type { GraphQLError } from 'graphql';
 import { ZodError } from 'zod';
@@ -27,37 +27,30 @@ export async function load(event) {
 
 	const { id } = params;
 	if (id == '00000000-0000-0000-0000-000000000000') {
-		const policy: policies_insert_input = {
+		const policy = {
 			id: '00000000-0000-0000-0000-000000000000',
+			subjectId: '',
+			subjectType: 'user',
+			subjectSecondaryId: '',
+			subjectDisplayName: '',
+			active: true,
+			validFrom: null,
+			validTo: null,
 			displayName: '',
 			// tags: ['tz', 'us'],
 			// annotations: { 'sumo': 'demo' },
-			validFrom: null,
-			validTo: null,
-			subjectId: '',
-			subjectType: 'subject_type_user',
-			subjectSecondaryId: '',
-			subjectDisplayName: '',
-			disabled: false,
-			template: false,
-			sourceAddress: '',
+			shared: false,
+			source: '',
 			sourcePort: '',
-			destinationAddress: '',
+			destination: '',
 			destinationPort: '',
 			protocol: 'Any',
-			action: 'action_block',
-			direction: 'direction_egress',
+			action: 'block',
+			direction: 'egress',
 			weight: 2000
 		};
 		return { policy };
 	}
-
-	const transaction = Sentry.startTransaction({
-		name: 'Policy Load Transaction'
-	});
-	Sentry.configureScope((scope) => {
-		scope.setSpan(transaction);
-	});
 
 	try {
 		const variables = { id };
@@ -73,7 +66,10 @@ export async function load(event) {
 		if (errors) throw new PolicyError('GET_POLICY_ERROR', 'get policy api error', errors[0] as GraphQLError);
 		const policy = data?.policies_by_pk;
 		if (!policy) throw new NotFoundError('policy not found');
-		return { policy };
+		const { rule, ...policyRest } = policy;
+		const { id: ruleId, ...ruleRest } = rule;
+		const flattenedPolicy = { ...policyRest, ...ruleRest, ruleId };
+		return { policy: flattenedPolicy };
 	} catch (err) {
 		log.error('policies:actions:load:error:', err);
 		if (err instanceof PolicyError && err.name === 'GET_POLICY_ERROR') {
@@ -82,7 +78,7 @@ export async function load(event) {
 			handleLoadErrors(err);
 		}
 	} finally {
-		transaction.finish();
+		// TODO report error
 	}
 }
 
@@ -100,12 +96,6 @@ export const actions = {
 			throw redirect(307, '/auth/signin?callbackUrl=/dashboard/policy');
 		}
 
-		const transaction = Sentry.startTransaction({
-			name: 'Policy Save Transaction'
-		});
-		Sentry.configureScope((scope) => {
-			scope.setSpan(transaction);
-		});
 		try {
 			const formData = await request.formData();
 			const id = uuidSchema.parse(params.id);
@@ -116,9 +106,34 @@ export const actions = {
 				const payload = createSchema.parse(formData);
 				log.debug('CREATE action payload:', payload);
 
-				const jsonPayload = {
-					...payload,
-					...(payload.tags && { tags: `{${payload.tags}}` })
+				const jsonPayload: policies_insert_input = {
+					...(payload.active && { active: payload.active }),
+					...(payload.validFrom && { validFrom: payload.validFrom }),
+					...(payload.validTo && { validTo: payload.validTo }),
+					...(payload.weight && { weight: payload.weight }),
+
+					...(payload.subjectDisplayName && { subjectDisplayName: payload.subjectDisplayName }),
+					...(payload.subjectId && { subjectId: payload.subjectId }),
+					...(payload.subjectSecondaryId && { subjectSecondaryId: payload.subjectSecondaryId }),
+					...(payload.subjectType && { subjectType: payload.subjectType }),
+					rule: {
+						data: {
+							...(payload.displayName && { displayName: payload.displayName }),
+							...(payload.description && { description: payload.description }),
+							...(payload.annotations && { annotations: payload.annotations }),
+							...(payload.tags && { tags: `{${payload.tags}}` }),
+							...(payload.source && { source: payload.source }),
+							...(payload.sourcePort && { sourcePort: payload.sourcePort }),
+							...(payload.destination && { destination: payload.destination }),
+							...(payload.destinationPort && { destinationPort: payload.destinationPort }),
+							...(payload.action && { action: payload.action }),
+							...(payload.direction && { direction: payload.direction }),
+							...(payload.protocol && { protocol: payload.protocol }),
+							...(payload.appId && { appId: payload.appId }),
+							...(payload.weight && { weight: payload.weight }),
+							...(payload.shared && { shared: payload.shared })
+						}
+					}
 				};
 
 				const variables = { data: jsonPayload };
@@ -143,12 +158,30 @@ export const actions = {
 				const payload = updateSchema.parse(formData);
 				log.debug('UPDATE action payload:', payload);
 
-				const jsonPayload = {
-					...payload,
-					...(payload.tags && { tags: `{${payload.tags}}` })
+				const policyData: policies_set_input = {
+					...(payload.active && { active: payload.active }),
+					...(payload.validFrom && { validFrom: payload.validFrom }),
+					...(payload.validTo && { validTo: payload.validTo }),
+					...(payload.weight && { weight: payload.weight })
+				};
+				const ruleId = payload.ruleId;
+				const ruleData: rules_set_input = {
+					...(payload.displayName && { displayName: payload.displayName }),
+					...(payload.description && { description: payload.description }),
+					...(payload.annotations && { annotations: payload.annotations }),
+					...(payload.tags && { tags: `{${payload.tags}}` }),
+					...(payload.source && { source: payload.source }),
+					...(payload.sourcePort && { sourcePort: payload.sourcePort }),
+					...(payload.destination && { destination: payload.destination }),
+					...(payload.destinationPort && { destinationPort: payload.destinationPort }),
+					...(payload.action && { action: payload.action }),
+					...(payload.direction && { direction: payload.direction }),
+					...(payload.protocol && { protocol: payload.protocol }),
+					...(payload.appId && { appId: payload.appId }),
+					...(payload.weight && { weight: payload.weight })
 				};
 
-				const variables = { id, data: jsonPayload };
+				const variables = { policyId: id, policyData, ruleId, ruleData };
 				log.debug('UPDATE action variables:', variables);
 
 				const { errors, data } = await updatePolicyStore.mutate(variables, {
@@ -174,7 +207,7 @@ export const actions = {
 				return handleActionErrors(err);
 			}
 		} finally {
-			transaction.finish();
+			// TODO report error
 		}
 	}
 };

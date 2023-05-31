@@ -201,23 +201,20 @@ enum action_constraint {
 }
 
 enum action_enum {
-  """ACTION_BLOCK"""
-  action_block
+  """BLOCK"""
+  block
 
-  """ACTION_CALLOUT_INSPECTION"""
-  action_callout_inspection
+  """CALLOUT_INSPECTION"""
+  callout_inspection
 
-  """ACTION_CALLOUT_TERMINATING"""
-  action_callout_terminating
+  """CALLOUT_TERMINATING"""
+  callout_terminating
 
-  """ACTION_CALLOUT_UNKNOWN"""
-  action_callout_unknown
+  """CALLOUT_UNKNOWN"""
+  callout_unknown
 
-  """ACTION_PERMIT"""
-  action_permit
-
-  """ACTION_UNSPECIFIED"""
-  action_unspecified
+  """PERMIT"""
+  permit
 }
 
 """
@@ -1027,14 +1024,11 @@ enum direction_constraint {
 }
 
 enum direction_enum {
-  """DIRECTION_EGRESS"""
-  direction_egress
+  """EGRESS"""
+  egress
 
-  """DIRECTION_INGRESS"""
-  direction_ingress
-
-  """DIRECTION_UNSPECIFIED"""
-  direction_unspecified
+  """INGRESS"""
+  ingress
 }
 
 """
@@ -1265,6 +1259,32 @@ type mutation_root {
   delete_pools_by_pk(id: uuid!): pools
 
   """
+  delete data from the table: "protocol"
+  """
+  delete_protocol(
+    """filter the rows which have to be deleted"""
+    where: protocol_bool_exp!
+  ): protocol_mutation_response
+
+  """
+  delete single row from the table: "protocol"
+  """
+  delete_protocol_by_pk(value: String!): protocol
+
+  """
+  delete data from the table: "rules"
+  """
+  delete_rules(
+    """filter the rows which have to be deleted"""
+    where: rules_bool_exp!
+  ): rules_mutation_response
+
+  """
+  delete single row from the table: "rules"
+  """
+  delete_rules_by_pk(id: uuid!): rules
+
+  """
   delete data from the table: "subject_type"
   """
   delete_subject_type(
@@ -1430,6 +1450,50 @@ type mutation_root {
     """upsert condition"""
     on_conflict: pools_on_conflict
   ): pools
+
+  """
+  insert data into the table: "protocol"
+  """
+  insert_protocol(
+    """the rows to be inserted"""
+    objects: [protocol_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: protocol_on_conflict
+  ): protocol_mutation_response
+
+  """
+  insert a single row into the table: "protocol"
+  """
+  insert_protocol_one(
+    """the row to be inserted"""
+    object: protocol_insert_input!
+
+    """upsert condition"""
+    on_conflict: protocol_on_conflict
+  ): protocol
+
+  """
+  insert data into the table: "rules"
+  """
+  insert_rules(
+    """the rows to be inserted"""
+    objects: [rules_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: rules_on_conflict
+  ): rules_mutation_response
+
+  """
+  insert a single row into the table: "rules"
+  """
+  insert_rules_one(
+    """the row to be inserted"""
+    object: rules_insert_input!
+
+    """upsert condition"""
+    on_conflict: rules_on_conflict
+  ): rules
 
   """
   insert data into the table: "subject_type"
@@ -1656,6 +1720,68 @@ type mutation_root {
   ): [pools_mutation_response]
 
   """
+  update data of the table: "protocol"
+  """
+  update_protocol(
+    """sets the columns of the filtered rows to the given values"""
+    _set: protocol_set_input
+
+    """filter the rows which have to be updated"""
+    where: protocol_bool_exp!
+  ): protocol_mutation_response
+
+  """
+  update single row of the table: "protocol"
+  """
+  update_protocol_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: protocol_set_input
+    pk_columns: protocol_pk_columns_input!
+  ): protocol
+
+  """
+  update multiples rows of table: "protocol"
+  """
+  update_protocol_many(
+    """updates to execute, in order"""
+    updates: [protocol_updates!]!
+  ): [protocol_mutation_response]
+
+  """
+  update data of the table: "rules"
+  """
+  update_rules(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: rules_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: rules_set_input
+
+    """filter the rows which have to be updated"""
+    where: rules_bool_exp!
+  ): rules_mutation_response
+
+  """
+  update single row of the table: "rules"
+  """
+  update_rules_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: rules_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: rules_set_input
+    pk_columns: rules_pk_columns_input!
+  ): rules
+
+  """
+  update multiples rows of table: "rules"
+  """
+  update_rules_many(
+    """updates to execute, in order"""
+    updates: [rules_updates!]!
+  ): [rules_mutation_response]
+
+  """
   update data of the table: "subject_type"
   """
   update_subject_type(
@@ -1874,36 +2000,29 @@ input organization_updates {
   where: organization_bool_exp!
 }
 
-"""This is policy table."""
+"""
+policies is a joint table to connect a Subject polymorphically  and a Rule
+"""
 type policies {
-  action: action_enum!
-  annotations: hstore
-  appId: String
+  active: Boolean!
   createdAt: timestamptz!
   createdBy: String!
   deletedAt: timestamptz
-  description: String
-  destinationAddress: String
-  destinationPort: String
-  direction: direction_enum!
-  disabled: Boolean
-  displayName: String!
   id: uuid!
-  organization: organization_enum
-  protocol: String
-  sourceAddress: String
-  sourcePort: String
-  subjectDisplayName: String
-  subjectId: String!
-  subjectSecondaryId: String
-  subjectType: subject_type_enum
-  tags: _text
-  template: Boolean
+  organization: organization_enum!
+  roleId: uuid!
+
+  """An object relationship"""
+  rule: rules!
+  subjectDisplayName: String!
+  subjectId: uuid!
+  subjectSecondaryId: String!
+  subjectType: subject_type_enum!
   updatedAt: timestamptz!
   updatedBy: String!
-  validFrom: timestamptz
+  validFrom: timestamptz!
   validTo: timestamptz
-  weight: Int
+  weight: smallint!
 }
 
 """
@@ -1943,34 +2062,23 @@ input policies_bool_exp {
   _and: [policies_bool_exp!]
   _not: policies_bool_exp
   _or: [policies_bool_exp!]
-  action: action_enum_comparison_exp
-  annotations: hstore_comparison_exp
-  appId: String_comparison_exp
+  active: Boolean_comparison_exp
   createdAt: timestamptz_comparison_exp
   createdBy: String_comparison_exp
   deletedAt: timestamptz_comparison_exp
-  description: String_comparison_exp
-  destinationAddress: String_comparison_exp
-  destinationPort: String_comparison_exp
-  direction: direction_enum_comparison_exp
-  disabled: Boolean_comparison_exp
-  displayName: String_comparison_exp
   id: uuid_comparison_exp
   organization: organization_enum_comparison_exp
-  protocol: String_comparison_exp
-  sourceAddress: String_comparison_exp
-  sourcePort: String_comparison_exp
+  roleId: uuid_comparison_exp
+  rule: rules_bool_exp
   subjectDisplayName: String_comparison_exp
-  subjectId: String_comparison_exp
+  subjectId: uuid_comparison_exp
   subjectSecondaryId: String_comparison_exp
   subjectType: subject_type_enum_comparison_exp
-  tags: _text_comparison_exp
-  template: Boolean_comparison_exp
   updatedAt: timestamptz_comparison_exp
   updatedBy: String_comparison_exp
   validFrom: timestamptz_comparison_exp
   validTo: timestamptz_comparison_exp
-  weight: Int_comparison_exp
+  weight: smallint_comparison_exp
 }
 
 """
@@ -1983,98 +2091,78 @@ enum policies_constraint {
   policies_pkey
 
   """
-  unique or primary key constraint on columns "display_name", "organization"
+  unique or primary key constraint on columns "role_id", "subject_id", "organization", "subject_type"
   """
-  policy_display_name_organization_unique
+  policies_subject_id_subject_type_role_id_organization_key
+
+  """
+  unique or primary key constraint on columns "role_id", "subject_id", "organization", "subject_type"
+  """
+  policies_subject_id_subject_type_role_id_organization_unique
 }
 
 """
 input type for incrementing numeric columns in table "policies"
 """
 input policies_inc_input {
-  weight: Int
+  weight: smallint
 }
 
 """
 input type for inserting data into table "policies"
 """
 input policies_insert_input {
-  action: action_enum
-  annotations: hstore
-  appId: String
+  active: Boolean
   createdAt: timestamptz
   createdBy: String
   deletedAt: timestamptz
-  description: String
-  destinationAddress: String
-  destinationPort: String
-  direction: direction_enum
-  disabled: Boolean
-  displayName: String
   id: uuid
   organization: organization_enum
-  protocol: String
-  sourceAddress: String
-  sourcePort: String
+  roleId: uuid
+  rule: rules_obj_rel_insert_input
   subjectDisplayName: String
-  subjectId: String
+  subjectId: uuid
   subjectSecondaryId: String
   subjectType: subject_type_enum
-  tags: _text
-  template: Boolean
   updatedAt: timestamptz
   updatedBy: String
   validFrom: timestamptz
   validTo: timestamptz
-  weight: Int
+  weight: smallint
 }
 
 """aggregate max on columns"""
 type policies_max_fields {
-  appId: String
   createdAt: timestamptz
   createdBy: String
   deletedAt: timestamptz
-  description: String
-  destinationAddress: String
-  destinationPort: String
-  displayName: String
   id: uuid
-  protocol: String
-  sourceAddress: String
-  sourcePort: String
+  roleId: uuid
   subjectDisplayName: String
-  subjectId: String
+  subjectId: uuid
   subjectSecondaryId: String
   updatedAt: timestamptz
   updatedBy: String
   validFrom: timestamptz
   validTo: timestamptz
-  weight: Int
+  weight: smallint
 }
 
 """aggregate min on columns"""
 type policies_min_fields {
-  appId: String
   createdAt: timestamptz
   createdBy: String
   deletedAt: timestamptz
-  description: String
-  destinationAddress: String
-  destinationPort: String
-  displayName: String
   id: uuid
-  protocol: String
-  sourceAddress: String
-  sourcePort: String
+  roleId: uuid
   subjectDisplayName: String
-  subjectId: String
+  subjectId: uuid
   subjectSecondaryId: String
   updatedAt: timestamptz
   updatedBy: String
   validFrom: timestamptz
   validTo: timestamptz
-  weight: Int
+  weight: smallint
 }
 
 """
@@ -2099,29 +2187,18 @@ input policies_on_conflict {
 
 """Ordering options when selecting data from "policies"."""
 input policies_order_by {
-  action: order_by
-  annotations: order_by
-  appId: order_by
+  active: order_by
   createdAt: order_by
   createdBy: order_by
   deletedAt: order_by
-  description: order_by
-  destinationAddress: order_by
-  destinationPort: order_by
-  direction: order_by
-  disabled: order_by
-  displayName: order_by
   id: order_by
   organization: order_by
-  protocol: order_by
-  sourceAddress: order_by
-  sourcePort: order_by
+  roleId: order_by
+  rule: rules_order_by
   subjectDisplayName: order_by
   subjectId: order_by
   subjectSecondaryId: order_by
   subjectType: order_by
-  tags: order_by
-  template: order_by
   updatedAt: order_by
   updatedBy: order_by
   validFrom: order_by
@@ -2139,13 +2216,7 @@ select columns of table "policies"
 """
 enum policies_select_column {
   """column name"""
-  action
-
-  """column name"""
-  annotations
-
-  """column name"""
-  appId
+  active
 
   """column name"""
   createdAt
@@ -2157,37 +2228,13 @@ enum policies_select_column {
   deletedAt
 
   """column name"""
-  description
-
-  """column name"""
-  destinationAddress
-
-  """column name"""
-  destinationPort
-
-  """column name"""
-  direction
-
-  """column name"""
-  disabled
-
-  """column name"""
-  displayName
-
-  """column name"""
   id
 
   """column name"""
   organization
 
   """column name"""
-  protocol
-
-  """column name"""
-  sourceAddress
-
-  """column name"""
-  sourcePort
+  roleId
 
   """column name"""
   subjectDisplayName
@@ -2200,12 +2247,6 @@ enum policies_select_column {
 
   """column name"""
   subjectType
-
-  """column name"""
-  tags
-
-  """column name"""
-  template
 
   """column name"""
   updatedAt
@@ -2227,34 +2268,22 @@ enum policies_select_column {
 input type for updating data in table "policies"
 """
 input policies_set_input {
-  action: action_enum
-  annotations: hstore
-  appId: String
+  active: Boolean
   createdAt: timestamptz
   createdBy: String
   deletedAt: timestamptz
-  description: String
-  destinationAddress: String
-  destinationPort: String
-  direction: direction_enum
-  disabled: Boolean
-  displayName: String
   id: uuid
   organization: organization_enum
-  protocol: String
-  sourceAddress: String
-  sourcePort: String
+  roleId: uuid
   subjectDisplayName: String
-  subjectId: String
+  subjectId: uuid
   subjectSecondaryId: String
   subjectType: subject_type_enum
-  tags: _text
-  template: Boolean
   updatedAt: timestamptz
   updatedBy: String
   validFrom: timestamptz
   validTo: timestamptz
-  weight: Int
+  weight: smallint
 }
 
 """aggregate stddev on columns"""
@@ -2285,39 +2314,27 @@ input policies_stream_cursor_input {
 
 """Initial value of the column from where the streaming should start"""
 input policies_stream_cursor_value_input {
-  action: action_enum
-  annotations: hstore
-  appId: String
+  active: Boolean
   createdAt: timestamptz
   createdBy: String
   deletedAt: timestamptz
-  description: String
-  destinationAddress: String
-  destinationPort: String
-  direction: direction_enum
-  disabled: Boolean
-  displayName: String
   id: uuid
   organization: organization_enum
-  protocol: String
-  sourceAddress: String
-  sourcePort: String
+  roleId: uuid
   subjectDisplayName: String
-  subjectId: String
+  subjectId: uuid
   subjectSecondaryId: String
   subjectType: subject_type_enum
-  tags: _text
-  template: Boolean
   updatedAt: timestamptz
   updatedBy: String
   validFrom: timestamptz
   validTo: timestamptz
-  weight: Int
+  weight: smallint
 }
 
 """aggregate sum on columns"""
 type policies_sum_fields {
-  weight: Int
+  weight: smallint
 }
 
 """
@@ -2325,13 +2342,7 @@ update columns of table "policies"
 """
 enum policies_update_column {
   """column name"""
-  action
-
-  """column name"""
-  annotations
-
-  """column name"""
-  appId
+  active
 
   """column name"""
   createdAt
@@ -2343,37 +2354,13 @@ enum policies_update_column {
   deletedAt
 
   """column name"""
-  description
-
-  """column name"""
-  destinationAddress
-
-  """column name"""
-  destinationPort
-
-  """column name"""
-  direction
-
-  """column name"""
-  disabled
-
-  """column name"""
-  displayName
-
-  """column name"""
   id
 
   """column name"""
   organization
 
   """column name"""
-  protocol
-
-  """column name"""
-  sourceAddress
-
-  """column name"""
-  sourcePort
+  roleId
 
   """column name"""
   subjectDisplayName
@@ -2386,12 +2373,6 @@ enum policies_update_column {
 
   """column name"""
   subjectType
-
-  """column name"""
-  tags
-
-  """column name"""
-  template
 
   """column name"""
   updatedAt
@@ -2760,6 +2741,196 @@ input pools_updates {
   where: pools_bool_exp!
 }
 
+"""network protocol enum"""
+type protocol {
+  description: String!
+  value: String!
+}
+
+"""
+aggregated selection of "protocol"
+"""
+type protocol_aggregate {
+  aggregate: protocol_aggregate_fields
+  nodes: [protocol!]!
+}
+
+"""
+aggregate fields of "protocol"
+"""
+type protocol_aggregate_fields {
+  count(columns: [protocol_select_column!], distinct: Boolean): Int!
+  max: protocol_max_fields
+  min: protocol_min_fields
+}
+
+"""
+Boolean expression to filter rows from the table "protocol". All fields are combined with a logical 'AND'.
+"""
+input protocol_bool_exp {
+  _and: [protocol_bool_exp!]
+  _not: protocol_bool_exp
+  _or: [protocol_bool_exp!]
+  description: String_comparison_exp
+  value: String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "protocol"
+"""
+enum protocol_constraint {
+  """
+  unique or primary key constraint on columns "value"
+  """
+  protocol_pkey
+}
+
+enum protocol_enum {
+  """Any"""
+  Any
+
+  """ICMP"""
+  ICMP
+
+  """ICMPV6"""
+  ICMPV6
+
+  """IGMP"""
+  IGMP
+
+  """IP"""
+  IP
+
+  """IPV6"""
+  IPV6
+
+  """RM"""
+  RM
+
+  """TCP"""
+  TCP
+
+  """UDP"""
+  UDP
+}
+
+"""
+Boolean expression to compare columns of type "protocol_enum". All fields are combined with logical 'AND'.
+"""
+input protocol_enum_comparison_exp {
+  _eq: protocol_enum
+  _in: [protocol_enum!]
+  _is_null: Boolean
+  _neq: protocol_enum
+  _nin: [protocol_enum!]
+}
+
+"""
+input type for inserting data into table "protocol"
+"""
+input protocol_insert_input {
+  description: String
+  value: String
+}
+
+"""aggregate max on columns"""
+type protocol_max_fields {
+  description: String
+  value: String
+}
+
+"""aggregate min on columns"""
+type protocol_min_fields {
+  description: String
+  value: String
+}
+
+"""
+response of any mutation on the table "protocol"
+"""
+type protocol_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [protocol!]!
+}
+
+"""
+on_conflict condition type for table "protocol"
+"""
+input protocol_on_conflict {
+  constraint: protocol_constraint!
+  update_columns: [protocol_update_column!]! = []
+  where: protocol_bool_exp
+}
+
+"""Ordering options when selecting data from "protocol"."""
+input protocol_order_by {
+  description: order_by
+  value: order_by
+}
+
+"""primary key columns input for table: protocol"""
+input protocol_pk_columns_input {
+  value: String!
+}
+
+"""
+select columns of table "protocol"
+"""
+enum protocol_select_column {
+  """column name"""
+  description
+
+  """column name"""
+  value
+}
+
+"""
+input type for updating data in table "protocol"
+"""
+input protocol_set_input {
+  description: String
+  value: String
+}
+
+"""
+Streaming cursor of the table "protocol"
+"""
+input protocol_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: protocol_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input protocol_stream_cursor_value_input {
+  description: String
+  value: String
+}
+
+"""
+update columns of table "protocol"
+"""
+enum protocol_update_column {
+  """column name"""
+  description
+
+  """column name"""
+  value
+}
+
+input protocol_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: protocol_set_input
+
+  """filter the rows which have to be updated"""
+  where: protocol_bool_exp!
+}
+
 type query_root {
   """Universities API"""
   ListUniversities(arg1: ListUniversitiesInput!): [ListUniversitiesOutput]
@@ -3119,6 +3290,92 @@ type query_root {
   pools_by_pk(id: uuid!): pools
 
   """
+  fetch data from the table: "protocol"
+  """
+  protocol(
+    """distinct select on columns"""
+    distinct_on: [protocol_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [protocol_order_by!]
+
+    """filter the rows returned"""
+    where: protocol_bool_exp
+  ): [protocol!]!
+
+  """
+  fetch aggregated fields from the table: "protocol"
+  """
+  protocol_aggregate(
+    """distinct select on columns"""
+    distinct_on: [protocol_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [protocol_order_by!]
+
+    """filter the rows returned"""
+    where: protocol_bool_exp
+  ): protocol_aggregate!
+
+  """fetch data from the table: "protocol" using primary key columns"""
+  protocol_by_pk(value: String!): protocol
+
+  """
+  fetch data from the table: "rules"
+  """
+  rules(
+    """distinct select on columns"""
+    distinct_on: [rules_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [rules_order_by!]
+
+    """filter the rows returned"""
+    where: rules_bool_exp
+  ): [rules!]!
+
+  """
+  fetch aggregated fields from the table: "rules"
+  """
+  rules_aggregate(
+    """distinct select on columns"""
+    distinct_on: [rules_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [rules_order_by!]
+
+    """filter the rows returned"""
+    where: rules_bool_exp
+  ): rules_aggregate!
+
+  """fetch data from the table: "rules" using primary key columns"""
+  rules_by_pk(id: uuid!): rules
+
+  """
   fetch data from the table: "subject_type"
   """
   subject_type(
@@ -3160,6 +3417,503 @@ type query_root {
 
   """fetch data from the table: "subject_type" using primary key columns"""
   subject_type_by_pk(value: String!): subject_type
+}
+
+"""5-tuple firewalls rules"""
+type rules {
+  action: action_enum!
+  annotations: hstore
+  appId: String
+  createdAt: timestamptz!
+  createdBy: String!
+  deletedAt: timestamptz
+  description: String
+  destination: String
+  destinationPort: String
+  direction: direction_enum!
+  displayName: String!
+  id: uuid!
+  organization: organization_enum!
+  protocol: protocol_enum!
+  shared: Boolean!
+  source: String
+  sourcePort: String
+  tags: _text
+  updatedAt: timestamptz!
+  updatedBy: String!
+  weight: smallint!
+}
+
+"""
+aggregated selection of "rules"
+"""
+type rules_aggregate {
+  aggregate: rules_aggregate_fields
+  nodes: [rules!]!
+}
+
+"""
+aggregate fields of "rules"
+"""
+type rules_aggregate_fields {
+  avg: rules_avg_fields
+  count(columns: [rules_select_column!], distinct: Boolean): Int!
+  max: rules_max_fields
+  min: rules_min_fields
+  stddev: rules_stddev_fields
+  stddev_pop: rules_stddev_pop_fields
+  stddev_samp: rules_stddev_samp_fields
+  sum: rules_sum_fields
+  var_pop: rules_var_pop_fields
+  var_samp: rules_var_samp_fields
+  variance: rules_variance_fields
+}
+
+"""aggregate avg on columns"""
+type rules_avg_fields {
+  weight: Float
+}
+
+"""
+Boolean expression to filter rows from the table "rules". All fields are combined with a logical 'AND'.
+"""
+input rules_bool_exp {
+  _and: [rules_bool_exp!]
+  _not: rules_bool_exp
+  _or: [rules_bool_exp!]
+  action: action_enum_comparison_exp
+  annotations: hstore_comparison_exp
+  appId: String_comparison_exp
+  createdAt: timestamptz_comparison_exp
+  createdBy: String_comparison_exp
+  deletedAt: timestamptz_comparison_exp
+  description: String_comparison_exp
+  destination: String_comparison_exp
+  destinationPort: String_comparison_exp
+  direction: direction_enum_comparison_exp
+  displayName: String_comparison_exp
+  id: uuid_comparison_exp
+  organization: organization_enum_comparison_exp
+  protocol: protocol_enum_comparison_exp
+  shared: Boolean_comparison_exp
+  source: String_comparison_exp
+  sourcePort: String_comparison_exp
+  tags: _text_comparison_exp
+  updatedAt: timestamptz_comparison_exp
+  updatedBy: String_comparison_exp
+  weight: smallint_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "rules"
+"""
+enum rules_constraint {
+  """
+  unique or primary key constraint on columns "display_name", "organization"
+  """
+  rules_display_name_organization_key
+
+  """
+  unique or primary key constraint on columns "display_name", "organization"
+  """
+  rules_display_name_organization_unique
+
+  """
+  unique or primary key constraint on columns "id"
+  """
+  rules_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "rules"
+"""
+input rules_inc_input {
+  weight: smallint
+}
+
+"""
+input type for inserting data into table "rules"
+"""
+input rules_insert_input {
+  action: action_enum
+  annotations: hstore
+  appId: String
+  createdAt: timestamptz
+  createdBy: String
+  deletedAt: timestamptz
+  description: String
+  destination: String
+  destinationPort: String
+  direction: direction_enum
+  displayName: String
+  id: uuid
+  organization: organization_enum
+  protocol: protocol_enum
+  shared: Boolean
+  source: String
+  sourcePort: String
+  tags: _text
+  updatedAt: timestamptz
+  updatedBy: String
+  weight: smallint
+}
+
+"""aggregate max on columns"""
+type rules_max_fields {
+  appId: String
+  createdAt: timestamptz
+  createdBy: String
+  deletedAt: timestamptz
+  description: String
+  destination: String
+  destinationPort: String
+  displayName: String
+  id: uuid
+  source: String
+  sourcePort: String
+  updatedAt: timestamptz
+  updatedBy: String
+  weight: smallint
+}
+
+"""aggregate min on columns"""
+type rules_min_fields {
+  appId: String
+  createdAt: timestamptz
+  createdBy: String
+  deletedAt: timestamptz
+  description: String
+  destination: String
+  destinationPort: String
+  displayName: String
+  id: uuid
+  source: String
+  sourcePort: String
+  updatedAt: timestamptz
+  updatedBy: String
+  weight: smallint
+}
+
+"""
+response of any mutation on the table "rules"
+"""
+type rules_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [rules!]!
+}
+
+"""
+input type for inserting object relation for remote table "rules"
+"""
+input rules_obj_rel_insert_input {
+  data: rules_insert_input!
+
+  """upsert condition"""
+  on_conflict: rules_on_conflict
+}
+
+"""
+on_conflict condition type for table "rules"
+"""
+input rules_on_conflict {
+  constraint: rules_constraint!
+  update_columns: [rules_update_column!]! = []
+  where: rules_bool_exp
+}
+
+"""Ordering options when selecting data from "rules"."""
+input rules_order_by {
+  action: order_by
+  annotations: order_by
+  appId: order_by
+  createdAt: order_by
+  createdBy: order_by
+  deletedAt: order_by
+  description: order_by
+  destination: order_by
+  destinationPort: order_by
+  direction: order_by
+  displayName: order_by
+  id: order_by
+  organization: order_by
+  protocol: order_by
+  shared: order_by
+  source: order_by
+  sourcePort: order_by
+  tags: order_by
+  updatedAt: order_by
+  updatedBy: order_by
+  weight: order_by
+}
+
+"""primary key columns input for table: rules"""
+input rules_pk_columns_input {
+  id: uuid!
+}
+
+"""
+select columns of table "rules"
+"""
+enum rules_select_column {
+  """column name"""
+  action
+
+  """column name"""
+  annotations
+
+  """column name"""
+  appId
+
+  """column name"""
+  createdAt
+
+  """column name"""
+  createdBy
+
+  """column name"""
+  deletedAt
+
+  """column name"""
+  description
+
+  """column name"""
+  destination
+
+  """column name"""
+  destinationPort
+
+  """column name"""
+  direction
+
+  """column name"""
+  displayName
+
+  """column name"""
+  id
+
+  """column name"""
+  organization
+
+  """column name"""
+  protocol
+
+  """column name"""
+  shared
+
+  """column name"""
+  source
+
+  """column name"""
+  sourcePort
+
+  """column name"""
+  tags
+
+  """column name"""
+  updatedAt
+
+  """column name"""
+  updatedBy
+
+  """column name"""
+  weight
+}
+
+"""
+input type for updating data in table "rules"
+"""
+input rules_set_input {
+  action: action_enum
+  annotations: hstore
+  appId: String
+  createdAt: timestamptz
+  createdBy: String
+  deletedAt: timestamptz
+  description: String
+  destination: String
+  destinationPort: String
+  direction: direction_enum
+  displayName: String
+  id: uuid
+  organization: organization_enum
+  protocol: protocol_enum
+  shared: Boolean
+  source: String
+  sourcePort: String
+  tags: _text
+  updatedAt: timestamptz
+  updatedBy: String
+  weight: smallint
+}
+
+"""aggregate stddev on columns"""
+type rules_stddev_fields {
+  weight: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type rules_stddev_pop_fields {
+  weight: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type rules_stddev_samp_fields {
+  weight: Float
+}
+
+"""
+Streaming cursor of the table "rules"
+"""
+input rules_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: rules_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input rules_stream_cursor_value_input {
+  action: action_enum
+  annotations: hstore
+  appId: String
+  createdAt: timestamptz
+  createdBy: String
+  deletedAt: timestamptz
+  description: String
+  destination: String
+  destinationPort: String
+  direction: direction_enum
+  displayName: String
+  id: uuid
+  organization: organization_enum
+  protocol: protocol_enum
+  shared: Boolean
+  source: String
+  sourcePort: String
+  tags: _text
+  updatedAt: timestamptz
+  updatedBy: String
+  weight: smallint
+}
+
+"""aggregate sum on columns"""
+type rules_sum_fields {
+  weight: smallint
+}
+
+"""
+update columns of table "rules"
+"""
+enum rules_update_column {
+  """column name"""
+  action
+
+  """column name"""
+  annotations
+
+  """column name"""
+  appId
+
+  """column name"""
+  createdAt
+
+  """column name"""
+  createdBy
+
+  """column name"""
+  deletedAt
+
+  """column name"""
+  description
+
+  """column name"""
+  destination
+
+  """column name"""
+  destinationPort
+
+  """column name"""
+  direction
+
+  """column name"""
+  displayName
+
+  """column name"""
+  id
+
+  """column name"""
+  organization
+
+  """column name"""
+  protocol
+
+  """column name"""
+  shared
+
+  """column name"""
+  source
+
+  """column name"""
+  sourcePort
+
+  """column name"""
+  tags
+
+  """column name"""
+  updatedAt
+
+  """column name"""
+  updatedBy
+
+  """column name"""
+  weight
+}
+
+input rules_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: rules_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: rules_set_input
+
+  """filter the rows which have to be updated"""
+  where: rules_bool_exp!
+}
+
+"""aggregate var_pop on columns"""
+type rules_var_pop_fields {
+  weight: Float
+}
+
+"""aggregate var_samp on columns"""
+type rules_var_samp_fields {
+  weight: Float
+}
+
+"""aggregate variance on columns"""
+type rules_variance_fields {
+  weight: Float
+}
+
+scalar smallint
+
+"""
+Boolean expression to compare columns of type "smallint". All fields are combined with logical 'AND'.
+"""
+input smallint_comparison_exp {
+  _eq: smallint
+  _gt: smallint
+  _gte: smallint
+  _in: [smallint!]
+  _is_null: Boolean
+  _lt: smallint
+  _lte: smallint
+  _neq: smallint
+  _nin: [smallint!]
 }
 
 """Subject Type"""
@@ -3207,23 +3961,20 @@ enum subject_type_constraint {
 }
 
 enum subject_type_enum {
-  """SUBJECT_TYPE_DEVICE"""
-  subject_type_device
+  """DEVICE"""
+  device
 
-  """SUBJECT_TYPE_DEVICE_POOL"""
-  subject_type_device_pool
+  """DEVICE_POOL"""
+  device_pool
 
-  """SUBJECT_TYPE_GROUP"""
-  subject_type_group
+  """GROUP"""
+  group
 
-  """SUBJECT_TYPE_SERVICE_ACCOUNT"""
-  subject_type_service_account
+  """SERVICE_ACCOUNT"""
+  service_account
 
-  """SUBJECT_TYPE_UNSPECIFIED"""
-  subject_type_unspecified
-
-  """SUBJECT_TYPE_USER"""
-  subject_type_user
+  """USER"""
+  user
 }
 
 """
@@ -3792,6 +4543,120 @@ type subscription_root {
     """filter the rows returned"""
     where: pools_bool_exp
   ): [pools!]!
+
+  """
+  fetch data from the table: "protocol"
+  """
+  protocol(
+    """distinct select on columns"""
+    distinct_on: [protocol_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [protocol_order_by!]
+
+    """filter the rows returned"""
+    where: protocol_bool_exp
+  ): [protocol!]!
+
+  """
+  fetch aggregated fields from the table: "protocol"
+  """
+  protocol_aggregate(
+    """distinct select on columns"""
+    distinct_on: [protocol_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [protocol_order_by!]
+
+    """filter the rows returned"""
+    where: protocol_bool_exp
+  ): protocol_aggregate!
+
+  """fetch data from the table: "protocol" using primary key columns"""
+  protocol_by_pk(value: String!): protocol
+
+  """
+  fetch data from the table in a streaming manner: "protocol"
+  """
+  protocol_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [protocol_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: protocol_bool_exp
+  ): [protocol!]!
+
+  """
+  fetch data from the table: "rules"
+  """
+  rules(
+    """distinct select on columns"""
+    distinct_on: [rules_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [rules_order_by!]
+
+    """filter the rows returned"""
+    where: rules_bool_exp
+  ): [rules!]!
+
+  """
+  fetch aggregated fields from the table: "rules"
+  """
+  rules_aggregate(
+    """distinct select on columns"""
+    distinct_on: [rules_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [rules_order_by!]
+
+    """filter the rows returned"""
+    where: rules_bool_exp
+  ): rules_aggregate!
+
+  """fetch data from the table: "rules" using primary key columns"""
+  rules_by_pk(id: uuid!): rules
+
+  """
+  fetch data from the table in a streaming manner: "rules"
+  """
+  rules_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [rules_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: rules_bool_exp
+  ): [rules!]!
 
   """
   fetch data from the table: "subject_type"

@@ -47,7 +47,7 @@
 	$: if (form) ({ actionResult, actionError, formErrors, fieldErrors } = form);
 	$: if (actionResult) {
 		addToast({
-			message: `${actionResult.displayName} saved`,
+			message: `${actionResult.rule.displayName} saved`,
 			dismissible: true,
 			duration: 10000,
 			type: ToastLevel.Info
@@ -88,7 +88,7 @@
 		isDirty,
 		isValid,
 		reset
-	} = createForm<policies_insert_input>({
+	} = createForm({
 		initialValues: policy ?? {},
 		extend: validator({ schema }),
 		// this is dummy submit method for felte, sveltekit's `Form Action` really submit the form.
@@ -235,13 +235,13 @@
 					loadOptions={fetchSubjects}
 				>
 					<b slot="prepend" class="p-2">
-						{#if $fData.subjectType == 'subject_type_group'}
+						{#if $fData.subjectType == 'group'}
 							<UserGroup />
-						{:else if $fData.subjectType == 'subject_type_service_account'}
+						{:else if $fData.subjectType == 'service_account'}
 							<UserCircle />
-						{:else if $fData.subjectType == 'subject_type_device'}
+						{:else if $fData.subjectType == 'device'}
 							<DevicePhoneMobile />
-						{:else if $fData.subjectType == 'subject_type_device_pool'}
+						{:else if $fData.subjectType == 'device_pool'}
 							<RectangleGroup />
 						{:else}
 							<User />
@@ -275,12 +275,13 @@
 				disabled={editMode}
 				bind:value={$fData.organization}
 			/>
+			<input type="hidden" name="ruleId" bind:value={$fData.ruleId} />
 			<div class="col-span-3">
 				<FloatingLabelField
-					name="sourceAddress"
+					name="source"
 					style="outlined"
 					label="Source"
-					error={fieldErrors?.sourceAddress?.[0] || $fErrors?.sourceAddress?.[0]}
+					error={fieldErrors?.source?.[0] || $fErrors?.source?.[0]}
 				/>
 			</div>
 			<div class="col-span-3">
@@ -293,11 +294,10 @@
 			</div>
 			<div class="col-span-3">
 				<FloatingLabelField
-					name="destinationAddress"
+					name="destination"
 					style="outlined"
 					label="Destination"
-					error={fieldErrors?.destinationAddress?.[0] ||
-						$fErrors?.destinationAddress?.[0]}
+					error={fieldErrors?.destination?.[0] || $fErrors?.destination?.[0]}
 				/>
 			</div>
 			<div class="col-span-3">
@@ -364,33 +364,33 @@
 
 			<div>
 				<label class="label cursor-pointer">
-					<span class="label-text">Disabled</span>
+					<span class="label-text">Active</span>
 					<input
-						name="disabled"
+						name="active"
 						type="checkbox"
-						value={$fData.disabled}
-						checked={$fData.disabled}
+						value={$fData.active}
+						checked={$fData.active}
 						class="toggle-secondary toggle"
 					/>
 				</label>
 				<ErrorMessage
-					error={fieldErrors?.disabled?.[0] || JSON.stringify($fErrors?.disabled?.[0])}
+					error={fieldErrors?.active?.[0] || JSON.stringify($fErrors?.active?.[0])}
 				/>
 			</div>
 			<div>
 				<label class="label cursor-pointer">
-					<span class="label-text">Template</span>
+					<span class="label-text">Shared</span>
 					<input
-						name="template"
+						name="shared"
 						type="checkbox"
-						value={$fData.template}
-						checked={$fData.template}
+						value={$fData.shared}
+						checked={$fData.shared}
 						class="toggle-accent toggle"
 						disabled={editMode}
 					/>
 				</label>
 				<ErrorMessage
-					error={fieldErrors?.template?.[0] || JSON.stringify($fErrors?.template?.[0])}
+					error={fieldErrors?.shared?.[0] || JSON.stringify($fErrors?.shared?.[0])}
 				/>
 			</div>
 			<div class="col-start-5">
@@ -437,7 +437,7 @@
 		{:else}
 			<Button outline type="submit" disabled={!$isValid || $isSubmitting}>
 				{#if $isSubmitting}
-					<Spinner class="mr-3" size="4" color="white" />Createing ...
+					<Spinner class="mr-3" size="4" color="white" />Creating ...
 				{:else}
 					<AdjustmentsHorizontal
 						size="18"

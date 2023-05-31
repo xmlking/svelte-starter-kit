@@ -16,28 +16,28 @@ export const rows = [
 
 export const subjectTypeOptions = [
 	{ value: '', name: 'All' },
-	{ value: 'subject_type_user', name: 'User' },
-	{ value: 'subject_type_group', name: 'Group' },
-	{ value: 'subject_type_service_account', name: 'Service' },
-	{ value: 'subject_type_device', name: 'Device' },
-	{ value: 'subject_type_device_pool', name: 'Device Pool' }
+	{ value: 'user', name: 'User' },
+	{ value: 'sgroup', name: 'Group' },
+	{ value: 'service_account', name: 'Service' },
+	{ value: 'device', name: 'Device' },
+	{ value: 'device_pool', name: 'Device Pool' }
 ];
 
 export const subjectTypeOptions2 = [
 	{
-		value: 'subject_type_user',
+		value: 'user',
 		label: 'User'
 	},
 	{
-		value: 'subject_type_group',
+		value: 'group',
 		label: 'Group'
 	},
 	{
-		value: 'subject_type_device',
+		value: 'device',
 		label: 'Device'
 	},
 	{
-		value: 'subject_type_device_pool',
+		value: 'device_pool',
 		label: 'Device Pool'
 	}
 ];
@@ -56,22 +56,22 @@ export const protocols = [
 
 export const actionOptions = [
 	{
-		value: 'action_permit',
+		value: 'permit',
 		label: 'Allow'
 	},
 	{
-		value: 'action_block',
+		value: 'block',
 		label: 'Deny'
 	}
 ];
 
 export const directionOptions = [
 	{
-		value: 'direction_egress',
+		value: 'egress',
 		label: 'Egress' // Outbound
 	},
 	{
-		value: 'direction_ingress',
+		value: 'ingress',
 		label: 'Ingress' // Inbound
 	}
 ];

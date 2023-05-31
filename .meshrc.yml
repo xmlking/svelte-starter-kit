@@ -11,7 +11,7 @@ sources:
   #           x-hasura-admin-secret: {env.HASURA_GRAPHQL_ADMIN_SECRET}
   #           x-hasura-role: user
   #           x-hasura-org-id: chinthagunta
-  #           x-hasura-user-id: sumo@chinthagunta.com
+  #           x-hasura-user-id: xmlking@gmail.com
   - name: Countries
     handler:
       graphql:

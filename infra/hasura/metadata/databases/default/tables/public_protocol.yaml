@@ -1,5 +1,5 @@
 table:
-  name: direction
+  name: protocol
   schema: public
 is_enum: true
 select_permissions:

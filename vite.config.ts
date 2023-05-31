@@ -1,4 +1,3 @@
-import { sentrySvelteKit } from '@sentry/sveltekit';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { SvelteKitPWA } from '@vite-pwa/sveltekit';
 import houdini from 'houdini/vite';
@@ -23,21 +22,6 @@ const [gitTag, gitDate] = (
 
 const config: UserConfig = {
 	plugins: [
-		// Note: Make sure that `sentrySvelteKit` is added before the sveltekit plugin
-		sentrySvelteKit({
-			// FIXME: https://github.com/getsentry/sentry-javascript/issues/8225
-			autoInstrument: false,
-			// sourceMapsUploadOptions: {
-			// 	release: process.env.PUBLIC_RELEASE,
-			// 	org: process.env.SENTRY_ORG,
-			// 	project: process.env.SENTRY_PROJECT,
-			// 	authToken: process.env.SENTRY_AUTH_TOKEN,
-			// 	cleanArtifacts: true,
-			// 	rewrite: false
-			// },
-			debug: true
-		}),
-
 		houdini(),
 		sveltekit(),
 		SvelteKitPWA({

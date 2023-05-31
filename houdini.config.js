@@ -47,7 +47,15 @@ const config = {
 				return number.toString();
 			}
 		},
-
+		smallint: {
+			type: 'number',
+			unmarshal(val) {
+				return new Number(val);
+			},
+			marshal(number) {
+				return number.toString();
+			}
+		},
 		URL: {
 			type: 'URL',
 			unmarshal(val) {

@@ -57,11 +57,11 @@ const searchPoolsStore = new SearchPoolsStore();
 const limit = 10;
 const orderBy = [{ updatedAt: order_by.desc_nulls_last }];
 
-// GET /api/users/search?subType=subject_type_user&search=sumo
+// GET /api/users/search?subType=user&search=sumo
 export const GET: RequestHandler = async (event) => {
 	const { url } = event;
 	const urlParams = new URLSearchParams(url.searchParams);
-	const subType = urlParams.get('subType') ?? 'subject_type_unspecified';
+	const subType = urlParams.get('subType') ?? 'unspecified';
 	const search = urlParams.get('search') ?? '';
 	// log.debug(subType, filter, search);
 	const where = {
@@ -73,17 +73,17 @@ export const GET: RequestHandler = async (event) => {
 
 	try {
 		switch (subType) {
-			case 'subject_type_user':
-			case 'subject_type_service_account':
-			case 'subject_type_unspecified':
+			case 'user':
+			case 'service_account':
+			case 'unspecified':
 				// TODO: implement hasura users table
 				results = fakeUsers;
 				break;
-			case 'subject_type_group':
+			case 'group':
 				// TODO: implement hasura groups table
 				results = fakeGroups;
 				break;
-			case 'subject_type_device':
+			case 'device':
 				const { errors: deviceErrors, data: deviceData } = await searchDevicesStore.fetch({
 					event,
 					blocking: true,
@@ -101,7 +101,7 @@ export const GET: RequestHandler = async (event) => {
 					};
 				});
 				break;
-			case 'subject_type_device_pool':
+			case 'device_pool':
 				const { errors: poolErrors, data: poolData } = await searchPoolsStore.fetch({
 					event,
 					blocking: true,
