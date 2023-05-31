@@ -1,9 +1,8 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import { goto, invalidateAll } from '$app/navigation';
+	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import { DeletePolicyStore } from '$houdini';
-	import { DeleteButton, ErrorMessage, Link } from '$lib/components';
+	import { Delete, ErrorMessage, Link } from '$lib/components';
 	import { ToastLevel, addToast } from '$lib/components/toast';
 	import { rows, subjectTypeOptions } from '$lib/models/enums';
 	import { Logger } from '$lib/utils';
@@ -31,13 +30,27 @@
 	import { default as SelectFetch } from 'svelte-select';
 	import { TimeDistance } from 'svelte-time-distance';
 	import { writable } from 'svelte/store';
-	import type { PageData } from './$houdini';
 
 	const log = new Logger('routes:policies');
 
-	export let data: PageData;
-	$: ({ SearchPolicies, formErrors, fieldErrors } = data);
-	$: policies = $SearchPolicies.data?.policies;
+	export let form;
+	$: if (form?.actionResult)
+		addToast({
+			message: `${form.actionResult.displayName} deleted`,
+			dismissible: true,
+			duration: 10000,
+			type: ToastLevel.Info
+		});
+	$: if (form?.actionError)
+		addToast({
+			message: form.actionError.message,
+			dismissible: true,
+			duration: 10000,
+			type: ToastLevel.Error
+		});
+
+	export let data;
+	$: ({ policies, loadError, formErrors, fieldErrors } = data);
 	$: policyStore.set(policies ?? []);
 
 	const policyStore = writable(policies ?? []);
@@ -72,8 +85,8 @@
 			accessor: 'subjectDisplayName'
 		}),
 		table.column({
-			header: 'Updated',
-			accessor: 'updatedAt',
+			header: 'Created',
+			accessor: 'createdAt',
 			cell: ({ value }) =>
 				createRender(TimeDistance, {
 					timestamp: Date.parse(value),
@@ -110,11 +123,9 @@
 		table.column({
 			header: 'Delete',
 			id: 'delete',
-			accessor: (item) => item,
-			cell: ({ value }) =>
-				createRender(DeleteButton).on('click', async () =>
-					deletePolicy(value.id, value.rule.id)
-				),
+			accessor: 'id',
+			// cell: ({ value }) => createRender(DeleteButton).on('click', async () => deletePolicy(value))
+			cell: ({ value }) => createRender(Delete, { id: value }),
 			plugins: {
 				tableFilter: {
 					exclude: true
@@ -166,43 +177,6 @@
 			);
 		}
 	}
-
-	// delete action
-	const deletePolicyStore = new DeletePolicyStore();
-	async function deletePolicy(policyId: string, roleId: string) {
-		console.log('in deletePolicy...', policyId, roleId);
-		const deletedAt = new Date().toISOString();
-		const { data } = await deletePolicyStore.mutate(
-			{ policyId, roleId, deletedAt },
-			{
-				metadata: { useRole: 'user', logResult: true }
-			}
-		);
-		if (data?.update_policies_by_pk && data?.update_rules?.affected_rows) {
-			addToast({
-				message: `Policy and associated rule: ${data?.update_rules?.returning[0].displayName} deleted`,
-				dismissible: true,
-				duration: 10000,
-				type: ToastLevel.Info
-			});
-			await invalidateAll();
-		} else if (data?.update_policies_by_pk) {
-			addToast({
-				message: `Policy ${data?.update_policies_by_pk.id} deleted`,
-				dismissible: true,
-				duration: 10000,
-				type: ToastLevel.Info
-			});
-			await invalidateAll();
-		} else {
-			addToast({
-				message: `Unable to delete Policy`,
-				dismissible: true,
-				duration: 50000,
-				type: ToastLevel.Error
-			});
-		}
-	}
 </script>
 
 <svelte:head>
@@ -215,6 +189,8 @@
 	<BreadcrumbItem href="/dashboard/policies">Policy</BreadcrumbItem>
 	<BreadcrumbItem>Search Policies</BreadcrumbItem>
 </Breadcrumb>
+
+<ErrorMessage error={loadError?.message} />
 
 <form data-sveltekit-noscroll bind:this={searchForm}>
 	<Navbar border={true} rounded={true}>

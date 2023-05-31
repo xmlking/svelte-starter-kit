@@ -68,7 +68,7 @@ export async function load(event) {
 		if (!policy) throw new NotFoundError('policy not found');
 		const { rule, ...policyRest } = policy;
 		const { id: ruleId, ...ruleRest } = rule;
-		const flattenedPolicy = { ...policyRest, ...ruleRest, ruleId };
+		const flattenedPolicy = { ...ruleRest, ruleId, ...policyRest };
 		return { policy: flattenedPolicy };
 	} catch (err) {
 		log.error('policies:actions:load:error:', err);
@@ -177,8 +177,9 @@ export const actions = {
 					...(payload.action && { action: payload.action }),
 					...(payload.direction && { direction: payload.direction }),
 					...(payload.protocol && { protocol: payload.protocol }),
-					...(payload.appId && { appId: payload.appId }),
-					...(payload.weight && { weight: payload.weight })
+					...(payload.appId && { appId: payload.appId })
+					// during update, we only update policy level `weight`
+					// ...(payload.weight && { weight: payload.weight })
 				};
 
 				const variables = { policyId: id, policyData, ruleId, ruleData };

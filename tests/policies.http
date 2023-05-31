@@ -486,6 +486,7 @@ mutation DeletePolicy($policyId: uuid!, $roleId: uuid!, $deletedAt: timestamptz!
     affected_rows
     returning {
       id
+	  displayName
     }
   }
 }

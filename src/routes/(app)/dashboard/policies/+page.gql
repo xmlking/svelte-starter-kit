@@ -1,0 +1,35 @@
+query SearchPolicies(
+	$where: policies_bool_exp
+	$limit: Int = 50
+	$offset: Int = 0
+	$orderBy: [policies_order_by!] = [{ updatedAt: desc_nulls_last }]
+) @cache(policy: CacheAndNetwork) {
+	policies(where: $where, order_by: $orderBy, limit: $limit, offset: $offset) {
+		id
+		weight
+		active
+		validFrom
+		validTo
+		subjectId
+		subjectType
+		subjectDisplayName
+		subjectSecondaryId
+		updatedAt
+		rule {
+			id
+			displayName
+			description
+			tags
+			annotations
+			shared
+			source
+			sourcePort
+			destination
+			destinationPort
+			protocol
+			direction
+			action
+			appId
+		}
+	}
+}
