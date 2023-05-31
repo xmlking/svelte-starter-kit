@@ -1,29 +1,14 @@
 fragment Policy_list_fields on policies {
 	id
-	# action
-	# annotations
-	# appId
-	createdAt
-	# createdBy
-	# description
-	destinationAddress
-	destinationPort
-	# direction
-	disabled
-	displayName
-	# protocol
-	sourceAddress
-	sourcePort
 	subjectDisplayName
-	# organization
-	# subjectId
-	# subjectSecondaryId
-	# subjectType
-	# tags
-	template
+	active
 	updatedAt
-	# updatedBy
-	# validFrom
-	# validTo
-	# weight
+	createdAt
+	rule {
+		displayName
+		source
+		sourcePort
+		destination
+		destinationPort
+	}
 }

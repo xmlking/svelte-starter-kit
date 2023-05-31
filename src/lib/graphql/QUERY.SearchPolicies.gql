@@ -4,19 +4,42 @@ query SearchPolicies(
 	$offset: Int = 0
 	$orderBy: [policies_order_by!] = [{ updatedAt: desc_nulls_last }]
 ) {
-	policies(order_by: $orderBy, limit: $limit, offset: $offset, where: $where) {
-		# ...Policy_list_fields @mask_disable
+	policies(where: $where, order_by: $orderBy, limit: $limit, offset: $offset) {
 		id
-		description
-		createdAt
-		destinationAddress
-		destinationPort
-		disabled
-		displayName
-		sourceAddress
-		sourcePort
+		weight
+		active
+		validFrom
+		validTo
+		subjectId
+		subjectType
 		subjectDisplayName
-		template
+		subjectSecondaryId
+		createdBy
+		createdAt
 		updatedAt
+		updatedBy
+		organization
+		rule {
+			id
+			displayName
+			description
+			tags
+			annotations
+			shared
+			source
+			sourcePort
+			destination
+			destinationPort
+			protocol
+			direction
+			action
+			appId
+			weight
+			createdBy
+			createdAt
+			updatedAt
+			updatedBy
+			organization
+		}
 	}
 }

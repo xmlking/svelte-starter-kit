@@ -1,7 +1,40 @@
 mutation CreatePolicy($data: policies_insert_input!) {
 	insert_policies_one(object: $data) {
 		id
-		displayName
+		weight
+		active
+		validFrom
+		validTo
+		subjectId
+		subjectType
+		subjectDisplayName
+		subjectSecondaryId
+		createdBy
+		createdAt
 		updatedAt
+		updatedBy
+		organization
+		rule {
+			id
+			displayName
+			description
+			tags
+			annotations
+			shared
+			source
+			sourcePort
+			destination
+			destinationPort
+			protocol
+			direction
+			action
+			appId
+			weight
+			createdBy
+			createdAt
+			updatedAt
+			updatedBy
+			organization
+		}
 	}
 }

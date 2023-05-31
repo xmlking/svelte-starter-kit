@@ -52,7 +52,7 @@ services:
       -c ssl_key_file=/etc/ssl/private/ssl-cert-snakeoil.key
 
   hasura:
-    image: hasura/graphql-engine:v2.25.0
+    image: hasura/graphql-engine:v2.26.0
     platform: linux/arm64/v8
     ports:
       - '8080:8080'
@@ -83,7 +83,7 @@ services:
           "claims_map": {
             "x-hasura-allowed-roles": { "path": "$.roles" },
             "x-hasura-default-role": "user",
-            "x-hasura-user-id": { "path": "$.sub" },
+            "x-hasura-user-id": { "path": "$.email" },
             "x-hasura-org-id":  { "path": "$.org", "default": "public" }
           }
         }

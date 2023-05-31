@@ -1,60 +1,34 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
-	import { goto } from '$app/navigation';
+	import { invalidateAll } from '$app/navigation';
 	import { page } from '$app/stores';
-	import { Delete, ErrorMessage, Link } from '$lib/components';
+	import { DeletePoolStore } from '$houdini';
+	import { DeleteButton, ErrorMessage, Link } from '$lib/components';
+	import GraphQlErrors from '$lib/components/GraphQLErrors.svelte';
 	import { ToastLevel, addToast } from '$lib/components/toast';
-	import { rows, subjectTypeOptions } from '$lib/models/enums';
-	import { Logger } from '$lib/utils';
 	import {
 		Breadcrumb,
 		BreadcrumbItem,
 		Button,
 		ButtonGroup,
+		Input,
 		NavBrand,
 		Navbar,
 		Select
 	} from 'flowbite-svelte';
 	import { Render, Subscribe, createRender, createTable } from 'svelte-headless-table';
 	import { addPagination, addSortBy, addTableFilter } from 'svelte-headless-table/plugins';
-	import {
-		ChevronDown,
-		ChevronUp,
-		DevicePhoneMobile,
-		RectangleGroup,
-		ShieldCheck,
-		User,
-		UserCircle,
-		UserGroup
-	} from 'svelte-heros-v2';
-	import { default as SelectFetch } from 'svelte-select';
+	import { ChevronDown, ChevronUp, MagnifyingGlass, RectangleGroup } from 'svelte-heros-v2';
 	import { TimeDistance } from 'svelte-time-distance';
 	import { writable } from 'svelte/store';
+	import type { PageData } from './$houdini';
 
-	const log = new Logger('routes:policies');
+	export let data: PageData;
+	$: ({ SearchPoolsAll, formErrors, fieldErrors } = data);
+	$: pools = $SearchPoolsAll.data?.pools;
+	$: poolStore.set(pools ?? []);
 
-	export let form;
-	$: if (form?.actionResult)
-		addToast({
-			message: `${form.actionResult.displayName} deleted`,
-			dismissible: true,
-			duration: 10000,
-			type: ToastLevel.Info
-		});
-	$: if (form?.actionError)
-		addToast({
-			message: form.actionError.message,
-			dismissible: true,
-			duration: 10000,
-			type: ToastLevel.Error
-		});
-
-	export let data;
-	$: ({ policies, loadError, formErrors, fieldErrors } = data);
-	$: policyStore.set(policies ?? []);
-
-	const policyStore = writable(policies ?? []);
-	const table = createTable(policyStore, {
+	const poolStore = writable(pools ?? []);
+	const table = createTable(poolStore, {
 		page: addPagination({ initialPageSize: 5 }),
 		tableFilter: addTableFilter(),
 		sort: addSortBy()
@@ -67,26 +41,22 @@
 			id: 'name',
 			cell: ({ value }) =>
 				createRender(Link, {
-					url: `/dashboard/policies/${value.id}`,
-					content: value.rule.displayName,
-					title: value.rule.description
+					url: `/dashboard/pools/${value.id}`,
+					content: value.displayName,
+					title: value.description
 				}),
 			plugins: {
 				tableFilter: {
-					getFilterValue: ({ rule }) => rule.displayName
+					getFilterValue: ({ displayName }) => displayName
 				},
 				sort: {
-					getSortValue: ({ rule }) => rule.displayName
+					getSortValue: ({ displayName }) => displayName
 				}
 			}
 		}),
 		table.column({
-			header: 'Subject',
-			accessor: 'subjectDisplayName'
-		}),
-		table.column({
-			header: 'Created',
-			accessor: 'createdAt',
+			header: 'Updated At',
+			accessor: 'updatedAt',
 			cell: ({ value }) =>
 				createRender(TimeDistance, {
 					timestamp: Date.parse(value),
@@ -102,30 +72,20 @@
 			}
 		}),
 		table.column({
-			header: 'Source',
-			id: 'source',
-			accessor: (item) => `${item.rule.source ?? ''}:${item.rule.sourcePort ?? ''}`
+			header: 'Updated By',
+			accessor: 'updatedBy'
 		}),
 		table.column({
-			header: 'Destination',
-			id: 'destination',
-			accessor: (item) => `${item.rule.destination ?? ''}:${item.rule.destinationPort ?? ''}`
-		}),
-		table.column({
-			header: 'Active',
-			accessor: 'active'
-		}),
-		table.column({
-			header: 'Shared',
-			id: 'shared',
-			accessor: (item) => item.rule.shared
+			header: 'Tags',
+			accessor: 'tags'
 		}),
 		table.column({
 			header: 'Delete',
 			id: 'delete',
 			accessor: 'id',
-			// cell: ({ value }) => createRender(DeleteButton).on('click', async () => deletePolicy(value))
-			cell: ({ value }) => createRender(Delete, { id: value }),
+			cell: ({ value }) =>
+				createRender(DeleteButton).on('click', async () => deletePool(value)),
+			// cell: ({ value }) => createRender(Delete, { id: value }),
 			plugins: {
 				tableFilter: {
 					exclude: true
@@ -142,117 +102,102 @@
 	const { pageIndex, pageCount, pageSize, hasNextPage, hasPreviousPage } = pluginStates.page;
 
 	// Search Table
-	const { filterValue } = pluginStates.tableFilter;
-	// Search form
-	let searchForm: HTMLFormElement;
-	let subjectId = $page.url.searchParams.get('subjectId') ?? '';
-	let subjectType = $page.url.searchParams.get('subjectType') ?? '';
-	let subjectDisplayName = $page.url.searchParams.get('subjectDisplayName') ?? '';
+	let displayName = $page.url.searchParams.get('displayName') ?? '';
 	let limit = $page.url.searchParams.get('limit') ?? '50';
 	let offset = $page.url.searchParams.get('offset') ?? '0';
 
-	let subject = subjectId
-		? {
-				id: subjectId,
-				displayName: subjectDisplayName,
-				secondaryId: ''
-		  }
-		: null;
+	let limits = [
+		{ value: '5', name: '5' },
+		{ value: '10', name: '10' },
+		{ value: '20', name: '20' },
+		{ value: '50', name: '50' },
+		{ value: '100', name: '100' }
+	];
 
-	async function fetchSubjects(filterText: string) {
-		if (!filterText.length) return Promise.resolve([]);
-		const response = await fetch(
-			`/api/directory/search?subType=${subjectType}&filter=&search=${filterText}`
+	let rows = [
+		{ value: 5, name: '5' },
+		{ value: 10, name: '10' },
+		{ value: 20, name: '20' },
+		{ value: 50, name: '50' },
+		{ value: 100, name: '100' }
+	];
+
+	const { filterValue } = pluginStates.tableFilter;
+
+	// delete action
+	const deletePoolStore = new DeletePoolStore();
+	async function deletePool(id: string) {
+		console.log('in deletePool...', id);
+		const deletedAt = new Date().toISOString();
+		const { data } = await deletePoolStore.mutate(
+			{ id, deletedAt },
+			{
+				metadata: { useRole: 'user', logResult: true }
+			}
 		);
-		if (!response.ok) throw new Error(`An error has occurred: ${response.status}`);
-		const data = await response.json();
-		if (!data) throw new Error('no data');
-		return data.results;
-	}
-	async function clearSubject(event: Event) {
-		subject = null;
-		if (browser) {
-			await goto(
-				`/dashboard/policies?subjectType=${subjectType}&limit=${limit}&offset=${offset}`
-			);
+		if (data?.update_pools_by_pk?.displayName) {
+			addToast({
+				message: `${data?.update_pools_by_pk?.displayName} deleted`,
+				dismissible: true,
+				duration: 10000,
+				type: ToastLevel.Info
+			});
+			// invalidate('/dashboard/pools');
+			await invalidateAll();
 		}
 	}
 </script>
 
 <svelte:head>
-	<title>Accounts</title>
-	<meta name="description" content="accounts" />
+	<title>Pools</title>
+	<meta name="description" content="pools" />
 </svelte:head>
 
 <Breadcrumb aria-label="Default breadcrumb example" class="mb-6">
 	<BreadcrumbItem href="/dashboard" home>Home</BreadcrumbItem>
-	<BreadcrumbItem href="/dashboard/policies">Policy</BreadcrumbItem>
-	<BreadcrumbItem>Search Policies</BreadcrumbItem>
+	<BreadcrumbItem href="/dashboard/pools">Pools</BreadcrumbItem>
+	<BreadcrumbItem>Search Pools</BreadcrumbItem>
 </Breadcrumb>
 
-<ErrorMessage error={loadError?.message} />
+<!-- <ErrorMessage error={loadError?.message} /> -->
 
-<form data-sveltekit-noscroll bind:this={searchForm}>
+<form data-sveltekit-noscroll>
 	<Navbar border={true} rounded={true}>
 		<NavBrand>
-			<ShieldCheck />
-			<span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
-				Policies
+			<RectangleGroup />
+			<span class="self-center whitespace-nowrap px-1 text-xl font-semibold dark:text-white">
+				Device Pools
 			</span>
 		</NavBrand>
 		<ButtonGroup class="w-1/2">
-			<Select
-				name="subjectType"
-				class="w-auto !rounded-r-none"
-				items={subjectTypeOptions}
-				bind:value={subjectType}
-				on:change={clearSubject}
-				placeholder="Select Type"
+			<Input
+				name="displayName"
+				value={displayName}
+				autofocus
+				class="input !rounded-r-none focus:outline-none"
+				placeholder="Display Name"
 			/>
-			<SelectFetch
-				class="w-auto !rounded-l-none !bg-gray-50 !px-2 dark:!bg-gray-700"
-				itemId="displayName"
-				label="displayName"
-				bind:value={subject}
-				on:change={() => searchForm.requestSubmit()}
-				on:clear={clearSubject}
-				loadOptions={fetchSubjects}
-			>
-				<b slot="prepend" class="p-2">
-					{#if subjectType == 'group'}
-						<UserGroup />
-					{:else if subjectType == 'service_account'}
-						<UserCircle />
-					{:else if subjectType == 'device'}
-						<DevicePhoneMobile />
-					{:else if subjectType == 'device_pool'}
-						<RectangleGroup />
-					{:else}
-						<User />
-					{/if}
-				</b>
-				<svelte:fragment slot="input-hidden" let:value>
-					<input type="hidden" name="subjectId" value={value ? value.id : null} />
-					<input
-						type="hidden"
-						name="subjectDisplayName"
-						value={value ? value.displayName : null}
-					/>
-				</svelte:fragment>
-			</SelectFetch>
+			<Select
+				name="limit"
+				items={limits}
+				value={limit}
+				class="w-16 !rounded-none border-l-0"
+			/>
+			<input name="offset" value={offset} type="hidden" />
+			<Button type="submit" color="dark" class="!p-2.5"><MagnifyingGlass size="20" /></Button>
 		</ButtonGroup>
-		<a class="btn" href="/dashboard/policies/00000000-0000-0000-0000-000000000000">Add Policy</a
-		>
+		<a class="btn" href="/dashboard/pools/00000000-0000-0000-0000-000000000000">Add Pool</a>
 	</Navbar>
-	<input type="hidden" name="limit" value={limit} />
-	<input type="hidden" name="offset" value={offset} />
-	<ErrorMessage error={fieldErrors?.subjectType?.[0]} />
-	<ErrorMessage error={fieldErrors?.subjectId?.[0]} />
+	<ErrorMessage error={fieldErrors?.displayName?.[0]} />
 	<ErrorMessage error={fieldErrors?.limit?.[0]} />
 	<ErrorMessage error={fieldErrors?.offset?.[0]} />
 </form>
 
-{#if policies}
+{#if $SearchPoolsAll.fetching}
+	<p>Fetching...</p>
+{:else if $SearchPoolsAll.errors}
+	<GraphQlErrors errors={$SearchPoolsAll.errors} />
+{:else}
 	<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
 		<div class="flex items-center justify-between p-4">
 			<!-- search text -->
@@ -371,25 +316,3 @@
 		</nav>
 	</div>
 {/if}
-
-<style lang="postcss">
-	:global(td.matches) {
-		background: rgba(46, 196, 182, 0.2);
-	}
-	:global(.sv-control) {
-		--sv-min-height: 48px;
-		border-radius: 0.5rem !important;
-	}
-
-	/*table {*/
-	/*	border-spacing: 0;*/
-	/*	border-top: 1px solid black;*/
-	/*	border-left: 1px solid black;*/
-	/*}*/
-
-	/*th, td {*/
-	/*	border-bottom: 1px solid black;*/
-	/*	border-right: 1px solid black;*/
-	/*	padding: 0.5rem;*/
-	/*}*/
-</style>

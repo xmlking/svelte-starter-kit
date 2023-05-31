@@ -4,8 +4,6 @@ import { authjs, guard, houdini } from '$lib/server/middleware';
 import { Logger } from '$lib/utils';
 import envPub from '$lib/variables/variables';
 // import envPri from '$lib/variables/variables.server';
-import * as Sentry from '@sentry/sveltekit';
-import { handleErrorWithSentry } from '@sentry/sveltekit';
 import type { HandleFetch, HandleServerError } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 /**
@@ -31,17 +29,8 @@ process.on('SIGTERM', function () {
 // Read: https://github.com/sveltejs/kit/blob/master/documentation/docs/07-hooks.md
 
 // Initialize the Sentry SDK here
-if (!dev && envPub.PUBLIC_SENTRY_DSN) {
-	Sentry.init({
-		dsn: envPub.PUBLIC_SENTRY_DSN,
-		release: __APP_VERSION__,
-		initialScope: {
-			tags: { source: 'server' }
-		},
-		tracesSampleRate: 1.0
-	});
-
-	// Sentry.setTag('svelteKit', 'server');
+if (!dev) {
+	// TODO
 }
 
 // Initialize TokenVault
@@ -70,9 +59,6 @@ export const handleServerError = (({ error, event }) => {
 		context: err.context
 	};
 }) satisfies HandleServerError;
-
-// If you have a custom error handler, pass it to `handleErrorWithSentry`
-export const handleError = handleErrorWithSentry(handleServerError);
 
 export const handleFetch = (async ({ event, request, fetch }) => {
 	console.log('hooks.server.ts, HandleFetch: pageUrl:', event.url.toString());

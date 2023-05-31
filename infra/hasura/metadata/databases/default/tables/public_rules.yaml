@@ -1,50 +1,37 @@
 table:
-  name: policies
+  name: rules
   schema: public
 configuration:
   column_config:
+    app_id:
+      custom_name: appId
     created_at:
       custom_name: createdAt
     created_by:
       custom_name: createdBy
     deleted_at:
       custom_name: deletedAt
-    role_id:
-      custom_name: roleId
-    subject_display_name:
-      custom_name: subjectDisplayName
-    subject_id:
-      custom_name: subjectId
-    subject_secondary_id:
-      custom_name: subjectSecondaryId
-    subject_type:
-      custom_name: subjectType
+    destination_port:
+      custom_name: destinationPort
+    display_name:
+      custom_name: displayName
+    source_port:
+      custom_name: sourcePort
     updated_at:
       custom_name: updatedAt
     updated_by:
       custom_name: updatedBy
-    valid_from:
-      custom_name: validFrom
-    valid_to:
-      custom_name: validTo
   custom_column_names:
+    app_id: appId
     created_at: createdAt
     created_by: createdBy
     deleted_at: deletedAt
-    role_id: roleId
-    subject_display_name: subjectDisplayName
-    subject_id: subjectId
-    subject_secondary_id: subjectSecondaryId
-    subject_type: subjectType
+    destination_port: destinationPort
+    display_name: displayName
+    source_port: sourcePort
     updated_at: updatedAt
     updated_by: updatedBy
-    valid_from: validFrom
-    valid_to: validTo
   custom_root_fields: {}
-object_relationships:
-  - name: rule
-    using:
-      foreign_key_constraint_on: role_id
 insert_permissions:
   - role: manager
     permission:
@@ -54,15 +41,20 @@ insert_permissions:
         organization: x-hasura-org-id
         updated_by: x-hasura-user-id
       columns:
-        - active
+        - action
+        - annotations
+        - app_id
         - created_by
-        - role_id
-        - subject_display_name
-        - subject_id
-        - subject_secondary_id
-        - subject_type
-        - valid_from
-        - valid_to
+        - description
+        - destination
+        - destination_port
+        - direction
+        - display_name
+        - protocol
+        - shared
+        - source
+        - source_port
+        - tags
         - weight
   - role: user
     permission:
@@ -72,53 +64,65 @@ insert_permissions:
         organization: x-hasura-org-id
         updated_by: x-hasura-user-id
       columns:
-        - active
-        - role_id
-        - subject_display_name
-        - subject_id
-        - subject_secondary_id
-        - subject_type
-        - valid_from
-        - valid_to
+        - action
+        - annotations
+        - app_id
+        - description
+        - destination
+        - destination_port
+        - direction
+        - display_name
+        - protocol
+        - shared
+        - source
+        - source_port
+        - tags
         - weight
 select_permissions:
   - role: agent
     permission:
       columns:
+        - action
+        - app_id
+        - description
+        - destination
+        - destination_port
+        - direction
+        - display_name
         - id
-        - subject_id
-        - subject_secondary_id
-        - subject_type
-        - updated_at
-        - valid_from
-        - valid_to
+        - organization
+        - protocol
+        - source
+        - source_port
         - weight
       filter:
         _and:
           - deleted_at:
               _is_null: true
-          - active:
-              _eq: true
           - organization:
               _eq: x-hasura-org-id
-          - valid_from:
-              _lte: now()
   - role: manager
     permission:
       columns:
-        - active
+        - action
+        - annotations
+        - app_id
         - created_at
         - created_by
+        - description
+        - destination
+        - destination_port
+        - direction
+        - display_name
         - id
         - organization
-        - subject_display_name
-        - subject_id
-        - subject_secondary_id
-        - subject_type
+        - protocol
+        - shared
+        - source
+        - source_port
+        - tags
         - updated_at
         - updated_by
-        - valid_from
-        - valid_to
         - weight
       filter:
         _and:
@@ -129,36 +133,51 @@ select_permissions:
   - role: user
     permission:
       columns:
-        - active
+        - action
+        - annotations
+        - app_id
         - created_at
         - created_by
+        - description
+        - destination
+        - destination_port
+        - direction
+        - display_name
         - id
         - organization
-        - subject_display_name
-        - subject_id
-        - subject_secondary_id
-        - subject_type
+        - protocol
+        - shared
+        - source
+        - source_port
+        - tags
         - updated_at
         - updated_by
-        - valid_from
-        - valid_to
         - weight
       filter:
         _and:
-          - deleted_at:
-              _is_null: true
           - organization:
               _eq: x-hasura-org-id
           - created_by:
-              _eq: x-hasura-user-id
+              _eq: x-hasura-user-Id
+          - deleted_at:
+              _is_null: true
 update_permissions:
   - role: manager
     permission:
       columns:
-        - active
+        - action
+        - annotations
+        - app_id
         - deleted_at
-        - valid_from
-        - valid_to
+        - description
+        - destination
+        - destination_port
+        - direction
+        - display_name
+        - protocol
+        - source
+        - source_port
+        - tags
         - weight
       filter:
         _and:
@@ -172,19 +191,28 @@ update_permissions:
   - role: user
     permission:
       columns:
-        - active
+        - action
+        - annotations
+        - app_id
         - deleted_at
-        - valid_from
-        - valid_to
+        - description
+        - destination
+        - destination_port
+        - direction
+        - display_name
+        - protocol
+        - source
+        - source_port
+        - tags
         - weight
       filter:
         _and:
-          - deleted_at:
-              _is_null: true
           - organization:
               _eq: x-hasura-org-id
           - created_by:
-              _eq: x-hasura-user-id
+              _eq: x-hasura-user-Id
+          - deleted_at:
+              _is_null: true
       check: null
       set:
         updated_by: x-hasura-user-id

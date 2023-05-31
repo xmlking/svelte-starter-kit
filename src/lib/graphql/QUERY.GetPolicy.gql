@@ -1,32 +1,40 @@
 query GetPolicy($id: uuid!) {
 	policies_by_pk(id: $id) {
-		# ...Policy_all_fields @mask_disable
 		id
-		action
-		annotations
-		appId
-		createdAt
-		createdBy
-		description
-		destinationAddress
-		destinationPort
-		direction
-		disabled
-		displayName
-		protocol
-		sourceAddress
-		sourcePort
-		subjectDisplayName
-		organization
-		subjectId
-		subjectSecondaryId
-		subjectType
-		tags
-		template
-		updatedAt
-		updatedBy
+		weight
+		active
 		validFrom
 		validTo
-		weight
+		subjectId
+		subjectType
+		subjectDisplayName
+		subjectSecondaryId
+		createdBy
+		createdAt
+		updatedAt
+		updatedBy
+		organization
+		rule {
+			id
+			displayName
+			description
+			tags
+			annotations
+			shared
+			source
+			sourcePort
+			destination
+			destinationPort
+			protocol
+			direction
+			action
+			appId
+			weight
+			createdBy
+			createdAt
+			updatedAt
+			updatedBy
+			organization
+		}
 	}
 }

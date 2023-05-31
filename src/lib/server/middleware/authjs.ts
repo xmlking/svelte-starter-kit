@@ -9,6 +9,7 @@ import GitHub from '@auth/core/providers/github';
 import Google from '@auth/core/providers/google';
 import { SvelteKitAuth } from '@auth/sveltekit';
 import type { Handle } from '@sveltejs/kit';
+import { getOrg } from './org-mapper';
 import { appRoles } from './role-mapper';
 // import { HasuraAdapter } from 'next-auth-hasura-adapter';
 
@@ -86,7 +87,7 @@ export const authjs = SvelteKitAuth({
 				log.debug('in isSignIn');
 				token.email ??= profile.upn;
 				token.roles ??= appRoles(profile.roles ?? profile.groups);
-				token.org = envPub.PUBLIC_ORGANIZATION;
+				token.org = getOrg(token.email);
 				// `scp` or `scope` is required for Spring Security.
 				const scp = Array.isArray(token.roles) ? token.roles.join(' ') : undefined;
 				token.scp = scp;
