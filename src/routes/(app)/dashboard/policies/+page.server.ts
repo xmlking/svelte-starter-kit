@@ -6,7 +6,6 @@ import { ZodError } from 'zod';
 // import { getToken } from '@auth/core/jwt';
 import { policyDeleteSchema, policySearchSchema } from '$lib/models/schema';
 import { zfd } from '$lib/zodfd';
-import * as Sentry from '@sentry/sveltekit';
 import type { GraphQLError } from 'graphql';
 
 const log = new Logger('route:policies');
@@ -20,12 +19,6 @@ const searchSchema = zfd.formData(policySearchSchema, { empty: 'strip' });
  */
 export async function load(event) {
 	const { url, parent } = event;
-	const transaction = Sentry.startTransaction({
-		name: 'Policies List Transaction'
-	});
-	Sentry.configureScope((scope) => {
-		scope.setSpan(transaction);
-	});
 	try {
 		await parent(); // HINT: to make sure use session is valid
 
@@ -68,7 +61,7 @@ export async function load(event) {
 			handleLoadErrors(err);
 		}
 	} finally {
-		transaction.finish();
+		// TODO report error
 	}
 }
 
@@ -80,12 +73,6 @@ const deleteSchema = zfd.formData(policyDeleteSchema);
 export const actions = {
 	delete: async (event) => {
 		const { request } = event;
-		const transaction = Sentry.startTransaction({
-			name: 'Policy Delete Transaction'
-		});
-		Sentry.configureScope((scope) => {
-			scope.setSpan(transaction);
-		});
 		try {
 			const formData = await request.formData();
 			const { id } = deleteSchema.parse(formData);
@@ -113,7 +100,7 @@ export const actions = {
 				return handleActionErrors(err);
 			}
 		} finally {
-			transaction.finish();
+			// TODO report error
 		}
 	}
 };

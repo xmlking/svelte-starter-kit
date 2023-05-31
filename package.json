@@ -28,7 +28,6 @@
 		"@neoconfetti/svelte": "1.0.0",
 		"@neodrag/svelte": "2.0.3",
 		"@popperjs/core": "2.11.8",
-		"@sentry/sveltekit": "7.53.1",
 		"@skeletonlabs/skeleton": "1.6.2",
 		"@svelte-put/resize": "2.0.0",
 		"@sveltejs/adapter-auto": "2.1.0",

@@ -5,7 +5,6 @@ import { policyCreateSchema, policyUpdateSchema } from '$lib/models/schema';
 import { Logger } from '$lib/utils';
 import { uuidSchema } from '$lib/utils/zod.utils';
 import { zfd } from '$lib/zodfd';
-import * as Sentry from '@sentry/sveltekit';
 import { fail, redirect } from '@sveltejs/kit';
 import type { GraphQLError } from 'graphql';
 import { ZodError } from 'zod';
@@ -53,13 +52,6 @@ export async function load(event) {
 		return { policy };
 	}
 
-	const transaction = Sentry.startTransaction({
-		name: 'Policy Load Transaction'
-	});
-	Sentry.configureScope((scope) => {
-		scope.setSpan(transaction);
-	});
-
 	try {
 		const variables = { id };
 
@@ -86,7 +78,7 @@ export async function load(event) {
 			handleLoadErrors(err);
 		}
 	} finally {
-		transaction.finish();
+		// TODO report error
 	}
 }
 
@@ -104,12 +96,6 @@ export const actions = {
 			throw redirect(307, '/auth/signin?callbackUrl=/dashboard/policy');
 		}
 
-		const transaction = Sentry.startTransaction({
-			name: 'Policy Save Transaction'
-		});
-		Sentry.configureScope((scope) => {
-			scope.setSpan(transaction);
-		});
 		try {
 			const formData = await request.formData();
 			const id = uuidSchema.parse(params.id);
@@ -221,7 +207,7 @@ export const actions = {
 				return handleActionErrors(err);
 			}
 		} finally {
-			transaction.finish();
+			// TODO report error
 		}
 	}
 };
