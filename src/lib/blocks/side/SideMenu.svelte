@@ -10,6 +10,7 @@
 		ClipboardDocumentList,
 		Cog,
 		HandRaised,
+		RectangleGroup,
 		ShieldCheck,
 		Squares2x2,
 		Star,
@@ -64,6 +65,13 @@
 					active={activeUrl === '/dashboard/policies'}
 				>
 					<svelte:fragment slot="icon"><ShieldCheck /></svelte:fragment>
+				</SidebarItem>
+				<SidebarItem
+					label="Device Pools"
+					href="/dashboard/pools"
+					active={activeUrl === 'dashboard/pool'}
+				>
+					<svelete:fragment slot="icon"><RectangleGroup /></svelete:fragment>
 				</SidebarItem>
 				<SidebarItem
 					label="Users"

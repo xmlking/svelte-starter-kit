@@ -201,23 +201,20 @@ enum action_constraint {
 }
 
 enum action_enum {
-  """ACTION_BLOCK"""
-  action_block
+  """BLOCK"""
+  block
 
-  """ACTION_CALLOUT_INSPECTION"""
-  action_callout_inspection
+  """CALLOUT_INSPECTION"""
+  callout_inspection
 
-  """ACTION_CALLOUT_TERMINATING"""
-  action_callout_terminating
+  """CALLOUT_TERMINATING"""
+  callout_terminating
 
-  """ACTION_CALLOUT_UNKNOWN"""
-  action_callout_unknown
+  """CALLOUT_UNKNOWN"""
+  callout_unknown
 
-  """ACTION_PERMIT"""
-  action_permit
-
-  """ACTION_UNSPECIFIED"""
-  action_unspecified
+  """PERMIT"""
+  permit
 }
 
 """
@@ -1027,14 +1024,11 @@ enum direction_constraint {
 }
 
 enum direction_enum {
-  """DIRECTION_EGRESS"""
-  direction_egress
+  """EGRESS"""
+  egress
 
-  """DIRECTION_INGRESS"""
-  direction_ingress
-
-  """DIRECTION_UNSPECIFIED"""
-  direction_unspecified
+  """INGRESS"""
+  ingress
 }
 
 """
@@ -2017,6 +2011,9 @@ type policies {
   id: uuid!
   organization: organization_enum!
   roleId: uuid!
+
+  """An object relationship"""
+  rule: rules!
   subjectDisplayName: String!
   subjectId: uuid!
   subjectSecondaryId: String!
@@ -2072,6 +2069,7 @@ input policies_bool_exp {
   id: uuid_comparison_exp
   organization: organization_enum_comparison_exp
   roleId: uuid_comparison_exp
+  rule: rules_bool_exp
   subjectDisplayName: String_comparison_exp
   subjectId: uuid_comparison_exp
   subjectSecondaryId: String_comparison_exp
@@ -2121,6 +2119,7 @@ input policies_insert_input {
   id: uuid
   organization: organization_enum
   roleId: uuid
+  rule: rules_obj_rel_insert_input
   subjectDisplayName: String
   subjectId: uuid
   subjectSecondaryId: String
@@ -2195,6 +2194,7 @@ input policies_order_by {
   id: order_by
   organization: order_by
   roleId: order_by
+  rule: rules_order_by
   subjectDisplayName: order_by
   subjectId: order_by
   subjectSecondaryId: order_by
@@ -3606,6 +3606,16 @@ type rules_mutation_response {
 }
 
 """
+input type for inserting object relation for remote table "rules"
+"""
+input rules_obj_rel_insert_input {
+  data: rules_insert_input!
+
+  """upsert condition"""
+  on_conflict: rules_on_conflict
+}
+
+"""
 on_conflict condition type for table "rules"
 """
 input rules_on_conflict {
@@ -3951,23 +3961,20 @@ enum subject_type_constraint {
 }
 
 enum subject_type_enum {
-  """SUBJECT_TYPE_DEVICE"""
-  subject_type_device
+  """DEVICE"""
+  device
 
-  """SUBJECT_TYPE_DEVICE_POOL"""
-  subject_type_device_pool
+  """DEVICE_POOL"""
+  device_pool
 
-  """SUBJECT_TYPE_GROUP"""
-  subject_type_group
+  """GROUP"""
+  group
 
-  """SUBJECT_TYPE_SERVICE_ACCOUNT"""
-  subject_type_service_account
+  """SERVICE_ACCOUNT"""
+  service_account
 
-  """SUBJECT_TYPE_UNSPECIFIED"""
-  subject_type_unspecified
-
-  """SUBJECT_TYPE_USER"""
-  subject_type_user
+  """USER"""
+  user
 }
 
 """

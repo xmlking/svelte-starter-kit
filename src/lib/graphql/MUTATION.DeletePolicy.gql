@@ -1,11 +1,14 @@
-mutation DeletePolicy($id: uuid!, $deletedAt: timestamptz!) {
-	update_policies_by_pk(pk_columns: { id: $id }, _set: { deletedAt: $deletedAt }) {
-		displayName
+mutation DeletePolicy($policyId: uuid!, $roleId: uuid!, $deletedAt: timestamptz!) {
+	update_policies_by_pk(pk_columns: { id: $policyId }, _set: { deletedAt: $deletedAt }) {
+		id
+	}
+	update_rules(
+		where: { shared: { _eq: false }, id: { _eq: $roleId } }
+		_set: { deletedAt: $deletedAt }
+	) {
+		affected_rows
+		returning {
+			id
+		}
 	}
 }
-
-# mutation DeletePolicy($id: uuid!) {
-# 	delete_policies_by_pk(id: $id) {
-# 		displayName
-# 	}
-# }

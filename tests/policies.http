@@ -1,8 +1,8 @@
 ###
 @graphqlEndpoint =  {{$dotenv HASURA_GRAPHQL_ENDPOINT}}/v1/graphql
-@graphqlAdminToken =  {{$dotenv HASURA_GRAPHQL_ADMIN_SECRET}}
+@graphqlAdminToken = {{$dotenv HASURA_GRAPHQL_ADMIN_SECRET}}
 # set token without `''`
-@graphqlUserToken =
+@graphqlUserToken = eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiU3VtYW50aCBDaGludGhhZ3VudGEiLCJlbWFpbCI6InhtbGtpbmdAZ21haWwuY29tIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FBY0hUdGZ3dVdtMTA2cmxmcElMTXhZZWt4bGY0T3duTGNHdHhESGlBalVyWVE9czk2LWMiLCJzdWIiOiIxMDI1Mjc3ODcxOTM4MDI3Mzk4NDMiLCJyb2xlcyI6WyJ1c2VyIiwibWFuYWdlciJdLCJvcmciOiJjaGludGhhZ3VudGEiLCJzY3AiOiJ1c2VyIG1hbmFnZXIiLCJpYXQiOjE2ODU0ODU5MjMsImV4cCI6MTY4ODA3NzkyMywianRpIjoiZDFjNDI2NjEtZTRmYi00ZDM5LTkxZjMtMTMyMTFhMzYzNGUxIn0.ft68MXIpRPCVunNVDNkRw2h6MHKQBuAs1piLNL0y8bM
 ###
 
 ### IntrospectionQuery
@@ -30,12 +30,12 @@ query IntrospectionQuery {
 # @name listPolicies
 POST  {{graphqlEndpoint}}
 Content-Type: application/json
-x-hasura-admin-secret: {{graphqlAdminToken}}
 Authorization: Bearer {{graphqlUserToken}}
+x-hasura-admin-secret: {{graphqlAdminToken}}
 x-hasura-allowed-roles:  user manager
 x-hasura-role: manager
 x-hasura-org-id: chinthagunta
-x-hasura-user-id: sumo@chinthagunta.com
+x-hasura-user-id: xmlking@gmail.com
 X-REQUEST-TYPE: GraphQL
 
 query ListPolicies(
@@ -96,12 +96,12 @@ query ListPolicies(
 # @name searchAgentPolicies
 POST  {{graphqlEndpoint}}
 Content-Type: application/json
-x-hasura-admin-secret: {{graphqlAdminToken}}
 Authorization: Bearer {{graphqlUserToken}}
+x-hasura-admin-secret: {{graphqlAdminToken}}
 x-hasura-allowed-roles:  agent user manager
 x-hasura-role: agent
 x-hasura-org-id: chinthagunta
-x-hasura-user-id: sumo@chinthagunta.com
+x-hasura-user-id: xmlking@gmail.com
 X-REQUEST-TYPE: GraphQL
 
 query SearchAgentPolicies($where: policies_bool_exp, $limit: Int = 50, $offset: Int = 0, $orderBy: [policies_order_by!] = [{updatedAt: desc_nulls_last}]) {
@@ -145,12 +145,12 @@ query SearchAgentPolicies($where: policies_bool_exp, $limit: Int = 50, $offset: 
 # @name searchPolicies
 POST  {{graphqlEndpoint}}
 Content-Type: application/json
-x-hasura-admin-secret: {{graphqlAdminToken}}
 Authorization: Bearer {{graphqlUserToken}}
+x-hasura-admin-secret: {{graphqlAdminToken}}
 x-hasura-allowed-roles:  user manager
 x-hasura-role: user
 x-hasura-org-id: chinthagunta
-x-hasura-user-id: sumo@chinthagunta.com
+x-hasura-user-id: xmlking@gmail.com
 X-REQUEST-TYPE: GraphQL
 
 query SearchPolicies($where: policies_bool_exp, $limit: Int = 50, $offset: Int = 0, $orderBy: [policies_order_by!] = [{updatedAt: desc_nulls_last}]) {
@@ -212,12 +212,12 @@ query SearchPolicies($where: policies_bool_exp, $limit: Int = 50, $offset: Int =
 # @name getPolicy
 POST  {{graphqlEndpoint}}
 Content-Type: application/json
-x-hasura-admin-secret: {{graphqlAdminToken}}
 Authorization: Bearer {{graphqlUserToken}}
+x-hasura-admin-secret: {{graphqlAdminToken}}
 x-hasura-allowed-roles:  user manager
 x-hasura-role: user
 x-hasura-org-id: chinthagunta
-x-hasura-user-id: sumo@chinthagunta.com
+x-hasura-user-id: xmlking@gmail.com
 X-REQUEST-TYPE: GraphQL
 
 query GetPolicy($id: uuid!) {
@@ -275,12 +275,12 @@ query GetPolicy($id: uuid!) {
 # @name updatePolicy
 POST  {{graphqlEndpoint}}
 Content-Type: application/json
-x-hasura-admin-secret: {{graphqlAdminToken}}
 Authorization: Bearer {{graphqlUserToken}}
+x-hasura-admin-secret: {{graphqlAdminToken}}
 x-hasura-allowed-roles:  user manager
 x-hasura-role: user
 x-hasura-org-id: chinthagunta
-x-hasura-user-id: sumo@chinthagunta.com
+x-hasura-user-id: xmlking@gmail.com
 X-REQUEST-TYPE: GraphQL
 
 mutation UpdatePolicy($policyId: uuid!, $policyData: policies_set_input!,  $ruleId: uuid!,$ruleData: rules_set_input!) {
@@ -357,12 +357,12 @@ mutation UpdatePolicy($policyId: uuid!, $policyData: policies_set_input!,  $rule
 # @name createPolicy
 POST  {{graphqlEndpoint}}
 Content-Type: application/json
-x-hasura-admin-secret: {{graphqlAdminToken}}
 Authorization: Bearer {{graphqlUserToken}}
+x-hasura-admin-secret: {{graphqlAdminToken}}
 x-hasura-allowed-roles:  user manager
 x-hasura-role: user
 x-hasura-org-id: chinthagunta
-x-hasura-user-id: sumo@chinthagunta.com
+x-hasura-user-id: xmlking@gmail.com
 X-REQUEST-TYPE: GraphQL
 
 mutation CreatePolicy($data: policies_insert_input!) {
@@ -415,7 +415,7 @@ mutation CreatePolicy($data: policies_insert_input!) {
 		"subjectId":"6e9bf365-8c09-4dd9-b9b2-83f6ab315618",
 		"subjectType":"user",
 		"subjectDisplayName":"sumanth chinthagunta",
-		"subjectSecondaryId":"sumo@chinthagunta.com",
+		"subjectSecondaryId":"xmlking@gmail.com",
 		"rule": {
 			"data": {
 				"displayName":"block youtube {{$randomInt 5 200}}",
@@ -447,12 +447,12 @@ mutation CreatePolicy($data: policies_insert_input!) {
 # @name deletePolicyFail
 POST  {{graphqlEndpoint}}
 Content-Type: application/json
-x-hasura-admin-secret: {{graphqlAdminToken}}
 Authorization: Bearer {{graphqlUserToken}}
+x-hasura-admin-secret: {{graphqlAdminToken}}
 x-hasura-allowed-roles:  user manager
 x-hasura-role: user
 x-hasura-org-id: chinthagunta
-x-hasura-user-id: sumo@chinthagunta.com
+x-hasura-user-id: xmlking@gmail.com
 X-REQUEST-TYPE: GraphQL
 
 mutation DeletePolicyFail($id:uuid!) {
@@ -470,12 +470,12 @@ mutation DeletePolicyFail($id:uuid!) {
 # @name deletePolicy
 POST  {{graphqlEndpoint}}
 Content-Type: application/json
-x-hasura-admin-secret: {{graphqlAdminToken}}
 Authorization: Bearer {{graphqlUserToken}}
+x-hasura-admin-secret: {{graphqlAdminToken}}
 x-hasura-allowed-roles:  user manager
 x-hasura-role: user
 x-hasura-org-id: chinthagunta
-x-hasura-user-id: sumo@chinthagunta.com
+x-hasura-user-id: xmlking@gmail.com
 X-REQUEST-TYPE: GraphQL
 
 mutation DeletePolicy($policyId: uuid!, $roleId: uuid!, $deletedAt: timestamptz!) {

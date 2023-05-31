@@ -7,7 +7,8 @@
 export function appRoles(groups: string[]) {
 	// TODO: map groups/roles to subset of ['user', 'manager', 'tester'] app roles
 	// console.debug('appRoles: got groups--->', groups);
-	const roles = groups ? ['user', 'manager'] : ['user'];
+	// TODO: const roles = groups ? ['user', 'manager'] : ['user'];
+	const roles = ['user', 'manager'];
 	if (groups?.includes('tester')) roles.push('tester');
 	return roles;
 }

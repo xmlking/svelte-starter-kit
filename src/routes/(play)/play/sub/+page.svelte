@@ -11,7 +11,7 @@
 				where: { updatedAt: { _is_null: true } }
 			) {
 				id
-				displayName
+				active
 			}
 		}
 	`);

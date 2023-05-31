@@ -47,13 +47,16 @@ hasura seed create policies --database-name default --from-table policies
 # Export data from multiple tables:
 # hasura seed create policies_organization --database-name default --from-table policies --from-table organization
 # Apply only a particular file:
-hasura seed apply --file 1684708431893_organization.sql --database-name default
-hasura seed apply --file 1684708436910_direction.sql --database-name default
-hasura seed apply --file 1684708445914_action.sql --database-name default
-hasura seed apply --file 1684708447664_subject_type.sql --database-name default
-hasura seed apply --file 1684206620559_policies.sql --database-name default
+hasura seed apply --file 1685396542588_organization.sql --database-name default
+hasura seed apply --file 1685396548718_direction.sql --database-name default
+hasura seed apply --file 1685396552830_action.sql --database-name default
+hasura seed apply --file 1685396588468_protocol.sql --database-name default
+hasura seed apply --file 1685396556779_subject_type.sql --database-name default
 hasura seed apply --file 1684709181893_devices.sql --database-name default
 hasura seed apply --file 1684709183467_pools.sql --database-name default
+hasura seed apply --file 1685396655834_rules.sql --database-name default
+hasura seed apply --file 1684206620559_policies.sql --database-name default
+
 # hasura seed apply --file 1684101975415_policies_organization.sql --database-name default
 
 

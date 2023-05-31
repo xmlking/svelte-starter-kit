@@ -1,0 +1,226 @@
+###
+@graphqlEndpoint =  {{$dotenv HASURA_GRAPHQL_ENDPOINT}}/v1/graphql
+@graphqlAdminToken = {{$dotenv HASURA_GRAPHQL_ADMIN_SECRET}}
+# set token without `''`
+@graphqlUserToken =
+###
+
+### IntrospectionQuery
+# @name IntrospectionQuery
+POST  {{graphqlEndpoint}}
+Content-Type: application/json
+x-hasura-admin-secret: {{graphqlAdminToken}}
+X-REQUEST-TYPE: GraphQL
+
+query IntrospectionQuery {
+	__schema {
+		types {
+			name
+			description
+		}
+		directives {
+			name
+			description
+			locations
+		}
+	}
+}
+
+### List Active Devices
+# @name listDevices
+POST  {{graphqlEndpoint}}
+Content-Type: application/json
+Authorization: Bearer {{graphqlUserToken}}
+x-hasura-admin-secret: {{graphqlAdminToken}}
+x-hasura-allowed-roles:  user manager agent
+x-hasura-role: agent
+x-hasura-org-id: chinthagunta
+x-hasura-user-id: xmlking@gmail.com
+X-REQUEST-TYPE: GraphQL
+
+query ListDevices($limit: Int = 50, $offset: Int = 0, $order_by: [devices_order_by!] = [{updatedAt: desc_nulls_last}]) {
+  devices(limit: $limit, offset: $offset, order_by: $order_by) {
+    ip
+	tags
+	createdBy
+	description
+	displayName
+	organization
+    updatedBy
+	createdAt
+	deletedAt
+	updatedAt
+	annotations
+	id
+  }
+}
+
+{
+  "limit": 5,
+  "offset": 0
+}
+
+### Search Active Devices
+# @name searchDevices
+POST  {{graphqlEndpoint}}
+Content-Type: application/json
+Authorization: Bearer {{graphqlUserToken}}
+x-hasura-admin-secret: {{graphqlAdminToken}}
+x-hasura-allowed-roles:  user manager agent
+x-hasura-role: user
+x-hasura-org-id: chinthagunta
+x-hasura-user-id: xmlking@gmail.com
+X-REQUEST-TYPE: GraphQL
+
+query SearchDevices($where: devices_bool_exp, $limit: Int = 50, $offset: Int = 0, $orderBy: [devices_order_by!] = [{updatedAt: desc_nulls_last}]) {
+  devices(order_by: $orderBy, limit: $limit, offset: $offset, where: $where) {
+    ip
+    tags
+    createdBy
+    description
+    displayName
+    organization
+    updatedBy
+    createdAt
+    deletedAt
+    updatedAt
+    annotations
+    id
+  }
+}
+
+{
+  "where": {
+    "displayName": { "_like": "%test%" }
+  },
+  "limit": 10
+}
+
+###
+@firstDeviceId =  {{listDevices.response.body.$.data.devices[0].id}}
+###
+
+### getDevice by Id
+# @name getDevice
+POST  {{graphqlEndpoint}}
+Content-Type: application/json
+Authorization: Bearer {{graphqlUserToken}}
+x-hasura-admin-secret: {{graphqlAdminToken}}
+x-hasura-allowed-roles:  user manager
+x-hasura-role: user
+x-hasura-org-id: chinthagunta
+x-hasura-user-id: xmlking@gmail.com
+X-REQUEST-TYPE: GraphQL
+
+query GetDevice($id: uuid!) {
+  devices_by_pk(id: $id) {
+    id
+	ip
+    displayName
+    description
+    organization
+    tags
+    annotations
+    createdAt
+    createdBy
+    updatedAt
+    updatedBy
+    deletedAt
+  }
+}
+
+{
+  "id": "{{firstDeviceId}}"
+}
+
+### update device by ID
+# organization = x-hasura-org-id 	updated_by = x-hasura-user-id
+# @name updateDevice
+POST  {{graphqlEndpoint}}
+Content-Type: application/json
+Authorization: Bearer {{graphqlUserToken}}
+x-hasura-admin-secret: {{graphqlAdminToken}}
+x-hasura-allowed-roles:  user manager agent
+x-hasura-role: agent
+x-hasura-org-id: chinthagunta
+x-hasura-user-id: xmlking@gmail.com
+X-REQUEST-TYPE: GraphQL
+
+mutation UpdateDevice($id: uuid!, $data: devices_set_input!) {
+  update_devices_by_pk(pk_columns: { id: $id }, _set: $data) {
+    id
+	displayName
+	description
+    updatedAt
+  }
+}
+
+{
+  "id":"{{firstDeviceId}}",
+  "data":{
+    "description":"user 1 device v3",
+    "tags":"{tz,us}",
+    "annotations":"\"sumo\"=>\"demo3\""
+  }
+}
+
+### create new device
+# organization = x-hasura-org-id 	created_by = x-hasura-user-id
+# @name createDevice
+POST  {{graphqlEndpoint}}
+Content-Type: application/json
+Authorization: Bearer {{graphqlUserToken}}
+x-hasura-admin-secret: {{graphqlAdminToken}}
+x-hasura-allowed-roles:  user manager agent
+x-hasura-role: agent
+x-hasura-org-id: chinthagunta
+x-hasura-user-id: xmlking@gmail.com
+X-REQUEST-TYPE: GraphQL
+
+mutation CreateDevice($data: devices_insert_input!) {
+  insert_devices_one(object: $data) {
+    id
+    ip
+    displayName
+    description
+	tags
+	annotations
+    updatedAt
+  }
+}
+
+{
+  "data":{
+    "annotations": "\"sumo\"=>\"demo\"",
+    "displayName": "test-ddd",
+    "ip": "1.1.1.2"
+  }
+}
+
+###
+@createdDeviceId =  {{createDevice.response.body.$.data.insert_devices_one.id}}
+###
+
+### Delete Device
+# if null returned, either ID is not found or this user don't have permissions to delete
+# @name deleteDevice
+POST  {{graphqlEndpoint}}
+Content-Type: application/json
+Authorization: Bearer {{graphqlUserToken}}
+x-hasura-admin-secret: {{graphqlAdminToken}}
+x-hasura-allowed-roles: user manager
+x-hasura-role: manager
+x-hasura-org-id: chinthagunta
+x-hasura-user-id: xmlking@gmail.com
+X-REQUEST-TYPE: GraphQL
+
+mutation DeleteDevice($id: uuid!, $deletedAt: timestamptz!) {
+	update_devices_by_pk(pk_columns: { id: $id }, _set: { deletedAt: $deletedAt }) {
+		displayName
+	}
+}
+
+{
+  "id": "{{createdDeviceId}}",
+  "deletedAt": "{{$localDatetime iso8601}}"
+}

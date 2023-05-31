@@ -9,8 +9,8 @@ import GitHub from '@auth/core/providers/github';
 import Google from '@auth/core/providers/google';
 import { SvelteKitAuth } from '@auth/sveltekit';
 import type { Handle } from '@sveltejs/kit';
-import { appRoles } from './role-mapper';
 import { getOrg } from './org-mapper';
+import { appRoles } from './role-mapper';
 // import { HasuraAdapter } from 'next-auth-hasura-adapter';
 
 // TODO: https://hasura.io/learn/graphql/hasura-authentication/integrations/nextjs-auth/
