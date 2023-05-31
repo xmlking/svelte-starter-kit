@@ -26,6 +26,8 @@ NOTE: You can pass `--endpoint <hasura-endpoint> --admin-secret <admin-secret> c
 # Create a directory to store migrations (with endpoint and admin secret configured):
 # use `''` to escape if `admin-secret` has special characters
 hasura init hasura --project infra --endpoint https://erraxvkmnzplotebnxuy.hasura.us-east-1.nhost.run --admin-secret '<my-admin-secret>'
+# from localhost
+hasura init hasura --project infra --endpoint http://localhost:8080  --admin-secret myadminsecretkey
 # move infra/hasura/config.yaml to project root and edit metadata_directory, migrations_directory, seeds_directory paths in it
 
 hasura version

@@ -155,14 +155,11 @@ ALTER TABLE ONLY public.pools
 ALTER TABLE ONLY public.protocol
     ADD CONSTRAINT protocol_pkey PRIMARY KEY (value);
 ALTER TABLE ONLY public.rules
-    ADD CONSTRAINT rules_display_name_organization_key UNIQUE (display_name, organization);
-ALTER TABLE ONLY public.rules
     ADD CONSTRAINT rules_pkey PRIMARY KEY (id);
 ALTER TABLE ONLY public.subject_type
     ADD CONSTRAINT subject_type_pkey PRIMARY KEY (value);
 CREATE INDEX devices_display_name ON public.devices USING btree (display_name);
 CREATE UNIQUE INDEX devices_display_name_organization_unique ON public.devices USING btree (display_name, organization) WHERE (deleted_at IS NULL);
-CREATE UNIQUE INDEX policies_subject_id_subject_type_role_id_organization_unique ON public.policies USING btree (subject_id, subject_type, role_id, organization) WHERE (deleted_at IS NULL);
 CREATE UNIQUE INDEX pools_display_name_organization_unique ON public.pools USING btree (display_name, organization) WHERE (deleted_at IS NULL);
 CREATE UNIQUE INDEX rules_display_name_organization_unique ON public.rules USING btree (display_name, organization) WHERE (deleted_at IS NULL);
 CREATE RULE devices_soft_deletion_rule AS
