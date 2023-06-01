@@ -3,8 +3,7 @@
 	import { enhance } from '$app/forms';
 	import { goto } from '$app/navigation';
 	import { ErrorMessage, FloatingLabelField, Tags } from '$lib/components';
-	// import {default as TagInput } from '$lib/components/TagInput.svelte';
-	import type { policies_insert_input } from '$houdini';
+// import {default as TagInput } from '$lib/components/TagInput.svelte';
 	import { DateInput } from '$lib/components/form';
 	import { addToast, ToastLevel } from '$lib/components/toast';
 	import {
@@ -204,17 +203,16 @@
 					>Format: key1=>value1 (or) "key2" => "value2 with space"</Helper
 				>
 			</div>
-
 			<div class="col-span-3">
-				<div class="btn-group">
+				<div class="join">
 					{#each subjectTypeOptions2 as opt}
 						<input
 							type="radio"
 							name="subjectType"
 							on:change={onSubjectClear}
 							value={opt.value}
-							data-title={opt.label}
-							class="btn"
+							aria-label={opt.label}
+							class="join-item btn"
 							disabled={editMode}
 						/>
 					{/each}
@@ -318,27 +316,27 @@
 				</select>
 			</div>
 			<div class="col-span-2">
-				<div class="btn-group">
+				<div class="join">
 					{#each actionOptions as opt}
 						<input
 							type="radio"
 							name="action"
 							value={opt.value}
-							data-title={opt.label}
-							class="btn"
+							aria-label={opt.label}
+							class="join-item btn"
 						/>
 					{/each}
 				</div>
 			</div>
 			<div class="col-span-2">
-				<div class="btn-group">
+				<div class="join">
 					{#each directionOptions as opt}
 						<input
 							type="radio"
 							name="direction"
 							value={opt.value}
-							data-title={opt.label}
-							class="btn"
+							aria-label={opt.label}
+							class="join-item btn"
 						/>
 					{/each}
 				</div>

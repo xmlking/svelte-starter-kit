@@ -72,17 +72,17 @@
 	</div>
 </div>
 
-<div class="btn-group">
-	<input type="radio" name="options" data-title="1" class="btn" />
-	<input type="radio" name="options" data-title="2" class="btn" checked />
-	<input type="radio" name="options" data-title="3" class="btn" />
-	<input type="radio" name="options" data-title="4" class="btn" />
+<div class="join">
+	<input type="radio" name="options" aria-label="1" class="join-item btn" />
+	<input type="radio" name="options" aria-label="2" class="join-item btn" checked />
+	<input type="radio" name="options" aria-label="3" class="join-item btn" />
+	<input type="radio" name="options" aria-label="4" class="join-item btn" />
 </div>
 
-<div class="btn-group">
+<div class="join">
 	<button class="btn-active btn">Button</button>
-	<button class="btn">Button</button>
-	<button class="btn">Button</button>
+	<button class="join-item btn">Button</button>
+	<button class="join-item btn">Button</button>
 </div>
 
 <select class="select-primary select w-full max-w-xs">
