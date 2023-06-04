@@ -90,7 +90,7 @@
 		"vite": "4.3.9",
 		"vite-plugin-pwa": "0.15.1",
 		"vitest": "0.31.1",
-		"workbox-window": "6.6.0",
+		"workbox-window": "7.0.0",
 		"zod": "3.21.4"
 	},
 	"optionalDependencies": {
