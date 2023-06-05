@@ -21,6 +21,10 @@ export async function getToken(cookies: Cookies, raw = false) {
 export async function getSignedToken(cookies: Cookies) {
 	const decodedToken = await getToken(cookies);
 	if (decodedToken == null || typeof decodedToken === 'string') return null;
-	const signedToken = new SignJWT(decodedToken).setProtectedHeader({ alg }).sign(secret);
+	const signedToken = new SignJWT(decodedToken)
+		// .setExpirationTime('1d')
+		// .setIssuedAt()
+		.setProtectedHeader({ alg })
+		.sign(secret);
 	return signedToken;
 }
