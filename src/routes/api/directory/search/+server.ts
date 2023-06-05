@@ -57,7 +57,7 @@ const searchPoolsStore = new SearchPoolsStore();
 const limit = 10;
 const orderBy = [{ updatedAt: order_by.desc_nulls_last }];
 
-// GET /api/users/search?subType=user&search=sumo
+// GET /api/directory/search?subType=user&search=sumo
 export const GET: RequestHandler = async (event) => {
 	const { url } = event;
 	const urlParams = new URLSearchParams(url.searchParams);

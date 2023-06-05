@@ -17,7 +17,7 @@ export const rows = [
 export const subjectTypeOptions = [
 	{ value: '', name: 'All' },
 	{ value: 'user', name: 'User' },
-	{ value: 'sgroup', name: 'Group' },
+	{ value: 'group', name: 'Group' },
 	{ value: 'service_account', name: 'Service' },
 	{ value: 'device', name: 'Device' },
 	{ value: 'device_pool', name: 'Device Pool' }

@@ -51,7 +51,7 @@ Add and configure tailwindcss via [svelte-add](https://github.com/svelte-add/tai
 pnpx svelte-add@latest tailwindcss  --typography --daisyui
 # NOTE: tailwindcss's forms plugin and daisyui wont work together
 # also add other tailwind plugins and include them in `tailwind.config.cjs`
-pnpm add -D @tailwindcss/aspect-ratio @tailwindcss/line-clamp @tailwindcss/container-queries
+pnpm add -D @tailwindcss/aspect-ratio @tailwindcss/container-queries
 ```
 
 Install JetBrain's [postcss](https://plugins.jetbrains.com/plugin/8578-postcss) plugin  
