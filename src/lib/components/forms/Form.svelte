@@ -19,8 +19,9 @@
 	export let defaultSubmitButtonText = 'Submit';
 	export let className = 'space-y-6';
 
-	const { errors, enhance, delayed, message, reset, tainted, submitting } = superform;
+	const { form, errors, enhance, delayed, message, reset, tainted, submitting } = superform;
 	setContext<FormContext<T>>(FORM_KEY, { superform });
+	const v = $form.valid;
 
 	$: error = Boolean($message) ? $message : $errors._errors ? $errors._errors.join('\n') : '';
 </script>

@@ -343,6 +343,7 @@
 			</span>
 		{/each}
 	{/if}
+	<!-- TODO: remove data-felte-ignore after moving to superforms-->
 	<input
 		type="text"
 		{id}
@@ -360,6 +361,7 @@
 		{placeholder}
 		disabled={disable}
 		autocomplete="off"
+		{...$$restProps}
 	/>
 </div>
 

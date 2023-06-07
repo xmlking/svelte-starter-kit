@@ -12,8 +12,7 @@
 		ButtonGroup,
 		Input,
 		NavBrand,
-		Navbar,
-		Select
+		Navbar
 	} from 'flowbite-svelte';
 	import { createRender, createTable } from 'svelte-headless-table';
 	import { addPagination, addSortBy, addTableFilter } from 'svelte-headless-table/plugins';
@@ -165,12 +164,13 @@
 				class="input !rounded-r-none focus:outline-none"
 				placeholder="Display Name"
 			/>
-			<Select
+			<!-- <Select
 				name="limit"
 				items={limits}
 				value={limit}
 				class="w-16 !rounded-none border-l-0"
-			/>
+			/> -->
+			<input name="limit" value={limit} type="hidden" />
 			<input name="offset" value={offset} type="hidden" />
 			<Button type="submit" color="dark" class="!p-2.5"><MagnifyingGlass size="20" /></Button>
 		</ButtonGroup>

@@ -24,6 +24,7 @@
 	class="select-bordered select w-full focus:outline-none"
 	name={field}
 	bind:value={$value}
+	data-invalid={$errors}
 	aria-invalid={Boolean($errors)}
 	aria-errormessage={Array($errors).join('. ')}
 	aria-required={$constraints?.required}

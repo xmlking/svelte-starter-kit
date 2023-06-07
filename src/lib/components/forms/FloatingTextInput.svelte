@@ -25,6 +25,7 @@
 	{label}
 	name={field}
 	bind:value={$value}
+	data-invalid={$errors}
 	class="input-bordered input"
 	color={$errors ? 'red' : 'base'}
 	aria-describedby={`${path}_help`}

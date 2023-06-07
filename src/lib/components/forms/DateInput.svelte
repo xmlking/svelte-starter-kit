@@ -35,6 +35,7 @@
 	{label}
 	name={field}
 	bind:value={$proxy}
+	data-invalid={$errors}
 	class="input-bordered input"
 	color={$errors ? 'red' : 'base'}
 	aria-describedby={`${path}_help`}
