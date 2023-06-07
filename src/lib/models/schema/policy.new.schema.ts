@@ -23,15 +23,6 @@ function checkValidDates(ctx: z.RefinementCtx, validFrom: Date | undefined | nul
 export const policySchema = z
 	.object({
 		id: z.string().trim().uuid().optional(),
-		displayName: z.string().trim().min(4).max(256),
-		description: z.string().trim().max(256).nullish(),
-		// tags: z.preprocess(stringToArray, z.array(z.string().trim().min(2)).optional()),
-		tags: z.string().trim().min(2).array().nullish(),
-		// annotations: z.preprocess(stringToJSON, z.record(z.string().trim().min(3), z.string().trim().min(3)).nullish()),
-		// annotations: z.preprocess(stringToMap, z.map(z.string().trim().min(3), z.string().trim().min(3))).nullish(),
-		annotations: z.string().trim().nullish(), // TODO: validate map string
-		active: z.boolean().optional().default(true),
-		shared: z.boolean().optional().default(false),
 		// validFrom: z.coerce.date(),
 		// validFrom: z.string().datetime({ offset: true }).nullish().catch(null),
 		// validTo: z.string().datetime({ offset: true }).nullish().catch(null),
@@ -42,9 +33,16 @@ export const policySchema = z
 		subjectId: z.string().trim().nonempty(),
 		subjectSecondaryId: z.string().trim().nonempty(),
 		subjectType: z.enum(['user', 'group', 'device', 'service_account', 'device_pool']).default('user'),
+		active: z.boolean().optional().default(true),
 		organization: z.string().trim(),
 		ruleId: z.string().trim().uuid().optional(),
 		rule: z.object({
+			displayName: z.string().trim().min(4).max(256),
+			description: z.string().trim().max(256).nullish(),
+			tags: z.string().trim().min(2).array().nullish(),
+			// annotations: z.preprocess(stringToJSON, z.record(z.string().trim().min(3), z.string().trim().min(3)).nullish()),
+			// annotations: z.preprocess(stringToMap, z.map(z.string().trim().min(3), z.string().trim().min(3))).nullish(),
+			annotations: z.string().trim().nullish(), // TODO: validate map string
 			source: z.string().ip().nullish(),
 			sourcePort: z.string().trim().nullish(),
 			destination: z.string().ip().nullish(),
@@ -53,10 +51,12 @@ export const policySchema = z
 			action: z.enum(['permit', 'block']).default('block'),
 			direction: z.enum(['egress', 'ingress']).default('egress'),
 			appId: z.string().trim().nullish(),
-			weight: z.coerce.number().min(0).max(2000).optional().default(1000)
+			weight: z.coerce.number().min(0).max(2000).optional().default(1000),
+			shared: z.boolean().optional().default(false)
 		})
 	})
 	.superRefine((data, ctx) => checkValidDates(ctx, data.validFrom, data.validTo));
 
 export type PolicySchema = typeof policySchema;
 export type Policy = z.infer<typeof policySchema>;
+export const policyKeys = policySchema.innerType().keyof().Enum;
