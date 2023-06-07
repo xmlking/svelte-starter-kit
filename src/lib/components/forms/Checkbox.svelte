@@ -34,6 +34,7 @@
 		type="checkbox"
 		name={field}
 		bind:checked={$checked}
+		data-invalid={$errors}
 		aria-invalid={Boolean($errors)}
 		aria-errormessage={Array($errors).join('. ')}
 		aria-required={$constraints?.required}

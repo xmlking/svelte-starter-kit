@@ -37,7 +37,7 @@ export const policySchema = z
 		// validTo: z.string().datetime({ offset: true }).nullish().catch(null),
 		validFrom: z.date().nullish(),
 		validTo: z.date().nullish(),
-		weight: z.coerce.number().min(0).max(2000).optional().default(1000),
+		weight: z.coerce.number().min(0).max(2000).optional().default(2000),
 		subjectDisplayName: z.string().trim().nonempty(),
 		subjectId: z.string().trim().nonempty(),
 		subjectSecondaryId: z.string().trim().nonempty(),
@@ -60,7 +60,7 @@ export const policySchema = z
 			action: z.enum(['permit', 'block']).default('block'),
 			direction: z.enum(['egress', 'ingress']).default('egress'),
 			appId: z.string().trim().nullish(),
-			weight: z.coerce.number().min(0).max(2000).optional().default(1000),
+			weight: z.coerce.number().min(0).max(2000).optional().default(2000),
 			shared: z.boolean().optional().default(false)
 		})
 	})

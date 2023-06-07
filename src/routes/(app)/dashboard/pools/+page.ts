@@ -7,8 +7,8 @@ import type { BeforeLoadEvent, SearchPoolsAllVariables as Variables } from './$h
 const log = new Logger('pool.browser');
 
 export const _SearchPoolsAllVariables: Variables = ({ url }) => {
-	const limit = parseInt(url.searchParams.get('limit') ?? '');
-	const offset = parseInt(url.searchParams.get('offset') ?? '');
+	const limit = parseInt(url.searchParams.get('limit') ?? '50');
+	const offset = parseInt(url.searchParams.get('offset') ?? '0');
 	const displayName = url.searchParams.get('displayName') ?? '';
 
 	return {

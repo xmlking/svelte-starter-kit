@@ -21,6 +21,7 @@
 	{type}
 	name={field}
 	bind:value={$value}
+	data-invalid={$errors}
 	color={$errors ? 'red' : 'base'}
 	aria-invalid={Boolean($errors)}
 	aria-errormessage={Array($errors).join('. ')}

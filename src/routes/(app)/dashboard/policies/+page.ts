@@ -9,10 +9,10 @@ import type { BeforeLoadEvent, SearchPoliciesVariables as Variables } from './$h
 const log = new Logger('policies.browser');
 
 export const _SearchPoliciesVariables: Variables = ({ url }) => {
-	const limit = parseInt(url.searchParams.get('limit') ?? '');
-	const offset = parseInt(url.searchParams.get('offset') ?? '');
-	const subjectId = url.searchParams.get('subjectId') ?? '';
-	const subjectType: subject_type_enum$options = url.searchParams.get('subjectType') ?? '';
+	const limit = parseInt(url.searchParams.get('limit') ?? '50');
+	const offset = parseInt(url.searchParams.get('offset') ?? '0');
+	const subjectId = url.searchParams.get('subjectId') ?? undefined;
+	const subjectType: subject_type_enum$options = url.searchParams.get('subjectType') ?? undefined;
 
 	const orderBy = [{ updatedAt: order_by.desc_nulls_first }];
 	const where = {

@@ -1,4 +1,9 @@
 <script lang="ts">
+	// https://github.com/dyne/starters/blob/main/saas/%7B%7Bcookiecutter.project_name%7D%7D/webapp/src/routes/(nru)/register/%2Bpage.svelte
+	// nested https://github.com/velut/pic2grid/blob/5fb1217150c3f6cf70e40d1e2aad7ded9b6e5d2f/src/lib/components/RenderOptionsForm.svelte
+	// dateProxy https://github.com/malcolmseyd/lockers/blob/main/src/routes/admin/edit/%2Bpage.svelte
+	// action https://github.com/malcolmseyd/lockers/blob/main/src/routes/admin/delete/%2Bpage.server.ts
+	// local data: https://github.com/malcolmseyd/lockers/blob/main/src/routes/admin/edit/%2Bpage.server.ts
 	import { browser } from '$app/environment';
 	import { CachePolicy, SearchRulesStore, order_by } from '$houdini';
 	import {
@@ -33,8 +38,8 @@
 	import type { PageData } from './$types';
 
 	const log = new Logger('routes:policies:item');
-
 	export let data: PageData;
+	// Client API:
 	const superform = superForm(data.form, {
 		dataType: 'json',
 		taintedMessage: null
@@ -53,16 +58,12 @@
 		restore
 	} = superform;
 	export const snapshot = { capture, restore };
+
 	// const validFrom = dateProxy(form, "validFrom", { format: "datetime-utc" });
 	// const validTo = dateProxy(form, "validTo", { format: "datetime-utc" });
 
-	// https://github.com/dyne/starters/blob/main/saas/%7B%7Bcookiecutter.project_name%7D%7D/webapp/src/routes/(nru)/register/%2Bpage.svelte
-	// nested https://github.com/velut/pic2grid/blob/5fb1217150c3f6cf70e40d1e2aad7ded9b6e5d2f/src/lib/components/RenderOptionsForm.svelte
-	// dateProxy https://github.com/malcolmseyd/lockers/blob/main/src/routes/admin/edit/%2Bpage.svelte
-	// action https://github.com/malcolmseyd/lockers/blob/main/src/routes/admin/delete/%2Bpage.server.ts
-	// local data: https://github.com/malcolmseyd/lockers/blob/main/src/routes/admin/edit/%2Bpage.server.ts
-	//Form
-	// select settings
+	// TODO: reset buttom should also reset `subject & rule search inputs`
+	// subject settings
 	let subject = $form?.subjectId
 		? {
 				id: $form.subjectId,
@@ -109,7 +110,6 @@
 			$form.subjectSecondaryId = '';
 		}
 	}
-	// TODO: reset buttom should also reset `rule search inout`
 
 	// rule settings
 	let rule = $form?.ruleId
@@ -120,7 +120,7 @@
 		: null;
 
 	// $: disabled=$form.rule.shared
-	$: disabled= rule != null
+	$: disabled = rule != null;
 
 	/**
 	 * Search Rules by displayName
@@ -164,6 +164,8 @@
 				$form.rule.action = changedSubject.detail.action;
 				$form.rule.appId = changedSubject.detail.appId;
 				$form.rule.weight = changedSubject.detail.weight;
+				// HINT: we copy `rule.weight` to `policy.weight` initially and let users overwrite weightage afterwords.
+				$form.weight = changedSubject.detail.weight;
 			} else {
 				$form.ruleId = undefined;
 				$form.rule.shared = false;
@@ -179,7 +181,7 @@
 				$form.rule.direction = 'egress';
 				$form.rule.action = 'block';
 				$form.rule.appId = undefined;
-				$form.rule.weight = 1000;
+				$form.rule.weight = 2000;
 			}
 		}
 	}
@@ -201,7 +203,7 @@
 			$form.rule.direction = 'egress';
 			$form.rule.action = 'block';
 			$form.rule.appId = undefined;
-			$form.rule.weight = 1000;
+			$form.rule.weight = 2000;
 		}
 	}
 </script>
@@ -290,33 +292,16 @@
 			{/if}
 		</div>
 		<div class="col-span-2">
-			<FloatingTextInput
-				field="rule.displayName"
-				label="Display Name"
-				{disabled}
-			/>
+			<FloatingTextInput field="rule.displayName" label="Display Name" {disabled} />
 		</div>
 		<div class="col-span-4">
-			<FloatingTextInput
-				field="rule.description"
-				label="Description"
-				{disabled}
-			/>
+			<FloatingTextInput field="rule.description" label="Description" {disabled} />
 		</div>
 		<div class="col-span-3">
-			<TagsInput
-				field="rule.tags"
-				label="Tags"
-				placeholder={'Enter tags...'}
-				{disabled}
-			/>
+			<TagsInput field="rule.tags" label="Tags" placeholder={'Enter tags...'} {disabled} />
 		</div>
 		<div class="col-span-3">
-			<FloatingTextInput
-				field="rule.annotations"
-				label="Annotations"
-				{disabled}
-			/>
+			<FloatingTextInput field="rule.annotations" label="Annotations" {disabled} />
 			<Helper class="mt-2 text-sm italic"
 				>Format: key1=>value1 (or) "key2" => "value2 with space"</Helper
 			>
@@ -325,25 +310,13 @@
 			<FloatingTextInput field="rule.source" label="Source" {disabled} />
 		</div>
 		<div class="col-span-3">
-			<FloatingTextInput
-				field="rule.sourcePort"
-				label="Source port"
-				{disabled}
-			/>
+			<FloatingTextInput field="rule.sourcePort" label="Source port" {disabled} />
 		</div>
 		<div class="col-span-3">
-			<FloatingTextInput
-				field="rule.destination"
-				label="Destination"
-				{disabled}
-			/>
+			<FloatingTextInput field="rule.destination" label="Destination" {disabled} />
 		</div>
 		<div class="col-span-3">
-			<FloatingTextInput
-				field="rule.destinationPort"
-				label="Destination port"
-				{disabled}
-			/>
+			<FloatingTextInput field="rule.destinationPort" label="Destination port" {disabled} />
 		</div>
 		<div>
 			<FormSelect field="rule.protocol" items={protocols} {disabled} />

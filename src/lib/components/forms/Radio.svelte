@@ -25,6 +25,7 @@
 			type="radio"
 			name={field}
 			bind:group={$value}
+			data-invalid={$errors}
 			on:blur
 			on:change
 			on:click

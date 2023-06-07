@@ -16,16 +16,17 @@
 	const { path, value, errors, constraints } = formFieldProxy(superform, field);
 </script>
 
+<!-- FIXME: add {...$constraints} -->
 <div class="my-tag" color={$errors ? 'red' : 'base'}>
 	<Tags
 		name={field}
 		bind:tags={$value}
+		data-invalid={$errors}
 		onlyUnique={true}
 		minChars={3}
 		labelText={label ?? path}
 		labelShow
 		disable={disabled}
-		{...$constraints}
 		{...$$restProps}
 	/>
 </div>

@@ -22,6 +22,7 @@
 	<Select
 		name={field}
 		bind:value={$value}
+		data-invalid={$errors}
 		{items}
 		aria-invalid={Boolean($errors)}
 		aria-errormessage={Array($errors).join('. ')}

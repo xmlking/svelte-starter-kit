@@ -19,6 +19,7 @@
 	name={field}
 	color={$errors ? 'red' : 'secondary'}
 	bind:checked={$checked}
+	data-invalid={$errors}
 	aria-invalid={Boolean($errors)}
 	aria-errormessage={Array($errors).join('. ')}
 	aria-required={$constraints?.required}

@@ -20,6 +20,7 @@
 <Textarea
 	name={field}
 	bind:value={$value}
+	data-invalid={$errors}
 	rows="4"
 	color={$errors ? 'red' : 'base'}
 	aria-invalid={Boolean($errors)}
