@@ -1,7 +1,7 @@
 import { policySchema } from '$lib/models/schema/policy.new.schema';
 import { Logger, stripEmptyProperties } from '$lib/utils';
 import { redirect } from '@sveltejs/kit';
-import { message, superValidate } from 'sveltekit-superforms/server';
+import { message, setError, superValidate } from 'sveltekit-superforms/server';
 
 const log = new Logger('policy.create.server');
 // export const load = async () => {
@@ -21,6 +21,7 @@ export const actions = {
 		if (!form.valid) {
 			// Again, always return { form } and things will just work.
 			return message(form, 'Invalid form');
+			// return fail(400, { form });
 		}
 
 		log.debug('CREATE action form.data before:', form.data);
@@ -28,9 +29,9 @@ export const actions = {
 		log.debug('CREATE action form.data after:', form.data);
 
 		// TODO
-		// Check if the passwords match
-		if (form.data.validFrom !== form.data.validFrom) {
-			return message(form, 'validFrom do not match.');
+		// Check if rule is missing
+		if (form.data.ruleId == null && form.data.rule == null) {
+			return setError(form, 'ruleId', 'Rule is missing');
 		}
 		await sleep(2000);
 

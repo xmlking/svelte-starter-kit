@@ -19,6 +19,15 @@ function checkValidDates(ctx: z.RefinementCtx, validFrom: Date | undefined | nul
 		});
 	}
 }
+function checkForMissingRule(ctx: z.RefinementCtx, ruleId: string | undefined | null, rule: any) {
+	if (ruleId == null && rule == null) {
+		ctx.addIssue({
+			code: z.ZodIssueCode.custom,
+			path: ['ruleId'],
+			message: 'Rule is required'
+		});
+	}
+}
 
 export const policySchema = z
 	.object({
@@ -55,8 +64,9 @@ export const policySchema = z
 			shared: z.boolean().optional().default(false)
 		})
 	})
-	.superRefine((data, ctx) => checkValidDates(ctx, data.validFrom, data.validTo));
+	.superRefine((data, ctx) => checkValidDates(ctx, data.validFrom, data.validTo))
+	.superRefine((data, ctx) => checkForMissingRule(ctx, data.ruleId, data.rule));
 
 export type PolicySchema = typeof policySchema;
 export type Policy = z.infer<typeof policySchema>;
-export const policyKeys = policySchema.innerType().keyof().Enum;
+export const policyKeys = policySchema.innerType().innerType().keyof().Enum;

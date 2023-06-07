@@ -109,6 +109,7 @@
 			$form.subjectSecondaryId = '';
 		}
 	}
+	// TODO: reset buttom should also reset `rule search inout`
 
 	// rule settings
 	let rule = $form?.ruleId
@@ -117,6 +118,9 @@
 				displayName: $form.rule.displayName
 		  }
 		: null;
+
+	// $: disabled=$form.rule.shared
+	$: disabled= rule != null
 
 	/**
 	 * Search Rules by displayName
@@ -161,20 +165,20 @@
 				$form.rule.appId = changedSubject.detail.appId;
 				$form.rule.weight = changedSubject.detail.weight;
 			} else {
-				$form.ruleId = '';
+				$form.ruleId = undefined;
 				$form.rule.shared = false;
 				$form.rule.displayName = '';
-				$form.rule.description = '';
-				$form.rule.tags = [];
-				$form.rule.annotations = '';
-				$form.rule.source = '';
-				$form.rule.sourcePort = '';
-				$form.rule.destination = '';
-				$form.rule.destinationPort = '';
+				$form.rule.description = undefined;
+				$form.rule.tags = undefined;
+				$form.rule.annotations = undefined;
+				$form.rule.source = undefined;
+				$form.rule.sourcePort = undefined;
+				$form.rule.destination = undefined;
+				$form.rule.destinationPort = undefined;
 				$form.rule.protocol = 'Any';
 				$form.rule.direction = 'egress';
 				$form.rule.action = 'block';
-				$form.rule.appId = '';
+				$form.rule.appId = undefined;
 				$form.rule.weight = 1000;
 			}
 		}
@@ -183,20 +187,20 @@
 		log.debug('onRuleClear', event.target);
 		if (browser) {
 			rule = null;
-			$form.ruleId = '';
+			$form.ruleId = undefined;
 			$form.rule.shared = false;
 			$form.rule.displayName = '';
-			$form.rule.description = '';
-			$form.rule.tags = [];
-			$form.rule.annotations = '';
-			$form.rule.source = '';
-			$form.rule.sourcePort = '';
-			$form.rule.destination = '';
-			$form.rule.destinationPort = '';
+			$form.rule.description = undefined;
+			$form.rule.tags = undefined;
+			$form.rule.annotations = undefined;
+			$form.rule.source = undefined;
+			$form.rule.sourcePort = undefined;
+			$form.rule.destination = undefined;
+			$form.rule.destinationPort = undefined;
 			$form.rule.protocol = 'Any';
 			$form.rule.direction = 'egress';
 			$form.rule.action = 'block';
-			$form.rule.appId = '';
+			$form.rule.appId = undefined;
 			$form.rule.weight = 1000;
 		}
 	}
@@ -289,14 +293,14 @@
 			<FloatingTextInput
 				field="rule.displayName"
 				label="Display Name"
-				disabled={$form.rule.shared}
+				{disabled}
 			/>
 		</div>
 		<div class="col-span-4">
 			<FloatingTextInput
 				field="rule.description"
 				label="Description"
-				disabled={$form.rule.shared}
+				{disabled}
 			/>
 		</div>
 		<div class="col-span-3">
@@ -304,58 +308,58 @@
 				field="rule.tags"
 				label="Tags"
 				placeholder={'Enter tags...'}
-				disabled={$form.rule.shared}
+				{disabled}
 			/>
 		</div>
 		<div class="col-span-3">
 			<FloatingTextInput
 				field="rule.annotations"
 				label="Annotations"
-				disabled={$form.rule.shared}
+				{disabled}
 			/>
 			<Helper class="mt-2 text-sm italic"
 				>Format: key1=>value1 (or) "key2" => "value2 with space"</Helper
 			>
 		</div>
 		<div class="col-span-3">
-			<FloatingTextInput field="rule.source" label="Source" disabled={$form.rule.shared} />
+			<FloatingTextInput field="rule.source" label="Source" {disabled} />
 		</div>
 		<div class="col-span-3">
 			<FloatingTextInput
 				field="rule.sourcePort"
 				label="Source port"
-				disabled={$form.rule.shared}
+				{disabled}
 			/>
 		</div>
 		<div class="col-span-3">
 			<FloatingTextInput
 				field="rule.destination"
 				label="Destination"
-				disabled={$form.rule.shared}
+				{disabled}
 			/>
 		</div>
 		<div class="col-span-3">
 			<FloatingTextInput
 				field="rule.destinationPort"
 				label="Destination port"
-				disabled={$form.rule.shared}
+				{disabled}
 			/>
 		</div>
 		<div>
-			<FormSelect field="rule.protocol" items={protocols} disabled={$form.rule.shared} />
+			<FormSelect field="rule.protocol" items={protocols} {disabled} />
 		</div>
 		<div>
-			<Radio field="rule.action" items={actionOptions} disabled={$form.rule.shared} />
+			<Radio field="rule.action" items={actionOptions} {disabled} />
 		</div>
 		<div>
-			<Radio field="rule.direction" items={directionOptions} disabled={$form.rule.shared} />
+			<Radio field="rule.direction" items={directionOptions} {disabled} />
 		</div>
 		<div class="col-start-5 flex justify-end">
 			<Checkbox
 				field="rule.shared"
 				class="toggle-secondary toggle"
 				labelPosition="before"
-				disabled={$form.rule.shared}>Shared</Checkbox
+				{disabled}>Shared</Checkbox
 			>
 		</div>
 		<div class="col-end-7">
@@ -363,7 +367,7 @@
 		</div>
 
 		<div class="col-span-6">
-			<FloatingTextInput field="rule.appId" label="App id" disabled={$form.rule.shared} />
+			<FloatingTextInput field="rule.appId" label="App id" {disabled} />
 		</div>
 
 		<div class="flex justify-start">
