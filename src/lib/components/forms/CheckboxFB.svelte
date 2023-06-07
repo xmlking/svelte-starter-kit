@@ -8,8 +8,7 @@
 
 	// eslint-disable-next-line no-undef
 	type T = $$Generic<AnyZodObject>;
-
-	export let field: string & FormPathLeaves<z.infer<T>>;
+	export let field: FormPathLeaves<z.infer<T>>;
 
 	const { superform } = getFormContext();
 	const { path, value, errors, constraints } = formFieldProxy(superform, field);

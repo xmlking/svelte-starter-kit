@@ -9,8 +9,7 @@
 
 	// eslint-disable-next-line no-undef
 	type T = $$Generic<AnyZodObject>;
-
-	export let field: string & FormPathLeaves<z.infer<T>>;
+	export let field: FormPathLeaves<z.infer<T>>;
 	export let label = '';
 	export let type: 'date' | 'datetime-local' = 'date';
 	export let size: 'small' | 'default' = 'default';

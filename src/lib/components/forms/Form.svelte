@@ -1,18 +1,20 @@
-<script lang="ts" generics="T extends AnyZodObject">
+<script lang="ts">
+	import type { ZodValidation } from 'sveltekit-superforms/index';
+
 	import { AdjustmentsHorizontal, ArrowLeft, CloudArrowDown } from 'svelte-heros-v2';
 
-	// https://github.com/dyne/starters/blob/main/saas/%7B%7Bcookiecutter.project_name%7D%7D/webapp/src/lib/components/forms/form.svelte
 	import { Alert, Button, ButtonGroup, Modal, Spinner } from 'flowbite-svelte';
 	import { setContext } from 'svelte';
 	import type { SuperForm } from 'sveltekit-superforms/client';
-	import type { UnwrapEffects } from 'sveltekit-superforms/index';
 	import type { AnyZodObject } from 'zod';
 	import { FORM_KEY, type FormContext } from './forms';
 
 	import type { HTMLFormAttributes } from 'svelte/elements';
 	interface $$restProps extends HTMLFormAttributes {}
 
-	export let superform: SuperForm<UnwrapEffects<T>, any>;
+	// eslint-disable-next-line no-undef
+	type T = $$Generic<AnyZodObject>;
+	export let superform: SuperForm<ZodValidation<T>, unknown>;
 	export let useDefaultSubmitButton = true;
 	export let defaultSubmitButtonText = 'Submit';
 	export let className = 'space-y-6';
