@@ -23,11 +23,11 @@ export const actions = {
 			return message(form, 'Invalid form');
 		}
 
-		// TODO - not working
 		log.debug('CREATE action form.data before:', form.data);
 		stripEmptyProperties(form.data);
 		log.debug('CREATE action form.data after:', form.data);
 
+		// TODO
 		// Check if the passwords match
 		if (form.data.validFrom !== form.data.validFrom) {
 			return message(form, 'validFrom do not match.');

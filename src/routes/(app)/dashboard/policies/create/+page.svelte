@@ -75,7 +75,7 @@
 	 * Note: min filterText length is set to '3'
 	 */
 	async function fetchSubjects(filterText: string) {
-		if (filterText.length < 4) return [];
+		if (filterText.length < 3) return [];
 		const response = await fetch(
 			`/api/directory/search?subType=${$form.subjectType}&filter=&search=${filterText}`
 		);
@@ -125,7 +125,7 @@
 	const searchRulesStore = new SearchRulesStore();
 	const orderBy = [{ updatedAt: order_by.desc_nulls_first }];
 	async function fetchRule(filterText: string) {
-		if (filterText.length < 4) return [];
+		if (filterText.length < 3) return [];
 		const where = {
 			displayName: { _like: `%${filterText}%` }
 		};
