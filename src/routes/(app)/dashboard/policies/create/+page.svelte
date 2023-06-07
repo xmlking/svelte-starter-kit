@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
+	import { CachePolicy, SearchRulesStore, order_by } from '$houdini';
 	import {
 		Checkbox,
 		DateInput,
@@ -15,11 +16,17 @@
 		protocols,
 		subjectTypeOptions2
 	} from '$lib/models/enums';
-	import { policySchema } from '$lib/models/schema/policy.new.schema';
+	import { policyKeys as keys } from '$lib/models/schema/policy.new.schema';
 	import type { Subject } from '$lib/models/types/subject';
 	import { Logger } from '$lib/utils';
 	import { Breadcrumb, BreadcrumbItem, Heading, Helper, UserCircle } from 'flowbite-svelte';
-	import { DevicePhoneMobile, RectangleGroup, User, UserGroup } from 'svelte-heros-v2';
+	import {
+		DevicePhoneMobile,
+		MagnifyingGlass,
+		RectangleGroup,
+		User,
+		UserGroup
+	} from 'svelte-heros-v2';
 	import Select from 'svelte-select';
 	import { superForm } from 'sveltekit-superforms/client';
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
@@ -54,8 +61,6 @@
 	// dateProxy https://github.com/malcolmseyd/lockers/blob/main/src/routes/admin/edit/%2Bpage.svelte
 	// action https://github.com/malcolmseyd/lockers/blob/main/src/routes/admin/delete/%2Bpage.server.ts
 	// local data: https://github.com/malcolmseyd/lockers/blob/main/src/routes/admin/edit/%2Bpage.server.ts
-
-	const keys = policySchema.innerType().keyof().Enum;
 	//Form
 	// select settings
 	let subject = $form?.subjectId
@@ -65,8 +70,12 @@
 				secondaryId: $form.subjectSecondaryId
 		  }
 		: null;
+	/**
+	 * Search Subjects by displayName
+	 * Note: min filterText length is set to '3'
+	 */
 	async function fetchSubjects(filterText: string) {
-		if (!filterText.length) return Promise.resolve([]);
+		if (filterText.length < 4) return [];
 		const response = await fetch(
 			`/api/directory/search?subType=${$form.subjectType}&filter=&search=${filterText}`
 		);
@@ -89,7 +98,7 @@
 			}
 		}
 	}
-	function onSubjectTypeChange(event: CustomEvent | Event) {
+	function clearSubject(event: CustomEvent | Event) {
 		// reset Selected ???
 		// log.debug('onSubjectTypeChange1',event.target?.value);
 		// log.debug('onSubjectTypeChange', event.detail);
@@ -100,7 +109,97 @@
 			$form.subjectSecondaryId = '';
 		}
 	}
-	const editMode = false;
+
+	// rule settings
+	let rule = $form?.ruleId
+		? {
+				id: $form.ruleId,
+				displayName: $form.rule.displayName
+		  }
+		: null;
+
+	/**
+	 * Search Rules by displayName
+	 * Note: min filterText length is set to '3'
+	 */
+	const searchRulesStore = new SearchRulesStore();
+	const orderBy = [{ updatedAt: order_by.desc_nulls_first }];
+	async function fetchRule(filterText: string) {
+		if (filterText.length < 4) return [];
+		const where = {
+			displayName: { _like: `%${filterText}%` }
+		};
+		const variables = { where, orderBy };
+		const { errors, data } = await searchRulesStore.fetch({
+			blocking: true,
+			policy: CachePolicy.CacheAndNetwork,
+			metadata: { useRole: 'user', logResult: true },
+			variables
+		});
+		if (errors) throw new Error(`An error has occurred: ${errors}`);
+
+		if (!data) throw new Error('no data');
+		return data.rules;
+	}
+	async function onRuleChange(changedSubject: CustomEvent) {
+		log.debug('onRuleChange', changedSubject.detail);
+		if (browser) {
+			if (changedSubject?.detail) {
+				$form.ruleId = changedSubject.detail.id;
+				$form.rule.shared = changedSubject.detail.shared;
+				$form.rule.displayName = changedSubject.detail.displayName;
+				$form.rule.description = changedSubject.detail.description;
+				$form.rule.tags = changedSubject.detail.tags;
+				$form.rule.annotations = changedSubject.detail.annotations;
+				$form.rule.source = changedSubject.detail.source;
+				$form.rule.sourcePort = changedSubject.detail.sourcePort;
+				$form.rule.destination = changedSubject.detail.destination;
+				$form.rule.destinationPort = changedSubject.detail.destinationPort;
+				$form.rule.protocol = changedSubject.detail.protocol;
+				$form.rule.direction = changedSubject.detail.direction;
+				$form.rule.action = changedSubject.detail.action;
+				$form.rule.appId = changedSubject.detail.appId;
+				$form.rule.weight = changedSubject.detail.weight;
+			} else {
+				$form.ruleId = '';
+				$form.rule.shared = false;
+				$form.rule.displayName = '';
+				$form.rule.description = '';
+				$form.rule.tags = [];
+				$form.rule.annotations = '';
+				$form.rule.source = '';
+				$form.rule.sourcePort = '';
+				$form.rule.destination = '';
+				$form.rule.destinationPort = '';
+				$form.rule.protocol = 'Any';
+				$form.rule.direction = 'egress';
+				$form.rule.action = 'block';
+				$form.rule.appId = '';
+				$form.rule.weight = 1000;
+			}
+		}
+	}
+	function clearRule(event: Event) {
+		log.debug('onRuleClear', event.target);
+		if (browser) {
+			rule = null;
+			$form.ruleId = '';
+			$form.rule.shared = false;
+			$form.rule.displayName = '';
+			$form.rule.description = '';
+			$form.rule.tags = [];
+			$form.rule.annotations = '';
+			$form.rule.source = '';
+			$form.rule.sourcePort = '';
+			$form.rule.destination = '';
+			$form.rule.destinationPort = '';
+			$form.rule.protocol = 'Any';
+			$form.rule.direction = 'egress';
+			$form.rule.action = 'block';
+			$form.rule.appId = '';
+			$form.rule.weight = 1000;
+		}
+	}
 </script>
 
 <svelte:head>
@@ -117,43 +216,25 @@
 <Heading tag="h4" class="pb-5">Create policy</Heading>
 
 <Form {superform} defaultSubmitButtonText="Create" class="space-y-6">
+	<input type="hidden" name="ruleId" bind:value={$form.ruleId} />
+
 	<div class="mb-6 grid gap-6 md:grid-cols-3 lg:grid-cols-6">
 		<div class="col-span-2">
-			<FloatingTextInput field={keys.displayName} label="Display Name" />
+			<Radio field={keys.subjectType} items={subjectTypeOptions2} on:change={clearSubject} />
 		</div>
-		<div class="col-span-4">
-			<FloatingTextInput field={keys.description} label="Description" />
-		</div>
-		<div class="  col-span-3">
-			<TagsInput field={keys.tags} label="Tags" placeholder={'Enter tags...'} />
-		</div>
-		<div class="col-span-3">
-			<FloatingTextInput field={keys.annotations} label="Annotations" />
-			<Helper class="mt-2 text-sm italic"
-				>Format: key1=>value1 (or) "key2" => "value2 with space"</Helper
-			>
-		</div>
-		<div class="col-span-3">
-			<Radio
-				field={keys.subjectType}
-				items={subjectTypeOptions2}
-				on:change={onSubjectTypeChange}
-				disabled={editMode}
-			/>
-		</div>
-		<div class="col-span-3">
+		<div class="col-span-2">
 			<Select
 				class="input"
 				itemId="displayName"
 				label="displayName"
-				placeholder="Type to select"
+				placeholder="Type to select subject"
 				bind:value={subject}
 				on:change={onSubjectChange}
-				on:clear={onSubjectTypeChange}
-				disabled={editMode}
+				on:clear={clearSubject}
 				loadOptions={fetchSubjects}
+				--list-z-index="100"
 			>
-				<b slot="prepend" class="p-2">
+				<b slot="prepend">
 					{#if $form.subjectType == 'group'}
 						<UserGroup />
 					{:else if $form.subjectType == 'service_account'}
@@ -170,7 +251,6 @@
 					<input
 						type="hidden"
 						name="subjectDisplayName"
-						disabled={editMode}
 						value={value ? value.displayName : null}
 					/>
 				</svelte:fragment>
@@ -179,58 +259,123 @@
 				<Helper class="mt-2" color="red">Subject is required</Helper>
 			{/if}
 		</div>
-		<div class="col-span-3">
-			<FloatingTextInput field="rule.source" label="Source" />
+		<div class="col-span-2">
+			<Select
+				class="input"
+				itemId="id"
+				label="displayName"
+				placeholder="Type to select rule"
+				bind:value={rule}
+				on:change={onRuleChange}
+				on:clear={clearRule}
+				loadOptions={fetchRule}
+			>
+				<b slot="prepend">
+					<MagnifyingGlass />
+				</b>
+				<svelte:fragment slot="input-hidden" let:value>
+					<input
+						type="hidden"
+						name="ruleDisplayName"
+						value={value ? value.displayName : null}
+					/>
+				</svelte:fragment>
+			</Select>
+			{#if $errors.ruleId}
+				<Helper class="mt-2" color="red">Rule is required</Helper>
+			{/if}
+		</div>
+		<div class="col-span-2">
+			<FloatingTextInput
+				field="rule.displayName"
+				label="Display Name"
+				disabled={$form.rule.shared}
+			/>
+		</div>
+		<div class="col-span-4">
+			<FloatingTextInput
+				field="rule.description"
+				label="Description"
+				disabled={$form.rule.shared}
+			/>
 		</div>
 		<div class="col-span-3">
-			<FloatingTextInput field="rule.sourcePort" label="Source port" />
+			<TagsInput
+				field="rule.tags"
+				label="Tags"
+				placeholder={'Enter tags...'}
+				disabled={$form.rule.shared}
+			/>
 		</div>
 		<div class="col-span-3">
-			<FloatingTextInput field="rule.destination" label="Destination" />
+			<FloatingTextInput
+				field="rule.annotations"
+				label="Annotations"
+				disabled={$form.rule.shared}
+			/>
+			<Helper class="mt-2 text-sm italic"
+				>Format: key1=>value1 (or) "key2" => "value2 with space"</Helper
+			>
 		</div>
 		<div class="col-span-3">
-			<FloatingTextInput field="rule.destinationPort" label="Destination port" />
+			<FloatingTextInput field="rule.source" label="Source" disabled={$form.rule.shared} />
+		</div>
+		<div class="col-span-3">
+			<FloatingTextInput
+				field="rule.sourcePort"
+				label="Source port"
+				disabled={$form.rule.shared}
+			/>
+		</div>
+		<div class="col-span-3">
+			<FloatingTextInput
+				field="rule.destination"
+				label="Destination"
+				disabled={$form.rule.shared}
+			/>
+		</div>
+		<div class="col-span-3">
+			<FloatingTextInput
+				field="rule.destinationPort"
+				label="Destination port"
+				disabled={$form.rule.shared}
+			/>
 		</div>
 		<div>
-			<FormSelect field="rule.protocol" items={protocols} />
+			<FormSelect field="rule.protocol" items={protocols} disabled={$form.rule.shared} />
 		</div>
 		<div>
-			<Radio field="rule.action" items={actionOptions} />
+			<Radio field="rule.action" items={actionOptions} disabled={$form.rule.shared} />
 		</div>
 		<div>
-			<Radio field="rule.direction" items={directionOptions} />
+			<Radio field="rule.direction" items={directionOptions} disabled={$form.rule.shared} />
+		</div>
+		<div class="col-start-5 flex justify-end">
+			<Checkbox
+				field="rule.shared"
+				class="toggle-secondary toggle"
+				labelPosition="before"
+				disabled={$form.rule.shared}>Shared</Checkbox
+			>
 		</div>
 		<div class="col-end-7">
 			<FloatingTextInput field={keys.weight} type="number" label="Weight" />
 		</div>
 
 		<div class="col-span-6">
-			<FloatingTextInput field="rule.appId" label="App id" />
+			<FloatingTextInput field="rule.appId" label="App id" disabled={$form.rule.shared} />
 		</div>
 
 		<div class="flex justify-start">
-			<Checkbox
-				field={keys.active}
-				class="toggle-secondary toggle"
-				labelPosition="before"
-				disabled={editMode}>Active</Checkbox
-			>
-		</div>
-		<div class="flex justify-start">
-			<Checkbox
-				field={keys.shared}
-				class="toggle-secondary toggle"
-				labelPosition="before"
-				disabled={editMode}>Shared</Checkbox
+			<Checkbox field={keys.active} class="toggle-secondary toggle" labelPosition="before"
+				>Active</Checkbox
 			>
 		</div>
 		<div class="col-start-5">
 			<DateInput type="datetime-local" field={keys.validFrom} label="Valid From" />
-			<!-- <input type="datetime-local" bind:value={$validFrom} name="validFrom" /> -->
 		</div>
 		<div class="col-end-auto">
 			<DateInput type="datetime-local" field={keys.validTo} label="Valid To" />
-			<!-- <input type="datetime-local" bind:value={$validTo} name="validTo" /> -->
 		</div>
 	</div>
 </Form>

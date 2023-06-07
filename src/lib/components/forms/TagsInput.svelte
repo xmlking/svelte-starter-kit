@@ -11,6 +11,7 @@
 
 	export let field: string & FormPathLeaves<z.infer<T>>;
 	export let label = '';
+	export let disabled = false;
 
 	const { superform } = getFormContext();
 	const { path, value, errors, constraints } = formFieldProxy(superform, field);
@@ -24,6 +25,7 @@
 		minChars={3}
 		labelText={label ?? path}
 		labelShow
+		disable={disabled}
 		{...$constraints}
 		{...$$restProps}
 	/>
