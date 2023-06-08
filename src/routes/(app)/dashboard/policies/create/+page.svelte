@@ -169,6 +169,8 @@
 				// HINT: we copy `rule.weight` to `policy.weight` initially and let users overwrite weightage afterwords.
 				$form.weight = changedSubject.detail.weight;
 			} else {
+				// Reset rule section of form
+				rule = null;
 				$form.ruleId = undefined;
 				$form.rule.shared = false;
 				$form.rule.displayName = '';
@@ -190,6 +192,7 @@
 	function clearRule(event: Event) {
 		log.debug('onRuleClear', event.target);
 		if (browser) {
+			// Reset rule section of form
 			rule = null;
 			$form.ruleId = undefined;
 			$form.rule.shared = false;

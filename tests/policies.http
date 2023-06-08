@@ -478,11 +478,11 @@ x-hasura-org-id: chinthagunta
 x-hasura-user-id: xmlking@gmail.com
 X-REQUEST-TYPE: GraphQL
 
-mutation DeletePolicy($policyId: uuid!, $roleId: uuid!, $deletedAt: timestamptz!) {
+mutation DeletePolicy($policyId: uuid!, $ruleId: uuid!, $deletedAt: timestamptz!) {
   update_policies_by_pk(pk_columns: {id: $policyId}, _set: {deletedAt: $deletedAt}) {
     id
   }
-  update_rules(where: {shared: {_eq: false}, id: {_eq: $roleId}}, _set: {deletedAt: $deletedAt}) {
+  update_rules(where: {shared: {_eq: false}, id: {_eq: $ruleId}}, _set: {deletedAt: $deletedAt}) {
     affected_rows
     returning {
       id
@@ -494,16 +494,16 @@ mutation DeletePolicy($policyId: uuid!, $roleId: uuid!, $deletedAt: timestamptz!
 
 {
   "policyId":"{{createdPoliciyId}}",
-  "roleId": "{{createdPolicyRuleId}}",
+  "ruleId": "{{createdPolicyRuleId}}",
   "deletedAt": "{{$localDatetime iso8601}}"
 }
 
 
-# mutation DeletePolicy($policyId: uuid!, $roleId: uuid!, $deletedAt: timestamptz!) {
+# mutation DeletePolicy($policyId: uuid!, $ruleId: uuid!, $deletedAt: timestamptz!) {
 #   update_policies_by_pk(pk_columns: {id: $policyId}, _set: {deletedAt: $deletedAt}) {
 #     id
 #   }
-#   update_rules_by_pk(pk_columns: {id: $roleId}, _set: {deletedAt: $deletedAt}) {
+#   update_rules_by_pk(pk_columns: {id: $ruleId}, _set: {deletedAt: $deletedAt}) {
 #     id
 #   }
 # }

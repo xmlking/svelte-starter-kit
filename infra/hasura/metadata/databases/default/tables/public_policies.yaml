@@ -9,8 +9,8 @@ configuration:
       custom_name: createdBy
     deleted_at:
       custom_name: deletedAt
-    role_id:
-      custom_name: roleId
+    rule_id:
+      custom_name: ruleId
     subject_display_name:
       custom_name: subjectDisplayName
     subject_id:
@@ -31,7 +31,7 @@ configuration:
     created_at: createdAt
     created_by: createdBy
     deleted_at: deletedAt
-    role_id: roleId
+    rule_id: ruleId
     subject_display_name: subjectDisplayName
     subject_id: subjectId
     subject_secondary_id: subjectSecondaryId
@@ -44,7 +44,7 @@ configuration:
 object_relationships:
   - name: rule
     using:
-      foreign_key_constraint_on: role_id
+      foreign_key_constraint_on: rule_id
 insert_permissions:
   - role: manager
     permission:
@@ -56,7 +56,7 @@ insert_permissions:
       columns:
         - active
         - created_by
-        - role_id
+        - rule_id
         - subject_display_name
         - subject_id
         - subject_secondary_id
@@ -73,7 +73,7 @@ insert_permissions:
         updated_by: x-hasura-user-id
       columns:
         - active
-        - role_id
+        - rule_id
         - subject_display_name
         - subject_id
         - subject_secondary_id

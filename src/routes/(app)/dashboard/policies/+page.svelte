@@ -46,7 +46,7 @@
 
 	const columns = table.createColumns([
 		table.column({
-			header: 'Name',
+			header: 'Rule Name',
 			accessor: (item) => item,
 			id: 'name',
 			cell: ({ value }) =>
@@ -162,11 +162,11 @@
 
 	// delete action
 	const deletePolicyStore = new DeletePolicyStore();
-	async function deletePolicy(policyId: string, roleId: string) {
-		console.log('in deletePolicy...', policyId, roleId);
+	async function deletePolicy(policyId: string, ruleId: string) {
+		console.log('in deletePolicy...', policyId, ruleId);
 		const deletedAt = new Date().toISOString();
 		const { data } = await deletePolicyStore.mutate(
-			{ policyId, roleId, deletedAt },
+			{ policyId, ruleId, deletedAt },
 			{
 				metadata: { useRole: 'user', logResult: true }
 			}
@@ -220,7 +220,7 @@
 		<ButtonGroup class="w-1/3">
 			<Select
 				name="subjectType"
-				class="w-fit !rounded-r-none"
+				class="!w-fit !rounded-r-none"
 				items={subjectTypeOptions}
 				bind:value={subjectType}
 				on:change={clearSubject}

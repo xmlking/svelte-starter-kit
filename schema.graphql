@@ -2010,10 +2010,10 @@ type policies {
   deletedAt: timestamptz
   id: uuid!
   organization: organization_enum!
-  roleId: uuid!
 
   """An object relationship"""
   rule: rules!
+  ruleId: uuid!
   subjectDisplayName: String!
   subjectId: uuid!
   subjectSecondaryId: String!
@@ -2068,8 +2068,8 @@ input policies_bool_exp {
   deletedAt: timestamptz_comparison_exp
   id: uuid_comparison_exp
   organization: organization_enum_comparison_exp
-  roleId: uuid_comparison_exp
   rule: rules_bool_exp
+  ruleId: uuid_comparison_exp
   subjectDisplayName: String_comparison_exp
   subjectId: uuid_comparison_exp
   subjectSecondaryId: String_comparison_exp
@@ -2091,9 +2091,9 @@ enum policies_constraint {
   policies_pkey
 
   """
-  unique or primary key constraint on columns "role_id", "subject_id", "organization", "subject_type"
+  unique or primary key constraint on columns "rule_id", "subject_id", "organization", "subject_type"
   """
-  policies_subject_id_subject_type_role_id_organization_key
+  policies_subject_id_subject_type_rule_id_organization_key
 }
 
 """
@@ -2113,8 +2113,8 @@ input policies_insert_input {
   deletedAt: timestamptz
   id: uuid
   organization: organization_enum
-  roleId: uuid
   rule: rules_obj_rel_insert_input
+  ruleId: uuid
   subjectDisplayName: String
   subjectId: uuid
   subjectSecondaryId: String
@@ -2132,7 +2132,7 @@ type policies_max_fields {
   createdBy: String
   deletedAt: timestamptz
   id: uuid
-  roleId: uuid
+  ruleId: uuid
   subjectDisplayName: String
   subjectId: uuid
   subjectSecondaryId: String
@@ -2149,7 +2149,7 @@ type policies_min_fields {
   createdBy: String
   deletedAt: timestamptz
   id: uuid
-  roleId: uuid
+  ruleId: uuid
   subjectDisplayName: String
   subjectId: uuid
   subjectSecondaryId: String
@@ -2188,8 +2188,8 @@ input policies_order_by {
   deletedAt: order_by
   id: order_by
   organization: order_by
-  roleId: order_by
   rule: rules_order_by
+  ruleId: order_by
   subjectDisplayName: order_by
   subjectId: order_by
   subjectSecondaryId: order_by
@@ -2229,7 +2229,7 @@ enum policies_select_column {
   organization
 
   """column name"""
-  roleId
+  ruleId
 
   """column name"""
   subjectDisplayName
@@ -2269,7 +2269,7 @@ input policies_set_input {
   deletedAt: timestamptz
   id: uuid
   organization: organization_enum
-  roleId: uuid
+  ruleId: uuid
   subjectDisplayName: String
   subjectId: uuid
   subjectSecondaryId: String
@@ -2315,7 +2315,7 @@ input policies_stream_cursor_value_input {
   deletedAt: timestamptz
   id: uuid
   organization: organization_enum
-  roleId: uuid
+  ruleId: uuid
   subjectDisplayName: String
   subjectId: uuid
   subjectSecondaryId: String
@@ -2355,7 +2355,7 @@ enum policies_update_column {
   organization
 
   """column name"""
-  roleId
+  ruleId
 
   """column name"""
   subjectDisplayName
