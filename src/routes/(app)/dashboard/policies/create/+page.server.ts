@@ -1,9 +1,11 @@
+import { CreatePolicyStore, type policies_insert_input } from '$houdini';
 import { ToastLevel } from '$lib/components/toast';
 import { createPolicySchema as schema } from '$lib/models/schema/policy.new.schema';
 import { Logger, stripEmptyProperties } from '$lib/utils';
 import { fail } from '@sveltejs/kit';
+import type { GraphQLError } from 'graphql';
 import { redirect } from 'sveltekit-flash-message/server';
-import { setError, superValidate } from 'sveltekit-superforms/server';
+import { setError, setMessage, superValidate } from 'sveltekit-superforms/server';
 
 const log = new Logger('policy.create.server');
 // export const load = async () => {
@@ -14,6 +16,7 @@ const log = new Logger('policy.create.server');
 // 	return { form };
 // };
 
+const createPolicyStore = new CreatePolicyStore();
 export const actions = {
 	default: async (event) => {
 		const { request, locals } = event;
@@ -25,38 +28,57 @@ export const actions = {
 		const form = await superValidate(request, schema);
 		log.debug({ form });
 
-		// Convenient validation check:
+		// superform validation
 		if (!form.valid) return fail(400, { form });
-		// NOTE: you can add multiple errors and in catch, send all
-		// setError(form,  null, ['Rule is missing', 'dddd']);
-		// return message(form, 'Invalid form');
 
-		const createData = { ...form.data };
-		log.debug('CREATE action createData before strip:', createData);
-		stripEmptyProperties(createData);
-		log.debug('CREATE action createData after strip:', createData);
-
-		// TODO
-		// Check if rule is missing
+		// TODO: validate incoming data with business rules
 		if (form.data.ruleId == null && form.data.rule == null) {
 			return setError(form, 'ruleId', 'Rule is missing');
 		}
 
-		// // Check if a user with that email exists
-		// if (await locals.prisma.user.findUnique({ where: { email: form.data.email } })) {
-		// 	return message(form, 'A user already exists with the specified email.', {
-		// 		status: 409
-		// 	});
-		// }
+		const dataCopy = { ...form.data };
+		log.debug('dataCopy before strip:', dataCopy);
+		stripEmptyProperties(dataCopy);
+		log.debug('dataCopy after strip:', dataCopy);
+		const {
+			validFrom,
+			validTo,
+			ruleId,
+			rule: { tags, ...ruleRest },
+			...restPolicy
+		} = dataCopy;
+		const payload: policies_insert_input = {
+			...restPolicy,
+			...(validFrom && { validFrom: validFrom.toISOString() }),
+			...(validTo && { validTo: validTo.toISOString() }),
+			...(ruleId ? { ruleId } : { rule: { data: { ...ruleRest, ...(tags && { tags: `{${tags}}` }) } } })
+		};
+		// if we are creating Policy with new Rule, overwrite Rule's weight with Policy's weight.
+		if (payload.rule?.data && payload.weight) {
+			payload.rule.data.weight = payload.weight;
+		}
+		log.debug('payload:', payload);
 
-		await sleep(2000);
-		// if some exception, setMessage or setError and return
-		//  setError(form, '', 'Rule is missing');
-		//  setError(form, '', 'active is missing');
+		const variables = { data: payload };
+		const { errors, data } = await createPolicyStore.mutate(variables, {
+			metadata: { logResult: true },
+			event
+		});
+		if (errors) {
+			errors.forEach((error) => {
+				log.error('create policy api error', error);
+				// NOTE: you can add multiple errors, send all along with a message
+				setError(form, null, (error as GraphQLError).message);
+			});
+			return setMessage(form, 'Create policy failed');
+		}
+
+		const result = data?.insert_policies_one;
+		if (!result) return setMessage(form, 'Create policy failed: responce empty', { status: 404 });
 
 		// return message(form, 'Policy Created');
 		const message = {
-			message: `Policy Created: ${createData.rule.displayName}`,
+			message: `Policy created with Rule: ${result.rule.displayName}`,
 			dismissible: true,
 			duration: 10000,
 			type: ToastLevel.Success

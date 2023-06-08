@@ -77,7 +77,7 @@ CREATE TABLE public.policies (
     subject_secondary_id text NOT NULL,
     subject_display_name text NOT NULL,
     subject_type text NOT NULL,
-    role_id uuid NOT NULL,
+    rule_id uuid NOT NULL,
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     created_by text NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -149,7 +149,7 @@ ALTER TABLE ONLY public.organization
 ALTER TABLE ONLY public.policies
     ADD CONSTRAINT policies_pkey PRIMARY KEY (id);
 ALTER TABLE ONLY public.policies
-    ADD CONSTRAINT policies_subject_id_subject_type_role_id_organization_key UNIQUE (subject_id, subject_type, role_id, organization);
+    ADD CONSTRAINT policies_subject_id_subject_type_rule_id_organization_key UNIQUE (subject_id, subject_type, rule_id, organization);
 ALTER TABLE ONLY public.pools
     ADD CONSTRAINT pools_pkey PRIMARY KEY (id);
 ALTER TABLE ONLY public.protocol
@@ -201,7 +201,7 @@ ALTER TABLE ONLY public.devices
 ALTER TABLE ONLY public.policies
     ADD CONSTRAINT policies_organization_fkey FOREIGN KEY (organization) REFERENCES public.organization(value) ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE ONLY public.policies
-    ADD CONSTRAINT policies_role_id_fkey FOREIGN KEY (role_id) REFERENCES public.rules(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT policies_rule_id_fkey FOREIGN KEY (rule_id) REFERENCES public.rules(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE ONLY public.policies
     ADD CONSTRAINT policies_subject_type_fkey FOREIGN KEY (subject_type) REFERENCES public.subject_type(value) ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE ONLY public.pools
