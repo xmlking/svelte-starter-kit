@@ -1,6 +1,8 @@
-import { policySchema as schema } from '$lib/models/schema/policy.new.schema';
+import { ToastLevel } from '$lib/components/toast';
+import { createPolicySchema as schema } from '$lib/models/schema/policy.new.schema';
 import { Logger, stripEmptyProperties } from '$lib/utils';
-import { fail, redirect } from '@sveltejs/kit';
+import { fail } from '@sveltejs/kit';
+import { redirect } from 'sveltekit-flash-message/server';
 import { setError, superValidate } from 'sveltekit-superforms/server';
 
 const log = new Logger('policy.create.server');
@@ -24,37 +26,21 @@ export const actions = {
 		log.debug({ form });
 
 		// Convenient validation check:
-		if (!form.valid) {
-			// Again, always return { form } and things will just work.
-			return fail(400, { form });
-		}
+		if (!form.valid) return fail(400, { form });
+		// NOTE: you can add multiple errors and in catch, send all
+		// setError(form,  null, ['Rule is missing', 'dddd']);
+		// return message(form, 'Invalid form');
 
-		log.debug('CREATE action form.data before strip:', form.data);
-		stripEmptyProperties(form.data);
-		log.debug('CREATE action form.data after strip:', form.data);
+		const createData = { ...form.data };
+		log.debug('CREATE action createData before strip:', createData);
+		stripEmptyProperties(createData);
+		log.debug('CREATE action createData after strip:', createData);
 
 		// TODO
 		// Check if rule is missing
 		if (form.data.ruleId == null && form.data.rule == null) {
 			return setError(form, 'ruleId', 'Rule is missing');
 		}
-
-		try {
-		} catch (err) {
-			// log.error('policy:actions:save:error:', err);
-			// if (err instanceof ZodError) {
-			// 	const { formErrors, fieldErrors } = err.flatten();
-			// 	return fail(400, { formErrors, fieldErrors });
-			// } else if (err instanceof PolicyError) {
-			// 	return fail(400, { actionError: err.toJSON() });
-			// } else {
-			// 	return handleActionErrors(err);
-			// }
-		} finally {
-			// TODO report error
-		}
-
-		await sleep(2000);
 
 		// // Check if a user with that email exists
 		// if (await locals.prisma.user.findUnique({ where: { email: form.data.email } })) {
@@ -63,8 +49,19 @@ export const actions = {
 		// 	});
 		// }
 
-		// Redirect to the dashboard
-		throw redirect(302, '/dashboard/policies');
+		await sleep(2000);
+		// if some exception, setMessage or setError and return
+		//  setError(form, '', 'Rule is missing');
+		//  setError(form, '', 'active is missing');
+
+		// return message(form, 'Policy Created');
+		const message = {
+			message: `Policy Created: ${createData.rule.displayName}`,
+			dismissible: true,
+			duration: 10000,
+			type: ToastLevel.Success
+		} as const;
+		throw redirect(302, '/dashboard/policies', message, event);
 	}
 };
 

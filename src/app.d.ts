@@ -16,13 +16,19 @@ declare global {
 			message: string; // this property is always required, to provide a sensible fallback
 			context?: Record<string, any>;
 		}
-
 		interface Locals {
 			// session: Session;
 			getSession(): Promise<Session | null>;
 		}
+		export interface Toast {
+			message: string;
+			type?: ToastLevel;
+			duration?: number;
+			dismissible?: boolean;
+		}
 		interface PageData {
 			session: Session | null;
+			flash?: Toast;
 		}
 		// interface Platform {}
 		interface Metadata {

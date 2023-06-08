@@ -1,10 +1,26 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import { Footer, Header } from '$lib/blocks/dashboard';
 	import { SideMenu } from '$lib/blocks/side';
 	import { DarkMode } from '$lib/components';
+	import { addToast } from '$lib/components/toast';
 	import { onMount } from 'svelte';
+	import { initFlash } from 'sveltekit-flash-message/client';
 
 	export let data;
+
+	/**
+	 * Setup Flash Message listener
+	 */
+	const flash = initFlash(page);
+	flash.subscribe(($flash) => {
+		if (!$flash) return;
+		addToast($flash);
+
+		// Clearing the flash message could sometimes
+		// be needed here to avoid double-toasting.
+		flash.set(undefined);
+	});
 
 	async function getAzureProfilePicture(access_token: string) {
 		const res = await fetch('https://graph.microsoft.com/v1.0/me/photos/48x48/$value', {

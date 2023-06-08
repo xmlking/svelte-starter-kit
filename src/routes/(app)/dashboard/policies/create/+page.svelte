@@ -21,7 +21,7 @@
 		protocols,
 		subjectTypeOptions2
 	} from '$lib/models/enums';
-	import { policyKeys as keys } from '$lib/models/schema/policy.new.schema';
+	import { createPolicyKeys as keys } from '$lib/models/schema/policy.new.schema';
 	import type { Subject } from '$lib/models/types/subject';
 	import { Logger } from '$lib/utils';
 	import { Breadcrumb, BreadcrumbItem, Heading, Helper, UserCircle } from 'flowbite-svelte';
@@ -52,6 +52,8 @@
 		constraints,
 		message,
 		tainted,
+		posted,
+		allErrors,
 		reset,
 		submitting,
 		capture,
@@ -361,7 +363,7 @@
 <SuperDebug
 	label="Miscellaneous"
 	status={false}
-	data={{ message, submitting, delayed, constraints }}
+	data={{ message: $message, submitting: $submitting, delayed: $delayed, posted: $posted }}
 />
 <br />
 <SuperDebug label="Form" data={$form} />
@@ -369,5 +371,7 @@
 <SuperDebug label="Tainted" status={false} data={$tainted} />
 <br />
 <SuperDebug label="Errors" status={false} data={$errors} />
+<br />
+<SuperDebug label="Constraints" status={false} data={$constraints} />
 <!-- <br />
  <SuperDebug label="$page data" status={false} data={$page} /> -->

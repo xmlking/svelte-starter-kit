@@ -217,10 +217,10 @@
 				Policies
 			</span>
 		</NavBrand>
-		<ButtonGroup class="w-1/2">
+		<ButtonGroup class="w-1/3">
 			<Select
 				name="subjectType"
-				class="w-auto !rounded-r-none"
+				class="w-fit !rounded-r-none"
 				items={subjectTypeOptions}
 				bind:value={subjectType}
 				on:change={clearSubject}
@@ -234,6 +234,7 @@
 				on:change={() => searchForm.requestSubmit()}
 				on:clear={clearSubject}
 				loadOptions={fetchSubjects}
+				--list-z-index="100"
 			>
 				<b slot="prepend" class="p-2">
 					{#if subjectType == 'group'}
