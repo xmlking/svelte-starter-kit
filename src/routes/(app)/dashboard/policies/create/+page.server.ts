@@ -64,7 +64,7 @@ export const actions = {
 				if (error.message.includes('Uniqueness violation')) {
 					setError(form, 'rule.displayName', 'Display Name already taken');
 				} else {
-					setError(form, null, (error as GraphQLError).message);
+					setError(form, '', (error as GraphQLError).message);
 				}
 			});
 			return setMessage(form, 'Create policy failed');
