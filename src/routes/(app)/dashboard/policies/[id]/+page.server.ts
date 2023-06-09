@@ -70,12 +70,12 @@ export const actions = {
 		});
 		if (errors) {
 			errors.forEach((error) => {
-				log.error('create policy api error', error);
+				log.error('update policy api error', error);
 				// NOTE: you can add multiple errors, send all along with a message
 				// TODO: Check for displayName conflect and despatch custom error message
-				setError(form, null, (error as GraphQLError).message);
+				setError(form, '', (error as GraphQLError).message);
 			});
-			return setMessage(form, 'Create policy failed');
+			return setMessage(form, 'Update policy failed');
 		}
 
 		const { update_policies_by_pk: policyResult, update_rules_by_pk: ruleResult } = data || {};

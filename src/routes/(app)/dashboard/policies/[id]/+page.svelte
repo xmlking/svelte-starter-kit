@@ -22,7 +22,6 @@
 	import { Breadcrumb, BreadcrumbItem, Heading, Helper, UserCircle } from 'flowbite-svelte';
 	import {
 		DevicePhoneMobile,
-		MagnifyingGlass,
 		RectangleGroup,
 		User,
 		UserGroup
@@ -220,7 +219,7 @@
 
 <Heading tag="h4" class="pb-5">Create policy</Heading>
 
-<Form {superform} defaultSubmitButtonText="Create" class="space-y-6">
+<Form {superform} defaultSubmitButtonText="Update" class="space-y-6">
 	<input type="hidden" name="ruleId" bind:value={$form.ruleId} />
 
 	<div class="mb-6 grid gap-6 md:grid-cols-3 lg:grid-cols-6">
