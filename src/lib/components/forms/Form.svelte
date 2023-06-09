@@ -35,7 +35,6 @@
 <form class={className} method="post" {...$$restProps} use:enhance>
 	<slot />
 
-	{$page.status}
 	{#if $message || $errors._errors}
 		<Alert color={$page.status >= 400 ? 'red' : 'blue'} dismissable class="!items-start">
 			<span slot="icon"

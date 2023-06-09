@@ -66,16 +66,18 @@ export const createPolicyKeys = createPolicySchema.innerType().innerType().keyof
 export const updatePolicySchema = policySchema
 	.extend({
 		id: policySchema.shape.id.optional(),
+		// validFrom: z.union([z.date().nullish(), z.string()]),
+		// validTo: z.union([z.date().nullish(), z.string()]),
 		role: policySchema.shape.rule.extend({
-			id: policySchema.shape.id.optional()
+			id: policySchema.shape.rule.shape.id.optional()
+			// action: z.enum(['permit', 'block', 'callout_inspection', 'callout_terminating', 'callout_unknown']).default('block')
 		})
 	})
-	.superRefine((data, ctx) => checkValidDates(ctx, data.validFrom, data.validTo))
-	.superRefine((data, ctx) => checkForMissingRule(ctx, data.ruleId, data.rule));
+	.superRefine((data, ctx) => checkValidDates(ctx, data.validFrom, data.validTo));
 
 export type UpdatePolicySchema = typeof updatePolicySchema;
 export type UpdatePolicy = z.infer<typeof updatePolicySchema>;
-export const updatePolicyKeys = updatePolicySchema.innerType().innerType().keyof().Enum;
+export const updatePolicyKeys = updatePolicySchema.innerType().keyof().Enum;
 
 /**
  * Refine functions
