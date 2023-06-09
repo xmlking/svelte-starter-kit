@@ -11,6 +11,7 @@
 		Cog,
 		HandRaised,
 		RectangleGroup,
+		Scale,
 		ShieldCheck,
 		Squares2x2,
 		Star,
@@ -65,6 +66,13 @@
 					active={activeUrl === '/dashboard/policies'}
 				>
 					<svelte:fragment slot="icon"><ShieldCheck /></svelte:fragment>
+				</SidebarItem>
+				<SidebarItem
+					label="Golden Rule"
+					href="/dashboard/rules"
+					active={activeUrl === '/dashboard/rules'}
+				>
+					<svelte:fragment slot="icon"><Scale /></svelte:fragment>
 				</SidebarItem>
 				<SidebarItem
 					label="Device Pools"

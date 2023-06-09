@@ -9,11 +9,6 @@ query GetPolicy($id: uuid!) {
 		subjectType
 		subjectDisplayName
 		subjectSecondaryId
-		createdBy
-		createdAt
-		updatedAt
-		updatedBy
-		organization
 		rule {
 			id
 			displayName
@@ -30,11 +25,6 @@ query GetPolicy($id: uuid!) {
 			action
 			appId
 			weight
-			createdBy
-			createdAt
-			updatedAt
-			updatedBy
-			organization
 		}
 	}
 }

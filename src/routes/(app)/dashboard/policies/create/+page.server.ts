@@ -68,7 +68,11 @@ export const actions = {
 			errors.forEach((error) => {
 				log.error('create policy api error', error);
 				// NOTE: you can add multiple errors, send all along with a message
-				setError(form, null, (error as GraphQLError).message);
+				if (error.message.includes('Uniqueness violation')) {
+					setError(form, 'rule.displayName', 'Display Name already taken');
+				} else {
+					setError(form, null, (error as GraphQLError).message);
+				}
 			});
 			return setMessage(form, 'Create policy failed');
 		}
