@@ -36,7 +36,8 @@ const config = {
 			},
 			// turn the value into something the API can use
 			marshal(date) {
-				return date.getTime();
+				// return date.getTime();
+				return date.toISOString();
 			}
 		},
 
@@ -78,6 +79,7 @@ const config = {
 				return val;
 			}
 		},
+		// FIXME: https://github.com/hasura/graphql-engine/issues/348
 		// hstore: {
 		// 	type: 'Map',
 		// 	unmarshal(val) {
@@ -96,7 +98,7 @@ const config = {
 			...defaultMarshall
 		},
 		_text: {
-			type: 'string',
+			type: 'string[]',
 			...defaultMarshall
 		},
 		jsonb: {
@@ -104,12 +106,23 @@ const config = {
 			...defaultMarshall
 		},
 		timestamp: {
-			type: 'string',
-			...defaultMarshall
+			type: 'Date',
+			unmarshal(val) {
+				return new Date(val);
+			},
+			marshal(date) {
+				return date.toISOString();
+			}
 		},
 		timestamptz: {
-			type: 'string',
-			...defaultMarshall
+			type: 'Date',
+			unmarshal(val) {
+				// TODO: https://stackoverflow.com/questions/6525538/convert-utc-date-time-to-local-date-time
+				return new Date(val);
+			},
+			marshal(date) {
+				return date.toISOString();
+			}
 		}
 	}
 };

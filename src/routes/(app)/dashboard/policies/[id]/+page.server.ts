@@ -40,8 +40,8 @@ export const actions = {
 
 		const policyData: policies_set_input = {
 			...(dataCopy.active && { active: dataCopy.active }),
-			...(dataCopy.validFrom && { validFrom: dataCopy.validFrom.toISOString() }),
-			...(dataCopy.validTo && { validTo: dataCopy.validTo.toISOString() }),
+			...(dataCopy.validFrom && { validFrom: dataCopy.validFrom }),
+			...(dataCopy.validTo && { validTo: dataCopy.validTo }),
 			...(dataCopy.weight && { weight: dataCopy.weight })
 		};
 		const ruleData: rules_set_input = {

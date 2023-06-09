@@ -34,16 +34,12 @@ export const actions = {
 		stripEmptyProperties(dataCopy);
 		log.debug('dataCopy after strip:', dataCopy);
 		const {
-			validFrom,
-			validTo,
 			ruleId,
 			rule: { tags, ...ruleRest },
 			...restPolicy
 		} = dataCopy;
 		const payload: policies_insert_input = {
 			...restPolicy,
-			...(validFrom && { validFrom: validFrom.toISOString() }),
-			...(validTo && { validTo: validTo.toISOString() }),
 			...(ruleId ? { ruleId } : { rule: { data: { ...ruleRest, ...(tags && { tags: `{${tags}}` }) } } })
 		};
 		// if we are creating Policy with new Rule, overwrite Rule's weight with Policy's weight.

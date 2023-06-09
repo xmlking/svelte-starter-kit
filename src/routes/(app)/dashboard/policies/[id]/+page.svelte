@@ -20,12 +20,7 @@
 	import type { Subject } from '$lib/models/types/subject';
 	import { Logger } from '$lib/utils';
 	import { Breadcrumb, BreadcrumbItem, Heading, Helper, UserCircle } from 'flowbite-svelte';
-	import {
-		DevicePhoneMobile,
-		RectangleGroup,
-		User,
-		UserGroup
-	} from 'svelte-heros-v2';
+	import { DevicePhoneMobile, RectangleGroup, User, UserGroup } from 'svelte-heros-v2';
 	import Select from 'svelte-select';
 	import { superForm } from 'sveltekit-superforms/client';
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';

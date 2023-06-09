@@ -30,7 +30,7 @@ export const policySchema = z.object({
 		destination: z.string().ip().nullish(),
 		destinationPort: z.string().trim().nullish(),
 		protocol: z.enum(['Any', 'IP', 'ICMP', 'IGMP', 'TCP', 'UDP', 'IPV6', 'ICMPV6', 'RM']).default('Any'),
-		action: z.enum(['permit', 'block']).default('block'),
+		action: z.enum(['permit', 'block', 'callout_inspection', 'callout_terminating', 'callout_unknown']).default('block'),
 		direction: z.enum(['egress', 'ingress']).default('egress'),
 		appId: z.string().trim().nullish(),
 		weight: z.coerce.number().min(0).max(2000).optional().default(2000),
