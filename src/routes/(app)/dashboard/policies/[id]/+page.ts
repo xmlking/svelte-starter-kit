@@ -14,13 +14,12 @@ export const load = async (event) => {
 		event,
 		blocking: true,
 		policy: CachePolicy.CacheAndNetwork,
-		metadata: { useRole: 'user', logResult: true },
+		metadata: { useRole: 'manager' },
 		variables
 	});
 	if (errors) throw error(400, errors[0] as GraphQLError);
 	const policy = data?.policies_by_pk;
 	if (!policy) throw error(404, 'policy not found');
-	// TODO: change dates from string => Date
 	const form = await superValidate(policy, schema);
 	return { form };
 };

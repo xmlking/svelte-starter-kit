@@ -73,7 +73,7 @@
 			accessor: 'updatedAt',
 			cell: ({ value }) =>
 				createRender(TimeDistance, {
-					timestamp: Date.parse(value),
+					timestamp: value,
 					class: 'decoration-solid'
 				}),
 			plugins: {
@@ -164,7 +164,7 @@
 	const deletePolicyStore = new DeletePolicyStore();
 	async function deletePolicy(policyId: string, ruleId: string) {
 		console.log('in deletePolicy...', policyId, ruleId);
-		const deletedAt = new Date().toISOString();
+		const deletedAt = new Date();
 		const { data } = await deletePolicyStore.mutate(
 			{ policyId, ruleId, deletedAt },
 			{

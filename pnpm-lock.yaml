@@ -91,8 +91,8 @@ devDependencies:
     specifier: 5.59.9
     version: 5.59.9(eslint@8.42.0)(typescript@5.1.3)
   '@vite-pwa/sveltekit':
-    specifier: 0.2.2
-    version: 0.2.2(@sveltejs/kit@1.20.2)(vite-plugin-pwa@0.16.3)
+    specifier: 0.2.5
+    version: 0.2.5(@sveltejs/kit@1.20.2)(vite-plugin-pwa@0.16.3)
   '@vitest/coverage-c8':
     specifier: 0.32.0
     version: 0.32.0(vitest@0.32.0)
@@ -118,8 +118,8 @@ devDependencies:
     specifier: 4.0.2
     version: 4.0.2
   daisyui:
-    specifier: 3.0.20
-    version: 3.0.20(postcss@8.4.24)
+    specifier: 3.0.22
+    version: 3.0.22(postcss@8.4.24)
   date-fns:
     specifier: 2.30.0
     version: 2.30.0
@@ -166,8 +166,8 @@ devDependencies:
     specifier: 7.4.0
     version: 7.4.0(svelte@3.59.1)(typescript@5.1.3)
   msw:
-    specifier: 1.2.1
-    version: 1.2.1(typescript@5.1.3)
+    specifier: 1.2.2
+    version: 1.2.2(typescript@5.1.3)
   postcss:
     specifier: 8.4.24
     version: 8.4.24
@@ -205,8 +205,8 @@ devDependencies:
     specifier: 1.0.0-rc.3
     version: 1.0.0-rc.3(@sveltejs/kit@1.20.2)(svelte@3.59.1)
   sveltekit-superforms:
-    specifier: 1.0.0-rc.3
-    version: 1.0.0-rc.3(@sveltejs/kit@1.20.2)(svelte@3.59.1)(zod@3.21.4)
+    specifier: 1.0.0-rc.4
+    version: 1.0.0-rc.4(@sveltejs/kit@1.20.2)(svelte@3.59.1)(zod@3.21.4)
   tailwindcss:
     specifier: 3.3.2
     version: 3.3.2
@@ -2937,12 +2937,12 @@ packages:
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
     dev: true
 
-  /@vite-pwa/sveltekit@0.2.2(@sveltejs/kit@1.20.2)(vite-plugin-pwa@0.16.3):
-    resolution: {integrity: sha512-GaU2I2IUOTUgHrDSvhZ0CaUe1j4zLAH45c9zoVhJI4IkqlsA3Run4NzIKF3yFAgR5U9l9OgNiJPaskhARenkzw==}
+  /@vite-pwa/sveltekit@0.2.5(@sveltejs/kit@1.20.2)(vite-plugin-pwa@0.16.3):
+    resolution: {integrity: sha512-cBPxnIpMbGZi68OadC/16OsIhMUdEGooQjlgl/Q39ZcumdGecb+j7LEXe2twCSASGefNN+/K48VZi3W/Rc248Q==}
     engines: {node: '>=16.14'}
     peerDependencies:
       '@sveltejs/kit': ^1.3.1
-      vite-plugin-pwa: ^0.14.0
+      vite-plugin-pwa: '>=0.16.3 <1'
     dependencies:
       '@sveltejs/kit': 1.20.2(svelte@3.59.1)(vite@4.3.9)
       vite-plugin-pwa: 0.16.3(vite@4.3.9)(workbox-build@7.0.0)(workbox-window@7.0.0)
@@ -3275,7 +3275,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001497
-      electron-to-chromium: 1.4.425
+      electron-to-chromium: 1.4.426
       node-releases: 2.0.12
       update-browserslist-db: 1.0.11(browserslist@4.21.7)
     dev: true
@@ -3851,8 +3851,8 @@ packages:
     engines: {node: '>=12'}
     dev: true
 
-  /daisyui@3.0.20(postcss@8.4.24):
-    resolution: {integrity: sha512-EQ0ryTM/+YfkTaRPdUvolsA8pThYnrjjvj2IEXQg31dRVxrEh+ovx5iBknKPXO6XJh2auYYfPonHBN7P88DNeQ==}
+  /daisyui@3.0.22(postcss@8.4.24):
+    resolution: {integrity: sha512-2xdRxQUUB+O0Mcww65QMwwo0fjnos4JmyLhX6F4WxWTngjy9eYyxdQChtsJB3GUl0jNYdZfmnK48gJNyhMBX8Q==}
     engines: {node: '>=16.9.0'}
     peerDependencies:
       postcss: ^8
@@ -4047,8 +4047,8 @@ packages:
       jake: 10.8.7
     dev: true
 
-  /electron-to-chromium@1.4.425:
-    resolution: {integrity: sha512-wv1NufHxu11zfDbY4fglYQApMswleE9FL/DSeyOyauVXDZ+Kco96JK/tPfBUaDqfRarYp2WH2hJ/5UnVywp9Jg==}
+  /electron-to-chromium@1.4.426:
+    resolution: {integrity: sha512-dWuNH+XUT9hdFHASfMpcZGW5kUyJvllumJkXaXiswuCkoaFIFI89aykBPuHEi1YUWQGRCqvIO0BUdmeFJ4W4Ww==}
     dev: true
 
   /emoji-regex@8.0.0:
@@ -5682,13 +5682,13 @@ packages:
   /ms@2.1.2:
     resolution: {integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==}
 
-  /msw@1.2.1(typescript@5.1.3):
-    resolution: {integrity: sha512-bF7qWJQSmKn6bwGYVPXOxhexTCGD5oJSZg8yt8IBClxvo3Dx/1W0zqE1nX9BSWmzRsCKWfeGWcB/vpqV6aclpw==}
+  /msw@1.2.2(typescript@5.1.3):
+    resolution: {integrity: sha512-GsW3PE/Es/a1tYThXcM8YHOZ1S1MtivcS3He/LQbbTCx3rbWJYCtWD5XXyJ53KlNPT7O1VI9sCW3xMtgFe8XpQ==}
     engines: {node: '>=14'}
     hasBin: true
     requiresBuild: true
     peerDependencies:
-      typescript: '>= 4.4.x <= 5.0.x'
+      typescript: '>= 4.4.x <= 5.1.x'
     peerDependenciesMeta:
       typescript:
         optional: true
@@ -7553,8 +7553,8 @@ packages:
       svelte: 3.59.1
     dev: true
 
-  /sveltekit-superforms@1.0.0-rc.3(@sveltejs/kit@1.20.2)(svelte@3.59.1)(zod@3.21.4):
-    resolution: {integrity: sha512-QffCIbcwyqWqFA08N/rLTN6SJXvyfI07oPXpOas65FiQ4chYviQcDbtvW9WFiphhqBmvn9/+n9ka+RtazdRxfA==}
+  /sveltekit-superforms@1.0.0-rc.4(@sveltejs/kit@1.20.2)(svelte@3.59.1)(zod@3.21.4):
+    resolution: {integrity: sha512-uePmY4G+TL5UMb31qDkrSpbsnhWCrJ1OCi61Un34POwmLHEUWR3nzC9c9OoTGKoT+pcMkqKvJLhG1SlP4QvrPg==}
     peerDependencies:
       '@sveltejs/kit': 1.x
       svelte: 3.x
