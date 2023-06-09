@@ -86,13 +86,14 @@ select_permissions:
     permission:
       columns:
         - id
-        - subject_id
-        - subject_secondary_id
-        - subject_type
-        - updated_at
         - valid_from
         - valid_to
         - weight
+        - subject_id
+        - subject_secondary_id
+        - subject_type
+        - rule_id
+        - updated_at
       filter:
         _and:
           - deleted_at:
@@ -106,20 +107,21 @@ select_permissions:
   - role: manager
     permission:
       columns:
-        - active
-        - created_at
-        - created_by
         - id
-        - organization
-        - subject_display_name
-        - subject_id
-        - subject_secondary_id
-        - subject_type
-        - updated_at
-        - updated_by
+        - active
         - valid_from
         - valid_to
         - weight
+        - subject_id
+        - subject_secondary_id
+        - subject_display_name
+        - subject_type
+        - rule_id
+        - created_at
+        - created_by
+        - updated_at
+        - updated_by
+        - organization
       filter:
         _and:
           - deleted_at:
@@ -129,20 +131,21 @@ select_permissions:
   - role: user
     permission:
       columns:
-        - active
-        - created_at
-        - created_by
         - id
-        - organization
-        - subject_display_name
-        - subject_id
-        - subject_secondary_id
-        - subject_type
-        - updated_at
-        - updated_by
+        - active
         - valid_from
         - valid_to
         - weight
+        - subject_id
+        - subject_secondary_id
+        - subject_display_name
+        - subject_type
+        - rule_id
+        - created_at
+        - created_by
+        - updated_at
+        - updated_by
+        - organization
       filter:
         _and:
           - deleted_at:

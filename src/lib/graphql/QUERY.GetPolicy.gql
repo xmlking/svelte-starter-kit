@@ -1,6 +1,5 @@
 query GetPolicy($id: uuid!) {
 	policies_by_pk(id: $id) {
-		id
 		weight
 		active
 		validFrom
@@ -9,8 +8,8 @@ query GetPolicy($id: uuid!) {
 		subjectType
 		subjectDisplayName
 		subjectSecondaryId
+		ruleId
 		rule {
-			id
 			displayName
 			description
 			tags

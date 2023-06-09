@@ -1,9 +1,4 @@
 <script lang="ts">
-	// https://github.com/dyne/starters/blob/main/saas/%7B%7Bcookiecutter.project_name%7D%7D/webapp/src/routes/(nru)/register/%2Bpage.svelte
-	// nested https://github.com/velut/pic2grid/blob/5fb1217150c3f6cf70e40d1e2aad7ded9b6e5d2f/src/lib/components/RenderOptionsForm.svelte
-	// dateProxy https://github.com/malcolmseyd/lockers/blob/main/src/routes/admin/edit/%2Bpage.svelte
-	// action https://github.com/malcolmseyd/lockers/blob/main/src/routes/admin/delete/%2Bpage.server.ts
-	// local data: https://github.com/malcolmseyd/lockers/blob/main/src/routes/admin/edit/%2Bpage.server.ts
 	import { browser } from '$app/environment';
 	import { CachePolicy, SearchRulesStore, order_by } from '$houdini';
 	import {

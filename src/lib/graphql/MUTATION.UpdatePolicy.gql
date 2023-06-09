@@ -2,47 +2,14 @@ mutation UpdatePolicy(
 	$policyId: uuid!
 	$policyData: policies_set_input!
 	$ruleId: uuid!
-	$ruleData: rules_set_input!
+	$ruleData: rules_set_input
 ) {
 	update_policies_by_pk(pk_columns: { id: $policyId }, _set: $policyData) {
 		id
-		weight
-		active
-		validFrom
-		validTo
-		subjectId
-		subjectType
 		subjectDisplayName
-		subjectSecondaryId
-		createdBy
-		createdAt
-		updatedAt
-		updatedBy
-		organization
-		rule {
-			id
-			displayName
-			description
-			tags
-			annotations
-			shared
-			source
-			sourcePort
-			destination
-			destinationPort
-			protocol
-			direction
-			action
-			appId
-			weight
-			createdBy
-			createdAt
-			updatedAt
-			updatedBy
-			organization
-		}
 	}
 	update_rules_by_pk(pk_columns: { id: $ruleId }, _set: $ruleData) {
 		id
+		displayName
 	}
 }

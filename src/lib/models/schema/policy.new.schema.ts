@@ -16,10 +16,9 @@ export const policySchema = z.object({
 	subjectSecondaryId: z.string().trim().nonempty(),
 	subjectType: z.enum(['user', 'group', 'device', 'service_account', 'device_pool']).default('user'),
 	active: z.boolean().optional().default(true),
-	organization: z.string().trim(),
-	ruleId: z.string().trim().uuid().optional(),
+	ruleId: z.string().trim().uuid(),
 	rule: z.object({
-		id: z.string().trim().uuid().optional(),
+		id: z.string().trim().uuid(),
 		displayName: z.string().trim().min(4).max(256),
 		description: z.string().trim().max(256).nullish(),
 		tags: z.string().trim().min(2).array().nullish(),
@@ -47,11 +46,17 @@ export type Policy = z.infer<typeof policySchema>;
  */
 export const createPolicySchema = policySchema
 	.omit({
-		id: true,
-		organization: true,
-		role: {
-			id: true
-		}
+		id: true
+		// rule: {
+		// 	id: true
+		// }
+	})
+	.extend({
+		ruleId: policySchema.shape.ruleId.nullish(),
+		// FIXME: omit for role.id=true not working
+		rule: policySchema.shape.rule.extend({
+			id: policySchema.shape.rule.shape.id.optional()
+		})
 	})
 	.superRefine((data, ctx) => checkValidDates(ctx, data.validFrom, data.validTo))
 	.superRefine((data, ctx) => checkForMissingRule(ctx, data.ruleId, data.rule));
@@ -64,13 +69,16 @@ export const createPolicyKeys = createPolicySchema.innerType().innerType().keyof
  * Update Policy Schema
  */
 export const updatePolicySchema = policySchema
+	.omit({
+		id: true
+		// rule: {
+		// 	id: true
+		// }
+	})
 	.extend({
-		id: policySchema.shape.id.optional(),
-		// validFrom: z.union([z.date().nullish(), z.string()]),
-		// validTo: z.union([z.date().nullish(), z.string()]),
-		role: policySchema.shape.rule.extend({
+		// FIXME: omit for role.id=true not working
+		rule: policySchema.shape.rule.extend({
 			id: policySchema.shape.rule.shape.id.optional()
-			// action: z.enum(['permit', 'block', 'callout_inspection', 'callout_terminating', 'callout_unknown']).default('block')
 		})
 	})
 	.superRefine((data, ctx) => checkValidDates(ctx, data.validFrom, data.validTo));

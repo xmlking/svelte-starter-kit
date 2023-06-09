@@ -165,46 +165,48 @@ update_permissions:
   - role: manager
     permission:
       columns:
-        - action
-        - annotations
-        - app_id
-        - deleted_at
-        - description
-        - destination
-        - destination_port
-        - direction
         - display_name
-        - protocol
+        - description
+        - tags
+        - annotations
+        - shared
         - source
         - source_port
-        - tags
+        - destination
+        - destination_port
+        - protocol
+        - action
+        - direction
+        - app_id
         - weight
+        - deleted_at
       filter:
         _and:
           - deleted_at:
               _is_null: true
           - organization:
               _eq: x-hasura-org-id
-      check: null
+      check: {}
       set:
         updated_by: x-hasura-user-id
   - role: user
     permission:
       columns:
-        - action
-        - annotations
-        - app_id
-        - deleted_at
-        - description
-        - destination
-        - destination_port
-        - direction
         - display_name
-        - protocol
+        - description
+        - tags
+        - annotations
+        - shared
         - source
         - source_port
-        - tags
+        - destination
+        - destination_port
+        - protocol
+        - action
+        - direction
+        - app_id
         - weight
+        - deleted_at
       filter:
         _and:
           - organization:
@@ -213,6 +215,6 @@ update_permissions:
               _eq: x-hasura-user-Id
           - deleted_at:
               _is_null: true
-      check: null
+      check: {}
       set:
         updated_by: x-hasura-user-id
