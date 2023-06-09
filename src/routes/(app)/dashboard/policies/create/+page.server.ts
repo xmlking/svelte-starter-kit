@@ -8,13 +8,6 @@ import { redirect } from 'sveltekit-flash-message/server';
 import { setError, setMessage, superValidate } from 'sveltekit-superforms/server';
 
 const log = new Logger('policy.create.server');
-// export const load = async () => {
-// 	// Server API:
-// 	const form = await superValidate(schema);
-
-// 	// Always return { form } in load and form actions.
-// 	return { form };
-// };
 
 const createPolicyStore = new CreatePolicyStore();
 export const actions = {
@@ -22,7 +15,7 @@ export const actions = {
 		const { request, locals } = event;
 		const session = await locals.getSession();
 		if (session?.user == undefined) {
-			throw redirect(307, '/auth/signin?callbackUrl=/dashboard/policy/create');
+			throw redirect(307, '/auth/signin?callbackUrl=/dashboard/policies/create');
 		}
 
 		const form = await superValidate(request, schema);

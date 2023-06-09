@@ -13,7 +13,9 @@ const config = {
 		url: (env) => env.PUBLIC_GRAPHQL_ENDPOINT,
 		interval: 0, //  only pull the schema when you first run `pnpm dev`
 		headers: {
-			'x-hasura-admin-secret': 'env:HASURA_GRAPHQL_ADMIN_SECRET'
+			'x-hasura-admin-secret': 'env:HASURA_GRAPHQL_ADMIN_SECRET',
+			'x-hasura-allowed-roles': 'user manager',
+			'x-hasura-role': 'manager'
 		}
 	},
 	plugins: {

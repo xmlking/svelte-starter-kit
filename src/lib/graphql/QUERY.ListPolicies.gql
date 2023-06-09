@@ -3,11 +3,6 @@ query ListPolicies(
 	$offset: Int = 0
 	$orderBy: [policies_order_by!] = [{ updatedAt: desc_nulls_last }]
 ) {
-	counts: policies_aggregate {
-		aggregate {
-			count
-		}
-	}
 	policies(order_by: $orderBy, limit: $limit, offset: $offset) {
 		...Policy_list_fields @mask_disable
 	}

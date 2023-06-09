@@ -1,2 +1,26 @@
-// `DateInput` should only be rendered on client-side as it is converting UTC server date to local date.
-export const ssr = false; // disable server rendering
+import { CachePolicy, GetPolicyStore } from '$houdini';
+import { updatePolicySchema as schema } from '$lib/models/schema/policy.new.schema';
+import { error } from '@sveltejs/kit';
+import type { GraphQLError } from 'graphql';
+import { superValidate } from 'sveltekit-superforms/server';
+
+const getPolicyStore = new GetPolicyStore();
+export const load = async (event) => {
+	const {
+		params: { id }
+	} = event;
+	const variables = { id }; // TODO: validate `id`
+	const { errors, data } = await getPolicyStore.fetch({
+		event,
+		blocking: true,
+		policy: CachePolicy.CacheAndNetwork,
+		metadata: { useRole: 'user', logResult: true },
+		variables
+	});
+	if (errors) throw error(400, errors[0] as GraphQLError);
+	const policy = data?.policies_by_pk;
+	if (!policy) throw error(404, 'policy not found');
+	// TODO: change dates from string => Date
+	const form = await superValidate(policy, schema);
+	return { form };
+};
