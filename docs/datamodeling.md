@@ -122,7 +122,7 @@ The decision we have made is to use `Soft Delete`
 
 #### Setup TABLE for soft-delete
 
-First of all, we should add a _global_ variable for controlling hard/soft deleteion _(superuser access is necessary to do this)_:
+First of all, we should add a _global_ variable for controlling hard/soft deletion _(superuser access is necessary to do this)_:
 
 ```sql
 ALTER DATABASE postgres SET rules.soft_deletion TO on;
