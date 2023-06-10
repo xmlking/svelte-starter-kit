@@ -112,6 +112,12 @@ hasura seed apply --file 1685396655834_rules.sql --database-name default --datab
 hasura seed apply --file 1684206620559_policies.sql --database-name default --database-name default --endpoint http://localhost:8080  --admin-secret myadminsecretkey
 ```
 
+Check the status
+```shell
+hasura metadata diff
+hasura migrate status --database-name default
+```
+
 ### Export Metadata
 
 To export **Metadata** and **Migrations** from your local Hasura to `infra/hasura` directory, for sharing with the team:
