@@ -135,7 +135,7 @@
 		const { errors, data } = await searchRulesStore.fetch({
 			blocking: true,
 			policy: CachePolicy.CacheAndNetwork,
-			metadata: { useRole: 'user', logResult: true },
+			metadata: { logResult: true },
 			variables
 		});
 		if (errors) throw new Error(`An error has occurred: ${errors}`);
@@ -296,7 +296,7 @@
 				</svelte:fragment>
 			</Select>
 			{#if $errors.ruleId}
-				<Helper class="mt-2" color="red">{ $errors.ruleId[0]}</Helper>
+				<Helper class="mt-2" color="red">{$errors.ruleId[0]}</Helper>
 			{/if}
 		</div>
 		<div class="col-span-2">

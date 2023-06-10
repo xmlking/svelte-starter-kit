@@ -5,10 +5,10 @@
  * reduce number of app roles returned.
  */
 export function appRoles(groups: string[]) {
-	// TODO: map groups/roles to subset of ['user', 'manager', 'tester'] app roles
+	// TODO: map groups/roles to subset of ['anonymous', 'user', 'manager', 'tester'] app roles
 	// console.debug('appRoles: got groups--->', groups);
-	// TODO: const roles = groups ? ['user', 'manager'] : ['user'];
-	const roles = ['user', 'manager'];
+	const roles = ['anonymous'];
+	groups ? roles.push('user', 'manager') : roles.push('user'); // TODO: implement real groups to role mapping
 	if (groups?.includes('tester')) roles.push('tester');
 	return roles;
 }

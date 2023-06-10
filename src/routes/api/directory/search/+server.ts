@@ -88,7 +88,7 @@ export const GET: RequestHandler = async (event) => {
 					event,
 					blocking: true,
 					policy: CachePolicy.CacheAndNetwork,
-					metadata: { backendToken: 'token from TokenVault', useRole: 'manager', logResult: true },
+					metadata: { backendToken: 'token from TokenVault', logResult: true },
 					variables
 				});
 				if (deviceErrors) throw new DeviceError('SEARCH_DEVICE_ERROR', 'list devices api error', deviceErrors[0] as GraphQLError);
@@ -106,7 +106,7 @@ export const GET: RequestHandler = async (event) => {
 					event,
 					blocking: true,
 					policy: CachePolicy.CacheAndNetwork,
-					metadata: { backendToken: 'token from TokenVault', useRole: 'manager', logResult: true },
+					metadata: { backendToken: 'token from TokenVault', logResult: true },
 					variables
 				});
 				if (poolErrors) throw new DeviceError('SEARCH_DEVICE_ERROR', 'list devices api error', poolErrors[0] as GraphQLError);
