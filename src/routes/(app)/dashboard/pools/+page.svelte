@@ -172,7 +172,7 @@
 			/> -->
 			<input name="limit" value={limit} type="hidden" />
 			<input name="offset" value={offset} type="hidden" />
-			<Button type="submit" color="dark" class="!p-2.5"><MagnifyingGlass size="20" /></Button>
+			<Button type="submit" color="primary" class="!p-2.5"><MagnifyingGlass size="20" /></Button>
 		</ButtonGroup>
 		<Button href="/dashboard/pools/create">Add Pool</Button>
 	</Navbar>
