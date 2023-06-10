@@ -25,8 +25,8 @@ export const actions = {
 		if (!form.valid) return fail(400, { form });
 
 		// TODO: validate incoming data with business rules
-		if (form.data.ruleId == null && form.data.rule == null) {
-			return setError(form, 'ruleId', 'Rule is missing');
+		if (form.data.ruleId && form.data.rule.shared == false) {
+			return setError(form, 'ruleId', 'Only shared rules are allowed to pick from. Chose a shared rule');
 		}
 
 		const dataCopy = { ...form.data };

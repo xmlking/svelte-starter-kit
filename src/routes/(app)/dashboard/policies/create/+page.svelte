@@ -128,7 +128,8 @@
 	async function fetchRule(filterText: string) {
 		if (filterText.length < 3) return [];
 		const where = {
-			displayName: { _like: `%${filterText}%` }
+			displayName: { _like: `%${filterText}%` },
+			shared: { _eq: true }
 		};
 		const variables = { where, orderBy };
 		const { errors, data } = await searchRulesStore.fetch({
@@ -295,7 +296,7 @@
 				</svelte:fragment>
 			</Select>
 			{#if $errors.ruleId}
-				<Helper class="mt-2" color="red">Rule is required</Helper>
+				<Helper class="mt-2" color="red">{ $errors.ruleId[0]}</Helper>
 			{/if}
 		</div>
 		<div class="col-span-2">
