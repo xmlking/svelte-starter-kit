@@ -113,6 +113,7 @@ hasura seed apply --file 1684206620559_policies.sql --database-name default --da
 ```
 
 Check the status
+
 ```shell
 hasura metadata diff
 hasura migrate status --database-name default

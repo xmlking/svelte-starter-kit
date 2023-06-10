@@ -30,7 +30,10 @@ const config: UserConfig = {
 			scope: '/',
 			/* enable sw on development */
 			devOptions: {
-				enabled: process.env.SW_DEV === 'true'
+				enabled: process.env.SW_DEV === 'true',
+				suppressWarnings: true,
+				type: 'module',
+				navigateFallback: '/'
 			},
 			includeAssets: [
 				'favicon.ico',
@@ -69,9 +72,14 @@ const config: UserConfig = {
 					}
 				]
 			},
+			injectManifest: {
+				globPatterns: ['client/**/*.{js,css,ico,png,svg,webp,woff,woff2}']
+			},
 			workbox: {
+				globPatterns: ['client/**/*.{js,css,ico,png,svg,webp,woff,woff2}'],
 				// globPatterns: ['posts.json', '**/*.{js,css,ico,png,svg,webp,avif,woff,woff2,html}'],
 				// globIgnores: ["**/node_modules/**/*", '**/sw*', '**/workbox-*']
+				navigateFallbackDenylist: [/^\/auth/, /^\/dashboard/]
 			}
 		})
 	],
