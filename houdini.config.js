@@ -118,7 +118,10 @@ const config = {
 		timestamptz: {
 			type: 'Date',
 			unmarshal(val) {
-				// TODO: https://stackoverflow.com/questions/6525538/convert-utc-date-time-to-local-date-time
+				// TODO: https://www.tutorialspoint.com/how-to-convert-utc-date-time-into-local-date-time-using-javascript
+				// const server = new Date(val);
+				// const offset = server.getTimezoneOffset();
+				// return new Date(server.getTime() + offset * 60000);
 				return new Date(val);
 			},
 			marshal(date) {

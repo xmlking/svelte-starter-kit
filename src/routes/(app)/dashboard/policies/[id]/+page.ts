@@ -14,7 +14,6 @@ export const load = async (event) => {
 		event,
 		blocking: true,
 		policy: CachePolicy.CacheAndNetwork,
-		metadata: { useRole: 'manager' },
 		variables
 	});
 	if (errors) throw error(400, errors[0] as GraphQLError);
