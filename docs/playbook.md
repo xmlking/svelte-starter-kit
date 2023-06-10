@@ -273,8 +273,11 @@ pnpm add -D svelte-select
 
 #### Progressive Web Apps (PWA)
 
+check [example](https://github.com/vite-pwa/sveltekit/tree/main/examples/sveltekit-ts) for reference.
+
 ```shell
-pnpm add -D  @vite-pwa/sveltekit vite-plugin-pwa workbox-window
+# pnpm add -D @vite-pwa/sveltekit
+pnpm add -D @vite-pwa/sveltekit vite-plugin-pwa workbox-window
 ```
 
 #### Enable https (optional)
