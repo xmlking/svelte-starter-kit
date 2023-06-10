@@ -32,7 +32,11 @@
 </div>
 
 {#if $errors}
-	<Helper class="mt-2" color="red">{$errors}</Helper>
+	{#if $errors._errors}
+		<Helper class="mt-2" color="red">{$errors._errors}</Helper>
+	{:else}
+		<Helper class="mt-2" color="red">{$errors}</Helper>
+	{/if}
 {/if}
 
 <style lang="postcss">
@@ -60,7 +64,7 @@
 	}
 
 	.my-tag :global(.svelte-tags-input) {
-		@apply block w-full appearance-none rounded-lg border-gray-300 bg-transparent p-2 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-blue-500;
+		@apply block w-full appearance-none rounded-lg border-gray-300 bg-transparent p-2 text-sm text-gray-900 focus:border-primary-700 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-blue-500;
 	}
 
 	.my-tag :global(.svelte-tags-input-layout:focus-within) {
@@ -71,7 +75,8 @@
 		border: solid 1px var(--tw-ring-color);
 	}
 	.my-tag :global(.svelte-tags-input-layout:hover) {
-		border: solid 1px var(--tw-ring-color);
+		/* border: solid 1px var(--tw-ring-color); */
+		@apply border-primary-700;
 	}
 
 	[data-invalid],

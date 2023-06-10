@@ -139,8 +139,8 @@ devDependencies:
     specifier: 1.6.5
     version: 1.6.5
   flowbite-svelte:
-    specifier: 0.37.4
-    version: 0.37.4(svelte@3.59.1)
+    specifier: 0.37.5
+    version: 0.37.5(svelte@3.59.1)
   graphql:
     specifier: 16.6.0
     version: 16.6.0
@@ -3275,7 +3275,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001497
-      electron-to-chromium: 1.4.426
+      electron-to-chromium: 1.4.427
       node-releases: 2.0.12
       update-browserslist-db: 1.0.11(browserslist@4.21.7)
     dev: true
@@ -4047,8 +4047,8 @@ packages:
       jake: 10.8.7
     dev: true
 
-  /electron-to-chromium@1.4.426:
-    resolution: {integrity: sha512-dWuNH+XUT9hdFHASfMpcZGW5kUyJvllumJkXaXiswuCkoaFIFI89aykBPuHEi1YUWQGRCqvIO0BUdmeFJ4W4Ww==}
+  /electron-to-chromium@1.4.427:
+    resolution: {integrity: sha512-HK3r9l+Jm8dYAm1ctXEWIC+hV60zfcjS9UA5BDlYvnI5S7PU/yytjpvSrTNrSSRRkuu3tDyZhdkwIczh+0DWaw==}
     dev: true
 
   /emoji-regex@8.0.0:
@@ -4477,8 +4477,8 @@ packages:
   /flatted@3.2.7:
     resolution: {integrity: sha512-5nqDSxl8nn5BSNxyR3n4I6eDmbolI6WT+QqR547RwxQapgjQBmtktdP+HTBb/a/zLsbzERTONyUB5pefh5TtjQ==}
 
-  /flowbite-svelte@0.37.4(svelte@3.59.1):
-    resolution: {integrity: sha512-zJcxxZEs4msREqSe/lQzn5J2w823YNBsmBqjES3T9NxKvJE8mTGB1VVzHMrEcaWcwONaoQ7LRfi4lcV5b6FqHw==}
+  /flowbite-svelte@0.37.5(svelte@3.59.1):
+    resolution: {integrity: sha512-aAPJygrfqY1+wkcl4rG/ikTxAdnB1p4Xe2sKG3Jm+BJsMZvArgl6/weH+DimoSjHLAMLhtd4spAbzfT8eHBgnQ==}
     engines: {node: '>=16.0.0', npm: '>=7.0.0'}
     peerDependencies:
       svelte: ^3.55.1 || ^4.0.0
