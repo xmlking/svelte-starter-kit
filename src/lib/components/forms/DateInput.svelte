@@ -21,8 +21,8 @@
 	if (type === 'date') {
 		proxy = dateProxy(superform.form, field, { format: 'date', empty: 'null' });
 	} else if (type === 'datetime-local') {
-		proxy = dateProxy(superform.form, field, { format: 'datetime-utc', empty: 'null' });
-		// proxy = dateProxy(superform.form, field, { format: '"datetime', empty: 'null' });
+		// proxy = dateProxy(superform.form, field, { format: 'datetime-utc', empty: 'null' });
+		proxy = dateProxy(superform.form, field, { format: 'datetime-local', empty: 'null' });
 	}
 	// $: console.log('date proxy----', path, $proxy)
 	// $: console.log('date value----', path, $value)
