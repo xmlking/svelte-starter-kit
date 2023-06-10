@@ -61,7 +61,7 @@
 		"eslint-plugin-svelte3": "4.0.0",
 		"felte": "1.2.7",
 		"flowbite": "1.6.5",
-		"flowbite-svelte": "0.37.4",
+		"flowbite-svelte": "0.37.5",
 		"graphql": "16.6.0",
 		"graphql-ws": "5.13.1",
 		"houdini": "1.2.5",

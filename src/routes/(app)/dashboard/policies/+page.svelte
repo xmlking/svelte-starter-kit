@@ -10,6 +10,7 @@
 	import {
 		Breadcrumb,
 		BreadcrumbItem,
+		Button,
 		ButtonGroup,
 		NavBrand,
 		Navbar,
@@ -260,7 +261,7 @@
 			</SelectFetch>
 		</ButtonGroup>
 		<!-- <a class="btn" href="/dashboard/policies/00000000-0000-0000-0000-000000000000">Add Policy</a> -->
-		<a class="btn" href="/dashboard/policies/create">Add Policy</a>
+		<Button href="/dashboard/policies/create">Add Policy</Button>
 	</Navbar>
 	<input type="hidden" name="limit" value={limit} />
 	<input type="hidden" name="offset" value={offset} />

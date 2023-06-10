@@ -239,6 +239,9 @@
 				on:clear={clearSubject}
 				loadOptions={fetchSubjects}
 				--list-z-index="100"
+				--border-radius="8px"
+				--border-hover="1px solid blue"
+				--border-focused="1px solid blue"
 			>
 				<b slot="prepend">
 					{#if $form.subjectType == 'group'}
@@ -275,6 +278,10 @@
 				on:change={onRuleChange}
 				on:clear={clearRule}
 				loadOptions={fetchRule}
+				--list-z-index="100"
+				--border-radius="8px"
+				--border-hover="1px solid blue"
+				--border-focused="1px solid blue"
 			>
 				<b slot="prepend">
 					<MagnifyingGlass />
