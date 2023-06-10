@@ -119,7 +119,7 @@
 		const { data } = await deletePoolStore.mutate(
 			{ id, deletedAt },
 			{
-				metadata: { useRole: 'user', logResult: true }
+				metadata: { logResult: true }
 			}
 		);
 		if (data?.update_pools_by_pk?.displayName) {
@@ -172,7 +172,9 @@
 			/> -->
 			<input name="limit" value={limit} type="hidden" />
 			<input name="offset" value={offset} type="hidden" />
-			<Button type="submit" color="primary" class="!p-2.5"><MagnifyingGlass size="20" /></Button>
+			<Button type="submit" color="primary" class="!p-2.5"
+				><MagnifyingGlass size="20" /></Button
+			>
 		</ButtonGroup>
 		<Button href="/dashboard/pools/create">Add Pool</Button>
 	</Navbar>

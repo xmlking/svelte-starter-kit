@@ -44,13 +44,14 @@ export default new HoudiniClient({
 			log.debug('session...', session);
 		}
 		const token = session?.token;
+		const roles = session?.roles;
 		const backendToken = metadata?.backendToken;
-		const useRole = metadata?.useRole;
+		const useRole = metadata?.useRole ?? getHighestRole(roles);
 
 		return {
 			headers: {
 				...(token ? { Authorization: `Bearer ${token}` } : {}),
-				...(useRole ? { 'x-hasura-role': useRole } : { 'x-hasura-role': 'user' }),
+				...(useRole ? { 'x-hasura-role': useRole } : { 'x-hasura-role': 'anonymous' }),
 				...(backendToken ? { backendToken } : {})
 			}
 		};
@@ -61,3 +62,12 @@ export default new HoudiniClient({
 	// },
 	plugins: [subClient, ...(browser ? [logMetadata] : [])]
 });
+
+function getHighestRole(roles: string[] | undefined) {
+	if (!roles) return 'anonymous';
+	if (roles?.includes('tester')) return 'tester';
+	if (roles?.includes('manager')) return 'manager';
+	if (roles?.includes('user')) return 'user';
+	log.error(`unsupported role in user roles: ${roles}`);
+	throw Error(`unsupported role in user roles: ${roles}`);
+}

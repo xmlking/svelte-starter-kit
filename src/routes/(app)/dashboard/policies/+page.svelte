@@ -169,7 +169,7 @@
 		const { data } = await deletePolicyStore.mutate(
 			{ policyId, ruleId, deletedAt },
 			{
-				metadata: { useRole: 'user', logResult: true }
+				metadata: { logResult: true }
 			}
 		);
 		if (data?.update_policies_by_pk && data?.update_rules?.affected_rows) {

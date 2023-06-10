@@ -12,6 +12,7 @@ const config = {
 	watchSchema: {
 		url: (env) => env.PUBLIC_GRAPHQL_ENDPOINT,
 		interval: 0, //  only pull the schema when you first run `pnpm dev`
+		// HINT: we need to generate scheam for highest role level that app support.
 		headers: {
 			'x-hasura-admin-secret': 'env:HASURA_GRAPHQL_ADMIN_SECRET',
 			'x-hasura-allowed-roles': 'user manager',
