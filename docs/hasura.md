@@ -36,11 +36,6 @@ hasura version
 hasura console
 
 # Create a new seed by exporting data from tables already present in the database:
-hasura seed create organization --database-name default --from-table organization
-hasura seed create direction --database-name default --from-table direction
-hasura seed create action --database-name default --from-table action
-hasura seed create protocol --database-name default --from-table protocol
-hasura seed create subject_type --database-name default --from-table subject_type
 hasura seed create devices --database-name default --from-table devices
 hasura seed create pools --database-name default --from-table pools
 hasura seed create rules --database-name default --from-table rules
@@ -49,11 +44,6 @@ hasura seed create policies --database-name default --from-table policies
 # Export data from multiple tables:
 # hasura seed create policies_organization --database-name default --from-table policies --from-table organization
 # Apply only a particular file:
-hasura seed apply --file 1685396542588_organization.sql --database-name default
-hasura seed apply --file 1685396548718_direction.sql --database-name default
-hasura seed apply --file 1685396552830_action.sql --database-name default
-hasura seed apply --file 1685396588468_protocol.sql --database-name default
-hasura seed apply --file 1685396556779_subject_type.sql --database-name default
 hasura seed apply --file 1684709181893_devices.sql --database-name default
 hasura seed apply --file 1684709183467_pools.sql --database-name default
 hasura seed apply --file 1685396655834_rules.sql --database-name default
@@ -105,37 +95,21 @@ docker compose down
 docker compose down -v
 ```
 
-### Refresh local hasura running in docker-compose with changes committed to repo
+### Apply Migrations and Metadata on another instance of the Hasura Server
 
-```shell
-docker compose down -v
-docker compose up hasura
+To apply all the **Metadata** and **Migrations** present in the `infra/hasura` directory to a new, "fresh" database (i.e., after `docker compose down -v`):
 
-hasura migrate apply --database-name default
-
-hasura seed apply --file 1684708431893_organization.sql --database-name default
-hasura seed apply --file 1684708436910_direction.sql --database-name default
-hasura seed apply --file 1684708445914_action.sql --database-name default
-hasura seed apply --file 1684708447664_subject_type.sql --database-name default
-hasura seed apply --file 1684708449201_policies.sql --database-name default
-hasura seed apply --file 1684709181893_devices.sql --database-name default
-hasura seed apply --file 1684709183467_pools.sql --database-name default
-
-hasura metadata apply
-hasura metadata reload
-```
-
-### Apply Metadata
-
-To apply all the **Metadata** and **Migrations** present in the `infra/hasura` directory to a new, "fresh" database (i.e., docker compose down -v):
+> In this case, I am applying metadata, migrations and seed data to local fresh hasura/postgres database started with `docker compose up hasura`
 
 ```shell
 # only apply metadata
 hasura metadata apply --endpoint http://localhost:8080  --admin-secret myadminsecretkey
-# apply metadata and DB Migrations
+# apply metadata, DB migrations and seed data
 hasura deploy --endpoint http://localhost:8080  --admin-secret myadminsecretkey
-hasura seed apply --file 1684117729424_policies_seed.sql --database-name default --endpoint http://localhost:8080  --admin-secret myadminsecretkey
-hasura seed apply --file 1684117772284_organization_seed.sql --database-name default --endpoint http://localhost:8080  --admin-secret myadminsecretkey
+hasura seed apply --file 1684709181893_devices.sql --database-name default --database-name default --endpoint http://localhost:8080  --admin-secret myadminsecretkey
+hasura seed apply --file 1684709183467_pools.sql --database-name default --database-name default --endpoint http://localhost:8080  --admin-secret myadminsecretkey
+hasura seed apply --file 1685396655834_rules.sql --database-name default --database-name default --endpoint http://localhost:8080  --admin-secret myadminsecretkey
+hasura seed apply --file 1684206620559_policies.sql --database-name default --database-name default --endpoint http://localhost:8080  --admin-secret myadminsecretkey
 ```
 
 ### Export Metadata
@@ -265,3 +239,4 @@ Use plugin [@graphql-codegen/hasura-allow-list](https://npmjs.com/package/@graph
 - [GraphQL Security in Production with Automated Allow Lists](https://hasura.io/blog/graphql-security-in-production-with-hasura-automated-allow-lists/)
 - Hasura [Production Checklist](https://hasura.io/docs/latest/deployment/production-checklist/)
 - Hasura [Roles & Session Variables](https://hasura.io/docs/latest/auth/authorization/roles-variables/)
+- Hasura [Manage Migrations](https://hasura.io/docs/latest/migrations-metadata-seeds/manage-migrations/)

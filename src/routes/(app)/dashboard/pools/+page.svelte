@@ -174,7 +174,7 @@
 			<input name="offset" value={offset} type="hidden" />
 			<Button type="submit" color="dark" class="!p-2.5"><MagnifyingGlass size="20" /></Button>
 		</ButtonGroup>
-		<a class="btn" href="/dashboard/pools/00000000-0000-0000-0000-000000000000">Add Pool</a>
+		<Button href="/dashboard/pools/create">Add Pool</Button>
 	</Navbar>
 	<ErrorMessage error={fieldErrors?.displayName?.[0]} />
 	<ErrorMessage error={fieldErrors?.limit?.[0]} />
