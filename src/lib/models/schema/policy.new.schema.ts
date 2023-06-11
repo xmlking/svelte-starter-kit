@@ -79,7 +79,8 @@ export const updatePolicySchema = policySchema
 		// FIXME: omit for role.id=true not working
 		rule: policySchema.shape.rule.extend({
 			id: policySchema.shape.rule.shape.id.optional()
-		})
+		}),
+		originalShared: policySchema.shape.rule.shape.shared
 	})
 	.superRefine((data, ctx) => checkValidDates(ctx, data.validFrom, data.validTo));
 

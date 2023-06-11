@@ -29,7 +29,7 @@ export const actions = {
 
 		const dataCopy = { ...form.data };
 		log.debug('dataCopy before strip:', dataCopy);
-		stripEmptyProperties(dataCopy);
+		stripEmptyProperties(dataCopy, false);
 		log.debug('dataCopy after strip:', dataCopy);
 		const { ruleId, rule } = dataCopy;
 
@@ -59,10 +59,10 @@ export const actions = {
 			...(rule.appId && { appId: rule.appId }),
 			...(rule.weight && { weight: rule.weight }),
 			// HINT: only allow changing `shared` property from `false` to `true`
-			...(rule.shared == false && { shared: rule.shared })
+			...(dataCopy.originalShared == false && rule.shared == true && { shared: rule.shared })
 		};
 
-		const variables = rule.shared ? { policyId: id, policyData, ruleId } : { policyId: id, policyData, ruleId, ruleData };
+		const variables = { policyId: id, policyData, ruleId, ruleData, skipRuleUpdate: dataCopy.originalShared };
 		log.debug('UPDATE action variables:', variables);
 		const { errors, data } = await updatePolicyStore.mutate(variables, {
 			metadata: { logResult: true },
@@ -79,10 +79,12 @@ export const actions = {
 		}
 
 		const { update_policies_by_pk: policyResult, update_rules_by_pk: ruleResult } = data || {};
-		if (!policyResult || !ruleResult) return setMessage(form, 'Create policy failed: responce empty', { status: 404 });
+		if (!policyResult) return setMessage(form, 'Update policy failed: responce empty', { status: 404 });
 
 		const message = {
-			message: `Policy updated for Subject: ${policyResult.subjectDisplayName} with Rule: ${ruleResult.displayName}`,
+			message: `Policy for Subject: ${policyResult.subjectDisplayName} ${
+				ruleResult ? 'and Rule: ' + ruleResult?.displayName : ''
+			} updated`,
 			dismissible: true,
 			duration: 10000,
 			type: ToastLevel.Success
