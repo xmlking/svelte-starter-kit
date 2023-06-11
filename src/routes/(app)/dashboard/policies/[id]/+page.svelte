@@ -123,8 +123,10 @@
 				<Helper class="mt-2" color="red">Subject is required</Helper>
 			{/if}
 		</div>
-		<div class="col-span-2">
-			<A class="btn" href="/dashboard/rules/{$form.ruleId}">edit this golden rule</A>
+		<div class="col-span-2 flex justify-end">
+			{#if $form.originalShared}
+				<A class="btn" href="/dashboard/rules/{$form.ruleId}">edit this golden rule</A>
+			{/if}
 		</div>
 		<div class="col-span-2">
 			<FloatingTextInput field="rule.displayName" label="Display Name" {disabled} />

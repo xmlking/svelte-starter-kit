@@ -3,10 +3,10 @@ import { Logger } from '$lib/utils';
 import { zfd } from '$lib/zodfd';
 import { error } from '@sveltejs/kit';
 import { ZodError } from 'zod';
-import type { BeforeLoadEvent, SearchRulesAllVariables as Variables } from './$houdini';
+import type { BeforeLoadEvent, SearchSharedRulesVariables as Variables } from './$houdini';
 const log = new Logger('rule.browser');
 
-export const _SearchRulesAllVariables: Variables = ({ url }) => {
+export const _SearchSharedRulesVariables: Variables = ({ url }) => {
 	const limit = parseInt(url.searchParams.get('limit') ?? '50');
 	const offset = parseInt(url.searchParams.get('offset') ?? '0');
 	const displayName = url.searchParams.get('displayName') ?? '';
