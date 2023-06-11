@@ -25,8 +25,8 @@
 	const log = new Logger('routes:rules');
 
 	export let data: PageData;
-	$: ({ SearchRulesAll, formErrors, fieldErrors } = data);
-	$: rules = $SearchRulesAll.data?.rules;
+	$: ({ SearchSharedRules, formErrors, fieldErrors } = data);
+	$: rules = $SearchSharedRules.data?.rules;
 	$: ruleStore.set(rules ?? []);
 
 	const ruleStore = writable(rules ?? []);
@@ -184,10 +184,10 @@
 	<ErrorMessage error={fieldErrors?.offset?.[0]} />
 </form>
 
-{#if $SearchRulesAll.fetching}
+{#if $SearchSharedRules.fetching}
 	<p>Fetching...</p>
-{:else if $SearchRulesAll.errors}
-	<GraphQlErrors errors={$SearchRulesAll.errors} />
+{:else if $SearchSharedRules.errors}
+	<GraphQlErrors errors={$SearchSharedRules.errors} />
 {:else}
 	<DataTable {tableViewModel} />
 {/if}
