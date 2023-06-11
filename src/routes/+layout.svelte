@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { dev } from '$app/environment';
-	import { Analytics } from '$lib/components';
+	// import { dev } from '$app/environment';
+	// import { Analytics } from '$lib/components';
+	// import envPub from '$lib/variables/variables';
 	import { Toasts } from '$lib/components/toast';
-	import envPub from '$lib/variables/variables';
 	import '../app.pcss';
 
 	import { onMount } from 'svelte';
@@ -39,9 +39,9 @@
 	{@html webManifest}
 </svelte:head>
 
-{#if !dev && envPub.PUBLIC_GOOGLE_ANALYTICS_TARGET_ID}
+<!-- {#if !dev && envPub.PUBLIC_GOOGLE_ANALYTICS_TARGET_ID}
 	<Analytics gid={envPub.PUBLIC_GOOGLE_ANALYTICS_TARGET_ID} />
-{/if}
+{/if} -->
 
 <Toasts placement="bottom-right" />
 

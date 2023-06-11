@@ -26,6 +26,7 @@ Ref: https://joyofcode.xyz/sveltekit-google-analytics
 			// eslint-disable-next-line no-undef
 			gtag('config', gid, {
 				page_title: document.title,
+				// FIXME: Error: Cannot subscribe to 'page' store on the server outside of a Svelte component, as it is bound to the current request via component context.
 				page_path: $page.url.pathname
 			});
 		}

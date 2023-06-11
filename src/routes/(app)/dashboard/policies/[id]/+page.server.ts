@@ -1,8 +1,8 @@
 import type { policies_set_input, rules_set_input } from '$houdini';
 import { UpdatePolicyStore } from '$houdini';
 import { ToastLevel } from '$lib/components/toast';
-import { updatePolicySchema as schema } from '$lib/models/schema/policy.new.schema';
-import { Logger, stripEmptyProperties } from '$lib/utils';
+import { updatePolicySchema as schema } from '$lib/models/schema';
+import { Logger, cleanClone } from '$lib/utils';
 import { uuidSchema } from '$lib/utils/zod.utils';
 import { fail } from '@sveltejs/kit';
 import type { GraphQLError } from 'graphql';
@@ -27,10 +27,10 @@ export const actions = {
 		// superform validation
 		if (!form.valid) return fail(400, { form });
 
-		const dataCopy = { ...form.data };
-		log.debug('dataCopy before strip:', dataCopy);
-		stripEmptyProperties(dataCopy, false);
-		log.debug('dataCopy after strip:', dataCopy);
+		// const dataCopy = { ...form.data };
+		log.debug('before cleanClone with null:', form.data);
+		const dataCopy = cleanClone(form.data, { empty: 'null' });
+		log.debug('after cleanClone with null:', dataCopy);
 		const {
 			subjectDisplayName,
 			subjectId,

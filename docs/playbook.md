@@ -4,6 +4,14 @@ Show how this repo is setup via step-by-step guild
 
 ## Base
 
+### Prerequisite
+
+Instal needed global node packages
+
+```shell
+npm i  -G tsx
+```
+
 ### Create
 
 ```shell
@@ -165,16 +173,14 @@ Added [Dockerfile](../Dockerfile) and GitHub [actions](../.github/workflows).
 1. Headless Table
    1. [Svelte Headless Table](https://svelte-headless-table.bryanmylee.com/#headless)
    2. [TanStack Table](https://tanstack.com/table/v8)
-2. [Felte](https://felte.dev/) - An extensible form library for Svelte
-3. [A lightweight Svelte Action to make your elements draggable](https://github.com/PuruVJ/neodrag/tree/main/packages/svelte#readme)
-4. Fetch, cache and update asynchronous data in your Svelte applications [TanStack Query](https://tanstack.com/query/v4)
+2. [A lightweight Svelte Action to make your elements draggable](https://github.com/PuruVJ/neodrag/tree/main/packages/svelte#readme)
 
 ```shell
 # table library for Svelte
 pnpm add -D svelte-headless-table
 #pnpm add -D @tanstack/svelte-table
 # form library for Svelte
-pnpm add -D felte @felte/reporter-svelte @felte/validator-zod zod zod-form-data
+pnpm i -D sveltekit-superforms zod zod-form-data
 # make any element draggable
 pnpm add -D @neodrag/svelte
 # to fetch, cache and update data
@@ -259,8 +265,14 @@ pnpm add  -D next-auth-hasura-adapter
 
 Set/Get/Remove cookies in browser (for server-side svelte already provide utils)
 
+Install following CLI tools globally
+
+- [tsx](https://github.com/esbuild-kit/tsx) to run _TypeScript_ & _ESM_ files from command-line. This is **NOT** React's [TSX/JSX](https://www.typescriptlang.org/docs/handbook/jsx.html)
+- [hasura-cli](https://hasura.io/docs/latest/hasura-cli/install-hasura-cli/) as GitOps tool for Hasura
+
 ```shell
-pnpm add -D js-cookie
+pnpm add -g tsx
+pnpm add -g hasura-cli
 ```
 
 #### Forms
