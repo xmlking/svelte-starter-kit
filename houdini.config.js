@@ -38,7 +38,7 @@ const config = {
 			// turn the value into something the API can use
 			marshal(date) {
 				// return date.getTime();
-				return date.toISOString();
+				return date?.toISOString();
 			}
 		},
 
@@ -112,7 +112,7 @@ const config = {
 				return new Date(val);
 			},
 			marshal(date) {
-				return date.toISOString();
+				return date?.toISOString();
 			}
 		},
 		timestamptz: {
@@ -125,7 +125,7 @@ const config = {
 				return new Date(val);
 			},
 			marshal(date) {
-				return date.toISOString();
+				return date?.toISOString();
 			}
 		}
 	}

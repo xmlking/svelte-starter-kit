@@ -1,7 +1,7 @@
 import { CreatePolicyStore, type policies_insert_input } from '$houdini';
 import { ToastLevel } from '$lib/components/toast';
-import { createPolicySchema as schema } from '$lib/models/schema/policy.new.schema';
-import { Logger, stripEmptyProperties } from '$lib/utils';
+import { createPolicySchema as schema } from '$lib/models/schema';
+import { Logger, cleanClone } from '$lib/utils';
 import { fail } from '@sveltejs/kit';
 import type { GraphQLError } from 'graphql';
 import { redirect } from 'sveltekit-flash-message/server';
@@ -29,10 +29,10 @@ export const actions = {
 			return setError(form, 'ruleId', 'Only shared rules are allowed to pick from. Chose a shared rule');
 		}
 
-		const dataCopy = { ...form.data };
-		log.debug('dataCopy before strip:', dataCopy);
-		stripEmptyProperties(dataCopy);
-		log.debug('dataCopy after strip:', dataCopy);
+		//const dataCopy = { ...form.data };
+		log.debug('before cleanClone with strip:', form.data);
+		const dataCopy = cleanClone(form.data, { empty: 'strip' });
+		log.debug('after cleanClone with strip:', dataCopy);
 		const {
 			ruleId,
 			rule: { tags, ...ruleRest },

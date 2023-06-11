@@ -1,97 +1,69 @@
-import { emptyToNull } from '$lib/utils/zod.utils';
 import { z } from 'zod';
 
-function checkValidDates(ctx: z.RefinementCtx, validFrom: string | undefined | null, validTo: string | undefined | null) {
-	if (validFrom && validTo && new Date(validTo) < new Date(validFrom)) {
-		ctx.addIssue({
-			code: z.ZodIssueCode.custom,
-			path: ['validTo'],
-			message: 'validTo should be after validFrom'
-		});
-	}
-}
-
-export const policyClientSchema = z
-	.object({
+/**
+ * Policy Schema
+ */
+export const policySchema = z.object({
+	id: z.string().trim().uuid(),
+	// validFrom: z.coerce.date(),
+	// validFrom: z.string().datetime({ offset: true }).nullish().catch(null),
+	// validTo: z.string().datetime({ offset: true }).nullish().catch(null),
+	validFrom: z.date().nullish(),
+	validTo: z.date().nullish(),
+	weight: z.coerce.number().min(0).max(2000).optional().default(2000),
+	subjectDisplayName: z.string().trim().nonempty(),
+	subjectId: z.string().trim().nonempty(),
+	subjectSecondaryId: z.string().trim().nonempty(),
+	subjectType: z.enum(['user', 'group', 'device', 'service_account', 'device_pool']).default('user'),
+	active: z.boolean().optional().default(true),
+	ruleId: z.string().trim().uuid(),
+	rule: z.object({
+		id: z.string().trim().uuid(),
 		displayName: z.string().trim().min(4).max(256),
 		description: z.string().trim().max(256).nullish(),
-		// tags: z.preprocess(stringToArray, z.array(z.string().trim().min(2)).optional()),
-		tags: z.string().trim().min(2).array().nullish(),
+		tags: z.string().trim().min(2).array().max(5).nullish(),
 		// annotations: z.preprocess(stringToJSON, z.record(z.string().trim().min(3), z.string().trim().min(3)).nullish()),
 		// annotations: z.preprocess(stringToMap, z.map(z.string().trim().min(3), z.string().trim().min(3))).nullish(),
 		annotations: z.string().trim().nullish(), // TODO: validate map string
-		active: z.boolean().optional().default(true),
-		shared: z.boolean().optional().default(false),
-		// validFrom: z.string().datetime({ offset: true }).nullish().catch(null),
-		// validTo: z.string().datetime({ offset: true }).nullish().catch(null),
-		validFrom: z.preprocess(emptyToNull, z.string().datetime({ offset: true }).nullish()),
-		validTo: z.preprocess(emptyToNull, z.string().datetime({ offset: true }).nullish()),
 		source: z.string().ip().nullish(),
 		sourcePort: z.string().trim().nullish(),
 		destination: z.string().ip().nullish(),
 		destinationPort: z.string().trim().nullish(),
 		protocol: z.enum(['Any', 'IP', 'ICMP', 'IGMP', 'TCP', 'UDP', 'IPV6', 'ICMPV6', 'RM']).default('Any'),
-		action: z.enum(['permit', 'block']).default('block'),
+		action: z.enum(['permit', 'block', 'callout_inspection', 'callout_terminating', 'callout_unknown']).default('block'),
 		direction: z.enum(['egress', 'ingress']).default('egress'),
 		appId: z.string().trim().nullish(),
-		weight: z.coerce.number().min(0).max(2000).optional().default(1000),
-		id: z.string().trim().uuid().optional()
+		weight: z.coerce.number().min(0).max(2000).optional().default(2000),
+		shared: z.boolean().optional().default(false)
 	})
-	.superRefine((data, ctx) => checkValidDates(ctx, data.validFrom, data.validTo));
-
-export const policyBaseSchema = z.object({
-	displayName: z.string().trim().min(4).max(256),
-	description: z.string().trim().max(256).nullish(),
-	// TODO: validate comma separated string /^\w(\s*,?\s*\w)*$/
-	tags: z
-		.string()
-		.trim()
-		.regex(/^\w+(,\w+)*$/)
-		.nullish(),
-	// annotations: z.preprocess(stringToJSON, z.record(z.string().trim().min(3), z.string().trim().min(3)).nullish()),
-	// annotations: z.preprocess(stringToMap, z.map(z.string().trim().min(3), z.string().trim().min(3)).nullish()),
-	annotations: z.string().trim().nullish(), // TODO: validate map string
-	active: z.coerce.boolean().optional().default(true),
-	validFrom: z.string().datetime({ offset: true }).nullish().catch(null),
-	// validFrom: z.string().datetime({ offset: true }).nullish()
-	// 	.catch((ctx) => {
-	// 		ctx.error; // ZodError
-	// 		return null;
-	// 	}),
-	validTo: z.string().datetime({ offset: true }).nullish().catch(null),
-	source: z.string().ip().nullish(),
-	sourcePort: z.string().trim().nullish(),
-	destination: z.string().ip().nullish(),
-	destinationPort: z.string().trim().nullish(),
-	protocol: z.enum(['Any', 'IP', 'ICMP', 'IGMP', 'TCP', 'UDP', 'IPV6', 'ICMPV6', 'RM']),
-	action: z.enum(['permit', 'block']),
-	direction: z.enum(['egress', 'ingress']),
-	appId: z.string().trim().nullish(),
-	weight: z.coerce.number().min(0).max(2000).catch(1000)
 });
 
-export const policyCreateBaseSchema = policyBaseSchema.extend({
-	subjectDisplayName: z.string().trim(),
-	subjectId: z.string().trim(),
-	subjectSecondaryId: z.string().trim(),
-	subjectType: z.enum(['user', 'group', 'device', 'service_account', 'device_pool']),
-	shared: z.coerce.boolean().optional().default(false)
-});
-
-export const policyUpdateBaseSchema = policyBaseSchema.extend({
-	ruleId: z.string().trim().uuid()
-});
+export type PolicySchema = typeof policySchema;
+export type Policy = z.infer<typeof policySchema>;
 
 /**
- * system generated data
+ * Create Policy Schema
  */
-const policyExtraSchema = z.object({
-	createdAt: z.string().datetime({ offset: true }),
-	createdBy: z.string(),
-	updatedAt: z.string().datetime({ offset: true }),
-	updatedBy: z.string(),
-	deletedAt: z.string().datetime({ offset: true }).nullish()
-});
+export const createPolicySchema = policySchema
+	.omit({
+		id: true
+		// rule: {
+		// 	id: true
+		// }
+	})
+	.extend({
+		ruleId: policySchema.shape.ruleId.nullish(),
+		// FIXME: omit for role.id=true not working
+		rule: policySchema.shape.rule.extend({
+			id: policySchema.shape.rule.shape.id.optional()
+		})
+	})
+	.superRefine((data, ctx) => checkValidDates(ctx, data.validFrom, data.validTo))
+	.superRefine((data, ctx) => checkForMissingRule(ctx, data.ruleId, data.rule));
+
+export type CreatePolicySchema = typeof createPolicySchema;
+export type CreatePolicy = z.infer<typeof createPolicySchema>;
+export const createPolicyKeys = createPolicySchema.innerType().innerType().keyof().Enum;
 
 /**
  * for search time validation
@@ -105,25 +77,57 @@ export const policySearchSchema = z.object({
 });
 
 /**
- * for update time validation
+ * Update Policy Schema
  */
-export const policyUpdateSchema = policyUpdateBaseSchema.superRefine((data, ctx) => checkValidDates(ctx, data.validFrom, data.validTo));
+export const updatePolicySchema = policySchema
+	.omit({
+		id: true
+		// rule: {
+		// 	id: true
+		// }
+	})
+	.extend({
+		// FIXME: omit for role.id=true not working
+		rule: policySchema.shape.rule.extend({
+			id: policySchema.shape.rule.shape.id.optional()
+		}),
+		originalShared: policySchema.shape.rule.shape.shared
+	})
+	.superRefine((data, ctx) => checkValidDates(ctx, data.validFrom, data.validTo));
+
+export type UpdatePolicySchema = typeof updatePolicySchema;
+export type UpdatePolicy = z.infer<typeof updatePolicySchema>;
+export const updatePolicyKeys = updatePolicySchema.innerType().keyof().Enum;
 
 /**
- * for create time validation
+ * Refine functions
  */
-export const policyCreateSchema = policyCreateBaseSchema.superRefine((data, ctx) => checkValidDates(ctx, data.validFrom, data.validTo));
 
-/**
- * for delete time validation
- */
-export const policyDeleteSchema = z.object({
-	id: z.string().trim().uuid()
-});
+function checkValidStringDates(ctx: z.RefinementCtx, validFrom: string | undefined | null, validTo: string | undefined | null) {
+	if (validFrom && validTo && new Date(validTo) < new Date(validFrom)) {
+		ctx.addIssue({
+			code: z.ZodIssueCode.custom,
+			path: ['validTo'],
+			message: 'validTo should be after validFrom'
+		});
+	}
+}
 
-/**
- * for API return value validation and to extract the inferred type
- */
-export const policySchema = policyCreateBaseSchema.merge(policyExtraSchema);
-
-export type Policy = z.infer<typeof policySchema>;
+function checkValidDates(ctx: z.RefinementCtx, validFrom: Date | undefined | null, validTo: Date | undefined | null) {
+	if (validFrom && validTo && validTo < validFrom) {
+		ctx.addIssue({
+			code: z.ZodIssueCode.custom,
+			path: ['validTo'],
+			message: 'validTo should be after validFrom'
+		});
+	}
+}
+function checkForMissingRule(ctx: z.RefinementCtx, ruleId: string | undefined | null, rule: any) {
+	if (ruleId == null && rule == null) {
+		ctx.addIssue({
+			code: z.ZodIssueCode.custom,
+			path: ['ruleId'],
+			message: 'Rule is required'
+		});
+	}
+}

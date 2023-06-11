@@ -1,5 +1,5 @@
 import { CachePolicy, GetPolicyStore } from '$houdini';
-import { updatePolicySchema as schema } from '$lib/models/schema/policy.new.schema';
+import { updatePolicySchema as schema } from '$lib/models/schema';
 import { error } from '@sveltejs/kit';
 import type { GraphQLError } from 'graphql';
 import { superValidate } from 'sveltekit-superforms/client';

@@ -1,5 +1,5 @@
 import { superValidate } from 'sveltekit-superforms/client';
-import { createPolicySchema as schema } from '$lib/models/schema/policy.new.schema';
+import { createPolicySchema as schema } from '$lib/models/schema';
 
 export const load = async () => {
 	// Client API:

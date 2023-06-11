@@ -9,14 +9,14 @@
 		Select as FormSelect,
 		Radio,
 		TagsInput
-	} from '$lib/components/forms';
+	} from '$lib/components/form';
 	import {
 		actionOptions,
 		directionOptions,
 		protocols,
 		subjectTypeOptions2
 	} from '$lib/models/enums';
-	import { createPolicyKeys as keys } from '$lib/models/schema/policy.new.schema';
+	import { createPolicyKeys as keys } from '$lib/models/schema';
 	import type { Subject } from '$lib/models/types/subject';
 	import { Logger } from '$lib/utils';
 	import { Breadcrumb, BreadcrumbItem, Heading, Helper, UserCircle } from 'flowbite-svelte';
@@ -33,12 +33,16 @@
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 	import type { PageData } from './$types';
 
-	const log = new Logger('routes:policies:item');
+	const log = new Logger('routes:policies:create');
 	export let data: PageData;
 	// Client API:
 	const superform = superForm(data.form, {
 		dataType: 'json',
-		taintedMessage: null
+		taintedMessage: null,
+		syncFlashMessage: false,
+		onError({ result, message }) {
+			log.error('superForm', { result }, { message });
+		}
 	});
 	const {
 		form,

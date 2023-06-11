@@ -1,54 +1,57 @@
 <script lang="ts">
-	import { format } from 'date-fns';
-	import { createField } from 'felte';
-	import { FloatingLabelInput } from 'flowbite-svelte';
+	import type { Writable } from 'svelte/store';
 
-	const DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS";
-	// timestampz (ISO 8601 time zone) format, reset to UTC (e.g., 2018-04-25T14:05:15.953Z)
-	export let value: string | null | undefined = null; // isoStr
-	export let name: string;
-	export let label: string;
+	import { FloatingLabelInput, Helper } from 'flowbite-svelte';
+	import type { FormPathLeaves } from 'sveltekit-superforms';
+	import { dateProxy, formFieldProxy } from 'sveltekit-superforms/client';
+	import type { AnyZodObject, z } from 'zod';
+	import { getFormContext } from './forms';
+
+	// eslint-disable-next-line no-undef
+	type T = $$Generic<AnyZodObject>;
+	export let field: FormPathLeaves<z.infer<T>>;
+	export let label = '';
+	export let type: 'date' | 'datetime-local' = 'date';
+	export let size: 'small' | 'default' = 'default';
 	export let style: 'filled' | 'outlined' | 'standard' = 'outlined';
-	export let error: string | undefined;
 
-	// yyyy-MM-dd'T'HH:mm:ss.SSSX       >>>  2018-04-25T14:05:15.953Z
-	// yyyy-MM-dd'T'HH:mm:ss.SSSXX      >>>  2001-07-04T12:08:56.235-0700
-	// yyyy-MM-dd'T'HH:mm:ss.SSSXXX     >>>  2001-07-04T12:08:56.235-07:00 // (ISO 8601 time zone)
-	// yyyy-MM-dd'T'HH:mm:ss.SSSSXXX    >>>  2014-12-03T10:05:59.5646+08:00
-	// yyyy-MM-dd'T'HH:mm:ss.SSSSSSXXX  >>>  2022-12-14T21:33:47.453082+00:00
-	let internal = value ? format(new Date(value), DATE_FORMAT) : undefined;
-
-	const input = (value: string | null | undefined) =>
-		(internal = value ? format(new Date(value), DATE_FORMAT) : undefined);
-	const output = (internal: string | undefined) =>
-		(value = internal ? new Date(internal).toISOString() : null);
-
-	$: input(value);
-	$: output(internal);
-
-	const { field, onInput, onBlur } = createField({
-		name,
-		defaultValue: value,
-		touchOnChange: true
-	});
-	$: onInput(value); // 2022-12-14T16:11:35.915Z // check null
+	const { superform } = getFormContext();
+	const { path, value, errors, constraints } = formFieldProxy(superform, field);
+	let proxy: Writable<string> | undefined;
+	if (type === 'date') {
+		proxy = dateProxy(superform.form, field, { format: 'date', empty: 'null' });
+	} else if (type === 'datetime-local') {
+		// proxy = dateProxy(superform.form, field, { format: 'datetime-utc', empty: 'null' });
+		proxy = dateProxy(superform.form, field, { format: 'datetime-local', empty: 'null' });
+	}
+	// $: console.log('date proxy----', path, $proxy)
+	// $: console.log('date value----', path, $value)
 </script>
 
-<div use:field on:blur={onBlur} role="textbox">
-	<FloatingLabelInput
-		type="datetime-local"
-		step="0.001"
-		{style}
-		class="input-bordered input"
-		bind:value={internal}
-		{...$$restProps}
-		color={error ? 'red' : null}
-		aria-describedby={`${name}_help`}
-		{label}
-	/>
-	{#if error}
-		<p id={`${name}_help`} class="mt-2 text-xs font-normal text-red-700 dark:text-red-500">
-			<span class="font-medium">Oh, snapp!</span> {error}</p
-		>
-	{/if}
-</div>
+<FloatingLabelInput
+	{type}
+	{style}
+	{size}
+	{label}
+	name={field}
+	bind:value={$proxy}
+	data-invalid={$errors}
+	class="input-bordered input"
+	color={$errors ? 'red' : 'base'}
+	aria-describedby={`${path}_help`}
+	aria-invalid={Boolean($errors)}
+	aria-errormessage={Array($errors).join('. ')}
+	aria-required="{$constraints?.required},"
+	{...$constraints}
+	{...$$restProps}
+/>
+{#if $errors}
+	<Helper class="mt-2" color="red">{$errors}</Helper>
+{/if}
+
+<style lang="postcss">
+	[data-invalid],
+	.invalid {
+		color: red;
+	}
+</style>
