@@ -16,7 +16,7 @@
 	} from '$lib/models/enums';
 	import { updatePolicyKeys as keys } from '$lib/models/schema';
 	import { Logger } from '$lib/utils';
-	import { Breadcrumb, BreadcrumbItem, Heading, Helper, UserCircle } from 'flowbite-svelte';
+	import { A, Breadcrumb, BreadcrumbItem, Heading, Helper, UserCircle } from 'flowbite-svelte';
 	import { DevicePhoneMobile, RectangleGroup, User, UserGroup } from 'svelte-heros-v2';
 	import Select from 'svelte-select';
 	import { superForm } from 'sveltekit-superforms/client';
@@ -123,7 +123,9 @@
 				<Helper class="mt-2" color="red">Subject is required</Helper>
 			{/if}
 		</div>
-		<div class="col-span-2" />
+		<div class="col-span-2">
+			<A class="btn" href="/dashboard/rules/{$form.ruleId}">edit this golden rule</A>
+		</div>
 		<div class="col-span-2">
 			<FloatingTextInput field="rule.displayName" label="Display Name" {disabled} />
 		</div>
