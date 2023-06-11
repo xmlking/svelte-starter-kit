@@ -1,0 +1,12 @@
+mutation DeleteRule($id: uuid!, $deletedAt: timestamptz!) {
+	# ADD CASCADING SOFT DELETE INTO DEVICE_POOL Table
+	update_rules_by_pk(pk_columns: { id: $id }, _set: { deletedAt: $deletedAt }) {
+		displayName
+	}
+}
+
+# mutation DeleteRule($id: uuid!) {
+# 	delete_rules_by_pk(id: $id) {
+# 		displayName
+# 	}
+# }

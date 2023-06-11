@@ -4,6 +4,7 @@
 	import { page } from '$app/stores';
 	import { DeletePolicyStore } from '$houdini';
 	import { DataTable, DeleteButton, ErrorMessage, Link } from '$lib/components';
+	import GraphQlErrors from '$lib/components/GraphQLErrors.svelte';
 	import { ToastLevel, addToast } from '$lib/components/toast';
 	import { subjectTypeOptions } from '$lib/models/enums';
 	import { Logger } from '$lib/utils';
@@ -200,8 +201,8 @@
 </script>
 
 <svelte:head>
-	<title>Accounts</title>
-	<meta name="description" content="accounts" />
+	<title>Policies</title>
+	<meta name="description" content="policies" />
 </svelte:head>
 
 <Breadcrumb aria-label="Default breadcrumb example" class="mb-6">
@@ -270,7 +271,11 @@
 	<ErrorMessage error={fieldErrors?.offset?.[0]} />
 </form>
 
-{#if policies}
+{#if $SearchPolicies.fetching}
+	<p>Fetching...</p>
+{:else if $SearchPolicies.errors}
+	<GraphQlErrors errors={$SearchPolicies.errors} />
+{:else}
 	<DataTable {tableViewModel} />
 {/if}
 

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { invalidateAll } from '$app/navigation';
 	import { page } from '$app/stores';
-	import { DeletePoolStore } from '$houdini';
+	import { DeleteRuleStore } from '$houdini';
 	import { DataTable, DeleteButton, ErrorMessage, Link } from '$lib/components';
 	import GraphQlErrors from '$lib/components/GraphQLErrors.svelte';
 	import { ToastLevel, addToast } from '$lib/components/toast';
@@ -22,15 +22,15 @@
 	import { writable } from 'svelte/store';
 	import type { PageData } from './$houdini';
 
-	const log = new Logger('routes:pools');
+	const log = new Logger('routes:rules');
 
 	export let data: PageData;
-	$: ({ SearchPoolsAll, formErrors, fieldErrors } = data);
-	$: pools = $SearchPoolsAll.data?.pools;
-	$: poolStore.set(pools ?? []);
+	$: ({ SearchRulesAll, formErrors, fieldErrors } = data);
+	$: rules = $SearchRulesAll.data?.rules;
+	$: ruleStore.set(rules ?? []);
 
-	const poolStore = writable(pools ?? []);
-	const table = createTable(poolStore, {
+	const ruleStore = writable(rules ?? []);
+	const table = createTable(ruleStore, {
 		page: addPagination({ initialPageSize: 5 }),
 		tableFilter: addTableFilter(),
 		sort: addSortBy()
@@ -43,7 +43,7 @@
 			id: 'name',
 			cell: ({ value }) =>
 				createRender(Link, {
-					url: `/dashboard/pools/${value.id}`,
+					url: `/dashboard/rules/${value.id}`,
 					content: value.displayName,
 					title: value.description
 				}),
@@ -86,7 +86,7 @@
 			id: 'delete',
 			accessor: 'id',
 			cell: ({ value }) =>
-				createRender(DeleteButton).on('click', async () => deletePool(value)),
+				createRender(DeleteButton).on('click', async () => deleteRule(value)),
 			// cell: ({ value }) => createRender(Delete, { id: value }),
 			plugins: {
 				tableFilter: {
@@ -106,24 +106,24 @@
 	let limit = $page.url.searchParams.get('limit') ?? '50';
 	let offset = $page.url.searchParams.get('offset') ?? '0';
 	// delete action
-	const deletePoolStore = new DeletePoolStore();
-	async function deletePool(id: string) {
-		console.log('in deletePool...', id);
+	const deleteRuleStore = new DeleteRuleStore();
+	async function deleteRule(id: string) {
+		console.log('in deleteRule...', id);
 		const deletedAt = new Date();
-		const { data } = await deletePoolStore.mutate(
+		const { data } = await deleteRuleStore.mutate(
 			{ id, deletedAt },
 			{
 				metadata: { logResult: true }
 			}
 		);
-		if (data?.update_pools_by_pk?.displayName) {
+		if (data?.update_rules_by_pk?.displayName) {
 			addToast({
-				message: `Pool: ${data?.update_pools_by_pk?.displayName} deleted`,
+				message: `Rule: ${data?.update_rules_by_pk?.displayName} deleted`,
 				dismissible: true,
 				duration: 10000,
 				type: ToastLevel.Info
 			});
-			// invalidate('/dashboard/pools');
+			// invalidate('/dashboard/rules');
 			await invalidateAll();
 		} else {
 			addToast({
@@ -137,14 +137,14 @@
 </script>
 
 <svelte:head>
-	<title>Pools</title>
-	<meta name="description" content="pools" />
+	<title>Rules</title>
+	<meta name="description" content="rules" />
 </svelte:head>
 
 <Breadcrumb aria-label="Default breadcrumb example" class="mb-6">
 	<BreadcrumbItem href="/dashboard" home>Home</BreadcrumbItem>
-	<BreadcrumbItem href="/dashboard/pools">Pools</BreadcrumbItem>
-	<BreadcrumbItem>Search Pools</BreadcrumbItem>
+	<BreadcrumbItem href="/dashboard/rules">Rules</BreadcrumbItem>
+	<BreadcrumbItem>Search Rules</BreadcrumbItem>
 </Breadcrumb>
 
 <!-- <ErrorMessage error={loadError?.message} /> -->
@@ -154,7 +154,7 @@
 		<NavBrand>
 			<RectangleGroup />
 			<span class="self-center whitespace-nowrap px-1 text-xl font-semibold dark:text-white">
-				Device Pools
+				Golden Rules
 			</span>
 		</NavBrand>
 		<ButtonGroup class="w-1/2">
@@ -177,17 +177,17 @@
 				><MagnifyingGlass size="20" /></Button
 			>
 		</ButtonGroup>
-		<Button href="/dashboard/pools/create">Add Pool</Button>
+		<Button href="/dashboard/rules/create">Add Rule</Button>
 	</Navbar>
 	<ErrorMessage error={fieldErrors?.displayName?.[0]} />
 	<ErrorMessage error={fieldErrors?.limit?.[0]} />
 	<ErrorMessage error={fieldErrors?.offset?.[0]} />
 </form>
 
-{#if $SearchPoolsAll.fetching}
+{#if $SearchRulesAll.fetching}
 	<p>Fetching...</p>
-{:else if $SearchPoolsAll.errors}
-	<GraphQlErrors errors={$SearchPoolsAll.errors} />
+{:else if $SearchRulesAll.errors}
+	<GraphQlErrors errors={$SearchRulesAll.errors} />
 {:else}
 	<DataTable {tableViewModel} />
 {/if}
