@@ -20,6 +20,7 @@
 	import type { Subject } from '$lib/models/types/subject';
 	import { Logger } from '$lib/utils';
 	import { Breadcrumb, BreadcrumbItem, Heading, Helper, UserCircle } from 'flowbite-svelte';
+	import { onMount } from 'svelte';
 	import {
 		DevicePhoneMobile,
 		MagnifyingGlass,
@@ -58,6 +59,17 @@
 
 	// const validFrom = dateProxy(form, "validFrom", { format: "datetime-utc" });
 	// const validTo = dateProxy(form, "validTo", { format: "datetime-utc" });
+
+	// FIXME: tags component is not untainting when reset or on initialization.
+	function untaintTags() {
+		if ($tainted?.rule?.tags) {
+			console.log('untaint tags');
+			$tainted = undefined;
+		}
+	}
+	onMount(() => {
+		untaintTags();
+	});
 
 	// TODO: reset buttom should also reset `subject & rule search inputs`
 	// subject settings

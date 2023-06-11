@@ -36,7 +36,11 @@
 	<slot />
 
 	{#if $message || $errors._errors}
-		<Alert color={$page.status >= 400 ? 'red' : 'blue'} dismissable class="!items-start">
+		<Alert
+			color={$page.status >= 400 ? 'red' : 'blue'}
+			dismissable={false}
+			class="!items-start"
+		>
 			<span slot="icon"
 				><svg
 					aria-hidden="true"

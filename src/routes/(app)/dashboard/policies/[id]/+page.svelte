@@ -60,7 +60,7 @@
 		  }
 		: null;
 	// rule settings
-	$: disabled = $form?.rule.shared;
+	const disabled = $form?.originalShared;
 </script>
 
 <svelte:head>

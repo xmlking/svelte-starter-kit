@@ -2,13 +2,13 @@ export function getObjectTypeName(value: unknown): string {
 	return toString.call(value).slice(8, -1);
 }
 
-export function stripEmptyProperties(obj) {
+export function stripEmptyProperties(obj, removeBlanks = true) {
 	for (const key in obj) {
 		if (obj.hasOwnProperty(key)) {
-			if (obj[key] === null || obj[key] === undefined || obj[key] === '') {
+			if (obj[key] === null || obj[key] === undefined || (removeBlanks && obj[key] === '')) {
 				delete obj[key];
 			} else if (typeof obj[key] === 'object' && !(obj[key] instanceof Date)) {
-				stripEmptyProperties(obj[key]); // Recursively check nested objects
+				stripEmptyProperties(obj[key], removeBlanks); // Recursively check nested objects
 				if (Object.keys(obj[key]).length === 0) {
 					delete obj[key];
 				}
