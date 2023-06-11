@@ -31,38 +31,33 @@ export const actions = {
 		log.debug('dataCopy before strip:', dataCopy);
 		stripEmptyProperties(dataCopy, false);
 		log.debug('dataCopy after strip:', dataCopy);
-		const { ruleId, rule } = dataCopy;
+		const {
+			subjectDisplayName,
+			subjectId,
+			subjectSecondaryId,
+			subjectType,
+			ruleId,
+			originalShared,
+			rule: { id: rid, shared, tags, ...restRule },
+			...restPolicy
+		} = dataCopy;
 
-		// TODO: validate incoming data with business rules
-		// if (ruleId == null || ruleId == undefined) {
-		// 	return setError(form, 'ruleId', 'Rule is missing');
-		// }
+		// if we are updating Policy with exclusive Rule, overwrite Rule's weight with Policy's weight.
+		if (!originalShared && restPolicy.weight) {
+			restRule.weight = restPolicy.weight;
+		}
 
 		const policyData: policies_set_input = {
-			...(dataCopy.active && { active: dataCopy.active }),
-			...(dataCopy.validFrom && { validFrom: dataCopy.validFrom }),
-			...(dataCopy.validTo && { validTo: dataCopy.validTo }),
-			...(dataCopy.weight && { weight: dataCopy.weight })
+			...restPolicy
 		};
 		const ruleData: rules_set_input = {
-			...(rule.displayName && { displayName: rule.displayName }),
-			...(rule.description && { description: rule.description }),
-			...(rule.annotations && { annotations: rule.annotations }),
-			...(rule.tags && { tags: `{${rule.tags}}` }),
-			...(rule.source && { source: rule.source }),
-			...(rule.sourcePort && { sourcePort: rule.sourcePort }),
-			...(rule.destination && { destination: rule.destination }),
-			...(rule.destinationPort && { destinationPort: rule.destinationPort }),
-			...(rule.action && { action: rule.action }),
-			...(rule.direction && { direction: rule.direction }),
-			...(rule.protocol && { protocol: rule.protocol }),
-			...(rule.appId && { appId: rule.appId }),
-			...(rule.weight && { weight: rule.weight }),
+			...restRule,
+			...(tags && { tags: `{${tags}}` }),
 			// HINT: only allow changing `shared` property from `false` to `true`
-			...(dataCopy.originalShared == false && rule.shared == true && { shared: rule.shared })
+			...(originalShared == false && shared == true && { shared })
 		};
 
-		const variables = { policyId: id, policyData, ruleId, ruleData, skipRuleUpdate: dataCopy.originalShared };
+		const variables = { policyId: id, policyData, ruleId, ruleData, skipRuleUpdate: originalShared };
 		log.debug('UPDATE action variables:', variables);
 		const { errors, data } = await updatePolicyStore.mutate(variables, {
 			metadata: { logResult: true },
