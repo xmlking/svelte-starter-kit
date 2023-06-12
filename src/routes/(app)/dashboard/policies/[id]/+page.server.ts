@@ -27,7 +27,6 @@ export const actions = {
 		// superform validation
 		if (!form.valid) return fail(400, { form });
 
-		// const dataCopy = { ...form.data };
 		log.debug('before cleanClone with null:', form.data);
 		const dataCopy = cleanClone(form.data, { empty: 'null' });
 		log.debug('after cleanClone with null:', dataCopy);
@@ -67,8 +66,11 @@ export const actions = {
 			errors.forEach((error) => {
 				log.error('update policy api error', error);
 				// NOTE: you can add multiple errors, send all along with a message
-				// TODO: Check for displayName conflect and despatch custom error message
-				setError(form, '', (error as GraphQLError).message);
+				if (error.message.includes('Uniqueness violation')) {
+					setError(form, 'rule.displayName', 'Display Name already taken');
+				} else {
+					setError(form, '', (error as GraphQLError).message);
+				}
 			});
 			return setMessage(form, 'Update policy failed');
 		}

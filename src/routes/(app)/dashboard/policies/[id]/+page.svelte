@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { dev } from '$app/environment';
 	import {
 		Checkbox,
 		DateInput,
@@ -194,19 +195,21 @@
 	</div>
 </Form>
 
-<br />
-<SuperDebug
-	label="Miscellaneous"
-	status={false}
-	data={{ message: $message, submitting: $submitting, delayed: $delayed, posted: $posted }}
-/>
-<br />
-<SuperDebug label="Form" data={$form} />
-<br />
-<SuperDebug label="Tainted" status={false} data={$tainted} />
-<br />
-<SuperDebug label="Errors" status={false} data={$errors} />
-<br />
-<SuperDebug label="Constraints" status={false} data={$constraints} />
-<!-- <br />
+{#if dev}
+	<br />
+	<SuperDebug
+		label="Miscellaneous"
+		status={false}
+		data={{ message: $message, submitting: $submitting, delayed: $delayed, posted: $posted }}
+	/>
+	<br />
+	<SuperDebug label="Form" data={$form} />
+	<br />
+	<SuperDebug label="Tainted" status={false} data={$tainted} />
+	<br />
+	<SuperDebug label="Errors" status={false} data={$errors} />
+	<br />
+	<SuperDebug label="Constraints" status={false} data={$constraints} />
+	<!-- <br />
  <SuperDebug label="$page data" status={false} data={$page} /> -->
+{/if}

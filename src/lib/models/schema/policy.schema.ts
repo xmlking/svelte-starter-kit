@@ -42,6 +42,17 @@ export type PolicySchema = typeof policySchema;
 export type Policy = z.infer<typeof policySchema>;
 
 /**
+ * Search Policy Schema
+ */
+export const policySearchSchema = z.object({
+	limit: z.coerce.number().min(1).max(100).default(10),
+	offset: z.coerce.number().min(0).default(0),
+	// TODO use enum
+	subjectType: z.enum(['user', 'group', 'device', 'service_account', 'device_pool']).optional(),
+	subjectId: z.string().trim().uuid().optional()
+});
+
+/**
  * Create Policy Schema
  */
 export const createPolicySchema = policySchema
@@ -64,17 +75,6 @@ export const createPolicySchema = policySchema
 export type CreatePolicySchema = typeof createPolicySchema;
 export type CreatePolicy = z.infer<typeof createPolicySchema>;
 export const createPolicyKeys = createPolicySchema.innerType().innerType().keyof().Enum;
-
-/**
- * for search time validation
- */
-export const policySearchSchema = z.object({
-	limit: z.coerce.number().min(1).max(100).default(10),
-	offset: z.coerce.number().min(0).default(0),
-	// TODO use enum
-	subjectType: z.enum(['user', 'group', 'device', 'service_account', 'device_pool']).optional(),
-	subjectId: z.string().trim().uuid().optional()
-});
 
 /**
  * Update Policy Schema
