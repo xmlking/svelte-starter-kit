@@ -1,5 +1,5 @@
 import { CachePolicy, GetRuleStore } from '$houdini';
-import { updatePolicySchema as schema } from '$lib/models/schema';
+import { updateRuleSchema as schema } from '$lib/models/schema';
 import { error } from '@sveltejs/kit';
 import type { GraphQLError } from 'graphql';
 import { superValidate } from 'sveltekit-superforms/client';
@@ -20,7 +20,5 @@ export const load = async (event) => {
 	const rule = data?.rules_by_pk;
 	if (!rule) throw error(404, 'rule not found');
 	const form = await superValidate(rule, schema);
-	// we need `originalShared` to track if `rule.shared` is changeing from false ==> true
-	form.data.originalShared = form.data.rule.shared;
 	return { form };
 };
