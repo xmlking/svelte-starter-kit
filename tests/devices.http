@@ -63,14 +63,15 @@ query ListDevices($limit: Int = 50, $offset: Int = 0, $order_by: [devices_order_
 ### Search Active Devices
 # @name searchDevices
 POST  {{graphqlEndpoint}}
+X-REQUEST-TYPE: GraphQL
 Content-Type: application/json
 Authorization: Bearer {{graphqlUserToken}}
 x-hasura-admin-secret: {{graphqlAdminToken}}
 x-hasura-allowed-roles:  user manager agent
-x-hasura-role: user
+x-hasura-role: manager
 x-hasura-org-id: chinthagunta
 x-hasura-user-id: xmlking@gmail.com
-X-REQUEST-TYPE: GraphQL
+
 
 query SearchDevices($where: devices_bool_exp, $limit: Int = 50, $offset: Int = 0, $orderBy: [devices_order_by!] = [{updatedAt: desc_nulls_last}]) {
   devices(order_by: $orderBy, limit: $limit, offset: $offset, where: $where) {
@@ -103,14 +104,14 @@ query SearchDevices($where: devices_bool_exp, $limit: Int = 50, $offset: Int = 0
 ### getDevice by Id
 # @name getDevice
 POST  {{graphqlEndpoint}}
+X-REQUEST-TYPE: GraphQL
 Content-Type: application/json
 Authorization: Bearer {{graphqlUserToken}}
 x-hasura-admin-secret: {{graphqlAdminToken}}
 x-hasura-allowed-roles:  user manager
-x-hasura-role: user
+x-hasura-role: manager
 x-hasura-org-id: chinthagunta
 x-hasura-user-id: xmlking@gmail.com
-X-REQUEST-TYPE: GraphQL
 
 query GetDevice($id: uuid!) {
   devices_by_pk(id: $id) {
@@ -137,6 +138,7 @@ query GetDevice($id: uuid!) {
 # organization = x-hasura-org-id 	updated_by = x-hasura-user-id
 # @name updateDevice
 POST  {{graphqlEndpoint}}
+X-REQUEST-TYPE: GraphQL
 Content-Type: application/json
 Authorization: Bearer {{graphqlUserToken}}
 x-hasura-admin-secret: {{graphqlAdminToken}}
@@ -144,7 +146,6 @@ x-hasura-allowed-roles:  user manager agent
 x-hasura-role: agent
 x-hasura-org-id: chinthagunta
 x-hasura-user-id: xmlking@gmail.com
-X-REQUEST-TYPE: GraphQL
 
 mutation UpdateDevice($id: uuid!, $data: devices_set_input!) {
   update_devices_by_pk(pk_columns: { id: $id }, _set: $data) {
@@ -168,6 +169,7 @@ mutation UpdateDevice($id: uuid!, $data: devices_set_input!) {
 # organization = x-hasura-org-id 	created_by = x-hasura-user-id
 # @name createDevice
 POST  {{graphqlEndpoint}}
+X-REQUEST-TYPE: GraphQL
 Content-Type: application/json
 Authorization: Bearer {{graphqlUserToken}}
 x-hasura-admin-secret: {{graphqlAdminToken}}
@@ -175,7 +177,6 @@ x-hasura-allowed-roles:  user manager agent
 x-hasura-role: agent
 x-hasura-org-id: chinthagunta
 x-hasura-user-id: xmlking@gmail.com
-X-REQUEST-TYPE: GraphQL
 
 mutation CreateDevice($data: devices_insert_input!) {
   insert_devices_one(object: $data) {
@@ -205,6 +206,7 @@ mutation CreateDevice($data: devices_insert_input!) {
 # if null returned, either ID is not found or this user don't have permissions to delete
 # @name deleteDevice
 POST  {{graphqlEndpoint}}
+X-REQUEST-TYPE: GraphQL
 Content-Type: application/json
 Authorization: Bearer {{graphqlUserToken}}
 x-hasura-admin-secret: {{graphqlAdminToken}}
@@ -212,7 +214,6 @@ x-hasura-allowed-roles: user manager
 x-hasura-role: manager
 x-hasura-org-id: chinthagunta
 x-hasura-user-id: xmlking@gmail.com
-X-REQUEST-TYPE: GraphQL
 
 mutation DeleteDevice($id: uuid!, $deletedAt: timestamptz!) {
 	update_devices_by_pk(pk_columns: { id: $id }, _set: { deletedAt: $deletedAt }) {
