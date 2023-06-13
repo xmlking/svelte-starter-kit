@@ -8,9 +8,9 @@
 ### IntrospectionQuery
 # @name IntrospectionQuery
 POST  {{graphqlEndpoint}}
+X-REQUEST-TYPE: GraphQL
 Content-Type: application/json
 x-hasura-admin-secret: {{graphqlAdminToken}}
-X-REQUEST-TYPE: GraphQL
 
 query IntrospectionQuery {
 	__schema {
@@ -29,6 +29,7 @@ query IntrospectionQuery {
 ### list all active policies
 # @name listPolicies
 POST  {{graphqlEndpoint}}
+X-REQUEST-TYPE: GraphQL
 Content-Type: application/json
 Authorization: Bearer {{graphqlUserToken}}
 x-hasura-admin-secret: {{graphqlAdminToken}}
@@ -36,7 +37,6 @@ x-hasura-allowed-roles:  user manager
 x-hasura-role: manager
 x-hasura-org-id: chinthagunta
 x-hasura-user-id: xmlking@gmail.com
-X-REQUEST-TYPE: GraphQL
 
 query ListPolicies(
   $limit: Int = 50
@@ -95,6 +95,7 @@ query ListPolicies(
 ### search active policies for agent
 # @name searchAgentPolicies
 POST  {{graphqlEndpoint}}
+X-REQUEST-TYPE: GraphQL
 Content-Type: application/json
 Authorization: Bearer {{graphqlUserToken}}
 x-hasura-admin-secret: {{graphqlAdminToken}}
@@ -102,7 +103,6 @@ x-hasura-allowed-roles:  agent user manager
 x-hasura-role: agent
 x-hasura-org-id: chinthagunta
 x-hasura-user-id: xmlking@gmail.com
-X-REQUEST-TYPE: GraphQL
 
 query SearchAgentPolicies($where: policies_bool_exp, $limit: Int = 50, $offset: Int = 0, $orderBy: [policies_order_by!] = [{updatedAt: desc_nulls_last}]) {
   policies(order_by: $orderBy, limit: $limit, offset: $offset, where: $where) {
@@ -144,14 +144,14 @@ query SearchAgentPolicies($where: policies_bool_exp, $limit: Int = 50, $offset: 
 ### search active policies
 # @name searchPolicies
 POST  {{graphqlEndpoint}}
+X-REQUEST-TYPE: GraphQL
 Content-Type: application/json
 Authorization: Bearer {{graphqlUserToken}}
 x-hasura-admin-secret: {{graphqlAdminToken}}
 x-hasura-allowed-roles:  user manager
-x-hasura-role: user
+x-hasura-role: manager
 x-hasura-org-id: chinthagunta
 x-hasura-user-id: xmlking@gmail.com
-X-REQUEST-TYPE: GraphQL
 
 query SearchPolicies($where: policies_bool_exp, $limit: Int = 50, $offset: Int = 0, $orderBy: [policies_order_by!] = [{updatedAt: desc_nulls_last}]) {
   policies(where: $where, order_by: $orderBy, limit: $limit, offset: $offset) {
@@ -211,14 +211,14 @@ query SearchPolicies($where: policies_bool_exp, $limit: Int = 50, $offset: Int =
 ### getPolicy by Id
 # @name getPolicy
 POST  {{graphqlEndpoint}}
+X-REQUEST-TYPE: GraphQL
 Content-Type: application/json
 Authorization: Bearer {{graphqlUserToken}}
 x-hasura-admin-secret: {{graphqlAdminToken}}
 x-hasura-allowed-roles:  user manager
-x-hasura-role: user
+x-hasura-role: manager
 x-hasura-org-id: chinthagunta
 x-hasura-user-id: xmlking@gmail.com
-X-REQUEST-TYPE: GraphQL
 
 query GetPolicy($id: uuid!) {
   policies_by_pk(id: $id) {
@@ -274,14 +274,14 @@ query GetPolicy($id: uuid!) {
 # organization = x-hasura-org-id 	updatedBy = x-hasura-user-id
 # @name updatePolicy
 POST  {{graphqlEndpoint}}
+X-REQUEST-TYPE: GraphQL
 Content-Type: application/json
 Authorization: Bearer {{graphqlUserToken}}
 x-hasura-admin-secret: {{graphqlAdminToken}}
 x-hasura-allowed-roles:  user manager
-x-hasura-role: user
+x-hasura-role: manager
 x-hasura-org-id: chinthagunta
 x-hasura-user-id: xmlking@gmail.com
-X-REQUEST-TYPE: GraphQL
 
 mutation UpdatePolicy($policyId: uuid!, $policyData: policies_set_input!,  $ruleId: uuid!,$ruleData: rules_set_input!) {
   update_policies_by_pk(pk_columns: {id: $policyId}, _set: $policyData) {
@@ -356,14 +356,14 @@ mutation UpdatePolicy($policyId: uuid!, $policyData: policies_set_input!,  $rule
 # organization = x-hasura-org-id 	createdBy = x-hasura-user-id
 # @name createPolicy
 POST  {{graphqlEndpoint}}
+X-REQUEST-TYPE: GraphQL
 Content-Type: application/json
 Authorization: Bearer {{graphqlUserToken}}
 x-hasura-admin-secret: {{graphqlAdminToken}}
 x-hasura-allowed-roles:  user manager
-x-hasura-role: user
+x-hasura-role: manager
 x-hasura-org-id: chinthagunta
 x-hasura-user-id: xmlking@gmail.com
-X-REQUEST-TYPE: GraphQL
 
 mutation CreatePolicy($data: policies_insert_input!) {
   insert_policies_one(object: $data) {
@@ -446,14 +446,14 @@ mutation CreatePolicy($data: policies_insert_input!) {
 # if null returned, either ID is not found or this user don't have permissions to delete
 # @name deletePolicyFail
 POST  {{graphqlEndpoint}}
+X-REQUEST-TYPE: GraphQL
 Content-Type: application/json
 Authorization: Bearer {{graphqlUserToken}}
 x-hasura-admin-secret: {{graphqlAdminToken}}
 x-hasura-allowed-roles:  user manager
-x-hasura-role: user
+x-hasura-role: manager
 x-hasura-org-id: chinthagunta
 x-hasura-user-id: xmlking@gmail.com
-X-REQUEST-TYPE: GraphQL
 
 mutation DeletePolicyFail($id:uuid!) {
   delete_policies_by_pk(id:  $id) {
@@ -469,14 +469,14 @@ mutation DeletePolicyFail($id:uuid!) {
 # if Role's `shared=false`, delete `Policy` and assocated `Rule`, otherwise only delete `Policy`
 # @name deletePolicy
 POST  {{graphqlEndpoint}}
+X-REQUEST-TYPE: GraphQL
 Content-Type: application/json
 Authorization: Bearer {{graphqlUserToken}}
 x-hasura-admin-secret: {{graphqlAdminToken}}
 x-hasura-allowed-roles:  user manager
-x-hasura-role: user
+x-hasura-role: manager
 x-hasura-org-id: chinthagunta
 x-hasura-user-id: xmlking@gmail.com
-X-REQUEST-TYPE: GraphQL
 
 mutation DeletePolicy($policyId: uuid!, $ruleId: uuid!, $deletedAt: timestamptz!) {
   update_policies_by_pk(pk_columns: {id: $policyId}, _set: {deletedAt: $deletedAt}) {

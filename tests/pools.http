@@ -8,9 +8,9 @@
 ### IntrospectionQuery
 # @name IntrospectionQuery
 POST  {{graphqlEndpoint}}
+X-REQUEST-TYPE: GraphQL
 Content-Type: application/json
 x-hasura-admin-secret: {{graphqlAdminToken}}
-X-REQUEST-TYPE: GraphQL
 
 query IntrospectionQuery {
 	__schema {
@@ -29,14 +29,14 @@ query IntrospectionQuery {
 ### List Active Pools
 # @name listPools
 POST  {{graphqlEndpoint}}
+X-REQUEST-TYPE: GraphQL
 Content-Type: application/json
 Authorization: Bearer {{graphqlUserToken}}
 x-hasura-admin-secret: {{graphqlAdminToken}}
 x-hasura-allowed-roles:  user manager
-x-hasura-role: user
+x-hasura-role: manager
 x-hasura-org-id: chinthagunta
 x-hasura-user-id: xmlking@gmail.com
-X-REQUEST-TYPE: GraphQL
 
 query ListPools($limit: Int = 50, $offset: Int = 0, $order_by: [pools_order_by!] = [{updatedAt: desc_nulls_last}]) {
   pools(limit: $limit, offset: $offset, order_by: $order_by) {
@@ -62,14 +62,14 @@ query ListPools($limit: Int = 50, $offset: Int = 0, $order_by: [pools_order_by!]
 ### Search Active Pools
 # @name searchPools
 POST  {{graphqlEndpoint}}
+X-REQUEST-TYPE: GraphQL
 Content-Type: application/json
 Authorization: Bearer {{graphqlUserToken}}
 x-hasura-admin-secret: {{graphqlAdminToken}}
 x-hasura-allowed-roles:  user manager
-x-hasura-role: user
+x-hasura-role: manager
 x-hasura-org-id: chinthagunta
 x-hasura-user-id: xmlking@gmail.com
-X-REQUEST-TYPE: GraphQL
 
 query SearchPools($filter: String!, $limit: Int = 50, $offset: Int = 0, $orderBy: [pools_order_by!] = [{updatedAt: desc_nulls_last}]) {
   pools(order_by: $orderBy, limit: $limit, offset: $offset, where: {displayName: {_like: $filter}}) {
@@ -99,14 +99,14 @@ query SearchPools($filter: String!, $limit: Int = 50, $offset: Int = 0, $orderBy
 ### getPool by Id
 # @name getPool
 POST  {{graphqlEndpoint}}
+X-REQUEST-TYPE: GraphQL
 Content-Type: application/json
 Authorization: Bearer {{graphqlUserToken}}
 x-hasura-admin-secret: {{graphqlAdminToken}}
 x-hasura-allowed-roles:  user manager
-x-hasura-role: user
+x-hasura-role: manager
 x-hasura-org-id: chinthagunta
 x-hasura-user-id: xmlking@gmail.com
-X-REQUEST-TYPE: GraphQL
 
 query GetPool($id: uuid!) {
   pools_by_pk(id: $id) {
@@ -133,14 +133,14 @@ query GetPool($id: uuid!) {
 # createdBy = x-hasura-user-id
 # @name createPool
 POST  {{graphqlEndpoint}}
+X-REQUEST-TYPE: GraphQL
 Content-Type: application/json
 Authorization: Bearer {{graphqlUserToken}}
 x-hasura-admin-secret: {{graphqlAdminToken}}
 x-hasura-allowed-roles:  user manager
-x-hasura-role: user
+x-hasura-role: manager
 x-hasura-org-id: chinthagunta
 x-hasura-user-id: xmlking@gmail.com
-X-REQUEST-TYPE: GraphQL
 
 mutation CreatePool($data: pools_insert_input!) {
   insert_pools_one(object: $data) {
@@ -169,14 +169,14 @@ mutation CreatePool($data: pools_insert_input!) {
 # createdBy = x-hasura-user-id
 # @name updatePool
 POST  {{graphqlEndpoint}}
+X-REQUEST-TYPE: GraphQL
 Content-Type: application/json
 Authorization: Bearer {{graphqlUserToken}}
 x-hasura-admin-secret: {{graphqlAdminToken}}
 x-hasura-allowed-roles:  user manager
-x-hasura-role: user
+x-hasura-role: manager
 x-hasura-org-id: chinthagunta
 x-hasura-user-id: xmlking@gmail.com
-X-REQUEST-TYPE: GraphQL
 
 mutation UpdatePool($id: uuid!, $data: pools_set_input!) {
   update_pools_by_pk(pk_columns: {id: $id}, _set: $data) {
@@ -202,14 +202,14 @@ mutation UpdatePool($id: uuid!, $data: pools_set_input!) {
 # if null returned, either ID is not found or this user don't have permissions to delete
 # @name deletePool
 POST  {{graphqlEndpoint}}
+X-REQUEST-TYPE: GraphQL
 Content-Type: application/json
 Authorization: Bearer {{graphqlUserToken}}
 x-hasura-admin-secret: {{graphqlAdminToken}}
 x-hasura-allowed-roles:  user manager
-x-hasura-role: user
+x-hasura-role: manager
 x-hasura-org-id: chinthagunta
 x-hasura-user-id: xmlking@gmail.com
-X-REQUEST-TYPE: GraphQL
 
 mutation DeletePool($id: uuid!, $deletedAt: timestamptz!) {
 	update_pools_by_pk(pk_columns: { id: $id }, _set: { deletedAt: $deletedAt }) {

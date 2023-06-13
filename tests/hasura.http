@@ -105,14 +105,14 @@ fragment TypeRef on __Type {
 ### Search Restrooms
 # @name SearchRestrooms
 POST  {{graphqlEndpoint}}
+X-REQUEST-TYPE: GraphQL
 Content-Type: application/json
 Authorization: Bearer {{graphqlUserToken}}
 x-hasura-admin-secret: {{graphqlAdminToken}}
 x-hasura-allowed-roles:  user manager
-x-hasura-role: user
+x-hasura-role: manager
 x-hasura-org-id: chinthagunta
 x-hasura-user-id: xmlking@gmail.com
-X-REQUEST-TYPE: GraphQL
 
 query MyQuery {
 	SearchRestrooms(arg1: { city: "Riverside" }) {
@@ -141,14 +141,14 @@ query MyQuery {
 ### ListUniversities
 # @name ListUniversities
 POST  {{graphqlEndpoint}}
+X-REQUEST-TYPE: GraphQL
 Content-Type: application/json
 Authorization: Bearer {{graphqlUserToken}}
 x-hasura-admin-secret: {{graphqlAdminToken}}
 x-hasura-allowed-roles:  user manager
-x-hasura-role: user
+x-hasura-role: manager
 x-hasura-org-id: chinthagunta
 x-hasura-user-id: xmlking@gmail.com
-X-REQUEST-TYPE: GraphQL
 
 query MyQuery {
 	ListUniversities(arg1: { name: "middle" }) {

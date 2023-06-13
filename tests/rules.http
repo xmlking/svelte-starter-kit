@@ -8,9 +8,9 @@
 ### IntrospectionQuery
 # @name IntrospectionQuery
 POST  {{graphqlEndpoint}}
+X-REQUEST-TYPE: GraphQL
 Content-Type: application/json
 x-hasura-admin-secret: {{graphqlAdminToken}}
-X-REQUEST-TYPE: GraphQL
 
 query IntrospectionQuery {
 	__schema {
@@ -29,6 +29,7 @@ query IntrospectionQuery {
 ### List Active Rules
 # @name listRules
 POST  {{graphqlEndpoint}}
+X-REQUEST-TYPE: GraphQL
 Content-Type: application/json
 Authorization: Bearer {{graphqlUserToken}}
 x-hasura-admin-secret: {{graphqlAdminToken}}
@@ -36,7 +37,6 @@ x-hasura-allowed-roles:  user manager
 x-hasura-role: manager
 x-hasura-org-id: chinthagunta
 x-hasura-user-id: xmlking@gmail.com
-X-REQUEST-TYPE: GraphQL
 
 query ListRules($limit: Int = 50, $offset: Int = 0, $order_by: [rules_order_by!] = [{updatedAt: desc_nulls_last}]) {
   rules(limit: $limit, offset: $offset, order_by: $order_by) {
@@ -71,6 +71,7 @@ query ListRules($limit: Int = 50, $offset: Int = 0, $order_by: [rules_order_by!]
 ### Search Active and Shared Rules
 # @name searchSharedRules
 POST  {{graphqlEndpoint}}
+X-REQUEST-TYPE: GraphQL
 Content-Type: application/json
 Authorization: Bearer {{graphqlUserToken}}
 x-hasura-admin-secret: {{graphqlAdminToken}}
@@ -78,7 +79,6 @@ x-hasura-allowed-roles:  user manager
 x-hasura-role: manager
 x-hasura-org-id: chinthagunta
 x-hasura-user-id: xmlking@gmail.com
-X-REQUEST-TYPE: GraphQL
 
 query SearchSharedRules($filter: String!, $limit: Int = 50, $offset: Int = 0, $orderBy: [rules_order_by!] = [{updatedAt: desc_nulls_last}]) {
   rules(order_by: $orderBy, limit: $limit, offset: $offset, where: {displayName: {_like: $filter}, shared: {_eq: true}}) {
@@ -118,6 +118,7 @@ query SearchSharedRules($filter: String!, $limit: Int = 50, $offset: Int = 0, $o
 ### getRule by Id
 # @name getRule
 POST  {{graphqlEndpoint}}
+X-REQUEST-TYPE: GraphQL
 Content-Type: application/json
 Authorization: Bearer {{graphqlUserToken}}
 x-hasura-admin-secret: {{graphqlAdminToken}}
@@ -125,7 +126,6 @@ x-hasura-allowed-roles:  user manager
 x-hasura-role: manager
 x-hasura-org-id: chinthagunta
 x-hasura-user-id: xmlking@gmail.com
-X-REQUEST-TYPE: GraphQL
 
 query GetRule($id: uuid!) {
   rules_by_pk(id: $id) {
@@ -161,6 +161,7 @@ query GetRule($id: uuid!) {
 # createdBy = x-hasura-user-id
 # @name createRule
 POST  {{graphqlEndpoint}}
+X-REQUEST-TYPE: GraphQL
 Content-Type: application/json
 Authorization: Bearer {{graphqlUserToken}}
 x-hasura-admin-secret: {{graphqlAdminToken}}
@@ -168,7 +169,6 @@ x-hasura-allowed-roles:  user manager
 x-hasura-role: manager
 x-hasura-org-id: chinthagunta
 x-hasura-user-id: xmlking@gmail.com
-X-REQUEST-TYPE: GraphQL
 
 mutation CreateRule($data: rules_insert_input!) {
   insert_rules_one(object: $data) {
@@ -224,6 +224,7 @@ mutation CreateRule($data: rules_insert_input!) {
 # createdBy = x-hasura-user-id
 # @name updatePool
 POST  {{graphqlEndpoint}}
+X-REQUEST-TYPE: GraphQL
 Content-Type: application/json
 Authorization: Bearer {{graphqlUserToken}}
 x-hasura-admin-secret: {{graphqlAdminToken}}
@@ -231,7 +232,6 @@ x-hasura-allowed-roles:  user manager
 x-hasura-role: manager
 x-hasura-org-id: chinthagunta
 x-hasura-user-id: xmlking@gmail.com
-X-REQUEST-TYPE: GraphQL
 
 mutation UpdateRule($id: uuid!, $data: rules_set_input!) {
   update_rules_by_pk(pk_columns: {id: $id}, _set: $data) {
@@ -271,6 +271,7 @@ mutation UpdateRule($id: uuid!, $data: rules_set_input!) {
 # if null returned, either ID is not found or this user don't have permissions to delete
 # @name deleteRule
 POST  {{graphqlEndpoint}}
+X-REQUEST-TYPE: GraphQL
 Content-Type: application/json
 Authorization: Bearer {{graphqlUserToken}}
 x-hasura-admin-secret: {{graphqlAdminToken}}
@@ -278,7 +279,6 @@ x-hasura-allowed-roles:  user manager
 x-hasura-role: manager
 x-hasura-org-id: chinthagunta
 x-hasura-user-id: xmlking@gmail.com
-X-REQUEST-TYPE: GraphQL
 
 mutation DeleteRule($id: uuid!, $deletedAt: timestamptz!) {
 	update_rules_by_pk(pk_columns: { id: $id }, _set: { deletedAt: $deletedAt }) {

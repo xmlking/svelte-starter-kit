@@ -8,9 +8,9 @@
 ### IntrospectionQuery
 # @name IntrospectionQuery
 POST  {{graphqlEndpoint}}
+X-REQUEST-TYPE: GraphQL
 Content-Type: application/json
 x-hasura-admin-secret: {{graphqlAdminToken}}
-X-REQUEST-TYPE: GraphQL
 
 query IntrospectionQuery {
 	__schema {
@@ -29,14 +29,14 @@ query IntrospectionQuery {
 ### List Active Pools
 # @name listPools
 POST  {{graphqlEndpoint}}
+X-REQUEST-TYPE: GraphQL
 Content-Type: application/json
 Authorization: Bearer {{graphqlUserToken}}
 x-hasura-admin-secret: {{graphqlAdminToken}}
 x-hasura-allowed-roles:  user manager
-x-hasura-role: user
+x-hasura-role: manager
 x-hasura-org-id: chinthagunta
 x-hasura-user-id: xmlking@gmail.com
-X-REQUEST-TYPE: GraphQL
 
 query SearchPoolsAndDevices($limit: Int = 10, $offset: Int = 0, $filter: String!) {
   pools(limit: $limit, offset: $offset, where: {displayName: {_like: $filter}}, order_by: [{updatedAt: desc_nulls_last}]) {
