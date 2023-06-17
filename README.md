@@ -40,6 +40,7 @@ by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create
 - [ ] [GraphQL Yoga API](https://github.com/dotansimha/graphql-yoga/blob/main/examples/sveltekit/src/routes/api/graphql/%2Bserver.ts)
 - [ ] Documentation micro site with [Astro](https://github.com/PuruVJ/neodrag/tree/main/docs)
 - [ ] Use [Bob.Build](https://bob.build/) for Smart Builds, Build Cache etc and Bob's [github-actions](https://bob.build/docs/ci-recipes/github-actions/)
+- [x] Use [sveltekit-og](https://github.com/etherCorps/sveltekit-og) for Open Graph Image Generation
 
 ## Experementing
 
