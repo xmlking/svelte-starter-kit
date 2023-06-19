@@ -82,7 +82,7 @@ insert_permissions:
         - valid_to
         - weight
 select_permissions:
-  - role: agent
+  - role: engine
     permission:
       columns:
         - id

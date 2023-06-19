@@ -35,7 +35,7 @@ array_relationships:
           name: device_pool
           schema: public
 insert_permissions:
-  - role: agent
+  - role: engine
     permission:
       check: {}
       set:
@@ -49,7 +49,7 @@ insert_permissions:
         - ip
         - tags
 select_permissions:
-  - role: agent
+  - role: engine
     permission:
       columns:
         - annotations
@@ -117,7 +117,7 @@ select_permissions:
           - deleted_at:
               _is_null: true
 update_permissions:
-  - role: agent
+  - role: engine
     permission:
       columns:
         - annotations

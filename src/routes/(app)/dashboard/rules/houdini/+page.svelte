@@ -128,9 +128,7 @@
 			if (e.detail.id) {
 				const id = e.detail.id;
 				const deletedAt = new Date();
-				const { data } = await deleteRuleStore.mutate(
-					{ id, deletedAt }
-				);
+				const { data } = await deleteRuleStore.mutate({ id, deletedAt });
 				if (data?.update_rules_by_pk?.displayName) {
 					addToast({
 						message: `Rule: ${data?.update_rules_by_pk?.displayName} deleted`,

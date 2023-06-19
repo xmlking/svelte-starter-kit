@@ -79,7 +79,7 @@ insert_permissions:
         - tags
         - weight
 select_permissions:
-  - role: agent
+  - role: engine
     permission:
       columns:
         - action

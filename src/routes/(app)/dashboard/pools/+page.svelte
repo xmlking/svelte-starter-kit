@@ -127,9 +127,7 @@
 			if (e.detail.id) {
 				const id = e.detail.id;
 				const deletedAt = new Date();
-				const { data } = await deletePoolStore.mutate(
-					{ id, deletedAt }
-				);
+				const { data } = await deletePoolStore.mutate({ id, deletedAt });
 				if (data?.update_pools_by_pk?.displayName) {
 					addToast({
 						message: `Rule: ${data?.update_pools_by_pk?.displayName} deleted`,

@@ -32,7 +32,7 @@ export const load = async (event) => {
 	const { errors, data } = await listPoliciesStore.fetch({
 		event,
 		blocking: true,
-		policy: CachePolicy.NetworkOnly
+		policy: CachePolicy.NetworkOnly,
 		variables
 	});
 	if (errors) {

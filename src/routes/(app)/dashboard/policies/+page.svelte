@@ -180,9 +180,11 @@
 				const id = e.detail.id;
 				const id2 = e.detail.id2;
 				const deletedAt = new Date();
-				const { data } = await deletePolicyStore.mutate(
-					{ policyId: id, ruleId: id2, deletedAt }
-				);
+				const { data } = await deletePolicyStore.mutate({
+					policyId: id,
+					ruleId: id2,
+					deletedAt
+				});
 				if (data?.update_policies_by_pk && data?.update_rules?.affected_rows) {
 					addToast({
 						message: `Policy and associated rule: ${data?.update_rules?.returning[0].displayName} deleted`,
