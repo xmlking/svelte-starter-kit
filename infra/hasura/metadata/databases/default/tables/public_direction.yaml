@@ -3,7 +3,7 @@ table:
   schema: public
 is_enum: true
 select_permissions:
-  - role: agent
+  - role: engine
     permission:
       columns:
         - description

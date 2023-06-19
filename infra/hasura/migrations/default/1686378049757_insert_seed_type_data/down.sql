@@ -1,3 +1,5 @@
+SET rules.soft_deletion TO off;
+--
 DELETE FROM public.direction;
 --
 DELETE FROM public.action;

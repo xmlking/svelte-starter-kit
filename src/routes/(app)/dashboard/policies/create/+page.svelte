@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { dev } from '$app/environment';
-	import { browser } from '$app/environment';
+	import { browser, dev } from '$app/environment';
 	import { CachePolicy, SearchRulesStore, order_by } from '$houdini';
 	import {
 		Checkbox,
@@ -151,7 +150,7 @@
 		const variables = { where, orderBy };
 		const { errors, data } = await searchRulesStore.fetch({
 			blocking: true,
-			policy: CachePolicy.CacheAndNetwork
+			policy: CachePolicy.NetworkOnly,
 			variables
 		});
 		if (errors) throw new Error(`An error has occurred: ${errors}`);

@@ -29,14 +29,14 @@ query IntrospectionQuery {
 ### List Active Devices
 # @name listDevices
 POST  {{graphqlEndpoint}}
+X-REQUEST-TYPE: GraphQL
 Content-Type: application/json
 Authorization: Bearer {{graphqlUserToken}}
 x-hasura-admin-secret: {{graphqlAdminToken}}
-x-hasura-allowed-roles:  user manager agent
-x-hasura-role: agent
+x-hasura-allowed-roles: user manager engine
+x-hasura-role: engine
 x-hasura-org-id: chinthagunta
 x-hasura-user-id: xmlking@gmail.com
-X-REQUEST-TYPE: GraphQL
 
 query ListDevices($limit: Int = 50, $offset: Int = 0, $order_by: [devices_order_by!] = [{updatedAt: desc_nulls_last}]) {
   devices(limit: $limit, offset: $offset, order_by: $order_by) {
@@ -67,7 +67,7 @@ X-REQUEST-TYPE: GraphQL
 Content-Type: application/json
 Authorization: Bearer {{graphqlUserToken}}
 x-hasura-admin-secret: {{graphqlAdminToken}}
-x-hasura-allowed-roles:  user manager agent
+x-hasura-allowed-roles: user manager engine
 x-hasura-role: manager
 x-hasura-org-id: chinthagunta
 x-hasura-user-id: xmlking@gmail.com
@@ -108,7 +108,7 @@ X-REQUEST-TYPE: GraphQL
 Content-Type: application/json
 Authorization: Bearer {{graphqlUserToken}}
 x-hasura-admin-secret: {{graphqlAdminToken}}
-x-hasura-allowed-roles:  user manager
+x-hasura-allowed-roles: user manager engine
 x-hasura-role: manager
 x-hasura-org-id: chinthagunta
 x-hasura-user-id: xmlking@gmail.com
@@ -142,8 +142,8 @@ X-REQUEST-TYPE: GraphQL
 Content-Type: application/json
 Authorization: Bearer {{graphqlUserToken}}
 x-hasura-admin-secret: {{graphqlAdminToken}}
-x-hasura-allowed-roles:  user manager agent
-x-hasura-role: agent
+x-hasura-allowed-roles: user manager engine
+x-hasura-role: engine
 x-hasura-org-id: chinthagunta
 x-hasura-user-id: xmlking@gmail.com
 
@@ -173,8 +173,8 @@ X-REQUEST-TYPE: GraphQL
 Content-Type: application/json
 Authorization: Bearer {{graphqlUserToken}}
 x-hasura-admin-secret: {{graphqlAdminToken}}
-x-hasura-allowed-roles:  user manager agent
-x-hasura-role: agent
+x-hasura-allowed-roles: user manager engine
+x-hasura-role: engine
 x-hasura-org-id: chinthagunta
 x-hasura-user-id: xmlking@gmail.com
 
@@ -210,8 +210,8 @@ X-REQUEST-TYPE: GraphQL
 Content-Type: application/json
 Authorization: Bearer {{graphqlUserToken}}
 x-hasura-admin-secret: {{graphqlAdminToken}}
-x-hasura-allowed-roles: user manager
-x-hasura-role: manager
+x-hasura-allowed-roles: user manager engine admin
+x-hasura-role: admin
 x-hasura-org-id: chinthagunta
 x-hasura-user-id: xmlking@gmail.com
 
