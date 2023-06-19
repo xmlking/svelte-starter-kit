@@ -1,5 +1,5 @@
-query SearchSharedRules($limit: Int = 50, $offset: Int = 0, $displayName: String! = "%%")
-@cache(policy: CacheAndNetwork) {
+query SearchSharedRules($limit: Int = 50, $offset: Int = 0, $displayName: String = "%%")
+@cache(policy: NetworkOnly) {
 	rules(
 		limit: $limit
 		offset: $offset

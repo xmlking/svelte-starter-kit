@@ -1,18 +1,21 @@
-import { order_by, type subject_type_enum$options } from '$houdini';
-import { policySearchSchema } from '$lib/models/schema';
+import { CachePolicy, ListPoliciesStore, order_by } from '$houdini';
+import { policySearchSchema as schema } from '$lib/models/schema';
 import { Logger } from '$lib/utils';
-import { zfd } from '$lib/zodfd';
 import { error } from '@sveltejs/kit';
-import { ZodError } from 'zod';
-import type { BeforeLoadEvent, SearchPoliciesVariables as Variables } from './$houdini';
+import type { GraphQLError } from 'graphql';
+import { setError, setMessage, superValidate } from 'sveltekit-superforms/client';
+const log = new Logger('rules.list.browser');
 
-const log = new Logger('policies.browser');
+const listPoliciesStore = new ListPoliciesStore();
+export const load = async (event) => {
+	const { url } = event;
+	const form = await superValidate(url, schema);
 
-export const _SearchPoliciesVariables: Variables = ({ url }) => {
-	const limit = parseInt(url.searchParams.get('limit') ?? '50');
-	const offset = parseInt(url.searchParams.get('offset') ?? '0');
-	const subjectId = url.searchParams.get('subjectId') ?? undefined;
-	const subjectType: subject_type_enum$options = url.searchParams.get('subjectType') ?? undefined;
+	if (!form.valid) return { status: 400, form }; // return fail(400, { form }); // FIXME
+
+	const {
+		data: { limit, offset, subjectType, subjectId }
+	} = form;
 
 	const orderBy = [{ updatedAt: order_by.desc_nulls_first }];
 	const where = {
@@ -20,27 +23,28 @@ export const _SearchPoliciesVariables: Variables = ({ url }) => {
 		...(subjectId ? { subjectId: { _eq: subjectId } } : {})
 	};
 
-	return {
-		where,
+	const variables = {
 		limit,
 		offset,
-		orderBy
+		orderBy,
+		where
 	};
-};
-
-const searchSchema = zfd.formData(policySearchSchema, { empty: 'strip' });
-
-export function _houdini_beforeLoad({ url }: BeforeLoadEvent) {
-	try {
-		const { subjectId, subjectType, limit, offset } = searchSchema.parse(url.searchParams);
-		log.debug(subjectId, subjectType, limit, offset);
-	} catch (err) {
-		if (err instanceof ZodError) {
-			const { formErrors, fieldErrors } = err.flatten();
-			return { formErrors, fieldErrors };
-		} else {
-			log.error('pool:search_houdini_beforeLoad:', err);
-			throw error(500, err as Error);
-		}
+	const { errors, data } = await listPoliciesStore.fetch({
+		event,
+		blocking: true,
+		policy: CachePolicy.NetworkOnly
+		variables
+	});
+	if (errors) {
+		errors.forEach((error) => {
+			log.error('list policies api error', error);
+			// NOTE: you can add multiple errors, send all along with a message
+			setError(form, '', (error as GraphQLError).message);
+		});
+		setMessage(form, 'Backend error');
+		return { status: 500, form };
 	}
-}
+	const items = data?.policies;
+	if (!items) throw error(404, 'policies not found');
+	return { form, items };
+};

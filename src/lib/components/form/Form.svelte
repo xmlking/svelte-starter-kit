@@ -13,8 +13,11 @@
 	// eslint-disable-next-line no-undef
 	type T = $$Generic<AnyZodObject>;
 	export let superform: SuperForm<ZodValidation<T>, unknown>;
-	export let useDefaultSubmitButton = true;
-	export let defaultSubmitButtonText = 'Submit';
+	export let showButtons = true;
+	export let showAlerts = true;
+	export let submitButtonText = 'Submit';
+	export let resetButtonText = 'Reset';
+	export let backButtonText = 'Back';
 	export let className = 'space-y-6';
 
 	const {
@@ -35,7 +38,7 @@
 <form class={className} method="post" {...$$restProps} use:enhance>
 	<slot />
 
-	{#if $message || $errors._errors}
+	{#if showAlerts && ($message || $errors._errors)}
 		<Alert
 			color={$page.status >= 400 ? 'red' : 'blue'}
 			dismissable={false}
@@ -67,16 +70,19 @@
 		</Alert>
 	{/if}
 
-	{#if useDefaultSubmitButton}
+	{#if showButtons}
 		<ButtonGroup>
 			<Button outline on:click={() => history.back()}>
-				<ArrowLeft size="18" class="mr-2 text-blue-500 dark:text-green-500" />Back
+				<ArrowLeft
+					size="18"
+					class="mr-2 text-blue-500 dark:text-green-500"
+				/>{backButtonText}
 			</Button>
 			<Button outline disabled={!$tainted} on:click={() => reset()}>
 				<AdjustmentsHorizontal
 					size="18"
 					class="mr-2 text-blue-500 dark:text-green-500"
-				/>Reset
+				/>{resetButtonText}
 			</Button>
 			<!-- <Button outline type="submit" disabled={!$tainted || $errors || $submitting}></Button> -->
 			<Button outline type="submit" disabled={!$tainted || $submitting}>
@@ -86,11 +92,12 @@
 					<CloudArrowDown
 						size="18"
 						class="mr-2 text-blue-500 dark:text-green-500"
-					/>{defaultSubmitButtonText}
+					/>{submitButtonText}
 				{/if}
 			</Button>
 		</ButtonGroup>
 	{/if}
+	<slot name="action" />
 
 	{#if $delayed}
 		<div class="m-0 p-0">

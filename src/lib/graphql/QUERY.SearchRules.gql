@@ -3,7 +3,7 @@ query SearchRules(
 	$limit: Int = 50
 	$offset: Int = 0
 	$orderBy: [rules_order_by!] = [{ updatedAt: desc_nulls_last }]
-) {
+) @cache(policy: NetworkOnly) {
 	rules(order_by: $orderBy, limit: $limit, offset: $offset, where: $where) {
 		id
 		displayName
@@ -20,5 +20,7 @@ query SearchRules(
 		action
 		appId
 		weight
+		updatedBy
+		updatedAt
 	}
 }

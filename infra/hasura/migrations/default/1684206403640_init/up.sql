@@ -1,14 +1,14 @@
 SET check_function_bodies = false;
 ---ALTER DATABASE postgres SET rules.soft_deletion TO on;
 SET SESSION "rules.soft_deletion" = 'on';
-CREATE EXTENSION IF NOT EXISTS citext WITH SCHEMA public;
-COMMENT ON EXTENSION citext IS 'data type for case-insensitive character strings';
+-- CREATE EXTENSION IF NOT EXISTS citext WITH SCHEMA public;
+-- COMMENT ON EXTENSION citext IS 'data type for case-insensitive character strings';
 CREATE EXTENSION IF NOT EXISTS hstore WITH SCHEMA public;
 COMMENT ON EXTENSION hstore IS 'data type for storing sets of (key, value) pairs';
-CREATE EXTENSION IF NOT EXISTS ltree WITH SCHEMA public;
-COMMENT ON EXTENSION ltree IS 'data type for storing hierarchical data path';
-CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
-COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
+-- CREATE EXTENSION IF NOT EXISTS ltree WITH SCHEMA public;
+-- COMMENT ON EXTENSION ltree IS 'data type for storing hierarchical data path';
+-- CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
+-- COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
 CREATE TABLE public.devices (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -148,8 +148,6 @@ ALTER TABLE ONLY public.organization
     ADD CONSTRAINT organization_pkey PRIMARY KEY (value);
 ALTER TABLE ONLY public.policies
     ADD CONSTRAINT policies_pkey PRIMARY KEY (id);
-ALTER TABLE ONLY public.policies
-    ADD CONSTRAINT policies_subject_id_subject_type_rule_id_organization_key UNIQUE (subject_id, subject_type, rule_id, organization);
 ALTER TABLE ONLY public.pools
     ADD CONSTRAINT pools_pkey PRIMARY KEY (id);
 ALTER TABLE ONLY public.protocol
@@ -162,6 +160,7 @@ CREATE INDEX devices_display_name ON public.devices USING btree (display_name);
 CREATE UNIQUE INDEX devices_display_name_organization_unique ON public.devices USING btree (display_name, organization) WHERE (deleted_at IS NULL);
 CREATE UNIQUE INDEX pools_display_name_organization_unique ON public.pools USING btree (display_name, organization) WHERE (deleted_at IS NULL);
 CREATE UNIQUE INDEX rules_display_name_organization_unique ON public.rules USING btree (display_name, organization) WHERE (deleted_at IS NULL);
+CREATE UNIQUE INDEX policies_subject_id_subject_type_rule_id_organization_unique ON public.policies USING btree (subject_id, subject_type, rule_id, organization) WHERE (deleted_at IS NULL);
 CREATE RULE devices_soft_deletion_rule AS
     ON DELETE TO public.devices
    WHERE (current_setting('rules.soft_deletion'::text) = 'on'::text) DO INSTEAD  UPDATE public.devices SET deleted_at = now()

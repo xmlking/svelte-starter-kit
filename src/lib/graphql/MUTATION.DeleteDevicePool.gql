@@ -1,5 +1,5 @@
-mutation DeleteDevicePool($devicePoolId: uuid!) {
-	delete_device_pool_by_pk(id: $devicePoolId) {
+mutation DeleteDevicePool($id: uuid!) {
+	delete_device_pool_by_pk(id: $id) {
 		deviceId
 		poolId
 	}

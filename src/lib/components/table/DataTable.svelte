@@ -1,3 +1,18 @@
+<!--
+@component
+Display a data table using the `svelte-headless-table` library.
+See: https://svelte-headless-table.bryanmylee.com
+
+The expected `tableViewModel` prop is the result of calling `table.createViewModel()`.
+See: https://svelte-headless-table.bryanmylee.com/docs/api/create-view-model
+
+#### Usage:
+```tsx
+  <DataTable {tableViewModel} hasSearch={true|false} hasPagination={true|false} />
+```
+
+// TODO https://github.com/tradingstrategy-ai/frontend/blob/master/src/lib/components/datatable/DataTable.svelte
+-->
 <script lang="ts">
 	import { Button, ButtonGroup, ChevronDown, ChevronUp, Select } from 'flowbite-svelte';
 	import type { TableViewModel } from 'svelte-headless-table';

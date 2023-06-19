@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { CachePolicy } from '$houdini';
-	import { ErrorMessage, GraphQLErrors } from '$lib/components';
+	import { GraphQLErrors } from '$lib/components';
+	import { ErrorMessage } from '$lib/components/form';
 	import type { PageData } from './$houdini';
 
 	export let data: PageData;

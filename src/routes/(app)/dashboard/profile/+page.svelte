@@ -11,7 +11,10 @@
 {#if $page.data.session}
 	<h2 class="pb-4 text-2xl font-bold text-gray-800 dark:text-white">Profile</h2>
 	<div class="relative overflow-x-auto">
-		<Avatar src={$page.data.session.user?.image ?? undefined} referrerpolicy="no-referrer" />
+		<Avatar
+			src={$page.data.session.user?.image ?? '/images/profile-picture-3.webp'}
+			referrerpolicy="no-referrer"
+		/>
 		<table class="w-full text-left text-sm text-gray-500 dark:text-gray-400">
 			<tbody>
 				{#each Object.entries($page.data.session.user ?? {}) as [key, value]}

@@ -1,18 +1,18 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 
-	export let title = 'Svelte-Starter-Kit'
-	export let description = 'SvelteKit starter template'
+	export let title = 'Svelte-Starter-Kit';
+	export let description = 'SvelteKit starter template';
 
 	const getImg = () => {
-		const [part0, part1, part2] = $page.url.pathname.split('/')
+		const [part0, part1, part2] = $page.url.pathname.split('/');
 		if (part1 && part2) {
-			return `${$page.url.origin}/api/og/kit-${part1}-${part2}.png`
+			return `${$page.url.origin}/api/og/kit-${part1}-${part2}.png`;
 		} else if (part1) {
-			return `${$page.url.origin}/api/og/kit-${part1}.png`
+			return `${$page.url.origin}/api/og/kit-${part1}.png`;
 		}
-		return `${$page.url.origin}/api/og/kit.png`
-	}
+		return `${$page.url.origin}/api/og/kit.png`;
+	};
 </script>
 
 <svelte:head>

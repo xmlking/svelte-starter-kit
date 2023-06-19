@@ -14,10 +14,9 @@
 	import { Breadcrumb, BreadcrumbItem, Heading, Helper, P } from 'flowbite-svelte';
 	import { superForm } from 'sveltekit-superforms/client';
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
-	import type { PageData } from './$types';
 
 	const log = new Logger('routes:rules:update');
-	export let data: PageData;
+	export let data;
 	// Client API:
 	const superform = superForm(data.form, {
 		dataType: 'json',
@@ -59,7 +58,7 @@
 <Heading tag="h4" class="pb-5">Update Rule</Heading>
 
 {#if $form.shared}
-	<Form {superform} defaultSubmitButtonText="Update" class="space-y-6">
+	<Form {superform} submitButtonText="Update" class="space-y-6">
 		<div class="mb-6 grid gap-6 md:grid-cols-3 lg:grid-cols-6">
 			<div class="col-span-2">
 				<FloatingTextInput field={keys.displayName} label="Display Name" />
@@ -122,7 +121,12 @@
 	<SuperDebug
 		label="Miscellaneous"
 		status={false}
-		data={{ message: $message, submitting: $submitting, delayed: $delayed, posted: $posted }}
+		data={{
+			message: $message,
+			submitting: $submitting,
+			delayed: $delayed,
+			posted: $posted
+		}}
 	/>
 	<br />
 	<SuperDebug label="Form" data={$form} />
@@ -133,5 +137,5 @@
 	<br />
 	<SuperDebug label="Constraints" status={false} data={$constraints} />
 	<!-- <br />
- <SuperDebug label="$page data" status={false} data={$page} /> -->
+ 	<SuperDebug label="$page data" status={false} data={$page} /> -->
 {/if}

@@ -1,10 +1,13 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
+	import { browser, dev } from '$app/environment';
 	import { goto, invalidateAll } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { DeletePolicyStore } from '$houdini';
-	import { DataTable, DeleteButton, ErrorMessage, Link } from '$lib/components';
-	import GraphQlErrors from '$lib/components/GraphQLErrors.svelte';
+	import { DeleteButton2, Link } from '$lib/components';
+	import type { CustomEventProps } from '$lib/components/DeleteButton.svelte';
+	import { ErrorMessage } from '$lib/components/form';
+	import FormAlerts from '$lib/components/form/FormAlerts.svelte';
+	import { DataTable } from '$lib/components/table';
 	import { ToastLevel, addToast } from '$lib/components/toast';
 	import { subjectTypeOptions } from '$lib/models/enums';
 	import { Logger } from '$lib/utils';
@@ -17,6 +20,7 @@
 		Navbar,
 		Select
 	} from 'flowbite-svelte';
+	import { GraphQLError } from 'graphql';
 	import { createRender, createTable } from 'svelte-headless-table';
 	import { addPagination, addSortBy, addTableFilter } from 'svelte-headless-table/plugins';
 	import {
@@ -30,17 +34,16 @@
 	import { default as SelectFetch } from 'svelte-select';
 	import { TimeDistance } from 'svelte-time-distance';
 	import { writable } from 'svelte/store';
-	import type { PageData } from './$houdini';
+	import { superForm } from 'sveltekit-superforms/client';
+	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 
-	const log = new Logger('routes:policies');
+	const log = new Logger('policies:list:browser');
+	export let data;
+	$: ({ items } = data);
+	$: itemsStore.set(items ?? []);
 
-	export let data: PageData;
-	$: ({ SearchPolicies, formErrors, fieldErrors } = data);
-	$: policies = $SearchPolicies.data?.policies;
-	$: policyStore.set(policies ?? []);
-
-	const policyStore = writable(policies ?? []);
-	const table = createTable(policyStore, {
+	const itemsStore = writable(items ?? []);
+	const table = createTable(itemsStore, {
 		page: addPagination({ initialPageSize: 5 }),
 		tableFilter: addTableFilter(),
 		sort: addSortBy()
@@ -111,9 +114,9 @@
 			id: 'delete',
 			accessor: (item) => item,
 			cell: ({ value }) =>
-				createRender(DeleteButton).on('click', async () =>
-					deletePolicy(value.id, value.rule.id)
-				),
+				createRender(DeleteButton2, { id: value.id, id2: value.rule.id })
+					// .slot(value)
+					.on('delete', handleDelete),
 			plugins: {
 				tableFilter: {
 					exclude: true
@@ -128,17 +131,22 @@
 	const tableViewModel = table.createViewModel(columns);
 
 	// Search form
-	let searchForm: HTMLFormElement;
-	let subjectId = $page.url.searchParams.get('subjectId') ?? '';
-	let subjectType = $page.url.searchParams.get('subjectType') ?? '';
-	let subjectDisplayName = $page.url.searchParams.get('subjectDisplayName') ?? '';
-	let limit = $page.url.searchParams.get('limit') ?? '50';
-	let offset = $page.url.searchParams.get('offset') ?? '0';
+	const superform = superForm(data.form, {
+		dataType: 'json',
+		taintedMessage: null,
+		syncFlashMessage: false,
+		onError({ result, message }) {
+			// the onError event allows you to act on ActionResult errors.
+			log.error('superForm', { result }, { message });
+		}
+	});
+	const { form, delayed, errors, constraints, message, tainted, posted, submitting } = superform;
 
-	let subject = subjectId
+	let searchForm: HTMLFormElement;
+	let subject = $form.subjectId
 		? {
-				id: subjectId,
-				displayName: subjectDisplayName,
+				id: $form.subjectId,
+				displayName: $form.subjectDisplayName,
 				secondaryId: ''
 		  }
 		: null;
@@ -146,7 +154,7 @@
 	async function fetchSubjects(filterText: string) {
 		if (!filterText.length) return Promise.resolve([]);
 		const response = await fetch(
-			`/api/directory/search?subType=${subjectType}&filter=&search=${filterText}`
+			`/api/directory/search?subType=${$form.subjectType}&filter=&search=${filterText}`
 		);
 		if (!response.ok) throw new Error(`An error has occurred: ${response.status}`);
 		const data = await response.json();
@@ -157,47 +165,61 @@
 		subject = null;
 		if (browser) {
 			await goto(
-				`/dashboard/policies?subjectType=${subjectType}&limit=${limit}&offset=${offset}`
+				`/dashboard/policies?subjectType=${$form.subjectType}&limit=${$form.limit}&offset=${$form.offset}`
 			);
 		}
 	}
 
 	// delete action
 	const deletePolicyStore = new DeletePolicyStore();
-	async function deletePolicy(policyId: string, ruleId: string) {
-		console.log('in deletePolicy...', policyId, ruleId);
-		const deletedAt = new Date();
-		const { data } = await deletePolicyStore.mutate(
-			{ policyId, ruleId, deletedAt },
-			{
-				metadata: { logResult: true }
+	let busy = false;
+	const handleDelete = async (e: CustomEvent<CustomEventProps>) => {
+		busy = true;
+		try {
+			if (e.detail.id) {
+				const id = e.detail.id;
+				const id2 = e.detail.id2;
+				const deletedAt = new Date();
+				const { data } = await deletePolicyStore.mutate(
+					{ policyId: id, ruleId: id2, deletedAt }
+				);
+				if (data?.update_policies_by_pk && data?.update_rules?.affected_rows) {
+					addToast({
+						message: `Policy and associated rule: ${data?.update_rules?.returning[0].displayName} deleted`,
+						dismissible: true,
+						duration: 10000,
+						type: ToastLevel.Info
+					});
+					await invalidateAll();
+				} else if (data?.update_policies_by_pk) {
+					addToast({
+						message: `Policy ${data?.update_policies_by_pk.id} deleted`,
+						dismissible: true,
+						duration: 10000,
+						type: ToastLevel.Info
+					});
+					await invalidateAll();
+				} else {
+					addToast({
+						message: `Policy not found for ID: ${id}`,
+						dismissible: true,
+						duration: 50000,
+						type: ToastLevel.Error
+					});
+				}
+			} else {
+				log.error('id missing in event!');
 			}
-		);
-		if (data?.update_policies_by_pk && data?.update_rules?.affected_rows) {
-			addToast({
-				message: `Policy and associated rule: ${data?.update_rules?.returning[0].displayName} deleted`,
-				dismissible: true,
-				duration: 10000,
-				type: ToastLevel.Info
-			});
-			await invalidateAll();
-		} else if (data?.update_policies_by_pk) {
-			addToast({
-				message: `Policy ${data?.update_policies_by_pk.id} deleted`,
-				dismissible: true,
-				duration: 10000,
-				type: ToastLevel.Info
-			});
-			await invalidateAll();
-		} else {
-			addToast({
-				message: `Unable to delete Policy`,
-				dismissible: true,
-				duration: 50000,
-				type: ToastLevel.Error
-			});
+		} catch (err) {
+			if (err instanceof GraphQLError) {
+				log.error(err.message);
+			} else {
+				throw err;
+			}
+		} finally {
+			busy = false;
 		}
-	}
+	};
 </script>
 
 <svelte:head>
@@ -224,9 +246,15 @@
 				name="subjectType"
 				class="!w-fit !rounded-r-none"
 				items={subjectTypeOptions}
-				bind:value={subjectType}
+				bind:value={$form.subjectType}
 				on:change={clearSubject}
 				placeholder="Select Type"
+				data-invalid={$errors.subjectType}
+				color={$errors.subjectType ? 'red' : 'base'}
+				aria-invalid={Boolean($errors.subjectType)}
+				aria-errormessage={Array($errors.subjectType).join('. ')}
+				aria-required="{$constraints.subjectType?.required},"
+				{...$constraints.subjectType}
 			/>
 			<SelectFetch
 				class="w-auto !rounded-l-none !bg-gray-50 !px-2 dark:!bg-gray-700"
@@ -239,13 +267,13 @@
 				--list-z-index="100"
 			>
 				<b slot="prepend" class="p-2">
-					{#if subjectType == 'group'}
+					{#if $form.subjectType == 'group'}
 						<UserGroup />
-					{:else if subjectType == 'service_account'}
+					{:else if $form.subjectType == 'service_account'}
 						<UserCircle />
-					{:else if subjectType == 'device'}
+					{:else if $form.subjectType == 'device'}
 						<DevicePhoneMobile />
-					{:else if subjectType == 'device_pool'}
+					{:else if $form.subjectType == 'device_pool'}
 						<RectangleGroup />
 					{:else}
 						<User />
@@ -263,20 +291,36 @@
 		</ButtonGroup>
 		<Button href="/dashboard/policies/create">Add Policy</Button>
 	</Navbar>
-	<input type="hidden" name="limit" value={limit} />
-	<input type="hidden" name="offset" value={offset} />
-	<ErrorMessage error={fieldErrors?.subjectType?.[0]} />
-	<ErrorMessage error={fieldErrors?.subjectId?.[0]} />
-	<ErrorMessage error={fieldErrors?.limit?.[0]} />
-	<ErrorMessage error={fieldErrors?.offset?.[0]} />
+	<input name="limit" bind:value={$form.limit} type="hidden" />
+	<input name="offset" bind:value={$form.offset} type="hidden" />
+	<ErrorMessage error={$errors?.subjectType?.[0]} />
+	<ErrorMessage error={$errors?.subjectId?.[0]} />
+	<ErrorMessage error={$errors?.limit?.[0]} />
+	<ErrorMessage error={$errors?.offset?.[0]} />
+	<FormAlerts message={$message} errors={$errors._errors} />
 </form>
 
-{#if $SearchPolicies.fetching}
-	<p>Fetching...</p>
-{:else if $SearchPolicies.errors}
-	<GraphQlErrors errors={$SearchPolicies.errors} />
-{:else}
+{#if items}
 	<DataTable {tableViewModel} />
+{/if}
+
+{#if dev}
+	<br />
+	<SuperDebug
+		label="Miscellaneous"
+		status={false}
+		data={{ message: $message, submitting: $submitting, delayed: $delayed, posted: $posted }}
+	/>
+	<br />
+	<SuperDebug label="Form" data={$form} />
+	<br />
+	<SuperDebug label="Tainted" status={false} data={$tainted} />
+	<br />
+	<SuperDebug label="Errors" status={false} data={$errors} />
+	<br />
+	<SuperDebug label="Constraints" status={false} data={$constraints} />
+	<!-- <br />
+	<SuperDebug label="$page data" status={false} data={$page} /> -->
 {/if}
 
 <style lang="postcss">

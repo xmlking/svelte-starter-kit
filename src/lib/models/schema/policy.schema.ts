@@ -45,11 +45,12 @@ export type Policy = z.infer<typeof policySchema>;
  * Search Policy Schema
  */
 export const policySearchSchema = z.object({
-	limit: z.coerce.number().min(1).max(100).default(10),
-	offset: z.coerce.number().min(0).default(0),
+	limit: z.number().int().min(5).max(100).default(10),
+	offset: z.number().int().min(0).default(0),
 	// TODO use enum
 	subjectType: z.enum(['user', 'group', 'device', 'service_account', 'device_pool']).optional(),
-	subjectId: z.string().trim().uuid().optional()
+	subjectId: z.string().trim().uuid().optional(),
+	subjectDisplayName: z.string().trim().optional()
 });
 
 /**

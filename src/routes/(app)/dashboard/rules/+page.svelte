@@ -1,9 +1,12 @@
 <script lang="ts">
+	import { dev } from '$app/environment';
 	import { invalidateAll } from '$app/navigation';
-	import { page } from '$app/stores';
 	import { DeleteRuleStore } from '$houdini';
-	import { DataTable, DeleteButton, ErrorMessage, Link } from '$lib/components';
-	import GraphQlErrors from '$lib/components/GraphQLErrors.svelte';
+	import { DeleteButton, Link } from '$lib/components';
+	import type { CustomEventProps } from '$lib/components/DeleteButton.svelte';
+	import { ErrorMessage } from '$lib/components/form';
+	import FormAlerts from '$lib/components/form/FormAlerts.svelte';
+	import { DataTable } from '$lib/components/table';
 	import { ToastLevel, addToast } from '$lib/components/toast';
 	import { Logger } from '$lib/utils';
 	import {
@@ -15,22 +18,22 @@
 		NavBrand,
 		Navbar
 	} from 'flowbite-svelte';
+	import { GraphQLError } from 'graphql';
 	import { createRender, createTable } from 'svelte-headless-table';
 	import { addPagination, addSortBy, addTableFilter } from 'svelte-headless-table/plugins';
 	import { MagnifyingGlass, RectangleGroup } from 'svelte-heros-v2';
 	import { TimeDistance } from 'svelte-time-distance';
 	import { writable } from 'svelte/store';
-	import type { PageData } from './$houdini';
+	import { superForm } from 'sveltekit-superforms/client';
+	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 
-	const log = new Logger('routes:rules');
+	const log = new Logger('rules:list:browser');
+	export let data;
+	$: ({ items } = data);
+	$: itemsStore.set(items ?? []);
 
-	export let data: PageData;
-	$: ({ SearchSharedRules, formErrors, fieldErrors } = data);
-	$: rules = $SearchSharedRules.data?.rules;
-	$: ruleStore.set(rules ?? []);
-
-	const ruleStore = writable(rules ?? []);
-	const table = createTable(ruleStore, {
+	const itemsStore = writable(items ?? []);
+	const table = createTable(itemsStore, {
 		page: addPagination({ initialPageSize: 5 }),
 		tableFilter: addTableFilter(),
 		sort: addSortBy()
@@ -86,8 +89,10 @@
 			id: 'delete',
 			accessor: 'id',
 			cell: ({ value }) =>
-				createRender(DeleteButton).on('click', async () => deleteRule(value)),
-			// cell: ({ value }) => createRender(Delete, { id: value }),
+				createRender(DeleteButton, { id: value })
+					// .slot(value)
+					.on('delete', handleDelete),
+			// cell: ({ value }) => createRender(DeleteForm, { id: value }),
 			plugins: {
 				tableFilter: {
 					exclude: true
@@ -102,38 +107,59 @@
 	const tableViewModel = table.createViewModel(columns);
 
 	// Search form
-	let displayName = $page.url.searchParams.get('displayName') ?? '';
-	let limit = $page.url.searchParams.get('limit') ?? '50';
-	let offset = $page.url.searchParams.get('offset') ?? '0';
+	const superform = superForm(data.form, {
+		dataType: 'json',
+		taintedMessage: null,
+		syncFlashMessage: false,
+		onError({ result, message }) {
+			// the onError event allows you to act on ActionResult errors.
+			log.error('superForm', { result }, { message });
+		}
+	});
+	const { form, delayed, errors, constraints, message, tainted, posted, submitting } = superform;
+
 	// delete action
 	const deleteRuleStore = new DeleteRuleStore();
-	async function deleteRule(id: string) {
-		console.log('in deleteRule...', id);
-		const deletedAt = new Date();
-		const { data } = await deleteRuleStore.mutate(
-			{ id, deletedAt },
-			{
-				metadata: { logResult: true }
+	let busy = false;
+	const handleDelete = async (e: CustomEvent<CustomEventProps>) => {
+		busy = true;
+		try {
+			if (e.detail.id) {
+				const id = e.detail.id;
+				const deletedAt = new Date();
+				const { data } = await deleteRuleStore.mutate(
+					{ id, deletedAt }
+				);
+				if (data?.update_rules_by_pk?.displayName) {
+					addToast({
+						message: `Rule: ${data?.update_rules_by_pk?.displayName} deleted`,
+						dismissible: true,
+						duration: 10000,
+						type: ToastLevel.Info
+					});
+					// await invalidate('/dashboard/rules');
+					await invalidateAll();
+				} else {
+					addToast({
+						message: `Rule not found for ID: ${id}`,
+						dismissible: true,
+						duration: 10000,
+						type: ToastLevel.Error
+					});
+				}
+			} else {
+				log.error('id missing in event!');
 			}
-		);
-		if (data?.update_rules_by_pk?.displayName) {
-			addToast({
-				message: `Rule: ${data?.update_rules_by_pk?.displayName} deleted`,
-				dismissible: true,
-				duration: 10000,
-				type: ToastLevel.Info
-			});
-			// invalidate('/dashboard/rules');
-			await invalidateAll();
-		} else {
-			addToast({
-				message: `Cannot delete: ${id}`,
-				dismissible: true,
-				duration: 10000,
-				type: ToastLevel.Error
-			});
+		} catch (err) {
+			if (err instanceof GraphQLError) {
+				log.error(err.message);
+			} else {
+				throw err;
+			}
+		} finally {
+			busy = false;
 		}
-	}
+	};
 </script>
 
 <svelte:head>
@@ -147,8 +173,6 @@
 	<BreadcrumbItem>Search Rules</BreadcrumbItem>
 </Breadcrumb>
 
-<!-- <ErrorMessage error={loadError?.message} /> -->
-
 <form data-sveltekit-noscroll>
 	<Navbar border={true} rounded={true}>
 		<NavBrand>
@@ -160,34 +184,61 @@
 		<ButtonGroup class="w-1/2">
 			<Input
 				name="displayName"
-				value={displayName}
+				bind:value={$form.displayName}
 				autofocus
 				class="input !rounded-r-none focus:outline-none"
 				placeholder="Display Name"
+				data-invalid={$errors.displayName}
+				color={$errors.displayName ? 'red' : 'base'}
+				aria-invalid={Boolean($errors.displayName)}
+				aria-errormessage={Array($errors.displayName).join('. ')}
+				aria-required="{$constraints.displayName?.required},"
+				{...$constraints.displayName}
 			/>
 			<!-- <Select
 				name="limit"
 				items={limits}
-				value={limit}
+				data-invalid={$errors.displayName}
+				aria-invalid={Boolean($errors)}
+				aria-errormessage={Array($errors.limit).join('. ')}
+				aria-required="{$constraints.limit?.required},"
+				{...$constraints.limit}
+				bind:value={$form.limit}
 				class="w-16 !rounded-none border-l-0"
 			/> -->
-			<input name="limit" value={limit} type="hidden" />
-			<input name="offset" value={offset} type="hidden" />
+			<input name="limit" bind:value={$form.limit} type="hidden" />
+			<input name="offset" bind:value={$form.offset} type="hidden" />
 			<Button type="submit" color="primary" class="!p-2.5"
 				><MagnifyingGlass size="20" /></Button
 			>
 		</ButtonGroup>
 		<Button href="/dashboard/rules/create">Add Rule</Button>
 	</Navbar>
-	<ErrorMessage error={fieldErrors?.displayName?.[0]} />
-	<ErrorMessage error={fieldErrors?.limit?.[0]} />
-	<ErrorMessage error={fieldErrors?.offset?.[0]} />
+	<ErrorMessage error={$errors?.displayName?.[0]} />
+	<ErrorMessage error={$errors?.limit?.[0]} />
+	<ErrorMessage error={$errors?.offset?.[0]} />
+	<FormAlerts message={$message} errors={$errors._errors} />
 </form>
 
-{#if $SearchSharedRules.fetching}
-	<p>Fetching...</p>
-{:else if $SearchSharedRules.errors}
-	<GraphQlErrors errors={$SearchSharedRules.errors} />
-{:else}
+{#if items}
 	<DataTable {tableViewModel} />
+{/if}
+
+{#if dev}
+	<br />
+	<SuperDebug
+		label="Miscellaneous"
+		status={false}
+		data={{ message: $message, submitting: $submitting, delayed: $delayed, posted: $posted }}
+	/>
+	<br />
+	<SuperDebug label="Form" data={$form} />
+	<br />
+	<SuperDebug label="Tainted" status={false} data={$tainted} />
+	<br />
+	<SuperDebug label="Errors" status={false} data={$errors} />
+	<br />
+	<SuperDebug label="Constraints" status={false} data={$constraints} />
+	<!-- <br />
+	<SuperDebug label="$page data" status={false} data={$page} /> -->
 {/if}
