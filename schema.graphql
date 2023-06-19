@@ -1110,7 +1110,7 @@ enum policies_constraint {
   """
   unique or primary key constraint on columns "rule_id", "subject_id", "subject_type", "organization"
   """
-  policies_subject_id_subject_type_rule_id_organization_key
+  policies_subject_id_subject_type_rule_id_organization_unique
 }
 
 """
