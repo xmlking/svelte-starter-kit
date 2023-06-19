@@ -72,7 +72,9 @@ hasura metadata apply
 hasura metadata reload
 # update local "init" migrate file from server
 hasura migrate create  "init" --database-name default --from-server
-
+# rollback/rollup last migrate
+hasura migrate apply --down 1
+hasura migrate apply --up 1
 # Export Hasura GraphQL Engine metadata from the database
 hasura metadata export
 # Show changes between server metadata and the exported metadata file:
