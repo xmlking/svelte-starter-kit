@@ -52,7 +52,7 @@ export async function load(event) {
 			event,
 			blocking: true,
 			policy: CachePolicy.CacheAndNetwork,
-			metadata: { backendToken: 'token from TokenVault', useRole: 'editor' },
+			metadata: { backendToken: 'token from TokenVault', useRole: 'manager' },
 			variables
 		});
 
@@ -85,7 +85,7 @@ export const actions = {
 			const variables = { id };
 
 			const { errors, data } = await deletePolicyStore.mutate(variables, {
-				metadata: { backendToken: 'token from TokenVault', useRole: 'editor' },
+				metadata: { backendToken: 'token from TokenVault', useRole: 'manager' },
 				fetch
 			});
 

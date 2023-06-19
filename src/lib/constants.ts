@@ -15,3 +15,4 @@ export const VERTICAL_LINE_ENTITY = '\u007c'; // |
 export const URL_DICEBEAR = 'https://avatars.dicebear.com/api/avataaars/';
 
 // global constants
+export const TABLE_ROWS_PER_PAGE = 5;

@@ -58,7 +58,7 @@
 
 <Heading tag="h4" class="pb-5">Create Rule</Heading>
 
-<Form {superform} defaultSubmitButtonText="Create" class="space-y-6">
+<Form {superform} submitButtonText="Create" class="space-y-6">
 	<div class="mb-6 grid gap-6 md:grid-cols-3 lg:grid-cols-6">
 		<div class="col-span-2">
 			<FloatingTextInput field={keys.displayName} label="Display Name" />

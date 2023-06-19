@@ -1,4 +1,4 @@
-import { CachePolicy, SearchDevicesStore, SearchPoolsStore, order_by } from '$houdini';
+import { CachePolicy, SearchDevicesStore, SearchPoolsStore, order_by, subject_type_enum } from '$houdini';
 import { DeviceError, NotFoundError } from '$lib/errors';
 import type { Subject } from '$lib/models/types/subject';
 import { Logger } from '$lib/utils';
@@ -61,7 +61,7 @@ const orderBy = [{ updatedAt: order_by.desc_nulls_last }];
 export const GET: RequestHandler = async (event) => {
 	const { url } = event;
 	const urlParams = new URLSearchParams(url.searchParams);
-	const subType = urlParams.get('subType') ?? 'unspecified';
+	const subType = urlParams.get('subType') ?? subject_type_enum.user;
 	const search = urlParams.get('search') ?? '';
 	// log.debug(subType, filter, search);
 	const where = {
@@ -73,22 +73,21 @@ export const GET: RequestHandler = async (event) => {
 
 	try {
 		switch (subType) {
-			case 'user':
-			case 'service_account':
-			case 'unspecified':
+			case subject_type_enum.user:
+			case subject_type_enum.service_account:
 				// TODO: implement hasura users table
 				results = fakeUsers;
 				break;
-			case 'group':
+			case subject_type_enum.group:
 				// TODO: implement hasura groups table
 				results = fakeGroups;
 				break;
-			case 'device':
+			case subject_type_enum.device:
 				const { errors: deviceErrors, data: deviceData } = await searchDevicesStore.fetch({
 					event,
 					blocking: true,
 					policy: CachePolicy.CacheAndNetwork,
-					metadata: { backendToken: 'token from TokenVault', logResult: true },
+					metadata: { logResult: true },
 					variables
 				});
 				if (deviceErrors) throw new DeviceError('SEARCH_DEVICE_ERROR', 'list devices api error', deviceErrors[0] as GraphQLError);
@@ -101,12 +100,12 @@ export const GET: RequestHandler = async (event) => {
 					};
 				});
 				break;
-			case 'device_pool':
+			case subject_type_enum.device_pool:
 				const { errors: poolErrors, data: poolData } = await searchPoolsStore.fetch({
 					event,
 					blocking: true,
 					policy: CachePolicy.CacheAndNetwork,
-					metadata: { backendToken: 'token from TokenVault', logResult: true },
+					metadata: { logResult: true },
 					variables
 				});
 				if (poolErrors) throw new DeviceError('SEARCH_DEVICE_ERROR', 'list devices api error', poolErrors[0] as GraphQLError);

@@ -1108,7 +1108,7 @@ enum policies_constraint {
   policies_pkey
 
   """
-  unique or primary key constraint on columns "rule_id", "subject_id", "organization", "subject_type"
+  unique or primary key constraint on columns "rule_id", "subject_id", "subject_type", "organization"
   """
   policies_subject_id_subject_type_rule_id_organization_key
 }
@@ -1362,7 +1362,7 @@ unique or primary key constraints on table "pools"
 """
 enum pools_constraint {
   """
-  unique or primary key constraint on columns "display_name", "organization"
+  unique or primary key constraint on columns "organization", "display_name"
   """
   pools_display_name_organization_unique
 
@@ -2018,7 +2018,7 @@ unique or primary key constraints on table "rules"
 """
 enum rules_constraint {
   """
-  unique or primary key constraint on columns "display_name", "organization"
+  unique or primary key constraint on columns "organization", "display_name"
   """
   rules_display_name_organization_unique
 

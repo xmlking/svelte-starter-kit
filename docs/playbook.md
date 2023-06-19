@@ -94,7 +94,7 @@ We will be using [heroicons](https://heroicons.com/) via [svelte-heros-v2](https
 Use [clsx](https://github.com/lukeed/clsx) in place of [classnames](https://github.com/JedWatson/classnames) utility lib for constructing _className_ strings conditionally.
 
 ```shell
-pnpm add -D flowbite flowbite-svelte
+pnpm add -D flowbite flowbite-svelte tailwind-merge
 pnpm add -D svelte-heros-v2
 pnpm add -D clsx
 ```

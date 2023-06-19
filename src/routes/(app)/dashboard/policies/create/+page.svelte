@@ -151,8 +151,7 @@
 		const variables = { where, orderBy };
 		const { errors, data } = await searchRulesStore.fetch({
 			blocking: true,
-			policy: CachePolicy.CacheAndNetwork,
-			metadata: { logResult: true },
+			policy: CachePolicy.CacheAndNetwork
 			variables
 		});
 		if (errors) throw new Error(`An error has occurred: ${errors}`);
@@ -239,7 +238,7 @@
 
 <Heading tag="h4" class="pb-5">Create policy</Heading>
 
-<Form {superform} defaultSubmitButtonText="Create" class="space-y-6">
+<Form {superform} submitButtonText="Create" class="space-y-6">
 	<input type="hidden" name="ruleId" bind:value={$form.ruleId} />
 
 	<div class="mb-6 grid gap-6 md:grid-cols-3 lg:grid-cols-6">

@@ -1,36 +1,43 @@
-import { ruleSearchSchema } from '$lib/models/schema';
+import { CachePolicy, SearchSharedRulesStore } from '$houdini';
+import { ruleSearchSchema as schema } from '$lib/models/schema';
 import { Logger } from '$lib/utils';
-import { zfd } from '$lib/zodfd';
 import { error } from '@sveltejs/kit';
-import { ZodError } from 'zod';
-import type { BeforeLoadEvent, SearchSharedRulesVariables as Variables } from './$houdini';
-const log = new Logger('rule.browser');
+import type { GraphQLError } from 'graphql';
+import { setError, setMessage, superValidate } from 'sveltekit-superforms/client';
+const log = new Logger('rules.list.browser');
 
-export const _SearchSharedRulesVariables: Variables = ({ url }) => {
-	const limit = parseInt(url.searchParams.get('limit') ?? '50');
-	const offset = parseInt(url.searchParams.get('offset') ?? '0');
-	const displayName = url.searchParams.get('displayName') ?? '';
+const searchSharedRulesStore = new SearchSharedRulesStore();
+export const load = async (event) => {
+	const { url } = event;
+	const form = await superValidate(url, schema);
 
-	return {
+	if (!form.valid) return { status: 400, form }; // return fail(400, { form }); // FIXME
+
+	const {
+		data: { limit, offset, displayName }
+	} = form;
+
+	const variables = {
 		limit,
 		offset,
-		displayName: `%${displayName}%`
+		...{ displayName: displayName ? `%${displayName}%` : '%%' }
 	};
-};
-
-const searchSchema = zfd.formData(ruleSearchSchema, { empty: 'strip' });
-
-export function _houdini_beforeLoad({ url }: BeforeLoadEvent) {
-	try {
-		const { displayName, limit, offset } = searchSchema.parse(url.searchParams);
-		log.debug(displayName, limit, offset);
-	} catch (err) {
-		if (err instanceof ZodError) {
-			const { formErrors, fieldErrors } = err.flatten();
-			return { formErrors, fieldErrors };
-		} else {
-			log.error('rule:search_houdini_beforeLoad:', err);
-			throw error(500, err as Error);
-		}
+	const { errors, data } = await searchSharedRulesStore.fetch({
+		event,
+		blocking: true,
+		policy: CachePolicy.NetworkOnly,
+		variables
+	});
+	if (errors) {
+		errors.forEach((error) => {
+			log.error('list rule api error', error);
+			// NOTE: you can add multiple errors, send all along with a message
+			setError(form, '', (error as GraphQLError).message);
+		});
+		setMessage(form, 'Backend error');
+		return { status: 500, form };
 	}
-}
+	const items = data?.rules;
+	if (!items) throw error(404, 'rules not found');
+	return { form, items };
+};

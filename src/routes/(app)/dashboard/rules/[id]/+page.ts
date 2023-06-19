@@ -13,12 +13,12 @@ export const load = async (event) => {
 	const { errors, data } = await getRuleStore.fetch({
 		event,
 		blocking: true,
-		policy: CachePolicy.CacheAndNetwork,
+		policy: CachePolicy.NetworkOnly,
 		variables
 	});
 	if (errors) throw error(400, errors[0] as GraphQLError);
 	const rule = data?.rules_by_pk;
-	if (!rule) throw error(404, 'rule not found');
+	if (!rule) throw error(404, 'Rule not found');
 	const form = await superValidate(rule, schema);
 	return { form };
 };

@@ -58,7 +58,7 @@ export const actions = {
 		if (!result) return setMessage(form, 'Update rule failed: responce empty', { status: 404 });
 
 		const message = {
-			message: `Rule: ${result?.displayName} updated`,
+			message: `Rule: ${result.displayName} updated`,
 			dismissible: true,
 			duration: 10000,
 			type: ToastLevel.Success

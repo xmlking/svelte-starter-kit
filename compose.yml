@@ -52,7 +52,7 @@ services:
       -c ssl_key_file=/etc/ssl/private/ssl-cert-snakeoil.key
 
   hasura:
-    image: hasura/graphql-engine:v2.27.0
+    image: hasura/graphql-engine:v2.28.0-beta.1-ce
     platform: linux/arm64/v8
     ports:
       - '8080:8080'

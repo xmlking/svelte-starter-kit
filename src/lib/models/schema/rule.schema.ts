@@ -31,8 +31,8 @@ export type Rule = z.infer<typeof ruleSchema>;
  */
 export const ruleSearchSchema = z.object({
 	displayName: z.string().trim().min(3).max(100).optional(),
-	limit: z.coerce.number().min(5).max(100).default(10),
-	offset: z.coerce.number().min(0).default(0)
+	limit: z.number().int().min(5).max(100).default(10),
+	offset: z.number().int().min(0).default(0)
 });
 
 /**
@@ -63,3 +63,10 @@ export const updateRuleSchema = ruleSchema
 export type UpdateRuleSchema = typeof updateRuleSchema;
 export type UpdateRule = z.infer<typeof updateRuleSchema>;
 export const updateRuleKeys = updateRuleSchema.keyof().Enum;
+
+/**
+ * Search Delete Schema
+ */
+export const ruleDeleteSchema = z.object({
+	id: z.string().trim().uuid()
+});
