@@ -14,10 +14,9 @@
 	import { Breadcrumb, BreadcrumbItem, Heading, Helper } from 'flowbite-svelte';
 	import { superForm } from 'sveltekit-superforms/client';
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
-	import type { PageData } from './$types';
 
 	const log = new Logger('routes:rules:create');
-	export let data: PageData;
+	export let data;
 	// Client API:
 	const superform = superForm(data.form, {
 		dataType: 'json',

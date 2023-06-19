@@ -4,7 +4,6 @@ import type { Subject } from '$lib/models/types/subject';
 import { Logger } from '$lib/utils';
 import { json } from '@sveltejs/kit';
 import type { GraphQLError } from 'graphql';
-import type { RequestHandler } from './$types';
 
 const fakeUsers = [
 	{
@@ -58,7 +57,7 @@ const limit = 10;
 const orderBy = [{ updatedAt: order_by.desc_nulls_last }];
 
 // GET /api/directory/search?subType=user&search=sumo
-export const GET: RequestHandler = async (event) => {
+export const GET = async (event) => {
 	const { url } = event;
 	const urlParams = new URLSearchParams(url.searchParams);
 	const subType = urlParams.get('subType') ?? subject_type_enum.user;
