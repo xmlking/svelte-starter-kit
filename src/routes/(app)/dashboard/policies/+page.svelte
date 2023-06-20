@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { browser, dev } from '$app/environment';
 	import { goto, invalidateAll } from '$app/navigation';
-	import { page } from '$app/stores';
 	import { DeletePolicyStore } from '$houdini';
 	import { DeleteButton2, Link } from '$lib/components';
 	import type { CustomEventProps } from '$lib/components/DeleteButton.svelte';

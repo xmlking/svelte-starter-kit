@@ -2,9 +2,9 @@ SET rules.soft_deletion TO off;
 --
 DELETE FROM public.policies;
 --
-DELETE FROM public.pools;
---
 DELETE FROM public.rules;
+--
+DELETE FROM public.pools;
 --
 DELETE FROM public.devices;
 --

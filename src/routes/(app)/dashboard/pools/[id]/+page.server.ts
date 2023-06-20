@@ -11,11 +11,8 @@ import { setError, setMessage, superValidate } from 'sveltekit-superforms/server
 const log = new Logger('pool.update.server');
 
 const updatePoolStore = new UpdatePoolStore();
-const deleteDevicePoolStore = new DeleteDevicePoolStore();
-const insertDevicePoolStore = new InsertDevicePoolStore();
-
 export const actions = {
-	update: async (event) => {
+	default: async (event) => {
 		const { params, request, locals } = event;
 		const id = uuidSchema.parse(params.id);
 		const session = await locals.getSession();
