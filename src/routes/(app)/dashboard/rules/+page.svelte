@@ -130,7 +130,7 @@
 				const { data } = await deleteRuleStore.mutate({ id, deletedAt });
 				if (data?.update_rules_by_pk?.displayName) {
 					addToast({
-						message: `Rule: ${data?.update_rules_by_pk?.displayName} deleted`,
+						message: `Rule: ${data?.update_rules_by_pk?.displayName} deleted. \n Policies: ${data?.update_policies?.affected_rows} deleted`,
 						dismissible: true,
 						duration: 10000,
 						type: ToastLevel.Info
