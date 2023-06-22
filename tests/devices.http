@@ -165,7 +165,7 @@ mutation UpdateDevice($id: uuid!, $data: devices_set_input!) {
   }
 }
 
-### create new device
+### UPSERT: create new device if displayName not already exist, otherwise update
 # organization = x-hasura-org-id 	created_by = x-hasura-user-id
 # @name createDevice
 POST  {{graphqlEndpoint}}
@@ -179,16 +179,22 @@ x-hasura-org-id: chinthagunta
 x-hasura-user-id: xmlking@gmail.com
 
 mutation CreateDevice($data: devices_insert_input!) {
-  insert_devices_one(object: $data) {
-    id
+  insert_devices_one(object: $data, on_conflict: {update_columns: [ip, description, tags, annotations], constraint: devices_display_name_organization_key, where: {deletedAt: {_is_null: true}}}) {
+    annotations
     ip
+    id
     displayName
+    tags
+    organization
     description
-	tags
-	annotations
+    createdAt
+    createdBy
     updatedAt
+    updatedBy
+    deletedAt
   }
 }
+
 
 {
   "data":{
