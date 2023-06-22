@@ -75,6 +75,7 @@ hasura migrate create  "init" --database-name default --from-server
 # rollback/rollup last migrate
 hasura migrate apply --down 1
 hasura migrate apply --up 1
+hasura migrate apply --version 1686378049757 --type down --database-name default
 # Export Hasura GraphQL Engine metadata from the database
 hasura metadata export
 # Show changes between server metadata and the exported metadata file:
@@ -129,101 +130,38 @@ To export **Metadata** and **Migrations** from your local Hasura to `infra/hasur
 hasura metadata export --endpoint http://localhost:8080
 ```
 
-open <http://localhost:8080/console> and try out a query
+### Reset Hasura Migrations and Metadata
 
-Sample Query:
+> useful when you reset your cloud **Postgres** and **Hasura** metadata
 
-```gql
-query MyQuery {
-	customer {
-		email
-		first_name
-		id
-		ip_address
-		last_name
-		phone
-		username
-		orders {
-			customer_id
-			discount_price
-			id
-			order_date
-			product
-			purchase_price
-			transaction_id
-		}
-	}
-}
+#### Step 1: Reset the migration history on the server
+```shell
+# reset migrations on server only
+hasura migrate delete --all --server --database-name default
+# Verify the status of the Migrations
+hasura migrate status --database-name default
 ```
 
-```gql
-query MyQuery {
-	countries(filter: { continent: { eq: "AS" } }) {
-		code
-		capital
-		name
-		continent {
-			name
-			code
-		}
-	}
-}
+#### Step 2: recreate public schema 
+```sql
+DROP SCHEMA public CASCADE;
+CREATE SCHEMA public;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO public;
 ```
 
-```gql
-query MyQuery {
-	SearchRestrooms(arg1: { city: "Riverside" }) {
-		accessible
-		approved
-		changing_table
-		city
-		comment
-		country
-		created_at
-		directions
-		downvote
-		edit_id
-		id
-		latitude
-		longitude
-		name
-		state
-		street
-		unisex
-		updated_at
-		upvote
-	}
-}
-```
-
-```gql
-query MyQuery {
-	ListUniversities(arg1: { name: "middle" }) {
-		alpha_two_code
-		country
-		domains
-		name
-		stateprovince
-		web_pages
-	}
-}
+#### Step 3: reinitialize metadata and migrations
+```shell
+# apply metadata, DB migrations
+hasura deploy
+# optionally apply seeds
+hasura seed apply --file 1684709181893_devices.sql --database-name default --database-name default
+hasura seed apply --file 1684709183467_pools.sql --database-name default --database-name default
+hasura seed apply --file 1685396655834_rules.sql --database-name default --database-name default
+hasura seed apply --file 1684206620559_policies.sql --database-name default --database-name default
 ```
 
 ## Configuration
-
-Using `claims_map` to map JWT token to hasura claims:
-
-```json
-{
-	"type": "RS512",
-	"key": "-----BEGIN PUBLIC KEY-----\nMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDdlatRjRjogo3WojgGHFHYLugd\nUWAY9iR3fy4arWNA1KoS8kVw33cJibXr8bvwUAUparCwlvdbH6dvEOfou0/gCFQs\nHUfQrSDv+MuSUMAe8jzKE4qW+jK+xQU9a03GUnKHkkle+Q0pX/g6jXZ7r1/xAK5D\no2kQ+X5xK9cipRgEKwIDAQAB\n-----END PUBLIC KEY-----\n",
-	"claims_map": {
-		"x-hasura-allowed-roles": { "path": "$.hasura.all_roles" },
-		"x-hasura-default-role": { "path": "$.hasura.all_roles[0]", "default": "user" },
-		"x-hasura-user-id": { "path": "$.user.id", "default": "ujdh739kd" }
-	}
-}
-```
 
 ## Gotchas
 
@@ -249,3 +187,4 @@ Use plugin [@graphql-codegen/hasura-allow-list](https://npmjs.com/package/@graph
 - Hasura [Production Checklist](https://hasura.io/docs/latest/deployment/production-checklist/)
 - Hasura [Roles & Session Variables](https://hasura.io/docs/latest/auth/authorization/roles-variables/)
 - Hasura [Manage Migrations](https://hasura.io/docs/latest/migrations-metadata-seeds/manage-migrations/)
+- [Reset Hasura Migrations and Metadata](https://hasura.io/docs/latest/migrations-metadata-seeds/resetting-migrations-metadata/)
