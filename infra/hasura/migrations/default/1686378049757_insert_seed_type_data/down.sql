@@ -4,6 +4,8 @@ DELETE FROM public.policies;
 --
 DELETE FROM public.rules;
 --
+DELETE FROM device_pool;
+--
 DELETE FROM public.pools;
 --
 DELETE FROM public.devices;
