@@ -141,6 +141,8 @@ ALTER TABLE ONLY public.device_pool
 ALTER TABLE ONLY public.device_pool
     ADD CONSTRAINT device_pool_pool_id_device_id_key UNIQUE (pool_id, device_id);
 ALTER TABLE ONLY public.devices
+    ADD CONSTRAINT devices_display_name_organization_key UNIQUE (display_name, organization);
+ALTER TABLE ONLY public.devices
     ADD CONSTRAINT devices_pkey PRIMARY KEY (id);
 ALTER TABLE ONLY public.direction
     ADD CONSTRAINT direction_pkey PRIMARY KEY (value);
@@ -156,11 +158,9 @@ ALTER TABLE ONLY public.rules
     ADD CONSTRAINT rules_pkey PRIMARY KEY (id);
 ALTER TABLE ONLY public.subject_type
     ADD CONSTRAINT subject_type_pkey PRIMARY KEY (value);
-CREATE INDEX devices_display_name ON public.devices USING btree (display_name);
-CREATE UNIQUE INDEX devices_display_name_organization_unique ON public.devices USING btree (display_name, organization) WHERE (deleted_at IS NULL);
+CREATE UNIQUE INDEX policies_subject_id_subject_type_rule_id_organization_unique ON public.policies USING btree (subject_id, subject_type, rule_id, organization) WHERE (deleted_at IS NULL);
 CREATE UNIQUE INDEX pools_display_name_organization_unique ON public.pools USING btree (display_name, organization) WHERE (deleted_at IS NULL);
 CREATE UNIQUE INDEX rules_display_name_organization_unique ON public.rules USING btree (display_name, organization) WHERE (deleted_at IS NULL);
-CREATE UNIQUE INDEX policies_subject_id_subject_type_rule_id_organization_unique ON public.policies USING btree (subject_id, subject_type, rule_id, organization) WHERE (deleted_at IS NULL);
 CREATE RULE devices_soft_deletion_rule AS
     ON DELETE TO public.devices
    WHERE (current_setting('rules.soft_deletion'::text) = 'on'::text) DO INSTEAD  UPDATE public.devices SET deleted_at = now()
