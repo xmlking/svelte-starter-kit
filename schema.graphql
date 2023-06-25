@@ -454,6 +454,7 @@ type devices {
   tags: _text
   updatedAt: timestamptz!
   updatedBy: String!
+  version: String
 }
 
 """
@@ -476,6 +477,7 @@ input devices_bool_exp {
   tags: _text_comparison_exp
   updatedAt: timestamptz_comparison_exp
   updatedBy: String_comparison_exp
+  version: String_comparison_exp
 }
 
 """
@@ -508,6 +510,7 @@ input devices_order_by {
   tags: order_by
   updatedAt: order_by
   updatedBy: order_by
+  version: order_by
 }
 
 """primary key columns input for table: devices"""
@@ -554,6 +557,9 @@ enum devices_select_column {
 
   """column name"""
   updatedBy
+
+  """column name"""
+  version
 }
 
 """
@@ -591,6 +597,7 @@ input devices_stream_cursor_value_input {
   tags: _text
   updatedAt: timestamptz
   updatedBy: String
+  version: String
 }
 
 input devices_updates {
@@ -1106,6 +1113,11 @@ enum policies_constraint {
   unique or primary key constraint on columns "id"
   """
   policies_pkey
+
+  """
+  unique or primary key constraint on columns "rule_id", "subject_id", "subject_type", "organization"
+  """
+  policies_subject_id_subject_type_rule_id_organization_unique
 }
 
 """
@@ -1357,7 +1369,7 @@ unique or primary key constraints on table "pools"
 """
 enum pools_constraint {
   """
-  unique or primary key constraint on columns "display_name", "organization"
+  unique or primary key constraint on columns "organization", "display_name"
   """
   pools_display_name_organization_unique
 
@@ -2013,7 +2025,7 @@ unique or primary key constraints on table "rules"
 """
 enum rules_constraint {
   """
-  unique or primary key constraint on columns "display_name", "organization"
+  unique or primary key constraint on columns "organization", "display_name"
   """
   rules_display_name_organization_unique
 

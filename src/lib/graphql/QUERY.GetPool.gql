@@ -18,6 +18,7 @@ query GetPool($id: uuid!) @cache(policy: NetworkOnly) {
 				displayName
 				description
 				ip
+				version
 				organization
 				updatedAt
 				updatedBy
@@ -29,9 +30,12 @@ query GetPool($id: uuid!) @cache(policy: NetworkOnly) {
 	devices_not_in_pool(args: { poolid: $id }, order_by: { updatedAt: desc_nulls_last }) {
 		id
 		displayName
-		ip
 		description
+		ip
+		version
 		organization
+		updatedAt
+		updatedBy
 		tags
 		updatedAt
 	}
