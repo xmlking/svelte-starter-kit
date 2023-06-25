@@ -135,6 +135,7 @@ hasura metadata export --endpoint http://localhost:8080
 > useful when you reset your cloud **Postgres** and **Hasura** metadata
 
 #### Step 1: Reset the migration history on the server
+
 ```shell
 # reset migrations on server only
 hasura migrate delete --all --server --database-name default
@@ -142,7 +143,8 @@ hasura migrate delete --all --server --database-name default
 hasura migrate status --database-name default
 ```
 
-#### Step 2: recreate public schema 
+#### Step 2: recreate public schema
+
 ```sql
 DROP SCHEMA public CASCADE;
 CREATE SCHEMA public;
@@ -151,6 +153,7 @@ GRANT ALL ON SCHEMA public TO public;
 ```
 
 #### Step 3: reinitialize metadata and migrations
+
 ```shell
 # apply metadata, DB migrations
 hasura deploy

@@ -5,7 +5,5 @@ mutation UpdatePool($id: uuid!, $data: pools_set_input!) {
 		description
 		tags
 		annotations
-		updatedBy
-		updatedAt
 	}
 }

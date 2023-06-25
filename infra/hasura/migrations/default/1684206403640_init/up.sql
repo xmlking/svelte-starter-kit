@@ -21,7 +21,8 @@ CREATE TABLE public.devices (
     tags text[],
     annotations public.hstore,
     ip text NOT NULL,
-    organization text NOT NULL
+    organization text NOT NULL,
+    version text
 );
 COMMENT ON TABLE public.devices IS 'devices metadata';
 CREATE FUNCTION public.devices_not_in_pool(poolid uuid) RETURNS SETOF public.devices

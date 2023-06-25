@@ -70,6 +70,24 @@ insert_permissions:
         - device_id
         - pool_id
 select_permissions:
+  - role: engine
+    permission:
+      columns:
+        - id
+        - created_at
+        - updated_at
+        - pool_id
+        - device_id
+        - created_by
+        - updated_by
+      filter:
+        _and:
+          - device:
+              organization:
+                _eq: x-hasura-org-id
+          - pool:
+              organization:
+                _eq: x-hasura-org-id
   - role: manager
     permission:
       columns:
