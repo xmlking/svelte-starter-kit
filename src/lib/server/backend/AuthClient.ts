@@ -1,6 +1,8 @@
 import { ResponseError } from '$lib/errors';
 import type { OAuth2TokenRequest, OAuth2TokenResponse } from '$lib/models/types/auth';
+import { Logger } from '$lib/utils';
 
+const log = new Logger('lib:authClient');
 export class AuthClient {
 	#timer: NodeJS.Timeout | undefined;
 
@@ -17,8 +19,8 @@ export class AuthClient {
 			try {
 				await this.getAccessToken();
 			} catch (e) {
-				console.error('cannot get token for:', endpoint);
-				console.error(e, (e as Error).stack);
+				log.error('cannot get token for:', endpoint);
+				log.error(e, (e as Error).stack);
 			}
 		})();
 	}
@@ -33,7 +35,7 @@ export class AuthClient {
 		if (!resp.ok) throw new ResponseError('AuthClient: Bad AccessToken response', resp);
 		const response: OAuth2TokenResponse = await resp.json();
 		const { access_token, expires_in } = response;
-		console.info('storing token for backend:', this.#endpoint, expires_in);
+		log.info('storing token for backend:', this.#endpoint, expires_in);
 		this.#access_token = access_token;
 		this.#expires_at = Date.now() + expires_in * 1000;
 

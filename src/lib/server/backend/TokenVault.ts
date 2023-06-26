@@ -51,12 +51,18 @@ export class TokenVault {
 				endpoint,
 				authConfig: { auth_endpoint, ...rest }
 			} = ep;
-			this.tokenMap[endpoint] = new AuthClient(auth_endpoint, rest);
+			this.tokenMap[getbaseUrl(endpoint)] = new AuthClient(auth_endpoint, rest);
 		}
 	}
 
 	public static getToken(endpoint: string) {
-		const backend = this.tokenMap[endpoint];
+		const backend = this.tokenMap[getbaseUrl(endpoint)];
 		if (backend) return backend.getToken();
 	}
+}
+
+export function getbaseUrl(urlStr: string) {
+	const url = new URL(urlStr);
+	const baseUrl = `${url.protocol}//${url.hostname}`;
+	return baseUrl;
 }

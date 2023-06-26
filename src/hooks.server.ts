@@ -2,7 +2,6 @@ import { dev } from '$app/environment';
 import { TokenVault } from '$lib/server/backend/TokenVault';
 import { authjs, guard, houdini } from '$lib/server/middleware';
 import { Logger } from '$lib/utils';
-import envPub from '$lib/variables/variables';
 // import envPri from '$lib/variables/variables.server';
 import type { HandleFetch, HandleServerError } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
@@ -36,13 +35,13 @@ if (!dev) {
 // Initialize TokenVault
 TokenVault.init([
 	// {
-	// 	endpoint: envPri.MY_BACKEND_ENDPOINT ?? '',
+	// 	endpoint: envPri.MICROSOFT_GRAPH_ENDPOINT,
 	// 	authConfig: {
-	// 		auth_endpoint: envPri.MY_BACKEND_AUTH_ENDPOINT ?? '',
-	// 		client_id: envPri.MY_BACKEND_AUTH_CLIENT_ID ?? '',
-	// 		client_secret: envPri.MY_BACKEND_AUTH_CLIENT_SECRET ?? '',
-	// 		grant_type: envPri.MY_BACKEND_AUTH_CLIENT_GRANT_TYPE ?? '',
-	// 		scope: envPri.MY_BACKEND_AUTH_CLIENT_SCOPE
+	// 		auth_endpoint: `https://login.microsoftonline.com/${envPri.MICROSOFT_GRAPH_TENANT_ID}/oauth2/v2.0/token`,
+	// 		client_id: envPri.MICROSOFT_GRAPH_CLIENT_ID,
+	// 		client_secret: envPri.MICROSOFT_GRAPH_CLIENT_SECRET,
+	// 		grant_type: 'client_credentials',
+	// 		scope: envPri.MICROSOFT_GRAPH_SCOPES
 	// 	}
 	// }
 ]);
@@ -61,7 +60,7 @@ export const handleServerError = (({ error, event }) => {
 }) satisfies HandleServerError;
 
 export const handleFetch = (async ({ event, request, fetch }) => {
-	console.log('hooks.server.ts, HandleFetch: pageUrl:', event.url.toString());
+	console.debug('hooks.server.ts, HandleFetch: pageUrl:', event.url.toString());
 
 	const token = TokenVault.getToken(request.url);
 	if (token) {
