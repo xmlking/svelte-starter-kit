@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { dev } from '$app/environment';
 	import { invalidateAll } from '$app/navigation';
-	import { DeleteDevicePoolStore, InsertDevicePoolStore } from '$houdini';
+	import { cache, DeleteDevicePoolStore, InsertDevicePoolStore } from '$houdini';
 	import type { CustomEventProps as RemoveCustomEventProps } from '$lib/components/DeleteButton.svelte';
 	import { FloatingTextInput, Form, TagsInput } from '$lib/components/form';
 	import { DataTable } from '$lib/components/table';
@@ -98,6 +98,7 @@
 						duration: 10000,
 						type: ToastLevel.Info
 					});
+					cache.markStale();
 					await invalidateAll();
 				} else {
 					addToast({
@@ -194,6 +195,7 @@
 						duration: 10000,
 						type: ToastLevel.Info
 					});
+					cache.markStale();
 					await invalidateAll();
 				} else {
 					addToast({

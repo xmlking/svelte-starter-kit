@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { browser, dev } from '$app/environment';
 	import { goto, invalidateAll } from '$app/navigation';
-	import { DeletePolicyStore } from '$houdini';
+	import { DeletePolicyStore, cache } from '$houdini';
 	import { DeleteButton2, Link } from '$lib/components';
 	import type { CustomEventProps } from '$lib/components/DeleteButton.svelte';
 	import { ErrorMessage } from '$lib/components/form';
@@ -216,6 +216,7 @@
 						duration: 10000,
 						type: ToastLevel.Info
 					});
+					cache.markStale();
 					await invalidateAll();
 				} else if (data?.update_policies_by_pk) {
 					addToast({
@@ -224,6 +225,7 @@
 						duration: 10000,
 						type: ToastLevel.Info
 					});
+					cache.markStale();
 					await invalidateAll();
 				} else {
 					addToast({

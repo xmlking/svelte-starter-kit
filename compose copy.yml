@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   webapp:
-    image: ghcr.io/xmlking/svelte-starter-kit:latest
+    image: ghcr.io/threat-zero/lockboard:latest
     init: true
     build:
       context: .
@@ -77,7 +77,7 @@ services:
       ## uncomment next line to run console offline (i.e load console assets from server instead of CDN)
       # HASURA_GRAPHQL_CONSOLE_ASSETS_DIR: /srv/console-assets
       ## uncomment next line to set an admin secret
-      HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
+      HASURA_GRAPHQL_ADMIN_SECRET: be4be7c1068780abb5b0496eee297370
       # HASURA_GRAPHQL_JWT_SECRET: '{"type":"RS512", "jwk_url": "https://www.googleapis.com/oauth2/v3/certs"}'
       # HASURA_GRAPHQL_JWT_SECRET: '{ "type": "HS256", "key": "1084d8d404126d641c232604aa27bc756921c07a5869c6de6cfd0c6c455de0fe" }'
       HASURA_GRAPHQL_JWT_SECRET: |
@@ -97,6 +97,8 @@ services:
       ## enable allowList only for prod if required
       # HASURA_GRAPHQL_ENABLE_ALLOWLIST: 'true'
       HASURA_GRAPHQL_ENABLE_TELEMETRY: 'false'
+      ## Azure Endpoint
+      MS_GRAPH_ENDPOINT: 'https://graph.microsoft.com/v1.0'
     healthcheck:
       test: curl --fail -s http://localhost:8080/healthz || exit 1
       interval: 30s

@@ -56,6 +56,8 @@ git clone https://github.com/xmlking/svelte-starter-kit.git
 cd svelte-starter-kit && pnpm i
 # playwright is required for end-to-end testing
 pnpx playwright install
+# (optional) add git-commit-hooks
+cog install-hook --all
 ```
 
 ### Environment Variables

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { dev } from '$app/environment';
 	import { invalidateAll } from '$app/navigation';
-	import { DeleteRuleStore } from '$houdini';
+	import { cache, DeleteRuleStore } from '$houdini';
 	import { DeleteButton, Link } from '$lib/components';
 	import type { CustomEventProps } from '$lib/components/DeleteButton.svelte';
 	import { ErrorMessage } from '$lib/components/form';
@@ -142,6 +142,7 @@
 						type: ToastLevel.Info
 					});
 					// await invalidate('/dashboard/rules');
+					cache.markStale();
 					await invalidateAll();
 				} else {
 					addToast({

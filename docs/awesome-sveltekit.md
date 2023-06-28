@@ -37,7 +37,11 @@ Awesome **SvelteKit** Links
   - [Layer Cake](https://layercake.graphics/) supports SSR, responsive graphics, full customizable layers for your graph.
 
 - Toast
-- [svelte-french-toast](https://svelte-french-toast.com/)
+
+  - [svelte-french-toast](https://svelte-french-toast.com/)
+
+- Icons
+- pnpm add -D flowbite-svelte-icons
 
 ## Animation
 

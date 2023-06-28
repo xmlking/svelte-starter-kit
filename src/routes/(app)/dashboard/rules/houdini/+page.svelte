@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { dev } from '$app/environment';
 	import { invalidateAll } from '$app/navigation';
-	import { DeleteRuleStore } from '$houdini';
+	import { cache, DeleteRuleStore } from '$houdini';
 	import { DeleteButton, Link } from '$lib/components';
 	import type { CustomEventProps } from '$lib/components/DeleteButton.svelte';
 	import { ErrorMessage } from '$lib/components/form';
 	import FormAlerts from '$lib/components/form/FormAlerts.svelte';
 	import { DataTable } from '$lib/components/table';
-	import { ToastLevel, addToast } from '$lib/components/toast';
+	import { addToast, ToastLevel } from '$lib/components/toast';
 	import { Logger } from '$lib/utils';
 	import {
 		Breadcrumb,
@@ -15,8 +15,8 @@
 		Button,
 		ButtonGroup,
 		Input,
-		NavBrand,
-		Navbar
+		Navbar,
+		NavBrand
 	} from 'flowbite-svelte';
 	import { GraphQLError } from 'graphql';
 	import { createRender, createTable } from 'svelte-headless-table';
@@ -137,6 +137,7 @@
 						type: ToastLevel.Info
 					});
 					// await invalidate('/dashboard/rules');
+					cache.markStale();
 					await invalidateAll();
 				} else {
 					addToast({
