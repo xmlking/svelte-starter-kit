@@ -89,13 +89,13 @@ Add `postcssPresetEnv` plugin for `postcss` and include it in [postcss.config.cj
 We will be using [Flowbite](https://flowbite.com/) its [Svelte UI Components](https://flowbite-svelte.com/)  
 Follow **flowbite-svelte** [getting-started](https://flowbite-svelte.com/pages/getting-started) guild, install and configure `tailwind.config.cjs`
 
-We will be using [heroicons](https://heroicons.com/) via [svelte-heros-v2](https://github.com/shinokada/svelte-heros-v2) Icon Components.
+We will be using [Flowbite icons](https://flowbite.com/icons/) via [lowbite-svelte-icons](https://github.com/themesberg/flowbite-svelte-icons) Icon Components.
 
 Use [clsx](https://github.com/lukeed/clsx) in place of [classnames](https://github.com/JedWatson/classnames) utility lib for constructing _className_ strings conditionally.
 
 ```shell
 pnpm add -D flowbite flowbite-svelte tailwind-merge
-pnpm add -D svelte-heros-v2
+pnpm add -D flowbite-svelte-icons
 pnpm add -D clsx
 ```
 

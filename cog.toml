@@ -12,6 +12,24 @@ post_bump_hooks = [
 #	"gh release create {{version}} -d -t 'Version {{version}}' -n \"$(cog changelog -a v{{version}})\"",
 ]
 
+[git_hooks.commit-msg]
+script = """#!/bin/sh
+set -e
+cog verify --file $1
+cog check -l
+pnpm format
+"""
+
+[git_hooks.pre-push]
+script = """#!/bin/sh
+if cog check -l; then
+    exit 0
+fi
+
+echo "Invalid commits were found, force push with '--no-verify'"
+exit 1
+"""
+
 [commit_types]
 
 [changelog]
