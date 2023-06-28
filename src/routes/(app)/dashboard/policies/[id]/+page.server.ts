@@ -59,6 +59,7 @@ export const actions = {
 		const variables = { policyId: id, policyData, ruleId, ruleData, skipRuleUpdate: originalShared };
 		log.debug('UPDATE action variables:', variables);
 		const { errors, data } = await updatePolicyStore.mutate(variables, {
+			metadata: { logResult: true },
 			event
 		});
 		if (errors) {

@@ -30,7 +30,7 @@ export const load = async (event) => {
 	});
 	if (errors) {
 		errors.forEach((error) => {
-			log.error('create rule api error', error);
+			log.error('list rule api error', error);
 			// NOTE: you can add multiple errors, send all along with a message
 			setError(form, '', (error as GraphQLError).message);
 		});

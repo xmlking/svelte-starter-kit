@@ -24,11 +24,12 @@ export const load = async (event) => {
 	const form = await superValidate({ displayName, description, tags, annotations }, schema);
 
 	const inPool = pool_devices?.map(
-		({ associationId, device: { id, displayName, ip, description, organization, tags, annotations, updatedAt } }) => ({
+		({ associationId, device: { id, displayName, ip, description, version, organization, tags, annotations, updatedAt } }) => ({
 			id,
 			associationId,
 			displayName,
 			ip,
+			version,
 			description,
 			organization,
 			tags,
