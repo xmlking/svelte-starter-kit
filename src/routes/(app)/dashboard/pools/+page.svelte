@@ -35,7 +35,13 @@
 	const itemsStore = writable(items ?? []);
 	const table = createTable(itemsStore, {
 		page: addPagination({ initialPageSize: 5 }),
-		tableFilter: addTableFilter(),
+		tableFilter: addTableFilter({
+			fn: ({ filterValue, value }) => {
+				if ('' === filterValue) return true;
+
+				return String(value).toLowerCase().includes(filterValue.toLowerCase());
+			}
+		}),
 		sort: addSortBy()
 	});
 

@@ -21,7 +21,7 @@
 	import { GraphQLError } from 'graphql';
 	import { createRender, createTable } from 'svelte-headless-table';
 	import { addPagination, addSortBy, addTableFilter } from 'svelte-headless-table/plugins';
-	import { MagnifyingGlass, RectangleGroup } from 'svelte-heros-v2';
+	import { MagnifyingGlass, RectangleGroup, Scale } from 'svelte-heros-v2';
 	import { TimeDistance } from 'svelte-time-distance';
 	import { writable } from 'svelte/store';
 	import { superForm } from 'sveltekit-superforms/client';
@@ -35,7 +35,13 @@
 	const itemsStore = writable(items ?? []);
 	const table = createTable(itemsStore, {
 		page: addPagination({ initialPageSize: 5 }),
-		tableFilter: addTableFilter(),
+		tableFilter: addTableFilter({
+			fn: ({ filterValue, value }) => {
+				if ('' === filterValue) return true;
+
+				return String(value).toLowerCase().includes(filterValue.toLowerCase());
+			}
+		}),
 		sort: addSortBy()
 	});
 
@@ -174,7 +180,7 @@
 <form data-sveltekit-noscroll>
 	<Navbar border={true} rounded={true}>
 		<NavBrand>
-			<RectangleGroup />
+			<Scale />
 			<span class="self-center whitespace-nowrap px-1 text-xl font-semibold dark:text-white">
 				Golden Rules
 			</span>

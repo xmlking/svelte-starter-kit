@@ -44,8 +44,17 @@
 	const itemsStore = writable(items ?? []);
 	const table = createTable(itemsStore, {
 		page: addPagination({ initialPageSize: 5 }),
-		tableFilter: addTableFilter(),
+		tableFilter: addTableFilter({
+			fn: ({ filterValue, value }) => {
+				if ('' === filterValue) return true;
+
+				return String(value).toLowerCase().includes(filterValue.toLowerCase());
+			}
+		}),
 		sort: addSortBy()
+		// filter: addTableFilter({ serverSide: true }),
+		// select: addSelectedRows(),
+		// resize: addResizedColumns()
 	});
 
 	const columns = table.createColumns([
@@ -101,12 +110,28 @@
 		}),
 		table.column({
 			header: 'Active',
-			accessor: 'active'
+			accessor: 'active',
+			plugins: {
+				tableFilter: {
+					exclude: true
+				},
+				sort: {
+					getSortValue: (value) => value
+				}
+			}
 		}),
 		table.column({
 			header: 'Shared',
 			id: 'shared',
-			accessor: (item) => item.rule.shared
+			accessor: (item) => item.rule.shared,
+			plugins: {
+				tableFilter: {
+					exclude: true
+				},
+				sort: {
+					getSortValue: (value) => value
+				}
+			}
 		}),
 		table.column({
 			header: 'Delete',

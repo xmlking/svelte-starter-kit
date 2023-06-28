@@ -8,10 +8,11 @@
 	import { ToastLevel, addToast } from '$lib/components/toast';
 	import { updatePoolKeys as keys } from '$lib/models/schema';
 	import { Logger } from '$lib/utils';
-	import { Breadcrumb, BreadcrumbItem, Heading, Helper } from 'flowbite-svelte';
+	import { Breadcrumb, BreadcrumbItem, Heading, Helper, NavBrand, Navbar } from 'flowbite-svelte';
 	import { GraphQLError } from 'graphql';
 	import { createRender, createTable } from 'svelte-headless-table';
 	import { addPagination, addSortBy, addTableFilter } from 'svelte-headless-table/plugins';
+	import { DevicePhoneMobile } from 'svelte-heros-v2';
 	import { TimeDistance } from 'svelte-time-distance';
 	import { writable } from 'svelte/store';
 	import { superForm } from 'sveltekit-superforms/client';
@@ -56,13 +57,19 @@
 
 	const inPoolTable = createTable(inPoolStore, {
 		page: addPagination({ initialPageSize: 10 }),
-		tableFilter: addTableFilter(),
+		tableFilter: addTableFilter({
+			fn: ({ filterValue, value }) =>
+				'' === filterValue ? true : value.toLowerCase().includes(filterValue.toLowerCase())
+		}),
 		sort: addSortBy()
 	});
 
 	const notInPoolTable = createTable(notInPoolStore, {
 		page: addPagination({ initialPageSize: 10 }),
-		tableFilter: addTableFilter(),
+		tableFilter: addTableFilter({
+			fn: ({ filterValue, value }) =>
+				'' === filterValue ? true : value.toLowerCase().includes(filterValue.toLowerCase())
+		}),
 		sort: addSortBy()
 	});
 
@@ -124,8 +131,8 @@
 			accessor: 'ip'
 		}),
 		inPoolTable.column({
-			header: 'Tags',
-			accessor: ({ tags }) => tags
+			header: 'Version',
+			accessor: 'version'
 		}),
 		inPoolTable.column({
 			header: 'Updated At',
@@ -220,8 +227,8 @@
 			accessor: 'ip'
 		}),
 		notInPoolTable.column({
-			header: 'Tags',
-			accessor: ({ tags }) => tags
+			header: 'Version',
+			accessor: 'version'
 		}),
 		notInPoolTable.column({
 			header: 'Updated At',
@@ -318,10 +325,24 @@
  	<SuperDebug label="$page data" status={false} data={$page} /> -->
 {/if}
 
-{#if inPool}
+{#if inPool && notInPool}
+	<Navbar class="rounded border">
+		<NavBrand>
+			<DevicePhoneMobile />
+			<span class="ml-2 self-center whitespace-nowrap text-xl font-semibold dark:text-white">
+				Devices in Pool
+			</span>
+		</NavBrand>
+	</Navbar>
 	<DataTable tableViewModel={inPoolTableViewModel} />
-{/if}
 
-{#if notInPool}
+	<Navbar class="rounded border">
+		<NavBrand>
+			<DevicePhoneMobile />
+			<span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
+				Devices NOT in Pool
+			</span>
+		</NavBrand>
+	</Navbar>
 	<DataTable tableViewModel={notInPoolTableViewModel} />
 {/if}
