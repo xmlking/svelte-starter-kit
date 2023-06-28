@@ -1,11 +1,11 @@
-lockfileVersion: '6.0'
+lockfileVersion: '6.1'
 
 settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
 overrides:
-  flowbite-svelte: 0.37.5
+  flowbite-svelte: 0.38.5
 
 dependencies:
   cookie:
@@ -136,8 +136,8 @@ devDependencies:
     specifier: 1.6.6
     version: 1.6.6
   flowbite-svelte:
-    specifier: 0.37.5
-    version: 0.37.5(svelte@4.0.0)
+    specifier: 0.38.5
+    version: 0.38.5(svelte@4.0.0)
   graphql:
     specifier: 16.7.1
     version: 16.7.1
@@ -3529,10 +3529,6 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /classnames@2.3.2:
-    resolution: {integrity: sha512-CSbhY4cFEJRe6/GQzIk5qXZ4Jeg5pcsP7b5peFSDpffpe1cqjASH/n9UTjBwOp6XpMSTwQ8Za2K5V02ueA7Tmw==}
-    dev: true
-
   /cli-cursor@3.1.0:
     resolution: {integrity: sha512-I/zHAwsKf9FqGoXM4WWRACob9+SNukZTd94DWF57E4toouRulbCxcUh6RKUEOQlYTHJnzkPMySvPNaaSLNfLZw==}
     engines: {node: '>=8'}
@@ -4619,16 +4615,16 @@ packages:
   /flatted@3.2.7:
     resolution: {integrity: sha512-5nqDSxl8nn5BSNxyR3n4I6eDmbolI6WT+QqR547RwxQapgjQBmtktdP+HTBb/a/zLsbzERTONyUB5pefh5TtjQ==}
 
-  /flowbite-svelte@0.37.5(svelte@4.0.0):
-    resolution: {integrity: sha512-aAPJygrfqY1+wkcl4rG/ikTxAdnB1p4Xe2sKG3Jm+BJsMZvArgl6/weH+DimoSjHLAMLhtd4spAbzfT8eHBgnQ==}
+  /flowbite-svelte@0.38.5(svelte@4.0.0):
+    resolution: {integrity: sha512-U+aEpoLb7Vl35SwqJoCNxxDzmT4pGFNIgX63zp6aaXUxO0XYAyxZh1OlBLaOzZuKFd/KxTVWJW8EZwYNtoDu2g==}
     engines: {node: '>=16.0.0', npm: '>=7.0.0'}
     peerDependencies:
       svelte: ^3.55.1 || ^4.0.0
     dependencies:
       '@popperjs/core': 2.11.8
-      classnames: 2.3.2
       flowbite: 1.6.6
       svelte: 4.0.0
+      tailwind-merge: 1.13.2
     dev: true
 
   /flowbite@1.6.6:
