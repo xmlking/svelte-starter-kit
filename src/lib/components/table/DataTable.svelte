@@ -82,6 +82,7 @@ See: https://svelte-headless-table.bryanmylee.com/docs/api/create-view-model
 								props={cell.props()}
 								let:props
 							>
+								<!-- < {...attrs} on:click={props.sort.toggle} class="px-6 py-3" use:props.resize> -->
 								<th {...attrs} on:click={props.sort.toggle} class="px-6 py-3">
 									<div class="flex items-center">
 										<Render of={cell.render()} />
@@ -89,6 +90,9 @@ See: https://svelte-headless-table.bryanmylee.com/docs/api/create-view-model
 											<ChevronDown size="16" variation="solid" class="ml-1" />
 										{:else if props.sort.order === 'desc'}
 											<ChevronUp size="16" variation="solid" class="ml-1" />
+										{/if}
+										{#if props.resize && !props.resize.disabled}
+											<div class="resizer" use:props.resize.drag />
 										{/if}
 									</div>
 								</th>
@@ -112,9 +116,10 @@ See: https://svelte-headless-table.bryanmylee.com/docs/api/create-view-model
 								props={cell.props()}
 								let:props
 							>
+								<!-- class="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white" -->
 								<td
 									{...attrs}
-									class="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
+									class="px-6 py-4 font-medium text-gray-900 dark:text-white"
 									class:matches={props.tableFilter.matches}
 								>
 									<Render of={cell.render()} />
@@ -146,3 +151,19 @@ See: https://svelte-headless-table.bryanmylee.com/docs/api/create-view-model
 		</nav>
 	{/if}
 </div>
+
+<style>
+	th {
+		position: relative;
+	}
+	.resizer {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		right: -4px;
+		width: 8px;
+		background: lightgray;
+		cursor: col-resize;
+		z-index: 1;
+	}
+</style>
