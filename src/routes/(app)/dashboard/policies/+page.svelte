@@ -21,7 +21,7 @@
 	} from 'flowbite-svelte';
 	import { GraphQLError } from 'graphql';
 	import { createRender, createTable } from 'svelte-headless-table';
-	import { addPagination, addSortBy, addTableFilter } from 'svelte-headless-table/plugins';
+	import { addPagination, addResizedColumns, addSortBy, addTableFilter } from 'svelte-headless-table/plugins';
 	import {
 		DevicePhoneMobile,
 		RectangleGroup,
@@ -44,6 +44,7 @@
 	const itemsStore = writable(items ?? []);
 	const table = createTable(itemsStore, {
 		page: addPagination({ initialPageSize: 5 }),
+		resize: addResizedColumns(),
 		tableFilter: addTableFilter({
 			fn: ({ filterValue, value }) => {
 				if ('' === filterValue) return true;
@@ -69,6 +70,7 @@
 					title: value.rule.description
 				}),
 			plugins: {
+				resize: { initialWidth: 400 },
 				tableFilter: {
 					getFilterValue: ({ rule }) => rule.displayName
 				},
@@ -79,7 +81,10 @@
 		}),
 		table.column({
 			header: 'Subject',
-			accessor: 'subjectDisplayName'
+			accessor: 'subjectDisplayName',
+			plugins: {
+				resize: { disable: true }
+			}
 		}),
 		table.column({
 			header: 'Updated',
@@ -90,6 +95,7 @@
 					class: 'decoration-solid'
 				}),
 			plugins: {
+				resize: { disable: true },
 				tableFilter: {
 					exclude: true
 				},
@@ -101,17 +107,24 @@
 		table.column({
 			header: 'Source',
 			id: 'source',
-			accessor: (item) => `${item.rule.source ?? ''}:${item.rule.sourcePort ?? ''}`
+			accessor: (item) => `${item.rule.source ?? ''}:${item.rule.sourcePort ?? ''}`,
+			plugins: {
+				resize: { disable: true }
+			}
 		}),
 		table.column({
 			header: 'Destination',
 			id: 'destination',
-			accessor: (item) => `${item.rule.destination ?? ''}:${item.rule.destinationPort ?? ''}`
+			accessor: (item) => `${item.rule.destination ?? ''}:${item.rule.destinationPort ?? ''}`,
+			plugins: {
+				resize: { disable: true }
+			}
 		}),
 		table.column({
 			header: 'Active',
 			accessor: 'active',
 			plugins: {
+				resize: { disable: true },
 				tableFilter: {
 					exclude: true
 				},
@@ -125,6 +138,7 @@
 			id: 'shared',
 			accessor: (item) => item.rule.shared,
 			plugins: {
+				resize: { disable: true },
 				tableFilter: {
 					exclude: true
 				},
@@ -142,6 +156,7 @@
 					// .slot(value)
 					.on('delete', handleDelete),
 			plugins: {
+				resize: { disable: true },
 				tableFilter: {
 					exclude: true
 				},
