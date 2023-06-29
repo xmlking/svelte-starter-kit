@@ -21,7 +21,12 @@
 	} from 'flowbite-svelte';
 	import { GraphQLError } from 'graphql';
 	import { createRender, createTable } from 'svelte-headless-table';
-	import { addPagination, addResizedColumns, addSortBy, addTableFilter } from 'svelte-headless-table/plugins';
+	import {
+		addPagination,
+		addResizedColumns,
+		addSortBy,
+		addTableFilter
+	} from 'svelte-headless-table/plugins';
 	import {
 		DevicePhoneMobile,
 		RectangleGroup,
