@@ -31,7 +31,8 @@ export const actions = {
 		const payload: rules_insert_input = {
 			...dataCopy,
 			shared: true,
-			...(dataCopy.tags && { tags: `{${dataCopy.tags}}` })
+			...(dataCopy.tags && { tags: `{${dataCopy.tags}}` }),
+			...(dataCopy.throttleRate && { throttleRate: `${dataCopy.throttleRate}` })
 		};
 		const variables = { data: payload };
 		log.debug('CREATE action variables:', variables);

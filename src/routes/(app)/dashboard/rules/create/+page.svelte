@@ -6,6 +6,7 @@
 		Form,
 		Select as FormSelect,
 		Radio,
+		Range,
 		TagsInput
 	} from '$lib/components/form';
 	import { actionOptions, directionOptions, protocols } from '$lib/models/enums';
@@ -106,8 +107,20 @@
 		<div class="col-end-7">
 			<FloatingTextInput field={keys.weight} type="number" label="Weight" />
 		</div>
-		<div class="col-span-6">
+		<div class="col-span-4">
 			<FloatingTextInput field={keys.appId} label="App id" />
+			<Helper class="mt-2 text-sm italic"
+				>If no app is selected, throttle rate applied system wide.</Helper
+			>
+		</div>
+		<div class="col-span-2">
+			<Range
+				field={keys.throttleRate}
+				class="range-primary range-md"
+				min="0"
+				max="100"
+				label="Bandwidth limit">Throttle Rate {$form.throttleRate}</Range
+			>
 		</div>
 	</div>
 </Form>

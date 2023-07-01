@@ -17,6 +17,8 @@ configuration:
       custom_name: displayName
     source_port:
       custom_name: sourcePort
+    throttle_rate:
+      custom_name: throttleRate
     updated_at:
       custom_name: updatedAt
     updated_by:
@@ -29,6 +31,7 @@ configuration:
     destination_port: destinationPort
     display_name: displayName
     source_port: sourcePort
+    throttle_rate: throttleRate
     updated_at: updatedAt
     updated_by: updatedBy
   custom_root_fields: {}
@@ -55,6 +58,7 @@ insert_permissions:
         - source
         - source_port
         - tags
+        - throttle_rate
         - weight
   - role: user
     permission:
@@ -77,6 +81,7 @@ insert_permissions:
         - source
         - source_port
         - tags
+        - throttle_rate
         - weight
 select_permissions:
   - role: engine
@@ -94,6 +99,7 @@ select_permissions:
         - protocol
         - source
         - source_port
+        - throttle_rate
         - weight
       filter:
         _and:
@@ -121,6 +127,7 @@ select_permissions:
         - source
         - source_port
         - tags
+        - throttle_rate
         - updated_at
         - updated_by
         - weight
@@ -150,6 +157,7 @@ select_permissions:
         - source
         - source_port
         - tags
+        - throttle_rate
         - updated_at
         - updated_by
         - weight
@@ -165,21 +173,22 @@ update_permissions:
   - role: manager
     permission:
       columns:
-        - display_name
-        - description
-        - tags
+        - action
         - annotations
+        - app_id
+        - deleted_at
+        - description
+        - destination
+        - destination_port
+        - direction
+        - display_name
+        - protocol
         - shared
         - source
         - source_port
-        - destination
-        - destination_port
-        - protocol
-        - action
-        - direction
-        - app_id
+        - tags
+        - throttle_rate
         - weight
-        - deleted_at
       filter:
         _and:
           - deleted_at:
@@ -192,21 +201,22 @@ update_permissions:
   - role: user
     permission:
       columns:
-        - display_name
-        - description
-        - tags
+        - action
         - annotations
+        - app_id
+        - deleted_at
+        - description
+        - destination
+        - destination_port
+        - direction
+        - display_name
+        - protocol
         - shared
         - source
         - source_port
-        - destination
-        - destination_port
-        - protocol
-        - action
-        - direction
-        - app_id
+        - tags
+        - throttle_rate
         - weight
-        - deleted_at
       filter:
         _and:
           - organization:

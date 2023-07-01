@@ -9,6 +9,7 @@
 		ChartPie,
 		ClipboardDocumentList,
 		Cog,
+		DevicePhoneMobile,
 		HandRaised,
 		RectangleGroup,
 		Scale,
@@ -73,6 +74,20 @@
 					active={activeUrl === '/dashboard/rules'}
 				>
 					<svelte:fragment slot="icon"><Scale /></svelte:fragment>
+				</SidebarItem>
+				<SidebarItem
+					label="Devices"
+					{spanClass}
+					href="/dashboard/devices"
+					active={activeUrl === 'dashboard/devices'}
+				>
+					<svelte:fragment slot="icon"><DevicePhoneMobile /></svelte:fragment>
+					<svelte:fragment slot="subtext">
+						<span
+							class="ml-3 inline-flex items-center justify-center rounded-full bg-blue-200 px-2 text-sm font-medium text-blue-600 dark:bg-blue-900 dark:text-blue-200"
+							>beta</span
+						>
+					</svelte:fragment>
 				</SidebarItem>
 				<SidebarItem
 					label="Device Pools"

@@ -14,6 +14,7 @@ mutation CreateRule($data: rules_insert_input!) {
 		direction
 		action
 		appId
+		throttleRate
 		weight
 		createdBy
 		createdAt

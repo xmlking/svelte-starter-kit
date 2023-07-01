@@ -28,6 +28,7 @@ fragment Policy_all_fields on policies {
 		direction
 		action
 		appId
+		throttleRate
 		weight
 		createdBy
 		createdAt

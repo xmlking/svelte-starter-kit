@@ -10,7 +10,7 @@
 	type T = $$Generic<AnyZodObject>;
 	export let field: FormPathLeaves<z.infer<T>>;
 	export let label = '';
-	export let labelClasses: string = '';
+	export let labelClasses = '';
 	export let items: SelectOptionType[] = [];
 
 	const { superform } = getFormContext();

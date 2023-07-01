@@ -7,6 +7,7 @@
 		Form,
 		Select as FormSelect,
 		Radio,
+		Range,
 		TagsInput
 	} from '$lib/components/form';
 	import {
@@ -176,10 +177,22 @@
 			<FloatingTextInput field={keys.weight} type="number" label="Weight" />
 		</div>
 
-		<div class="col-span-6">
+		<div class="col-span-4">
 			<FloatingTextInput field="rule.appId" label="App id" {disabled} />
+			<Helper class="mt-2 text-sm italic"
+				>If no app is selected, throttle rate applied system wide.</Helper
+			>
 		</div>
-
+		<div class="col-span-2">
+			<Range
+				field="rule.throttleRate"
+				class="range-primary range-md"
+				min="0"
+				max="100"
+				label="Bandwidth limit"
+				{disabled}>Throttle Rate {$form.rule.throttleRate}</Range
+			>
+		</div>
 		<div class="flex justify-start">
 			<Checkbox field={keys.active} class="toggle-secondary toggle" labelPosition="before"
 				>Active</Checkbox

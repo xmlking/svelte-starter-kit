@@ -40,7 +40,7 @@ export const GET = async (event) => {
 			case subject_type_enum.group:
 				results = await listGroups(fetch, search);
 				break;
-			case subject_type_enum.device:
+			case subject_type_enum.device: {
 				// fetching device data from GraphQL
 				const { errors: deviceErrors, data: deviceData } = await searchDevicesStore.fetch({
 					event,
@@ -58,7 +58,8 @@ export const GET = async (event) => {
 					};
 				});
 				break;
-			case subject_type_enum.device_pool:
+			}
+			case subject_type_enum.device_pool: {
 				const { errors: poolErrors, data: poolData } = await searchPoolsStore.fetch({
 					event,
 					blocking: true,
@@ -76,6 +77,7 @@ export const GET = async (event) => {
 					};
 				});
 				break;
+			}
 			default:
 				throw new Error(`Unknown Subject Type: ${subType}`, { cause: Error(`${subType}`) });
 		}

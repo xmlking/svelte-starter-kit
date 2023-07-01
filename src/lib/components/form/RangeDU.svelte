@@ -1,14 +1,6 @@
 <script lang="ts">
-	/**
-	 * <div class="flex justify-start">
-	 *   <Checkbox field={keys.active} class="toggle toggle-secondary" labelPosition="before" disabled={editMode}>Active</Checkbox>
-	 *   <Checkbox field={keys.active} class="toggle toggle-secondary" disabled={editMode}>Active</Checkbox>
-	 *   <Checkbox field={keys.active} class="w-4 h-4" disabled={editMode}>Active</Checkbox>
-	 * </div>
-	 */
 	import { clsx } from 'clsx';
 	import { Helper } from 'flowbite-svelte';
-	import type { Writable } from 'svelte/store';
 	import type { FormPathLeaves } from 'sveltekit-superforms';
 	import { formFieldProxy } from 'sveltekit-superforms/client';
 	import type { AnyZodObject, z } from 'zod';
@@ -18,31 +10,38 @@
 	type T = $$Generic<AnyZodObject>;
 	export let field: FormPathLeaves<z.infer<T>>;
 	export let labelClasses = '';
-	export let labelPosition: 'before' | 'after' = 'after';
+	export let labelPosition: 'before' | 'after' = 'before';
 
-	const defaultLabelClasses = 'label cursor-pointer';
+	const defaultClasses = 'range';
+	const defaultLabelClasses = 'label';
 	const { superform } = getFormContext();
 	const { path, value, errors, constraints } = formFieldProxy(superform, field);
-	$: checked = value as Writable<boolean>;
+
+	console.log(clsx(defaultClasses, $$props.class));
 </script>
 
 <label class={clsx(defaultLabelClasses, labelClasses)}>
 	{#if labelPosition == 'before'}
-		<span class:text-error={$errors} class="label-text pr-2"><slot /></span>
+		<span class:text-error={$errors} class="label-text"><slot /></span>
 	{/if}
 	<input
-		type="checkbox"
+		type="range"
 		name={field}
-		bind:checked={$checked}
+		bind:value={$value}
+		on:change
+		on:click
+		on:keydown
+		on:keypress
+		on:keyup
 		data-invalid={$errors}
 		aria-invalid={Boolean($errors)}
 		aria-errormessage={Array($errors).join('. ')}
-		aria-required={$constraints?.required}
 		{...$constraints}
 		{...$$restProps}
+		class={clsx(defaultClasses, $$props.class)}
 	/>
 	{#if labelPosition == 'after'}
-		<span class:text-error={$errors} class="label-text pl-2"><slot /></span>
+		<span class:text-error={$errors} class="label-text"><slot /></span>
 	{/if}
 </label>
 {#if $errors}
