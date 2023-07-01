@@ -13,6 +13,7 @@ query GetRule($id: uuid!) {
 		direction
 		action
 		appId
+		throttleRate
 		weight
 	}
 }

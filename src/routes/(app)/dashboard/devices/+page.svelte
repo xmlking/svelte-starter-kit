@@ -1,13 +1,9 @@
 <script lang="ts">
 	import { dev } from '$app/environment';
-	import { invalidateAll } from '$app/navigation';
-	import { cache, DeleteRuleStore } from '$houdini';
-	import { DeleteButton, Link } from '$lib/components';
-	import type { CustomEventProps } from '$lib/components/DeleteButton.svelte';
+	import { Link } from '$lib/components';
 	import { ErrorMessage } from '$lib/components/form';
 	import FormAlerts from '$lib/components/form/FormAlerts.svelte';
 	import { DataTable } from '$lib/components/table';
-	import { ToastLevel, addToast } from '$lib/components/toast';
 	import { Logger } from '$lib/utils';
 	import {
 		Breadcrumb,
@@ -18,16 +14,15 @@
 		NavBrand,
 		Navbar
 	} from 'flowbite-svelte';
-	import { GraphQLError } from 'graphql';
 	import { createRender, createTable } from 'svelte-headless-table';
 	import { addPagination, addSortBy, addTableFilter } from 'svelte-headless-table/plugins';
-	import { MagnifyingGlass, Scale } from 'svelte-heros-v2';
+	import { DevicePhoneMobile, MagnifyingGlass } from 'svelte-heros-v2';
 	import { TimeDistance } from 'svelte-time-distance';
 	import { writable } from 'svelte/store';
 	import { superForm } from 'sveltekit-superforms/client';
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 
-	const log = new Logger('rules:list:browser');
+	const log = new Logger('devices:list:browser');
 	export let data;
 	$: ({ items } = data);
 	$: itemsStore.set(items ?? []);
@@ -52,7 +47,7 @@
 			id: 'name',
 			cell: ({ value }) =>
 				createRender(Link, {
-					url: `/dashboard/rules/${value.id}`,
+					url: `/dashboard/devices/${value.id}`,
 					content: value.displayName,
 					title: value.description
 				}),
@@ -83,22 +78,8 @@
 			}
 		}),
 		table.column({
-			header: 'Updated By',
-			accessor: 'updatedBy'
-		}),
-		table.column({
-			header: 'Tags',
-			accessor: 'tags'
-		}),
-		table.column({
-			header: 'Delete',
-			id: 'delete',
-			accessor: 'id',
-			cell: ({ value }) =>
-				createRender(DeleteButton, { id: value })
-					// .slot(value)
-					.on('delete', handleDelete),
-			// cell: ({ value }) => createRender(DeleteForm, { id: value }),
+			header: 'Version',
+			accessor: 'version',
 			plugins: {
 				tableFilter: {
 					exclude: true
@@ -107,6 +88,14 @@
 					disable: true
 				}
 			}
+		}),
+		table.column({
+			header: 'IP',
+			accessor: 'ip'
+		}),
+		table.column({
+			header: 'Tags',
+			accessor: 'tags'
 		})
 	]);
 
@@ -123,67 +112,25 @@
 		}
 	});
 	const { form, delayed, errors, constraints, message, tainted, posted, submitting } = superform;
-
-	// delete action
-	const deleteRuleStore = new DeleteRuleStore();
-	let busy = false;
-	const handleDelete = async (e: CustomEvent<CustomEventProps>) => {
-		busy = true;
-		try {
-			if (e.detail.id) {
-				const id = e.detail.id;
-				const deletedAt = new Date();
-				const { data } = await deleteRuleStore.mutate({ id, deletedAt });
-				if (data?.update_rules_by_pk?.displayName) {
-					addToast({
-						message: `Rule: ${data?.update_rules_by_pk?.displayName} deleted. \n Policies: ${data?.update_policies?.affected_rows} deleted`,
-						dismissible: true,
-						duration: 10000,
-						type: ToastLevel.Info
-					});
-					// await invalidate('/dashboard/rules');
-					cache.markStale();
-					await invalidateAll();
-				} else {
-					addToast({
-						message: `Rule not found for ID: ${id}`,
-						dismissible: true,
-						duration: 10000,
-						type: ToastLevel.Error
-					});
-				}
-			} else {
-				log.error('id missing in event!');
-			}
-		} catch (err) {
-			if (err instanceof GraphQLError) {
-				log.error(err.message);
-			} else {
-				throw err;
-			}
-		} finally {
-			busy = false;
-		}
-	};
 </script>
 
 <svelte:head>
-	<title>Rules</title>
-	<meta name="description" content="rules" />
+	<title>Devices</title>
+	<meta name="description" content="devices" />
 </svelte:head>
 
 <Breadcrumb aria-label="Default breadcrumb example" class="mb-6">
 	<BreadcrumbItem href="/dashboard" home>Home</BreadcrumbItem>
-	<BreadcrumbItem href="/dashboard/rules">Rules</BreadcrumbItem>
-	<BreadcrumbItem>Search Rules</BreadcrumbItem>
+	<BreadcrumbItem href="/dashboard/devices">Devices</BreadcrumbItem>
+	<BreadcrumbItem>Search Devices</BreadcrumbItem>
 </Breadcrumb>
 
 <form data-sveltekit-noscroll>
 	<Navbar border={true} rounded={true}>
 		<NavBrand>
-			<Scale />
+			<DevicePhoneMobile />
 			<span class="self-center whitespace-nowrap px-1 text-xl font-semibold dark:text-white">
-				Golden Rules
+				Devices
 			</span>
 		</NavBrand>
 		<ButtonGroup class="w-1/2">
@@ -217,7 +164,7 @@
 				><MagnifyingGlass size="20" /></Button
 			>
 		</ButtonGroup>
-		<Button href="/dashboard/rules/create">Add Rule</Button>
+		<span />
 	</Navbar>
 	<ErrorMessage error={$errors?.displayName?.[0]} />
 	<ErrorMessage error={$errors?.limit?.[0]} />

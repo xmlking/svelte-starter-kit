@@ -35,12 +35,22 @@ export const actions = {
 		log.debug('after cleanClone with strip:', dataCopy);
 		const {
 			ruleId,
-			rule: { tags, ...ruleRest },
+			rule: { tags, throttleRate, ...ruleRest },
 			...restPolicy
 		} = dataCopy;
 		const payload: policies_insert_input = {
 			...restPolicy,
-			...(ruleId ? { ruleId } : { rule: { data: { ...ruleRest, ...(tags && { tags: `{${tags}}` }) } } })
+			...(ruleId
+				? { ruleId }
+				: {
+						rule: {
+							data: {
+								...ruleRest,
+								...(tags && { tags: `{${tags}}` }),
+								...(throttleRate && { throttleRate: `${throttleRate}` })
+							}
+						}
+				  })
 		};
 		// if we are creating Policy with new Rule, overwrite Rule's weight with Policy's weight.
 		if (payload.rule?.data && payload.weight) {

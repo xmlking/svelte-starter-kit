@@ -10,7 +10,7 @@ export const policySchema = z.object({
 	// validTo: z.string().datetime({ offset: true }).nullish().catch(null),
 	validFrom: z.date().nullish(),
 	validTo: z.date().nullish(),
-	weight: z.coerce.number().min(0).max(2000).optional().default(2000),
+	weight: z.coerce.number().min(0).max(1000).optional().default(1000),
 	subjectDisplayName: z.string().trim().nonempty(),
 	subjectId: z.string().trim().nonempty(),
 	subjectSecondaryId: z.string().trim().nonempty(),
@@ -33,7 +33,8 @@ export const policySchema = z.object({
 		action: z.enum(['permit', 'block', 'callout_inspection', 'callout_terminating', 'callout_unknown']).default('block'),
 		direction: z.enum(['egress', 'ingress']).default('egress'),
 		appId: z.string().trim().nullish(),
-		weight: z.coerce.number().min(0).max(2000).optional().default(2000),
+		throttleRate: z.coerce.number().min(0).max(100).optional().default(80),
+		weight: z.coerce.number().min(0).max(1000).optional().default(1000),
 		shared: z.boolean().optional().default(false)
 	})
 });

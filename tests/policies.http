@@ -82,6 +82,7 @@ query ListPolicies(
       direction
       action
       appId
+	  throttleRate
       weight
       createdBy
       createdAt
@@ -130,6 +131,7 @@ query SearchAgentPolicies($where: policies_bool_exp, $limit: Int = 50, $offset: 
       direction
       action
       appId
+	  throttleRate
       weight
       organization
     }
@@ -189,6 +191,7 @@ query SearchPolicies($where: policies_bool_exp, $limit: Int = 50, $offset: Int =
       direction
       action
       appId
+	  throttleRate
       weight
       createdBy
       createdAt
@@ -256,6 +259,7 @@ query GetPolicy($id: uuid!) {
       direction
       action
       appId
+	  throttleRate
       weight
       createdBy
       createdAt
@@ -319,6 +323,7 @@ mutation UpdatePolicy($policyId: uuid!, $policyData: policies_set_input!,  $rule
       direction
       action
       appId
+	  throttleRate
       weight
       createdBy
       createdAt
@@ -350,6 +355,7 @@ mutation UpdatePolicy($policyId: uuid!, $policyData: policies_set_input!,  $rule
     "direction": "egress",
     "protocol": "Any",
     "appId":"myapp.exe",
+	"throttleRate": "75",
     "destination":"1.1.1.1",
     "destinationPort":"443",
     "source":"0.0.0.0",
@@ -401,6 +407,7 @@ mutation CreatePolicy($data: policies_insert_input!) {
       direction
       action
       appId
+	  throttleRate
       weight
       createdBy
       createdAt
@@ -433,6 +440,7 @@ mutation CreatePolicy($data: policies_insert_input!) {
 				"direction": "egress",
 				"protocol": "Any",
 				"appId":"myapp.exe",
+				"throttleRate": "85",
 				"destination":"1.1.1.1",
 				"destinationPort":"443",
 				"source":"0.0.0.0",

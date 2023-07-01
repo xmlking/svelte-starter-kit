@@ -19,21 +19,13 @@ export const ruleSchema = z.object({
 	action: z.enum(['permit', 'block', 'callout_inspection', 'callout_terminating', 'callout_unknown']).default('block'),
 	direction: z.enum(['egress', 'ingress']).default('egress'),
 	appId: z.string().trim().nullish(),
-	weight: z.coerce.number().min(0).max(2000).optional().default(2000),
+	throttleRate: z.coerce.number().min(0).max(100).optional().default(80),
+	weight: z.coerce.number().min(0).max(1000).optional().default(1000),
 	shared: z.boolean().optional().default(true)
 });
 
 export type RuleSchema = typeof ruleSchema;
 export type Rule = z.infer<typeof ruleSchema>;
-
-/**
- * Search Rule Schema
- */
-export const ruleSearchSchema = z.object({
-	displayName: z.string().trim().min(3).max(100).optional(),
-	limit: z.number().int().min(5).max(100).default(10),
-	offset: z.number().int().min(0).default(0)
-});
 
 /**
  * Create Rule Schema
@@ -65,8 +57,17 @@ export type UpdateRule = z.infer<typeof updateRuleSchema>;
 export const updateRuleKeys = updateRuleSchema.keyof().Enum;
 
 /**
- * Search Delete Schema
+ * Delete Rule  Schema
  */
 export const ruleDeleteSchema = z.object({
 	id: z.string().trim().uuid()
+});
+
+/**
+ * Search Rule Schema
+ */
+export const ruleSearchSchema = z.object({
+	displayName: z.string().trim().min(3).max(100).optional(),
+	limit: z.number().int().min(5).max(100).default(10),
+	offset: z.number().int().min(0).default(0)
 });

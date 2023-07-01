@@ -1115,7 +1115,7 @@ enum policies_constraint {
   policies_pkey
 
   """
-  unique or primary key constraint on columns "rule_id", "subject_id", "organization", "subject_type"
+  unique or primary key constraint on columns "rule_id", "subject_id", "subject_type", "organization"
   """
   policies_subject_id_subject_type_rule_id_organization_unique
 }
@@ -1369,7 +1369,7 @@ unique or primary key constraints on table "pools"
 """
 enum pools_constraint {
   """
-  unique or primary key constraint on columns "display_name", "organization"
+  unique or primary key constraint on columns "organization", "display_name"
   """
   pools_display_name_organization_unique
 
@@ -1986,6 +1986,7 @@ type rules {
   source: String
   sourcePort: String
   tags: _text
+  throttleRate: String
   updatedAt: timestamptz!
   updatedBy: String!
   weight: smallint!
@@ -2015,6 +2016,7 @@ input rules_bool_exp {
   source: String_comparison_exp
   sourcePort: String_comparison_exp
   tags: _text_comparison_exp
+  throttleRate: String_comparison_exp
   updatedAt: timestamptz_comparison_exp
   updatedBy: String_comparison_exp
   weight: smallint_comparison_exp
@@ -2025,7 +2027,7 @@ unique or primary key constraints on table "rules"
 """
 enum rules_constraint {
   """
-  unique or primary key constraint on columns "display_name", "organization"
+  unique or primary key constraint on columns "organization", "display_name"
   """
   rules_display_name_organization_unique
 
@@ -2059,6 +2061,7 @@ input rules_insert_input {
   source: String
   sourcePort: String
   tags: _text
+  throttleRate: String
   weight: smallint
 }
 
@@ -2111,6 +2114,7 @@ input rules_order_by {
   source: order_by
   sourcePort: order_by
   tags: order_by
+  throttleRate: order_by
   updatedAt: order_by
   updatedBy: order_by
   weight: order_by
@@ -2177,6 +2181,9 @@ enum rules_select_column {
   tags
 
   """column name"""
+  throttleRate
+
+  """column name"""
   updatedAt
 
   """column name"""
@@ -2204,6 +2211,7 @@ input rules_set_input {
   source: String
   sourcePort: String
   tags: _text
+  throttleRate: String
   weight: smallint
 }
 
@@ -2237,6 +2245,7 @@ input rules_stream_cursor_value_input {
   source: String
   sourcePort: String
   tags: _text
+  throttleRate: String
   updatedAt: timestamptz
   updatedBy: String
   weight: smallint
@@ -2287,6 +2296,9 @@ enum rules_update_column {
 
   """column name"""
   tags
+
+  """column name"""
+  throttleRate
 
   """column name"""
   weight

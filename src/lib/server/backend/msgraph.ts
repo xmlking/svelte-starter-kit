@@ -15,12 +15,6 @@ export interface MSGraphResponse<T> {
 	value: T[];
 }
 
-export interface Subject {
-	id: string;
-	displayName: string;
-	secondaryId: string;
-}
-
 export interface User {
 	id: string;
 	displayName: string;

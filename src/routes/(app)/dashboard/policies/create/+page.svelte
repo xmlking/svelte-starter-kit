@@ -8,6 +8,7 @@
 		Form,
 		Select as FormSelect,
 		Radio,
+		Range,
 		TagsInput
 	} from '$lib/components/form';
 	import {
@@ -17,7 +18,7 @@
 		subjectTypeOptions2
 	} from '$lib/models/enums';
 	import { createPolicyKeys as keys } from '$lib/models/schema';
-	import type { Subject } from '$lib/models/types/subject';
+	import type { Subject } from '$lib/models/types';
 	import { Logger } from '$lib/utils';
 	import { Breadcrumb, BreadcrumbItem, Heading, Helper, UserCircle } from 'flowbite-svelte';
 	import { onMount } from 'svelte';
@@ -195,7 +196,7 @@
 				$form.rule.direction = 'egress';
 				$form.rule.action = 'block';
 				$form.rule.appId = undefined;
-				$form.rule.weight = 2000;
+				$form.rule.weight = 1000;
 			}
 		}
 	}
@@ -218,7 +219,7 @@
 			$form.rule.direction = 'egress';
 			$form.rule.action = 'block';
 			$form.rule.appId = undefined;
-			$form.rule.weight = 2000;
+			$form.rule.weight = 1000;
 		}
 	}
 </script>
@@ -255,7 +256,6 @@
 				loadOptions={fetchSubjects}
 				--list-z-index="100"
 				--border-radius="8px"
-				--border-hover="1px solid blue"
 				--border-focused="1px solid blue"
 			>
 				<b slot="prepend">
@@ -295,7 +295,6 @@
 				loadOptions={fetchRule}
 				--list-z-index="100"
 				--border-radius="8px"
-				--border-hover="1px solid blue"
 				--border-focused="1px solid blue"
 			>
 				<b slot="prepend">
@@ -361,10 +360,21 @@
 			<FloatingTextInput field={keys.weight} type="number" label="Weight" />
 		</div>
 
-		<div class="col-span-6">
+		<div class="col-span-4">
 			<FloatingTextInput field="rule.appId" label="App id" {disabled} />
+			<Helper class="mt-2 text-sm italic"
+				>If no app is selected, throttle rate applied system wide.</Helper
+			>
 		</div>
-
+		<div class="col-span-2">
+			<Range
+				field="rule.throttleRate"
+				class="range-primary range-md"
+				min="0"
+				max="100"
+				label="Bandwidth limit">Throttle Rate {$form.rule.throttleRate}</Range
+			>
+		</div>
 		<div class="flex justify-start">
 			<Checkbox field={keys.active} class="toggle-secondary toggle" labelPosition="before"
 				>Active</Checkbox

@@ -53,6 +53,7 @@ query ListRules($limit: Int = 50, $offset: Int = 0, $order_by: [rules_order_by!]
     id
     action
     appId
+	throttleRate
     destination
     destinationPort
     direction
@@ -85,6 +86,7 @@ query SearchSharedRules($filter: String!, $limit: Int = 50, $offset: Int = 0, $o
     action
     annotations
     appId
+	throttleRate
     createdAt
     createdBy
     description
@@ -132,6 +134,7 @@ query GetRule($id: uuid!) {
     action
     annotations
     appId
+	throttleRate
     createdAt
     createdBy
     description
@@ -175,6 +178,7 @@ mutation CreateRule($data: rules_insert_input!) {
     action
     annotations
     appId
+	throttleRate
     createdAt
     createdBy
     description
@@ -238,6 +242,7 @@ mutation UpdateRule($id: uuid!, $data: rules_set_input!) {
     action
     annotations
     appId
+	throttleRate
     createdAt
     createdBy
     description

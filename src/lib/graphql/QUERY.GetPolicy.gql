@@ -23,6 +23,7 @@ query GetPolicy($id: uuid!) {
 			direction
 			action
 			appId
+			throttleRate
 			weight
 		}
 	}

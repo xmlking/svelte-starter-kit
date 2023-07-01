@@ -19,6 +19,7 @@ query SearchRules(
 		direction
 		action
 		appId
+		throttleRate
 		weight
 		updatedBy
 		updatedAt

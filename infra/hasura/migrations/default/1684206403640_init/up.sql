@@ -121,6 +121,7 @@ CREATE TABLE public.rules (
     action text DEFAULT 'permit'::text NOT NULL,
     direction text DEFAULT 'egress'::text NOT NULL,
     app_id text,
+	throttle_rate text,
     weight smallint DEFAULT 1000 NOT NULL,
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     created_by text NOT NULL,
