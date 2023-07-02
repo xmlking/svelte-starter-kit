@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { Stack } from '$lib/components/icons';
+	import { VERSION } from '@sveltejs/kit';
+
 	/*global __APP_VERSION__ __GIT_TAG__ __GIT_DATE__ */
 	const appVersion = __APP_VERSION__;
 	const gitTag = __GIT_TAG__;
@@ -25,7 +27,7 @@
 		<p
 			class="mt-4 inline-flex justify-center text-xs text-gray-500 sm:ml-auto sm:mt-0 sm:justify-start"
 		>
-			Version: {appVersion} <br /> Tag: {gitTag} <br /> Date: {gitDate}
+			Version: {appVersion}, Kit: {VERSION} <br /> Tag: {gitTag} <br /> Date: {gitDate}
 		</p>
 		<span class="mt-4 inline-flex justify-center sm:ml-auto sm:mt-0 sm:justify-start">
 			<a href={'#'} class="text-gray-500">
