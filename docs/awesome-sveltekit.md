@@ -146,6 +146,7 @@ Add ORIGIN Env Varaible i.e., `ORIGIN=http://localhost:3000 node build/index.js`
 ## Blogs
 
 - [https://joyofcode.xyz/](https://joyofcode.xyz/)
+- [Exploring Auth.js](https://medium.com/@jibla/auth-js-exploration-1b6c27cf076f)
 
 ## Community
 
