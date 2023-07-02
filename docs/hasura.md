@@ -145,6 +145,8 @@ hasura migrate status --database-name default
 
 #### Step 2: recreate public schema
 
+> via hasura console SQL interface or via postgres CLI
+
 ```sql
 DROP SCHEMA public CASCADE;
 CREATE SCHEMA public;
