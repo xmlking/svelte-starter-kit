@@ -74,6 +74,26 @@ type SearchRestroomsOutput {
 """
 Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'.
 """
+input String_array_comparison_exp {
+  """is the array contained in the given array value"""
+  _contained_in: [String!]
+
+  """does the array contain the given value"""
+  _contains: [String!]
+  _eq: [String!]
+  _gt: [String!]
+  _gte: [String!]
+  _in: [[String!]!]
+  _is_null: Boolean
+  _lt: [String!]
+  _lte: [String!]
+  _neq: [String!]
+  _nin: [[String!]!]
+}
+
+"""
+Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'.
+"""
 input String_comparison_exp {
   _eq: String
   _gt: String
@@ -122,23 +142,6 @@ input String_comparison_exp {
 
   """does the column match the given SQL regular expression"""
   _similar: String
-}
-
-scalar _text
-
-"""
-Boolean expression to compare columns of type "_text". All fields are combined with logical 'AND'.
-"""
-input _text_comparison_exp {
-  _eq: _text
-  _gt: _text
-  _gte: _text
-  _in: [_text!]
-  _is_null: Boolean
-  _lt: _text
-  _lte: _text
-  _neq: _text
-  _nin: [_text!]
 }
 
 """action type"""
@@ -451,7 +454,7 @@ type devices {
   id: uuid!
   ip: String!
   organization: organization_enum!
-  tags: _text
+  tags: [String!]
   updatedAt: timestamptz!
   updatedBy: String!
   version: String
@@ -474,7 +477,7 @@ input devices_bool_exp {
   id: uuid_comparison_exp
   ip: String_comparison_exp
   organization: organization_enum_comparison_exp
-  tags: _text_comparison_exp
+  tags: String_array_comparison_exp
   updatedAt: timestamptz_comparison_exp
   updatedBy: String_comparison_exp
   version: String_comparison_exp
@@ -569,7 +572,7 @@ input devices_set_input {
   annotations: hstore
   deletedAt: timestamptz
   description: String
-  tags: _text
+  tags: [String!]
 }
 
 """
@@ -594,7 +597,7 @@ input devices_stream_cursor_value_input {
   id: uuid
   ip: String
   organization: organization_enum
-  tags: _text
+  tags: [String!]
   updatedAt: timestamptz
   updatedBy: String
   version: String
@@ -1115,7 +1118,7 @@ enum policies_constraint {
   policies_pkey
 
   """
-  unique or primary key constraint on columns "rule_id", "subject_id", "organization", "subject_type"
+  unique or primary key constraint on columns "rule_id", "subject_id", "subject_type", "organization"
   """
   policies_subject_id_subject_type_rule_id_organization_unique
 }
@@ -1338,7 +1341,7 @@ type pools {
     """filter the rows returned"""
     where: device_pool_bool_exp
   ): [device_pool!]!
-  tags: _text
+  tags: [String!]
   updatedAt: timestamptz!
   updatedBy: String!
 }
@@ -1359,7 +1362,7 @@ input pools_bool_exp {
   id: uuid_comparison_exp
   organization: organization_enum_comparison_exp
   pool_devices: device_pool_bool_exp
-  tags: _text_comparison_exp
+  tags: String_array_comparison_exp
   updatedAt: timestamptz_comparison_exp
   updatedBy: String_comparison_exp
 }
@@ -1369,7 +1372,7 @@ unique or primary key constraints on table "pools"
 """
 enum pools_constraint {
   """
-  unique or primary key constraint on columns "display_name", "organization"
+  unique or primary key constraint on columns "organization", "display_name"
   """
   pools_display_name_organization_unique
 
@@ -1387,7 +1390,7 @@ input pools_insert_input {
   description: String
   displayName: String
   pool_devices: device_pool_arr_rel_insert_input
-  tags: _text
+  tags: [String!]
 }
 
 """
@@ -1487,7 +1490,7 @@ input pools_set_input {
   deletedAt: timestamptz
   description: String
   displayName: String
-  tags: _text
+  tags: [String!]
 }
 
 """
@@ -1511,7 +1514,7 @@ input pools_stream_cursor_value_input {
   displayName: String
   id: uuid
   organization: organization_enum
-  tags: _text
+  tags: [String!]
   updatedAt: timestamptz
   updatedBy: String
 }
@@ -1985,7 +1988,7 @@ type rules {
   shared: Boolean!
   source: String
   sourcePort: String
-  tags: _text
+  tags: [String!]
   throttleRate: String
   updatedAt: timestamptz!
   updatedBy: String!
@@ -2015,7 +2018,7 @@ input rules_bool_exp {
   shared: Boolean_comparison_exp
   source: String_comparison_exp
   sourcePort: String_comparison_exp
-  tags: _text_comparison_exp
+  tags: String_array_comparison_exp
   throttleRate: String_comparison_exp
   updatedAt: timestamptz_comparison_exp
   updatedBy: String_comparison_exp
@@ -2027,7 +2030,7 @@ unique or primary key constraints on table "rules"
 """
 enum rules_constraint {
   """
-  unique or primary key constraint on columns "display_name", "organization"
+  unique or primary key constraint on columns "organization", "display_name"
   """
   rules_display_name_organization_unique
 
@@ -2060,7 +2063,7 @@ input rules_insert_input {
   shared: Boolean
   source: String
   sourcePort: String
-  tags: _text
+  tags: [String!]
   throttleRate: String
   weight: smallint
 }
@@ -2210,7 +2213,7 @@ input rules_set_input {
   shared: Boolean
   source: String
   sourcePort: String
-  tags: _text
+  tags: [String!]
   throttleRate: String
   weight: smallint
 }
@@ -2244,7 +2247,7 @@ input rules_stream_cursor_value_input {
   shared: Boolean
   source: String
   sourcePort: String
-  tags: _text
+  tags: [String!]
   throttleRate: String
   updatedAt: timestamptz
   updatedBy: String

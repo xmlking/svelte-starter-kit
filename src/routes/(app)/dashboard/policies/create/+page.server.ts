@@ -35,7 +35,7 @@ export const actions = {
 		log.debug('after cleanClone with strip:', dataCopy);
 		const {
 			ruleId,
-			rule: { tags, throttleRate, ...ruleRest },
+			rule: { throttleRate, ...ruleRest },
 			...restPolicy
 		} = dataCopy;
 		const payload: policies_insert_input = {
@@ -46,7 +46,6 @@ export const actions = {
 						rule: {
 							data: {
 								...ruleRest,
-								...(tags && { tags: `{${tags}}` }),
 								...(throttleRate && { throttleRate: `${throttleRate}` })
 							}
 						}

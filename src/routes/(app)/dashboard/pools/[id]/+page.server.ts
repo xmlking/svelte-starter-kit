@@ -1,4 +1,4 @@
-import { DeleteDevicePoolStore, InsertDevicePoolStore, UpdatePoolStore, type pools_set_input } from '$houdini';
+import { UpdatePoolStore, type pools_set_input } from '$houdini';
 import { ToastLevel } from '$lib/components/toast';
 import { poolUpdateSchema as schema } from '$lib/models/schema';
 import { Logger, cleanClone } from '$lib/utils';
@@ -30,10 +30,7 @@ export const actions = {
 		const dataCopy = cleanClone(form.data, { empty: 'null' });
 		log.debug('after cleanClone with null:', dataCopy);
 
-		const payload: pools_set_input = {
-			...dataCopy,
-			...(dataCopy.tags && { tags: `{${dataCopy.tags}}` })
-		};
+		const payload: pools_set_input = dataCopy;
 		const variables = { id, data: payload };
 		log.debug('UPDATE action variables:', variables);
 		const { errors, data } = await updatePoolStore.mutate(variables, {

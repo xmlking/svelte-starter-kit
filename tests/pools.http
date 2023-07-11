@@ -156,7 +156,7 @@ mutation CreatePool($data: pools_insert_input!) {
   "data": {
     "displayName": "1_SumouserPool",
     "description":"SumouserPool Description",
-    "tags":"{tz,us}",
+    "tags":["tz","us"],
     "annotations":"sumanthKey=>SumanthValue"
   }
 }
@@ -193,7 +193,7 @@ mutation UpdatePool($id: uuid!, $data: pools_set_input!) {
   "id":"{{createdPoolId}}",
   "data": {
 	"description":"SumouserPool Description updated v1",
-    "tags":"{tz,us}",
+    "tags":["tz","us"],
     "annotations":"updatedSumanthKey=>updatedSumanthValue"
   }
 }

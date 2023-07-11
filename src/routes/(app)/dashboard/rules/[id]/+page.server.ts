@@ -33,7 +33,6 @@ export const actions = {
 		const payload: rules_set_input = {
 			...dataCopy,
 			shared: true,
-			...(dataCopy.tags && { tags: `{${dataCopy.tags}}` }),
 			...(dataCopy.throttleRate && { throttleRate: `${dataCopy.throttleRate}` })
 		};
 		const variables = { id, data: payload };

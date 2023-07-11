@@ -37,7 +37,7 @@ export const actions = {
 			subjectType,
 			ruleId,
 			originalShared,
-			rule: { id: rid, shared, tags, throttleRate, ...restRule },
+			rule: { id: rid, shared, throttleRate, ...restRule },
 			...restPolicy
 		} = dataCopy;
 
@@ -51,7 +51,6 @@ export const actions = {
 		};
 		const ruleData: rules_set_input = {
 			...restRule,
-			...(tags && { tags: `{${tags}}` }),
 			...(throttleRate && { throttleRate: `${throttleRate}` }),
 			// HINT: only allow changing `shared` property from `false` to `true`
 			...(originalShared == false && shared == true && { shared })
