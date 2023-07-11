@@ -1,11 +1,11 @@
-lockfileVersion: '6.0'
+lockfileVersion: '6.1'
 
 settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
 overrides:
-  flowbite-svelte: 0.37.5
+  flowbite-svelte: 0.39.2
 
 dependencies:
   cookie:
@@ -136,8 +136,8 @@ devDependencies:
     specifier: 1.7.0
     version: 1.7.0
   flowbite-svelte:
-    specifier: 0.37.5
-    version: 0.37.5(svelte@4.0.5)
+    specifier: 0.39.2
+    version: 0.39.2(svelte@4.0.5)
   flowbite-svelte-icons:
     specifier: 0.2.5
     version: 0.2.5(svelte@4.0.5)(tailwind-merge@1.13.2)(tailwindcss@3.3.2)
@@ -3532,10 +3532,6 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /classnames@2.3.2:
-    resolution: {integrity: sha512-CSbhY4cFEJRe6/GQzIk5qXZ4Jeg5pcsP7b5peFSDpffpe1cqjASH/n9UTjBwOp6XpMSTwQ8Za2K5V02ueA7Tmw==}
-    dev: true
-
   /cli-cursor@3.1.0:
     resolution: {integrity: sha512-I/zHAwsKf9FqGoXM4WWRACob9+SNukZTd94DWF57E4toouRulbCxcUh6RKUEOQlYTHJnzkPMySvPNaaSLNfLZw==}
     engines: {node: '>=8'}
@@ -4616,16 +4612,16 @@ packages:
       tailwindcss: 3.3.2
     dev: true
 
-  /flowbite-svelte@0.37.5(svelte@4.0.5):
-    resolution: {integrity: sha512-aAPJygrfqY1+wkcl4rG/ikTxAdnB1p4Xe2sKG3Jm+BJsMZvArgl6/weH+DimoSjHLAMLhtd4spAbzfT8eHBgnQ==}
+  /flowbite-svelte@0.39.2(svelte@4.0.5):
+    resolution: {integrity: sha512-wNv5f4ZbXBQgOiqMCSzbdCdUas+DuWVrOCYZQFMGc2m+GNbEk5q6V+WCfN9Uiw15DaJp2Y3GC/iA945TiQYMFA==}
     engines: {node: '>=16.0.0', npm: '>=7.0.0'}
     peerDependencies:
       svelte: ^3.55.1 || ^4.0.0
     dependencies:
       '@popperjs/core': 2.11.8
-      classnames: 2.3.2
       flowbite: 1.7.0
       svelte: 4.0.5
+      tailwind-merge: 1.13.2
     dev: true
 
   /flowbite@1.7.0:
