@@ -203,7 +203,7 @@ mutation CreateRule($data: rules_insert_input!) {
   "data": {
     "displayName": "youtube_blocker_2",
     "description":"Block Youtube from work IP",
-    "tags":"{tz,us}",
+    "tags":["tz","us"],
     "annotations":"sumo=>demo",
 	"destination": "199.223.232.0",
 	"destinationPort": "443",
@@ -267,7 +267,7 @@ mutation UpdateRule($id: uuid!, $data: rules_set_input!) {
   "id":"{{createdRuleId}}",
   "data": {
 	"description":"Block Youtube from work IP v2",
-    "tags":"{tz,us}",
+    "tags":["tz","us"],
     "annotations":"sumo2=>demo2"
   }
 }

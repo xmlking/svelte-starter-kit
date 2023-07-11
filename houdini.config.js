@@ -98,10 +98,6 @@ const config = {
 			type: 'string',
 			...defaultMarshall
 		},
-		_text: {
-			type: 'string[]',
-			...defaultMarshall
-		},
 		jsonb: {
 			type: 'object',
 			...defaultMarshall

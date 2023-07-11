@@ -29,10 +29,7 @@ export const actions = {
 		const dataCopy = cleanClone(form.data, { empty: 'strip' });
 		log.debug('after cleanClone with strip:', dataCopy);
 
-		const payload: pools_insert_input = {
-			...dataCopy,
-			...(dataCopy.tags && { tags: `{${dataCopy?.tags}}` })
-		};
+		const payload: pools_insert_input = dataCopy;
 		const variables = { data: payload };
 		log.debug('CREATE action variables:', variables);
 		const { errors, data } = await createPoolStore.mutate(variables, {

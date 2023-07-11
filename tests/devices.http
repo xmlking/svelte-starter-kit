@@ -160,7 +160,7 @@ mutation UpdateDevice($id: uuid!, $data: devices_set_input!) {
   "id":"{{firstDeviceId}}",
   "data":{
     "description":"user 1 device v3",
-    "tags":"{tz,us}",
+    "tags":["tz","us"],
     "annotations":"\"sumo\"=>\"demo3\""
   }
 }

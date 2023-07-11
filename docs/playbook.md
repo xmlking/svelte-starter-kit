@@ -157,8 +157,7 @@ pnpm add -D prettier-plugin-tailwindcss
     "prettier-plugin-svelte",
     "prettier-plugin-organize-imports",
     "prettier-plugin-tailwindcss" // MUST come last
-  ],
-  "pluginSearchDirs": false
+  ]
 }
 ```
 

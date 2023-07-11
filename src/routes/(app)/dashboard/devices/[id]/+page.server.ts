@@ -33,7 +33,7 @@ export const actions = {
 		const payload: devices_set_input = {
 			...(dataCopy.description && { description: dataCopy.description }),
 			...(dataCopy.annotations && { annotations: dataCopy.annotations }),
-			...(dataCopy.tags && { tags: `{${dataCopy.tags}}` })
+			...(dataCopy.tags && { tags: dataCopy.tags })
 		};
 		const variables = { id, data: payload };
 		log.debug('UPDATE action variables:', variables);

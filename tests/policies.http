@@ -348,7 +348,7 @@ mutation UpdatePolicy($policyId: uuid!, $policyData: policies_set_input!,  $rule
   "ruleData":{
     "displayName":"block youtube {{$randomInt 5 200}}",
     "description":"block youtube policy",
-    "tags":"{tz,us}",
+    "tags":["tz","us"],
     "annotations":"sumo2=>demo2",
     "weight": 670,
     "action": "block",
@@ -432,7 +432,7 @@ mutation CreatePolicy($data: policies_insert_input!) {
 			"data": {
 				"displayName":"block youtube {{$randomInt 5 200}}",
 				"description":"block youtube policy",
-				"tags":"{tz,us}",
+				"tags":["tz","us"],
 				"annotations":"\"sumo\"=>\"demo\"",
 				"shared": false,
 				"weight": 670,
