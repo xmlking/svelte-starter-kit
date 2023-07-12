@@ -17,6 +17,7 @@ script = """#!/bin/sh
 set -e
 pnpm format
 git add --all
+
 cog verify -i --file $1
 """
 

@@ -147,12 +147,9 @@ const processFormData = (opts: FormOpts) =>
 					}
 				}
 
-				return [...map.entries()].reduce(
-					(acc, [key, value]) => {
-						return setPath(acc, key, value.length === 1 ? value[0] : value);
-					},
-					{} as Record<string, unknown | unknown[]>
-				);
+				return [...map.entries()].reduce((acc, [key, value]) => {
+					return setPath(acc, key, value.length === 1 ? value[0] : value);
+				}, {} as Record<string, unknown | unknown[]>);
 			})
 	);
 
