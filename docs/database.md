@@ -147,5 +147,3 @@ cat  /var/lib/pgsql/14/data/pg_hba.conf
 ```
 
 ## Reference
-
-- HCP PostgreSQL provisioning [docs](https://console.hcp.uhg.com/products/postgresql/create-postgresql-database)
