@@ -10,6 +10,7 @@ Awesome **SvelteKit** Links
   - [Flowbite](https://flowbite-svelte.com/) components for Svelte, built on Tailwind CSS
   - [DaisyUI](https://daisyui.com/) - pure CSS based UI components built on Tailwind CSS
   - [shadcn-svelte](https://shadcn-svelte.com/) a set of components you can copy to your project and apply Tailwind CSS
+  - [Melt UI](https://www.melt-ui.com/) strives to be the de-facto headless UI library for Svelte.
 -
 - Force Graph examples with D3
 
@@ -21,27 +22,32 @@ Awesome **SvelteKit** Links
 - Forms
   - [svelte-select](https://github.com/rob-balfre/svelte-select)
   - [Autosize Textarea](https://github.com/ankurrsinghal/svelte-autoresize-textarea)
--
-- three.js
+  - [sveltekit-superforms](https://github.com/ciscoheat/sveltekit-superforms) - SvelteKit native form handing for backend and frontend.
+    - [Intro Video](https://www.youtube.com/watch?v=MiKzH3kcVfs)
+  - [sveltekit-flash-message](https://github.com/ciscoheat/sveltekit-flash-message)
+    - [Intro Video](https://youtu.be/hB6OkaYWS5I)
+  - [felte](https://felte.dev/) - An extensible form library for Svelte, Solid and React
 
+- three.js
   - [Threlte](https://threlte.xyz/) is a component library for Svelte to build and render `three.js` scenes declaratively and state-driven in Svelte apps.
 
 - Grid
-
   - [svelte-image-gallery](https://github.com/berkinakkaya/svelte-image-gallery)
   - [Svelte Bricks](https://bricks.janosh.dev/)
+  - [Svelte Moveable](https://github.com/daybrush/moveable/tree/master/packages/svelte-moveable) A Svelte Component that create Moveable, Draggable, Resizable, Scalable, Rotatable, Warpable, Pinchable, Groupable, Snappable.
 
 - Charts
-
   - [pancake](https://pancake-charts.surge.sh/)
   - [Layer Cake](https://layercake.graphics/) supports SSR, responsive graphics, full customizable layers for your graph.
 
-- Toast
+- Maps
+  - [Svelte MapBox](https://github.com/beyonk-group/svelte-mapbox) Maps and Geocoding (Autocomplete) MapBox components in Vanilla JS (or Svelte)
 
+- Toast
   - [svelte-french-toast](https://svelte-french-toast.com/)
 
 - Icons
-- pnpm add -D flowbite-svelte-icons
+  - [flowbite-svelte-icons](https://github.com/themesberg/flowbite-svelte-icons) 480+ SVG [Flowbite icons](https://flowbite.com/icons/) components for Svelte.
 
 ## Animation
 
@@ -61,13 +67,7 @@ Awesome **SvelteKit** Links
 - [svelte-legos](https://github.com/ankurrsinghal/svelte-legos)[DEMO](https://svelte-legos.singhalankur.com)
 - [React Hooks in Svelte](<[auth.md](https://github.com/breadthe/react-hooks-in-svelte)>)
 
-## Forms
 
-- [sveltekit-superforms](https://github.com/ciscoheat/sveltekit-superforms) - SvelteKit native form handing for backend and frontend.
-  - [Intro Video](https://www.youtube.com/watch?v=MiKzH3kcVfs)
-- [sveltekit-flash-message](https://github.com/ciscoheat/sveltekit-flash-message)
-  - [Intro Video](https://youtu.be/hB6OkaYWS5I)
-- [felte](https://felte.dev/) - An extensible form library for Svelte, Solid and React
 
 ## GraphQL
 
@@ -89,6 +89,7 @@ Awesome **SvelteKit** Links
 - [SvelteKit stack for enterprise](https://github.com/joysofcode/enterprise-stack)
 - [SvelteKit SaaS Demo](https://github.com/joshnuss/sveltekit-saas) - Auth.js, Prisma, Stripe
 - [SvelteKit Starter with trpc, lucia, skeleton and svelte-headless-table](https://github.com/widiu7omo/my-kit)
+- [Svelte 3.5 + Storybook 7 + TailwindCSS 3](https://github.com/jerriclynsjohn/svelte-storybook-tailwind)
 
 ## Deployment
 
