@@ -1,4 +1,4 @@
-lockfileVersion: '6.0'
+lockfileVersion: '6.1'
 
 settings:
   autoInstallPeers: true
@@ -25,8 +25,8 @@ devDependencies:
     specifier: 0.9.0
     version: 0.9.0
   '@auth/sveltekit':
-    specifier: 0.3.5
-    version: 0.3.5(@sveltejs/kit@1.22.2)(svelte@4.0.5)
+    specifier: 0.3.6
+    version: 0.3.6(@sveltejs/kit@1.22.2)(svelte@4.0.5)
   '@ethercorps/sveltekit-og':
     specifier: 2.0.1
     version: 2.0.1
@@ -271,6 +271,22 @@ packages:
       leven: 3.1.0
     dev: true
 
+  /@auth/core@0.10.0:
+    resolution: {integrity: sha512-mmvAzFUcDHG0m6avQ6/sYI3wtQtt3Tjbk4wCr27OlCeNnlzqK8lDQJIDFbJOTXEu/dNUx8sUQ0xMp7A6GAaHQw==}
+    peerDependencies:
+      nodemailer: ^6.8.0
+    peerDependenciesMeta:
+      nodemailer:
+        optional: true
+    dependencies:
+      '@panva/hkdf': 1.1.1
+      cookie: 0.5.0
+      jose: 4.14.4
+      oauth4webapi: 2.3.0
+      preact: 10.11.3
+      preact-render-to-string: 5.2.3(preact@10.11.3)
+    dev: true
+
   /@auth/core@0.9.0:
     resolution: {integrity: sha512-W2WO0WCBg1T3P8+yjQPzurTQhPv6ecBYfJ2oE3uvXPAX5ZLWAMSjKFAIa9oLZy5pwrB+YehJZPnlIxVilhrVcg==}
     peerDependencies:
@@ -287,13 +303,13 @@ packages:
       preact-render-to-string: 5.2.3(preact@10.11.3)
     dev: true
 
-  /@auth/sveltekit@0.3.5(@sveltejs/kit@1.22.2)(svelte@4.0.5):
-    resolution: {integrity: sha512-V76eB54YeZ2RG5Copl5ztwpOharhbouj12aP8nZPMgho087Ksq/DbsWJdyS7FTlyj8x57asopJl4gTPMXwmLxA==}
+  /@auth/sveltekit@0.3.6(@sveltejs/kit@1.22.2)(svelte@4.0.5):
+    resolution: {integrity: sha512-wL9YR8raosHR+iPDvIBExqvYiaOsseM681eYLjfU+ELmkjlKtGk+B4VxiLYMxlPfjqNagrzLNyS58PYXy2oh7A==}
     peerDependencies:
       '@sveltejs/kit': ^1.0.0
       svelte: ^3.54.0 || ^4.0.0
     dependencies:
-      '@auth/core': 0.9.0
+      '@auth/core': 0.10.0
       '@sveltejs/kit': 1.22.2(svelte@4.0.5)(vite@4.4.3)
       svelte: 4.0.5
     transitivePeerDependencies:
