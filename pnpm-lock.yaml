@@ -1,4 +1,4 @@
-lockfileVersion: '6.0'
+lockfileVersion: '6.1'
 
 settings:
   autoInstallPeers: true
@@ -118,8 +118,8 @@ devDependencies:
     specifier: 4.0.2
     version: 4.0.2
   daisyui:
-    specifier: 3.3.1
-    version: 3.3.1
+    specifier: 3.5.1
+    version: 3.5.1
   date-fns:
     specifier: 2.30.0
     version: 2.30.0
@@ -3932,8 +3932,8 @@ packages:
     engines: {node: '>=12'}
     dev: true
 
-  /daisyui@3.3.1:
-    resolution: {integrity: sha512-0PVNl+0r2Ie+FRkDNQABYcv8qLc0bt0lhUfSf8PxGocqpDsCB6cNQ5k8jOlnZIjUhc1EXMIDPU9r0pVrfRGftw==}
+  /daisyui@3.5.1:
+    resolution: {integrity: sha512-7GG+9QXnr2qQMCqnyFU8TxpaOYJigXiEtmzoivmiiZZHvxqIwYdaMAkgivqTVxEgy3Hot3m1suzZjmt1zUrvmA==}
     engines: {node: '>=16.9.0'}
     dependencies:
       colord: 2.9.3
