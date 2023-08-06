@@ -1,3 +1,6 @@
+/**
+ * isomorphic logger (a small wrapper around console.log)
+ */
 export enum LogLevel {
 	off = 0,
 	Debug,

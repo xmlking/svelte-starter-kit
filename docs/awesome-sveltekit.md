@@ -48,6 +48,14 @@ Awesome **SvelteKit** Links
 
 - Icons
   - [flowbite-svelte-icons](https://github.com/themesberg/flowbite-svelte-icons) 480+ SVG [Flowbite icons](https://flowbite.com/icons/) components for Svelte.
+  - [heroicons](https://heroicons.com/) Icons via [svelte-heros-v2](https://github.com/shinokada/svelte-heros-v2) Icon Components.
+
+- Mobile
+  - [Konsta UI](https://konstaui.com) Pixel perfect mobile UI components built with Tailwind CSS
+  - [Framework7 Svelte](https://framework7.io/svelte/) Build full featured iOS, Android & Desktop apps
+
+- CMS
+-  [editable-website](https://github.com/michael/editable-website) A SvelteKit template for building CMS-free editable websites. Try [DEMO](https://editable.website)
 
 ## Animation
 
