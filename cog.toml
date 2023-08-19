@@ -43,7 +43,7 @@ exit 1
 
 # "skip_ci" string that is appended to the end of the bump commit.
 # It can also be specified using cog bump --skip-ci
-skip_ci = "[skip ci]"
+# skip_ci = "[skip ci]"
 
 # An optional list of additional allowed commit type
 # `cog commit {commit_type}` commit command will be generated at runtime
