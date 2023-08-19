@@ -22,7 +22,7 @@ jobs:
           fetch-depth: 0
 
       - name: Conventional commits check
-        uses: oknozor/cocogitto-action@v3
+        uses: cocogitto/cocogitto-action@v3.5
         with:
           check-latest-tag-only: true
   linter:

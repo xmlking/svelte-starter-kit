@@ -1,71 +1,37 @@
-name: Docker build and publish
+name: Release
+
 on:
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-    inputs:
-      version:
-        description: Build with the given version.
-        default: v1.0.0
-        required: true
-      dey-run:
-        description: Build with dey-run.
-        required: false
-  push:
-    tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+'
-
-env:
-  GHCR_REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
-
-permissions:
-  contents: write # needed to write releases
-  id-token: write # needed for keyless signing
-  packages: write # needed for ghcr access
 
 jobs:
-  build-and-push-image:
+  release:
+    name: SemVer release
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      #      - name: Install cosign
-      #        uses: sigstore/cosign-installer@v2.5.0
-      #      - name: Install syft
-      #        uses: anchore/sbom-action/download-syft@v0.11.0
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      - name: login to GitHub Artifact Registry
-        uses: docker/login-action@v2
+      - uses: actions/checkout@v2
         with:
-          registry: ${{ env.GHCR_REGISTRY }}
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v4
+          fetch-depth: 0
+          token: ${{secrets.RELEASE_TOKEN}}
+      - run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git config --global user.email github-actions@github.com
+          git config --global user.name github-actions
+
+      - name: SemVer release
+        id: release
+        uses: cocogitto/cocogitto-action@v3.5
         with:
-          images: |
-            name=${{ env.GHCR_REGISTRY }}/${{ env.IMAGE_NAME }},enable=true
-          labels: |
-            org.opencontainers.image.vendor=MyCompany
-            org.opencontainers.image.licenses=MIT
-            org.opencontainers.image.documentation=docker run -it -e NODE_ENV=production -p 3000:3000  ghcr.io/xmlking/svelte-starter-kit:latest
-            org.opencontainers.image.name=svelte-starter-kit
-            org.opencontainers.image.authors=sumanth
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v4
+          check-latest-tag-only: true
+          release: true
+          git-user: 'github-actions'
+          git-user-email: 'github-actions@github.com'
+
+      - name: Generate Changelog
+        run: cog changelog --at ${{ steps.release.outputs.version }} -t full_hash > GITHUB_CHANGELOG.md
+
+      - name: Upload github release
+        uses: softprops/action-gh-release@v1
         with:
-          context: .
-          push: true
-          platforms: linux/amd64,linux/arm64
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          build-args: |
-            BUILD_TIME=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.created'] }}
-            BUILD_VERSION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
-            BUILD_REVISION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.revision'] }}
+          body_path: GITHUB_CHANGELOG.md
+          tag_name: ${{ steps.release.outputs.version }}
