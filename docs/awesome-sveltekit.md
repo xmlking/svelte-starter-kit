@@ -20,6 +20,7 @@ Awesome **SvelteKit** Links
   - [Autosize Textarea](https://github.com/ankurrsinghal/svelte-autoresize-textarea)
 
 - Forms
+
   - [svelte-select](https://github.com/rob-balfre/svelte-select)
   - [Autosize Textarea](https://github.com/ankurrsinghal/svelte-autoresize-textarea)
   - [sveltekit-superforms](https://github.com/ciscoheat/sveltekit-superforms) - SvelteKit native form handing for backend and frontend.
@@ -29,33 +30,40 @@ Awesome **SvelteKit** Links
   - [felte](https://felte.dev/) - An extensible form library for Svelte, Solid and React
 
 - three.js
+
   - [Threlte](https://threlte.xyz/) is a component library for Svelte to build and render `three.js` scenes declaratively and state-driven in Svelte apps.
 
 - Grid
+
   - [svelte-image-gallery](https://github.com/berkinakkaya/svelte-image-gallery)
   - [Svelte Bricks](https://bricks.janosh.dev/)
   - [Svelte Moveable](https://github.com/daybrush/moveable/tree/master/packages/svelte-moveable) A Svelte Component that create Moveable, Draggable, Resizable, Scalable, Rotatable, Warpable, Pinchable, Groupable, Snappable.
 
 - Charts
+
   - [pancake](https://pancake-charts.surge.sh/)
   - [Layer Cake](https://layercake.graphics/) supports SSR, responsive graphics, full customizable layers for your graph.
 
 - Maps
+
   - [Svelte MapBox](https://github.com/beyonk-group/svelte-mapbox) Maps and Geocoding (Autocomplete) MapBox components in Vanilla JS (or Svelte)
 
 - Toast
+
   - [svelte-french-toast](https://svelte-french-toast.com/)
 
 - Icons
+
   - [flowbite-svelte-icons](https://github.com/themesberg/flowbite-svelte-icons) 480+ SVG [Flowbite icons](https://flowbite.com/icons/) components for Svelte.
-  - [heroicons](https://heroicons.com/) Icons via [svelte-heros-v2](https://github.com/shinokada/svelte-heros-v2) Icon Components.
+  - [heroicons](https://heroicons.com/) Icons via [svelte-heros-v2](https://github.com/shinokada/svelte-heros-v2) Icon Components. list of icon [names](https://svelte-heros-v2.vercel.app/outline)
 
 - Mobile
+
   - [Konsta UI](https://konstaui.com) Pixel perfect mobile UI components built with Tailwind CSS
   - [Framework7 Svelte](https://framework7.io/svelte/) Build full featured iOS, Android & Desktop apps
 
 - CMS
--  [editable-website](https://github.com/michael/editable-website) A SvelteKit template for building CMS-free editable websites. Try [DEMO](https://editable.website)
+- [editable-website](https://github.com/michael/editable-website) A SvelteKit template for building CMS-free editable websites. Try [DEMO](https://editable.website)
 
 ## Animation
 
@@ -74,8 +82,6 @@ Awesome **SvelteKit** Links
 - [svelte-body](https://github.com/ghostdevv/svelte-body) - Currently in SvelteKit, applying styles per page to the body doesn't work. `svelte-body` handles that for you!
 - [svelte-legos](https://github.com/ankurrsinghal/svelte-legos)[DEMO](https://svelte-legos.singhalankur.com)
 - [React Hooks in Svelte](<[auth.md](https://github.com/breadthe/react-hooks-in-svelte)>)
-
-
 
 ## GraphQL
 
@@ -149,15 +155,16 @@ add `data-felte-ignore` attrubute
 Add ORIGIN Env Varaible i.e., `ORIGIN=http://localhost:3000 node build/index.js`
 
 - How to make SvelteKit WebApp as PWA
+
   - **Option 1:** add `src/service-worker.js` as documented in SvelteKit [Docs](https://kit.svelte.dev/docs/service-workers)
   - **Option 2:** If you need a more full-flegded but also more opinionated solution, we recommend looking at solutions like [Vite PWA plugin](https://vite-pwa-org.netlify.app/frameworks/sveltekit.html), which uses [Workbox](https://web.dev/learn/pwa/workbox).
 
 - How to set up [Svelte-Inspector](https://github.com/sveltejs/vite-plugin-svelte/blob/main/docs/inspector.md)?
-	-  with environment variables, set: `SVELTE_INSPECTOR_TOGGLE=control-shift`
-	-  with Svelte config: add `vitePlugin: { inspector: true}` to `svelte.config.js`
-	-  open up your project in the browser. Then use the key combo `Command + Shift` to activate
-	-  For [Setting up Svelte-Inspector with VS Code + WSL](https://dev.to/mikehtmlallthethings/setting-up-svelte-inspector-with-vs-code-wsl-ao)
- 
+  - with environment variables, set: `SVELTE_INSPECTOR_TOGGLE=control-shift`
+  - with Svelte config: add `vitePlugin: { inspector: true}` to `svelte.config.js`
+  - open up your project in the browser. Then use the key combo `Command + Shift` to activate
+  - For [Setting up Svelte-Inspector with VS Code + WSL](https://dev.to/mikehtmlallthethings/setting-up-svelte-inspector-with-vs-code-wsl-ao)
+
 ## Blogs
 
 - [https://joyofcode.xyz/](https://joyofcode.xyz/)
