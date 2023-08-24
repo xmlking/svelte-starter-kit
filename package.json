@@ -105,11 +105,11 @@
 		"cookie": "0.5.0"
 	},
 	"overrides": {
-		"flowbite-svelte": "0.37.5"
+		"flowbite-svelte": "0.44.4"
 	},
 	"pnpm": {
 		"overrides": {
-			"flowbite-svelte": "0.37.5"
+			"flowbite-svelte": "0.44.4"
 		}
 	},
 	"repository": {
