@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## [v0.6.2](https://github.com/xmlking/svelte-starter-kit/compare/v0.6.1..v0.6.2) - 2023-09-10
+#### Bug Fixes
+- updated deps [skip ci] - ([4f23308](https://github.com/xmlking/svelte-starter-kit/commit/4f233087ed72820214b11be0a1cbc37dfabb749d)) - [@xmlking](https://github.com/xmlking)
+
+- - -
+
 ## [v0.6.1](https://github.com/xmlking/svelte-starter-kit/compare/v0.6.0..v0.6.1) - 2023-09-10
 
 - - -
