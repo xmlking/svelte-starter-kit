@@ -1,4 +1,4 @@
-lockfileVersion: '6.0'
+lockfileVersion: '6.1'
 
 settings:
   autoInstallPeers: true
@@ -6,7 +6,7 @@ settings:
 
 overrides:
   flowbite-svelte: 0.37.5
-  svelte-heros-v2: 0.9.5
+  svelte-heros-v2: 0.10.11
 
 dependencies:
   cookie:
@@ -191,8 +191,8 @@ devDependencies:
     specifier: 0.17.5
     version: 0.17.5(svelte@4.2.0)
   svelte-heros-v2:
-    specifier: 0.9.5
-    version: 0.9.5(svelte@4.2.0)
+    specifier: 0.10.11
+    version: 0.10.11(svelte@4.2.0)
   svelte-select:
     specifier: 5.7.0
     version: 5.7.0
@@ -7512,8 +7512,8 @@ packages:
       svelte-subscribe: 1.0.6(svelte@4.2.0)
     dev: true
 
-  /svelte-heros-v2@0.9.5(svelte@4.2.0):
-    resolution: {integrity: sha512-B0IhsR1A+g9NdGmsavke2cF8NHd+FW7NxXSUNg+0DG3P71ApuwBiSosi9oy77BXZB3VnQQnZ6Ao1MkRONFVKJg==}
+  /svelte-heros-v2@0.10.11(svelte@4.2.0):
+    resolution: {integrity: sha512-LY45e3+/3CWUkDYivjG1M8IuW3B/VFjtTljVNu5sVz21ajpxroG+My44G5hEDA0Fdj7Zffy69DbtFA1sus2W9A==}
     peerDependencies:
       svelte: ^3.54.0 || ^4.0.0
     dependencies:
