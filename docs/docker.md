@@ -43,6 +43,7 @@ docker buildx build --platform linux/arm64/v8,linux/amd64 \
 -t $DOCKER_IMAGE\:$VERSION \
 -t $DOCKER_IMAGE\:latest \
 --build-arg BUILD_TIME=$BUILD_TIME --build-arg BUILD_VERSION=$VERSION \
+ --progress=plain \
 --push .
 
 # (optional) pull recent images from GHCR
