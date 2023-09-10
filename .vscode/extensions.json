@@ -46,5 +46,5 @@
 		"moalamri.inline-fold"
 	],
 	// List of extensions recommended by VS Code that should not be recommended for users of this workspace.
-	"unwantedRecommendations": ["ardenivanov.svelte-intellisense"]
+	"unwantedRecommendations": ["ardenivanov.svelte-intellisense", "vscodevim.vim"]
 }
