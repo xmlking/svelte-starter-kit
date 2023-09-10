@@ -106,12 +106,12 @@
 	},
 	"overrides": {
 		"flowbite-svelte": "0.37.5",
-		"svelte-heros-v2": "0.9.5"
+		"svelte-heros-v2": "0.10.11"
 	},
 	"pnpm": {
 		"overrides": {
 			"flowbite-svelte": "0.37.5",
-			"svelte-heros-v2": "0.9.5"
+			"svelte-heros-v2": "0.10.11"
 		}
 	},
 	"repository": {
