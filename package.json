@@ -58,7 +58,7 @@
 		"eslint-config-prettier": "9.0.0",
 		"eslint-plugin-svelte": "2.33.1",
 		"flowbite": "1.8.1",
-		"flowbite-svelte": "0.44.15",
+		"flowbite-svelte": "0.44.17",
 		"flowbite-svelte-icons": "0.4.3",
 		"graphql": "16.8.0",
 		"graphql-ws": "5.14.0",
@@ -105,12 +105,12 @@
 		"cookie": "0.5.0"
 	},
 	"overrides": {
-		"flowbite-svelte": "0.37.5",
+		"flowbite-svelte": "0.44.17",
 		"svelte-heros-v2": "0.9.5"
 	},
 	"pnpm": {
 		"overrides": {
-			"flowbite-svelte": "0.37.5",
+			"flowbite-svelte": "0.44.17",
 			"svelte-heros-v2": "0.9.5"
 		}
 	},
