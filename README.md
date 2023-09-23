@@ -2,7 +2,7 @@
 
 > This repository moved. Please use the new location: [spectacular](https://github.com/xmlking/spectacular) 
 
-**Please :star2: :star2: :star2: Star :star2: :star2: :star2: new repo [spectacular](https://github.com/xmlking/spectacular)  **
+**Please :star2: :star2: :star2: Star :star2: :star2: :star2: new repo [spectacular](https://github.com/xmlking/spectacular)**
 
 Everything you need to build a Svelte project, powered
 by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
